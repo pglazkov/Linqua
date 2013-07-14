@@ -1,4 +1,5 @@
 using System;
+using System.Composition;
 using System.Windows;
 using System.Windows.Threading;
 
@@ -7,7 +8,8 @@ namespace Framework.PlatformServices
 	/// <summary>
 	/// Hides the dispatcher mis-match between Silverlight and .Net, largely so code reads a bit easier
 	/// </summary>
-	internal class DispatcherService : IDispatcherService
+	[Export(typeof(IDispatcherService))]
+	public class DispatcherService : IDispatcherService
 	{
 		readonly Dispatcher innerDispatcher;
 

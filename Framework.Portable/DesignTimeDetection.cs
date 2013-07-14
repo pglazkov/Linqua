@@ -6,7 +6,16 @@ namespace Framework
 	{
 		public static bool IsInDesignTool
 		{
-			get { return PlatformService.Platform.CreateService<IDesignModeDetectionService>().GetIsInDesignTool(); }
+			get
+			{
+			    if (CompositionManager.IsCurrentAvailable)
+			    {
+			        return CompositionManager.Current.GetInstance<IDesignModeDetectionService>().GetIsInDesignTool();
+			    }
+
+                // CompositionManager instance is not available at the design time
+			    return true;
+			}
 		}
 	}
 }

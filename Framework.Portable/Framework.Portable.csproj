@@ -106,7 +106,11 @@
     <Compile Include="DesignTimeDetection.cs" />
     <Compile Include="DispatcherProxy.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="FrameworkPortable.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="MefExtensions\Constants.cs" />
+    <Compile Include="MefExtensions\DefaultExportAttribute.cs" />
+    <Compile Include="MefExtensions\DefaultExportDescriptorProvider.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultDispatcherService.cs" />
     <Compile Include="PlatformServices\IDispatcherService.cs" />
     <Compile Include="IEventLocator.cs" />
@@ -120,12 +124,9 @@
     <Compile Include="Mvpvm\PresenterBase.cs" />
     <Compile Include="NotificationObject.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultDesignModeDetectionService.cs" />
-    <Compile Include="PlatformServices\DefaultImpl\DefaultPlatformServiceProvider.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultViewLocationService.cs" />
     <Compile Include="PlatformServices\IDesignModeDetectionService.cs" />
-    <Compile Include="PlatformServices\IPlatformServiceProvider.cs" />
     <Compile Include="PlatformServices\IViewLocationService.cs" />
-    <Compile Include="PlatformServices\PlatformService.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertySupport.cs" />

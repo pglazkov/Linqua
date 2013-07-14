@@ -6,7 +6,7 @@ namespace Framework
 	{
 		public static object LocateForViewModel(IViewModel viewModel)
 		{
-			return PlatformService.Platform.CreateService<IViewLocationService>().LocateForViewModel(viewModel);
+			return CompositionManager.Current.GetInstance<IViewLocationService>().LocateForViewModel(viewModel);
 		}
 	}
 }

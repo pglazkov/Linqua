@@ -85,10 +85,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="PlatformServicesVerification.cs" />
+    <Compile Include="FrameworkPhone.cs" />
     <Compile Include="PlatformServices\DesignModeDetectionService.cs" />
     <Compile Include="PlatformServices\DispatcherService.cs" />
-    <Compile Include="PlatformServices\PlatformServiceProvider.cs" />
     <Compile Include="PlatformServices\ViewLocationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\LocalizedStrings.Designer.cs">

@@ -17,6 +17,11 @@ namespace Framework
             this.container = container;
         }
 
+        public static bool IsCurrentAvailable
+        {
+            get { return instance != null; }
+        }
+
         public static ICompositionManager Current
         {
             get

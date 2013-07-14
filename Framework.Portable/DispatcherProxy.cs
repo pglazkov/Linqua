@@ -9,7 +9,7 @@ namespace Framework
 
 		private DispatcherProxy()
 		{
-			impl = PlatformService.Platform.CreateService<IDispatcherService>();
+			impl = CompositionManager.Current.GetInstance<IDispatcherService>();
 		}
 
 		public static DispatcherProxy CreateDispatcher()
