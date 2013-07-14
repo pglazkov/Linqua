@@ -5,6 +5,6 @@ namespace Linqua
 {
 	public interface IMainView : INavigationView
 	{
-		ApplicationBarIconButton AddWordButton { get; }
+        IApplicationBarMenuItem AddWordButton { get; }
 	}
 }

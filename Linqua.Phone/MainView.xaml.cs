@@ -67,9 +67,9 @@ namespace Linqua
 			return ViewAdapter.FindChildName<T>(controlName);
 		}
 
-		ApplicationBarIconButton IMainView.AddWordButton
+        IApplicationBarMenuItem IMainView.AddWordButton
 		{
-			get { return ((ApplicationBarIconButton)ApplicationBar.Buttons[0]); }
+            get { return ((IApplicationBarMenuItem)ApplicationBar.Buttons[0]); }
 		}
 	}
 }
