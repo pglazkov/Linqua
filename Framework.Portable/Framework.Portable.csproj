@@ -153,17 +153,20 @@
       <HintPath>..\Lib\Mef\System.Composition.TypedParts.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Core">
-      <HintPath>..\Lib\Rx\.NETPortable\v4.5\System.Reactive.Core.dll</HintPath>
+      <HintPath>..\packages\Rx-Core.2.1.30214.0\lib\Portable-Net45+WinRT45+WP8\System.Reactive.Core.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Interfaces">
-      <HintPath>..\Lib\Rx\.NETPortable\v4.5\System.Reactive.Interfaces.dll</HintPath>
+      <HintPath>..\packages\Rx-Interfaces.2.1.30214.0\lib\Portable-Net45+WinRT45+WP8\System.Reactive.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="System.Reactive.Linq">
-      <HintPath>..\Lib\Rx\.NETPortable\v4.5\System.Reactive.Linq.dll</HintPath>
+      <HintPath>..\packages\Rx-Linq.2.1.30214.0\lib\Portable-Net45+WinRT45+WP8\System.Reactive.Linq.dll</HintPath>
     </Reference>
-    <Reference Include="System.Reactive.Providers">
-      <HintPath>..\Lib\Rx\.NETPortable\v4.5\System.Reactive.Providers.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
