@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Linqua.WordListItemView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:loc="using:Linqua"
+             mc:Ignorable="d"
+			 d:DesignHeight="480"
+			 d:DesignWidth="480"
+			 d:DataContext="{d:DesignInstance loc:WordListItemViewModel, IsDesignTimeCreatable=True}">
+
+	<Grid x:Name="LayoutRoot">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		
+		<TextBlock Text="{Binding Text}" 
+				   Style="{ThemeResource ControlHeaderTextBlockStyle}"/>
+		
+		<TextBlock Grid.Row="1" 
+				   Text="{Binding DateAdded}"/>
+	</Grid>
+</UserControl>
