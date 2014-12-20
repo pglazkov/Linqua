@@ -8,7 +8,7 @@ namespace Framework
 	{
 		 public static void FireAndForget(this Task task)
 		 {
-			 Guard.NotNull(() => task);
+			 Guard.NotNull(task, () => task);
 
 			 SynchronizationContext ctx = SynchronizationContext.Current;
 

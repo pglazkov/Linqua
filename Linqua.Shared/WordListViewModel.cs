@@ -18,7 +18,7 @@ namespace Linqua
 
 	    public WordListViewModel(IEnumerable<Word> words)
 	    {
-			Guard.NotNull(() => words);
+			Guard.NotNull(words, () => words);
 
 			Words = new ObservableCollection<WordListItemViewModel>(words.Select(w => new WordListItemViewModel(w)));
 	    }

@@ -13,7 +13,7 @@ namespace Linqua
 
 		public WordViewModel(Word word)
 		{
-			Guard.NotNull(() => word);
+			Guard.NotNull(word, () => word);
 
 			Word = word;
 		}
