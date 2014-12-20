@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Framework;
-using Linqua.Events;
 using Linqua.Persistance;
 
 namespace Linqua
@@ -15,7 +14,7 @@ namespace Linqua
 	    {
 			if (DesignTimeDetection.IsInDesignTool)
 			{
-				WordListViewModel = new WordListViewModel(DesignTimeHelper.FakeWords);
+				WordListViewModel = new WordListViewModel(FakeData.FakeWords);
 			}
 
 			AddWordCommand = new DelegateCommand(AddWord);
@@ -31,8 +30,13 @@ namespace Linqua
 
 		public ICommand AddWordCommand { get; private set; }
 
+		[Import]
+		public IEventLocator EventLocator { get; set; }
+
 	    [Import]
         public IEventPublisher EventPublisher { get; set; }
+
+		public IMainView View { get; set; }
 
         public WordListViewModel WordListViewModel
         {
@@ -53,7 +57,7 @@ namespace Linqua
 
 		private void AddWord()
 		{
-			EventPublisher.Publish(new AddWordRequestedEvent());
+			View.NavigateToNewWordPage();
 		}
     }
 }

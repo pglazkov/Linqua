@@ -4,7 +4,7 @@ using Linqua.Model;
 
 namespace Linqua
 {
-	public static class DesignTimeHelper
+	public static class FakeData
 	{
 		public static IEnumerable<Word> FakeWords
 		{

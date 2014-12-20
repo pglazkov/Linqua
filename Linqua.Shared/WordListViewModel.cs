@@ -12,7 +12,7 @@ namespace Linqua
 	    {
 			if (DesignTimeDetection.IsInDesignTool)
 			{
-				Words = new ObservableCollection<WordListItemViewModel>(DesignTimeHelper.FakeWords.Select(w => new WordListItemViewModel(w)));
+				Words = new ObservableCollection<WordListItemViewModel>(FakeData.FakeWords.Select(w => new WordListItemViewModel(w)));
 			}
 	    }
 

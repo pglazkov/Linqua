@@ -9,6 +9,7 @@ using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Framework;
 
 namespace Linqua.Common
 {
@@ -109,8 +110,8 @@ namespace Linqua.Common
 
 		#region Navigation support
 
-		RelayCommand _goBackCommand;
-		RelayCommand _goForwardCommand;
+		DelegateCommand _goBackCommand;
+		DelegateCommand _goForwardCommand;
 
 		/// <summary>
 		/// <see cref="RelayCommand"/> used to bind to the back Button's Command property
@@ -120,15 +121,15 @@ namespace Linqua.Common
 		/// The <see cref="RelayCommand"/> is set up to use the virtual method <see cref="GoBack"/>
 		/// as the Execute Action and <see cref="CanGoBack"/> for CanExecute.
 		/// </summary>
-		public RelayCommand GoBackCommand
+		public DelegateCommand GoBackCommand
 		{
 			get
 			{
 				if (_goBackCommand == null)
 				{
-					_goBackCommand = new RelayCommand(
-						() => this.GoBack(),
-						() => this.CanGoBack());
+					_goBackCommand = new DelegateCommand(
+						GoBack,
+						CanGoBack);
 				}
 				return _goBackCommand;
 			}
@@ -144,15 +145,15 @@ namespace Linqua.Common
 		/// The <see cref="RelayCommand"/> is set up to use the virtual method <see cref="GoForward"/>
 		/// as the Execute Action and <see cref="CanGoForward"/> for CanExecute.
 		/// </summary>
-		public RelayCommand GoForwardCommand
+		public DelegateCommand GoForwardCommand
 		{
 			get
 			{
 				if (_goForwardCommand == null)
 				{
-					_goForwardCommand = new RelayCommand(
-						() => this.GoForward(),
-						() => this.CanGoForward());
+					_goForwardCommand = new DelegateCommand(
+						GoForward,
+						CanGoForward);
 				}
 				return _goForwardCommand;
 			}
@@ -208,10 +209,10 @@ namespace Linqua.Common
         /// <param name="e">Event data describing the conditions that led to the event.</param>
         private void HardwareButtons_BackPressed(object sender, Windows.Phone.UI.Input.BackPressedEventArgs e)
         {
-            if (this.GoBackCommand.CanExecute(null))
+            if (this.GoBackCommand.CanExecute())
             {
                 e.Handled = true;
-                this.GoBackCommand.Execute(null);
+                this.GoBackCommand.Execute();
             }
         }
 #else
@@ -247,14 +248,14 @@ namespace Linqua.Common
 				{
 					// When the previous key or Alt+Left are pressed navigate back
 					e.Handled = true;
-					this.GoBackCommand.Execute(null);
+					this.GoBackCommand.Execute();
 				}
 				else if (((int)virtualKey == 167 && noModifiers) ||
 					(virtualKey == VirtualKey.Right && onlyAlt))
 				{
 					// When the next key or Alt+Right are pressed navigate forward
 					e.Handled = true;
-					this.GoForwardCommand.Execute(null);
+					this.GoForwardCommand.Execute();
 				}
 			}
 		}
@@ -281,8 +282,8 @@ namespace Linqua.Common
 			if (backPressed ^ forwardPressed)
 			{
 				e.Handled = true;
-				if (backPressed) this.GoBackCommand.Execute(null);
-				if (forwardPressed) this.GoForwardCommand.Execute(null);
+				if (backPressed) this.GoBackCommand.Execute();
+				if (forwardPressed) this.GoForwardCommand.Execute();
 			}
 		}
 #endif

@@ -48,7 +48,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedStrings.resx</DependentUpon>
     </Compile>
-    <Compile Include="ViewAdapter.cs" />
     <Compile Include="ViewLocator.cs" />
   </ItemGroup>
   <ItemGroup>

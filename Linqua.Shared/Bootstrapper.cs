@@ -14,9 +14,7 @@ namespace Linqua
 
             mvvmConventions.ForTypesDerivedFrom<ViewModelBase>()
                            .Export();
-
-	        mvvmConventions.ForTypesDerivedFrom<IPresenter>()
-	                       .Export();
+	       
 
             ViewLocator.BuildMefConventions(mvvmConventions);
 

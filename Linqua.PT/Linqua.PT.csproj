@@ -35,9 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppPortable.cs" />
-    <Compile Include="DesignTimeHelper.cs" />
-    <Compile Include="Events\AddWordRequestedEvent.cs" />
-    <Compile Include="MainViewModel.cs" />
+    <Compile Include="FakeData.cs" />
     <Compile Include="Model\Word.cs" />
     <Compile Include="Persistance\IWordStorage.cs" />
     <Compile Include="Persistance\MemoryWordStorage.cs" />
@@ -47,9 +45,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
-    <Compile Include="WordListItemViewModel.cs" />
-    <Compile Include="WordListViewModel.cs" />
-    <Compile Include="WordViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Composition.AttributedModel">
@@ -94,6 +89,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Events\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

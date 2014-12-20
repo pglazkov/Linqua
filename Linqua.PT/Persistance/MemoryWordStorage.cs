@@ -10,7 +10,7 @@ namespace Linqua.Persistance
 	{
 		public Task<IEnumerable<Word>> LoadAllWords()
 		{
-			return Task.Factory.StartNew(() => DesignTimeHelper.FakeWords);
+			return Task.Factory.StartNew(() => FakeData.FakeWords);
 		}
 	}
 }

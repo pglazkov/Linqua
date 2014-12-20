@@ -1,9 +1,8 @@
 ﻿using System;
-using Framework;
 
 namespace Linqua
 {
-	public interface INavigationView : IView
+	public interface INavigationView
 	{
 		bool Navigate(Type destination);
 		bool Navigate(Type destination, object parameter);

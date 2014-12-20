@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Framework;
 
@@ -29,26 +17,15 @@ namespace Linqua
             this.InitializeComponent();
 			
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
-			ViewAdapter = new ViewAdapter(this);
-			
-			// Sample code to localize the ApplicationBar
-			//BuildLocalizedApplicationBar();
-
+	        
 			if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
 			{
-				Presenter = CompositionManager.Current.GetInstance<MainPresenter>();
-
-				Debug.Assert(Presenter != null);
-
-				Presenter.Initialize(view: this);
-
-				CompositionManager.Current.Compose(this);
+				DataContext = ViewModel = CompositionManager.Current.GetInstance<ICompositionFactory>().Create<MainViewModel>();
+				ViewModel.View = this;
 			}
         }
 
-		private ViewAdapter ViewAdapter { get; set; }
-		private MainPresenter Presenter { get; set; }
+		private MainViewModel ViewModel { get; set; }
 
         /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
@@ -66,28 +43,6 @@ namespace Linqua
             // this event is handled for you.
         }
 
-		event EventHandler<EventArgs> IView.Loaded
-		{
-			add { ViewAdapter.Loaded += value; }
-			remove { ViewAdapter.Loaded -= value; }
-		}
-
-		event EventHandler<EventArgs> IView.Unloaded
-		{
-			add { ViewAdapter.Unloaded += value; }
-			remove { ViewAdapter.Unloaded -= value; }
-		}
-
-		T IView.FindChildName<T>(string controlName)
-		{
-			return ViewAdapter.FindChildName<T>(controlName);
-		}
-
-		Button IMainView.AddWordButton
-		{
-			get { return NewWordButton; }
-		}
-
 	    public bool Navigate(Type destination)
 	    {
 		    return Frame.Navigate(destination);
@@ -96,6 +51,11 @@ namespace Linqua
 	    public bool Navigate(Type destination, object parameter)
 	    {
 		    return Frame.Navigate(destination, parameter);
+	    }
+
+	    public void NavigateToNewWordPage()
+	    {
+		    Navigate(typeof (NewWordPage));
 	    }
     }
 }

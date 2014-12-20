@@ -48,13 +48,10 @@
     <Compile Include="ICompositionManager.cs" />
     <Compile Include="IEventLocator.cs" />
     <Compile Include="IEventPublisher.cs" />
-    <Compile Include="IView.cs" />
     <Compile Include="IViewModel.cs" />
     <Compile Include="MefExtensions\Constants.cs" />
     <Compile Include="MefExtensions\DefaultExportAttribute.cs" />
     <Compile Include="MefExtensions\DefaultExportDescriptorProvider.cs" />
-    <Compile Include="Mvpvm\IPresenter.cs" />
-    <Compile Include="Mvpvm\PresenterBase.cs" />
     <Compile Include="NotificationObject.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultDesignModeDetectionService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultDispatcherService.cs" />
