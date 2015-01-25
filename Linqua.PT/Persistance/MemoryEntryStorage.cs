@@ -5,10 +5,10 @@ using Linqua.DataObjects;
 
 namespace Linqua.Persistance
 {
-	[Export(typeof(IEntryStorage))]
+	//[Export(typeof(IEntryStorage))]
 	public class MemoryEntryStorage : IEntryStorage
 	{
-		public Task<IEnumerable<ClientEntry>> LoadAllWords()
+		public Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
 			return Task.Factory.StartNew(() => FakeData.FakeWords);
 		}

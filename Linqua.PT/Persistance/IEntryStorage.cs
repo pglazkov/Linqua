@@ -8,6 +8,6 @@ namespace Linqua.Persistance
 	public interface IEntryStorage
 	{
 		[NotNull]
-		Task<IEnumerable<ClientEntry>> LoadAllWords();
+		Task<IEnumerable<ClientEntry>> LoadAllEntries();
 	}
 }

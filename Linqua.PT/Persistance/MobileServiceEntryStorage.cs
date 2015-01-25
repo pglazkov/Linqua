@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Threading.Tasks;
 using Linqua.DataObjects;
@@ -19,10 +20,16 @@ namespace Linqua.Persistance
 		//);
 
 
-		public Task<IEnumerable<ClientEntry>> LoadAllWords()
+		public async Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
-			
-			throw new System.NotImplementedException();
+			try
+			{
+				return await MobileService.GetTable<ClientEntry>().ToListAsync();
+			}
+			catch (Exception e)
+			{
+				throw;
+			}
 		}
 	}
 }

@@ -50,7 +50,7 @@ namespace Linqua
 
 	    private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IEntryStorage storage)
 		{
-			var words = await storage.LoadAllWords();
+			var words = await storage.LoadAllEntries();
 
 			WordListViewModel = compositionFactory.Create<WordListViewModel>(words);
 		}

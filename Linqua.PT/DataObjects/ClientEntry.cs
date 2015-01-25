@@ -19,6 +19,8 @@ namespace Linqua.DataObjects
 			CreatedAt = createdAt;
 		}
 
+		public string Id { get; set; }
+
 		public string Text { get; set; }
 
 		public string Definition { get; set; }

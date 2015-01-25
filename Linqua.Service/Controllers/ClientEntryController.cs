@@ -9,7 +9,7 @@ using Microsoft.WindowsAzure.Mobile.Service;
 
 namespace Linqua.Service.Controllers
 {
-    public class EntryController : TableController<ClientEntry>
+    public class ClientEntryController : TableController<ClientEntry>
     {
         protected override void Initialize(HttpControllerContext controllerContext)
         {
