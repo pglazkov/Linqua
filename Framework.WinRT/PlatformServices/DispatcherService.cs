@@ -39,7 +39,7 @@ namespace Framework.PlatformServices
 
 		public void BeginInvoke(Delegate method, params Object[] args)
 		{
-			innerDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => method.DynamicInvoke(args));
+			innerDispatcher.RunAsync(CoreDispatcherPriority.Normal, () => method.DynamicInvoke(args)).AsTask().FireAndForget();
 		}
 	}
 }

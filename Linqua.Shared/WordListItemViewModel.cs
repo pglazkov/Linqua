@@ -1,6 +1,6 @@
 ﻿using System;
 using Framework;
-using Linqua.Model;
+using Linqua.DataObjects;
 
 namespace Linqua
 {
@@ -10,11 +10,11 @@ namespace Linqua
 		{
 			if (DesignTimeDetection.IsInDesignTool)
 			{
-				Word = new Word("Aankomst", DateTime.Now);
+				Entry = new ClientEntry("Aankomst", DateTime.Now);
 			}
 		}
 
-		public WordListItemViewModel(Word word) : base(word)
+		public WordListItemViewModel(ClientEntry entry) : base(entry)
 		{
 		}
 	}

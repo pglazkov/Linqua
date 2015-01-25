@@ -1,6 +1,6 @@
 ﻿using System;
 using Framework;
-using Linqua.Model;
+using Linqua.DataObjects;
 
 namespace Linqua
 {
@@ -11,23 +11,23 @@ namespace Linqua
 			
 		}
 
-		public WordViewModel(Word word)
+		public WordViewModel(ClientEntry entry)
 		{
-			Guard.NotNull(word, () => word);
+			Guard.NotNull(entry, () => entry);
 
-			Word = word;
+			Entry = entry;
 		}
 
-		protected Word Word { get; set; }
+		protected ClientEntry Entry { get; set; }
 
 		public string Text
 		{
-			get { return Word.Text; }
+			get { return Entry.Text; }
 		}
 
 		public DateTime DateAdded
 		{
-			get { return Word.DateAdded; }
+			get { return Entry.CreatedAt.GetValueOrDefault().DateTime; }
 		}
 	}
 }

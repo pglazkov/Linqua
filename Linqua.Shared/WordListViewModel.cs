@@ -2,7 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 using Framework;
-using Linqua.Model;
+using Linqua.DataObjects;
 
 namespace Linqua
 {
@@ -16,7 +16,7 @@ namespace Linqua
 			}
 	    }
 
-	    public WordListViewModel(IEnumerable<Word> words)
+	    public WordListViewModel(IEnumerable<ClientEntry> words)
 	    {
 			Guard.NotNull(words, () => words);
 

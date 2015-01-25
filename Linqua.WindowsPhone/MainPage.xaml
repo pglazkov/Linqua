@@ -39,7 +39,8 @@
 		<StackPanel x:Name="TitlePanel"
 					Grid.Row="0"
 					Margin="12,17,0,28">
-			<TextBlock Text="LINQUA"
+			<TextBlock x:Uid="ApplicationHeader" 
+					   Text="LINQUA"
 					   Style="{ThemeResource TitleTextBlockStyle}"
 					   Margin="12,0" />
 			<TextBlock Text="my words"

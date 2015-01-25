@@ -26,4 +26,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)WordListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)WordViewModel.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
+  </ItemGroup>
 </Project>

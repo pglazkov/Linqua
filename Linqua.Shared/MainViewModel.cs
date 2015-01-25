@@ -20,7 +20,7 @@ namespace Linqua
 			AddWordCommand = new DelegateCommand(AddWord);
 	    }
 
-	    public MainViewModel(ICompositionFactory compositionFactory, IWordStorage storage)
+	    public MainViewModel(ICompositionFactory compositionFactory, IEntryStorage storage)
 			: this()
 	    {
 		    CompositionFactory = compositionFactory;
@@ -48,7 +48,7 @@ namespace Linqua
 	        }
         }
 
-	    private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IWordStorage storage)
+	    private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IEntryStorage storage)
 		{
 			var words = await storage.LoadAllWords();
 

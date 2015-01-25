@@ -1,37 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using Linqua.Model;
+using Linqua.DataObjects;
 
 namespace Linqua
 {
 	public static class FakeData
 	{
-		public static IEnumerable<Word> FakeWords
+		public static IEnumerable<ClientEntry> FakeWords
 		{
 			get
 			{
-				yield return new Word("Aankomst");
-				yield return new Word("Voordelig");
-				yield return new Word("Zender");
-				yield return new Word("toiletborstel");
-				yield return new Word("beide");
-				yield return new Word("Toch");
-				yield return new Word("verantwoord");
-				yield return new Word("Zou");
-				yield return new Word("eigen");
-				yield return new Word("Betaalwijze");
-				yield return new Word("terug");
-				yield return new Word("Krijgt");
-				yield return new Word("Gewoon");
-				yield return new Word("Steeds");
-				yield return new Word("Bewaar");
-				yield return new Word("Klaar");
-				yield return new Word("Alles");
-				yield return new Word("Eigen");
-				yield return new Word("Belangrijk");
-				yield return new Word("Vervalen");
-				yield return new Word("Het ongemak");
-				yield return new Word("echter");
+				yield return new ClientEntry("Aankomst");
+				yield return new ClientEntry("Voordelig");
+				yield return new ClientEntry("Zender");
+				yield return new ClientEntry("toiletborstel");
+				yield return new ClientEntry("beide");
+				yield return new ClientEntry("Toch");
+				yield return new ClientEntry("verantwoord");
+				yield return new ClientEntry("Zou");
+				yield return new ClientEntry("eigen");
+				yield return new ClientEntry("Betaalwijze");
+				yield return new ClientEntry("terug");
+				yield return new ClientEntry("Krijgt");
+				yield return new ClientEntry("Gewoon");
+				yield return new ClientEntry("Steeds");
+				yield return new ClientEntry("Bewaar");
+				yield return new ClientEntry("Klaar");
+				yield return new ClientEntry("Alles");
+				yield return new ClientEntry("Eigen");
+				yield return new ClientEntry("Belangrijk");
+				yield return new ClientEntry("Vervalen");
+				yield return new ClientEntry("Het ongemak");
+				yield return new ClientEntry("echter");
 			}
 		}
 	}

@@ -3,6 +3,7 @@ using System.Composition.Hosting;
 using System.Reflection;
 using Framework;
 using Framework.MefExtensions;
+using Linqua.Persistance;
 
 namespace Linqua
 {
@@ -14,7 +15,6 @@ namespace Linqua
 
             mvvmConventions.ForTypesDerivedFrom<ViewModelBase>()
                            .Export();
-	       
 
             ViewLocator.BuildMefConventions(mvvmConventions);
 
@@ -24,7 +24,7 @@ namespace Linqua
                 .WithAssembly(typeof (FrameworkPortable).GetTypeInfo().Assembly)
                 .WithAssembly(typeof (FrameworkPhone).GetTypeInfo().Assembly)
                 .WithProvider(new DefaultExportDescriptorProvider());
-            
+			
             var container = configuration.CreateContainer();
 
 			CompositionManager.Initialize(container);
