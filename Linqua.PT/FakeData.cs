@@ -6,33 +6,35 @@ namespace Linqua
 {
 	public static class FakeData
 	{
-		public static IEnumerable<ClientEntry> FakeWords
+		private static List<ClientEntry> fakeWords = new List<ClientEntry>
 		{
-			get
-			{
-				yield return new ClientEntry("Aankomst");
-				yield return new ClientEntry("Voordelig");
-				yield return new ClientEntry("Zender");
-				yield return new ClientEntry("toiletborstel");
-				yield return new ClientEntry("beide");
-				yield return new ClientEntry("Toch");
-				yield return new ClientEntry("verantwoord");
-				yield return new ClientEntry("Zou");
-				yield return new ClientEntry("eigen");
-				yield return new ClientEntry("Betaalwijze");
-				yield return new ClientEntry("terug");
-				yield return new ClientEntry("Krijgt");
-				yield return new ClientEntry("Gewoon");
-				yield return new ClientEntry("Steeds");
-				yield return new ClientEntry("Bewaar");
-				yield return new ClientEntry("Klaar");
-				yield return new ClientEntry("Alles");
-				yield return new ClientEntry("Eigen");
-				yield return new ClientEntry("Belangrijk");
-				yield return new ClientEntry("Vervalen");
-				yield return new ClientEntry("Het ongemak");
-				yield return new ClientEntry("echter");
-			}
+			new ClientEntry("Aankomst"),
+			new ClientEntry("Voordelig"),
+			new ClientEntry("Zender"),
+			new ClientEntry("toiletborstel"),
+			new ClientEntry("beide"),
+			new ClientEntry("Toch"),
+			new ClientEntry("verantwoord"),
+			new ClientEntry("Zou"),
+			new ClientEntry("eigen"),
+			new ClientEntry("Betaalwijze"),
+			new ClientEntry("terug"),
+			new ClientEntry("Krijgt"),
+			new ClientEntry("Gewoon"),
+			new ClientEntry("Steeds"),
+			new ClientEntry("Bewaar"),
+			new ClientEntry("Klaar"),
+			new ClientEntry("Alles"),
+			new ClientEntry("Eigen"),
+			new ClientEntry("Belangrijk"),
+			new ClientEntry("Vervalen"),
+			new ClientEntry("Het ongemak"),
+			new ClientEntry("echter")
+		};
+
+		public static List<ClientEntry> FakeWords
+		{
+			get { return fakeWords; }
 		}
 	}
 }

@@ -80,19 +80,23 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="EntryCreationView.xaml.cs">
+      <DependentUpon>EntryCreationView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Framework\StatusBusyService.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="NavigationConstants.cs" />
-    <Compile Include="NewWordPage.xaml.cs">
-      <DependentUpon>NewWordPage.xaml</DependentUpon>
+    <Compile Include="NewEntryPage.xaml.cs">
+      <DependentUpon>NewEntryPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WordListItemView.xaml.cs">
-      <DependentUpon>WordListItemView.xaml</DependentUpon>
+    <Compile Include="EntryListItemView.xaml.cs">
+      <DependentUpon>EntryListItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WordListView.xaml.cs">
-      <DependentUpon>WordListView.xaml</DependentUpon>
+    <Compile Include="EntryListView.xaml.cs">
+      <DependentUpon>EntryListView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -118,19 +122,23 @@
     <Content Include="Assets\WideLogo.scale-240.png" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="EntryCreationView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NewWordPage.xaml">
+    <Page Include="NewEntryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WordListItemView.xaml">
+    <Page Include="EntryListItemView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="WordListView.xaml">
+    <Page Include="EntryListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

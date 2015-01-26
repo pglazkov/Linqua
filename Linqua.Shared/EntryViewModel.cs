@@ -4,14 +4,14 @@ using Linqua.DataObjects;
 
 namespace Linqua
 {
-	public class WordViewModel : ViewModelBase
+	public class EntryViewModel : ViewModelBase
 	{
-		protected WordViewModel()
+		protected EntryViewModel()
 		{
 			
 		}
 
-		public WordViewModel(ClientEntry entry)
+		public EntryViewModel(ClientEntry entry)
 		{
 			Guard.NotNull(entry, () => entry);
 

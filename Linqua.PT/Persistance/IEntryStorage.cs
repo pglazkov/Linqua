@@ -9,5 +9,8 @@ namespace Linqua.Persistance
 	{
 		[NotNull]
 		Task<IEnumerable<ClientEntry>> LoadAllEntries();
+
+		[NotNull]
+		Task AddEntry([NotNull] ClientEntry newEntry);
 	}
 }

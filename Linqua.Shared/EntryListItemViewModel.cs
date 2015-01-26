@@ -4,9 +4,9 @@ using Linqua.DataObjects;
 
 namespace Linqua
 {
-	public class WordListItemViewModel : WordViewModel
+	public class EntryListItemViewModel : EntryViewModel
 	{
-		public WordListItemViewModel()
+		public EntryListItemViewModel()
 		{
 			if (DesignTimeDetection.IsInDesignTool)
 			{
@@ -14,7 +14,7 @@ namespace Linqua
 			}
 		}
 
-		public WordListItemViewModel(ClientEntry entry) : base(entry)
+		public EntryListItemViewModel(ClientEntry entry) : base(entry)
 		{
 		}
 	}

@@ -23,12 +23,12 @@ namespace Linqua
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class NewWordPage : Page
+	public sealed partial class NewEntryPage : Page
 	{
 		private NavigationHelper navigationHelper;
 		private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-		public NewWordPage()
+		public NewEntryPage()
 		{
 			this.InitializeComponent();
 

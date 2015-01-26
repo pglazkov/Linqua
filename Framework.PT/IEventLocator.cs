@@ -6,7 +6,6 @@ namespace Framework
     /// <summary>
     /// Provides an ability to get an event of specied type.
     /// </summary>
-    [ContractClass(typeof(IEventLocatorContract))]
     public interface IEventLocator
     {
         /// <summary>
@@ -24,20 +23,6 @@ namespace Framework
         /// </remarks>
         /// <typeparam name="TEvent">The type of the event.</typeparam>
         /// <returns>An instance of <see cref="IObservable{TEvent}"/> that can be used to subscribe to the event.</returns>
-        IObservable<TEvent> GetEvent<TEvent>();
-    }
-
-    [ContractClassFor(typeof(IEventLocator))]
-    // ReSharper disable InconsistentNaming
-    internal abstract class IEventLocatorContract : IEventLocator
-    {
-        // ReSharper restore InconsistentNaming
-
-        public IObservable<TEvent> GetEvent<TEvent>()
-        {
-            Contract.Ensures(Contract.Result<IObservable<TEvent>>() != null);
-
-            throw new NotImplementedException();
-        }
+        IObservable<TEvent> GetEvent<TEvent>() where TEvent : EventBase;
     }
 }

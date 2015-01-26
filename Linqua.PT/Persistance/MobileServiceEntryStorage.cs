@@ -22,14 +22,12 @@ namespace Linqua.Persistance
 
 		public async Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
-			try
-			{
-				return await MobileService.GetTable<ClientEntry>().ToListAsync();
-			}
-			catch (Exception e)
-			{
-				throw;
-			}
+			return await MobileService.GetTable<ClientEntry>().ToListAsync();
+		}
+
+		public async Task AddEntry(ClientEntry newEntry)
+		{
+			await MobileService.GetTable<ClientEntry>().InsertAsync(newEntry);
 		}
 	}
 }

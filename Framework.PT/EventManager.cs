@@ -8,12 +8,13 @@ namespace Framework
 {
     [Export(typeof(IEventLocator))]
     [Export(typeof(IEventPublisher))]
+	[Export(typeof(IEventAggregator))]
 	[Shared]
-    public class EventManager : IEventLocator, IEventPublisher
+    public class EventManager : IEventAggregator
     {
         private readonly Dictionary<Type, object> subjects = new Dictionary<Type, object>();
 
-        public IObservable<TEvent> GetEvent<TEvent>()
+        public IObservable<TEvent> GetEvent<TEvent>() where TEvent : EventBase
         {
             var subject =
                 (ISubject<TEvent>)GetOrAddSubject(typeof(TEvent),
@@ -22,7 +23,7 @@ namespace Framework
             return subject.AsObservable();
         }
 
-        public void Publish<TEvent>(TEvent sampleEvent)
+        public void Publish<TEvent>(TEvent sampleEvent) where TEvent : EventBase
         {
             object subject;
 

@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Linqua.EntryListView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:linqua="using:Linqua"
+             mc:Ignorable="d"
+             d:DesignHeight="480"
+             d:DesignWidth="480"
+			 d:DataContext="{d:DesignInstance linqua:EntryListViewModel, IsDesignTimeCreatable=True}">
+
+    <Grid x:Name="LayoutRoot">
+		<ScrollViewer VerticalScrollBarVisibility="Auto">
+			<ItemsControl ItemsSource="{Binding Words}">
+				<ItemsControl.ItemTemplate>
+					<DataTemplate>
+						<linqua:EntryListItemView DataContext="{Binding}"
+												 Margin="0,0,0,5"/>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
+</UserControl>

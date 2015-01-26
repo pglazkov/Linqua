@@ -2,9 +2,9 @@
 
 namespace Linqua
 {
-	public partial class WordListItemView : UserControl
+	public partial class EntryCreationView : UserControl
 	{
-		public WordListItemView()
+		public EntryCreationView()
 		{
 			InitializeComponent();
 		}

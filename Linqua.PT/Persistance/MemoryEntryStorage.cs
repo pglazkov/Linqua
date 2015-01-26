@@ -10,7 +10,14 @@ namespace Linqua.Persistance
 	{
 		public Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
-			return Task.Factory.StartNew(() => FakeData.FakeWords);
+			return Task.Factory.StartNew(() => (IEnumerable<ClientEntry>)FakeData.FakeWords);
+		}
+
+		public Task AddEntry(ClientEntry newEntry)
+		{
+			FakeData.FakeWords.Add(newEntry);
+
+			return Task.FromResult(true);
 		}
 	}
 }

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
 
 namespace Framework
 {
@@ -26,6 +27,7 @@ namespace Framework
         /// <param name="propertyName">The property that has a new value.</param>
         [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate",
             Justification = "Method used to raise an event")]
+		[NotifyPropertyChangedInvocator]
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
@@ -59,6 +61,7 @@ namespace Framework
         /// <param name="propertyExpression">A Lambda expression representing the property that has a new value.</param>
         [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification = "Method used to raise an event")]
         [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Cannot change the signature")]
+		[NotifyPropertyChangedInvocator]
         protected void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpression)
         {
             string propertyName = PropertySupport.ExtractPropertyName(propertyExpression);

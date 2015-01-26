@@ -22,6 +22,7 @@ namespace Linqua
 			{
 				DataContext = ViewModel = CompositionManager.Current.GetInstance<ICompositionFactory>().Create<MainViewModel>();
 				ViewModel.View = this;
+				ViewModel.Initialize();
 			}
         }
 
@@ -55,7 +56,7 @@ namespace Linqua
 
 	    public void NavigateToNewWordPage()
 	    {
-		    Navigate(typeof (NewWordPage));
+		    Navigate(typeof (NewEntryPage));
 	    }
     }
 }

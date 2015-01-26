@@ -41,13 +41,17 @@
     <Compile Include="DelegateCommandBase.cs" />
     <Compile Include="DesignTimeDetection.cs" />
     <Compile Include="DispatcherProxy.cs" />
+    <Compile Include="EventBase.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="FrameworkPortable.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="ICompositionFactory.cs" />
     <Compile Include="ICompositionManager.cs" />
+    <Compile Include="IEventAggregator.cs" />
     <Compile Include="IEventLocator.cs" />
     <Compile Include="IEventPublisher.cs" />
+    <Compile Include="PlatformServices\DefaultImpl\DefaultStatusBusyService.cs" />
+    <Compile Include="PlatformServices\IStatusBusyService.cs" />
     <Compile Include="IViewModel.cs" />
     <Compile Include="MefExtensions\Constants.cs" />
     <Compile Include="MefExtensions\DefaultExportAttribute.cs" />
