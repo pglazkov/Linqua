@@ -13,9 +13,16 @@ namespace Linqua.Persistance
 			return Task.Factory.StartNew(() => (IEnumerable<ClientEntry>)FakeData.FakeWords);
 		}
 
-		public Task AddEntry(ClientEntry newEntry)
+		public Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{
 			FakeData.FakeWords.Add(newEntry);
+
+			return Task.FromResult(newEntry);
+		}
+
+		public Task DeleteEntry(ClientEntry entry)
+		{
+			FakeData.FakeWords.Remove(entry);
 
 			return Task.FromResult(true);
 		}

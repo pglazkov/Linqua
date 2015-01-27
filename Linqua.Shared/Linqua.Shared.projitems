@@ -19,9 +19,9 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)DesignTimeHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryCreationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequested.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequested.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMainView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INavigationView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainViewModel.cs" />

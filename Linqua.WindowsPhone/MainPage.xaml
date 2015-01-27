@@ -51,7 +51,7 @@
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel"
 			  Grid.Row="1"
-			  Margin="24,0,12,0">
+			  Margin="24,0,24,0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>

@@ -15,13 +15,13 @@
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		
-		<TextBox Text="{Binding EntryText, Mode=TwoWay}"
+		<TextBox Text="{Binding EntryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 				 Margin="0"/>
 
 		<Button Grid.Row="1"
 				x:Uid="AddEntryButton" 
 				Content="Add"
-				HorizontalAlignment="Right"
+				HorizontalAlignment="Stretch"
 				Margin="0"
 				Command="{Binding AddCommand}"/>
 	</Grid>

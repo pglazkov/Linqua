@@ -10,7 +10,7 @@ namespace Linqua
 		{
 			if (DesignTimeDetection.IsInDesignTool)
 			{
-				Entry = new ClientEntry("Aankomst", DateTime.Now);
+				Entry = new ClientEntry("Aankomst");
 			}
 		}
 

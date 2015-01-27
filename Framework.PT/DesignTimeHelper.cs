@@ -1,6 +1,4 @@
-﻿using Framework;
-
-namespace Linqua
+﻿namespace Framework
 {
 	public static class DesignTimeHelper
 	{

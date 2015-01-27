@@ -1,5 +1,8 @@
 ﻿using Windows.UI.ViewManagement;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 
 namespace Linqua
 {
@@ -9,5 +12,13 @@ namespace Linqua
         {
             InitializeComponent();
         }
+
+	    private void EntryHolding(object sender, HoldingRoutedEventArgs e)
+	    {
+			var senderElement = sender as FrameworkElement;
+			var flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
+
+			flyoutBase.ShowAt(senderElement);
+	    }
     }
 }

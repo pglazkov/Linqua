@@ -44,5 +44,10 @@ namespace Linqua
 		{
 			eventAggregator.Publish(new EntryCreationRequested(EntryText));
 		}
+
+		public void Clear()
+		{
+			EntryText = string.Empty;
+		}
 	}
 }

@@ -38,6 +38,7 @@ namespace Framework
 		/// </code>
 		/// </example>
 		[ContractArgumentValidator]
+		[ContractAnnotation("value:null => halt")]
 		public static void NotNull<TResult>(TResult value, Expression<Func<TResult>> argumentNameExpression,
 											[CallerMemberName] string callerMemberName = null,
 											[CallerFilePath] string callerFilePath = null,
@@ -68,6 +69,7 @@ namespace Framework
 		///     <paramref name="value" /> is a null value.
 		/// </exception>
 		[ContractArgumentValidator]
+		[ContractAnnotation("value:null => halt")]
 		public static void NotNull<T>(T value, string paramName,
 									  [CallerMemberName] string callerMemberName = null,
 									  [CallerFilePath] string callerFilePath = null,
@@ -110,6 +112,7 @@ namespace Framework
 		/// </code>
 		/// </example>
 		[ContractArgumentValidator]
+		[ContractAnnotation("value:null => halt")]
 		public static void NotNullOrEmpty(string value, Expression<Func<string>> argumentNameExpression,
 										  [CallerMemberName] string callerMemberName = null,
 										  [CallerFilePath] string callerFilePath = null,
@@ -146,6 +149,7 @@ namespace Framework
 		/// <exception cref="ArgumentNullException">Value is a null value.</exception>
 		/// <exception cref="ArgumentException">Value is an empty string value.</exception>
 		[ContractArgumentValidator]
+		[ContractAnnotation("value:null => halt")]
 		public static void NotNullOrEmpty(string value, string argumentName,
 										  [CallerMemberName] string callerMemberName = null,
 										  [CallerFilePath] string callerFilePath = null,

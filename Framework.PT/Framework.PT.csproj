@@ -40,6 +40,7 @@
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DelegateCommandBase.cs" />
     <Compile Include="DesignTimeDetection.cs" />
+    <Compile Include="DesignTimeHelper.cs" />
     <Compile Include="DispatcherProxy.cs" />
     <Compile Include="EventBase.cs" />
     <Compile Include="EventManager.cs" />

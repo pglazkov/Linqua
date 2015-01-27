@@ -18,7 +18,7 @@ namespace Linqua
 			Entry = entry;
 		}
 
-		protected ClientEntry Entry { get; set; }
+		public ClientEntry Entry { get; protected set; }
 
 		public string Text
 		{

@@ -123,4 +123,7 @@
   <data name="ApplicationHeader.Text" xml:space="preserve">
     <value>LINQUA</value>
   </data>
+  <data name="DeleteFlyoutItem.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
 </root>
