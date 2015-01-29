@@ -2,9 +2,9 @@
 
 namespace Linqua.Events
 {
-	public class EntryCreationRequested : EventBase
+	public class EntryCreationRequestedEvent : EventBase
 	{
-		public EntryCreationRequested(string entryText)
+		public EntryCreationRequestedEvent(string entryText)
 		{
 			EntryText = entryText;
 		}

@@ -40,7 +40,7 @@ namespace Linqua
 
 		private void DeleteEntry(EntryListItemViewModel obj)
 		{
-			EventAggregator.Publish(new EntryDeletionRequested(obj.Entry));
+			EventAggregator.Publish(new EntryDeletionRequestedEvent(obj.Entry));
 		}
 
 		private bool CanDeleteEntry(EntryListItemViewModel arg)

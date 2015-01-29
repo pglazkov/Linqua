@@ -20,5 +20,13 @@ namespace Linqua
 
 			flyoutBase.ShowAt(senderElement);
 	    }
+
+	    private void EntryPressed(object sender, PointerRoutedEventArgs e)
+	    {
+			var senderElement = sender as FrameworkElement;
+			var flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
+
+			flyoutBase.ShowAt(senderElement);
+	    }
     }
 }

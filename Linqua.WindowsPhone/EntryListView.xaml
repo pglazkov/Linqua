@@ -15,7 +15,8 @@
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Grid Background="Transparent"
-							  Holding="EntryHolding">
+							  Holding="EntryHolding"
+							  PointerPressed="EntryPressed">
 							<FlyoutBase.AttachedFlyout>
 								<MenuFlyout>
 									<MenuFlyoutItem x:Uid="DeleteFlyoutItem" 

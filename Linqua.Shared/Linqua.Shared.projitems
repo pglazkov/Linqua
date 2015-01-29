@@ -9,19 +9,14 @@
     <Import_RootNamespace>Linqua</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="$(MSBuildThisFileDirectory)App.xaml">
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-    <Compile Include="$(MSBuildThisFileDirectory)App.xaml.cs">
-      <DependentUpon>App.xaml</DependentUpon>
-    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)Bootstrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryCreationViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequested.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequested.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreatedEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequestedEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMainView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INavigationView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainViewModel.cs" />

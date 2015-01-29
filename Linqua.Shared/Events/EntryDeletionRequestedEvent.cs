@@ -4,9 +4,9 @@ using Linqua.DataObjects;
 
 namespace Linqua.Events
 {
-	public class EntryDeletionRequested : EventBase
+	public class EntryDeletionRequestedEvent : EventBase
 	{
-		public EntryDeletionRequested([NotNull] ClientEntry entryToDelete)
+		public EntryDeletionRequestedEvent([NotNull] ClientEntry entryToDelete)
 		{
 			Guard.NotNull(entryToDelete, () => entryToDelete);
 

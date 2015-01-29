@@ -12,7 +12,7 @@ namespace Linqua.Framework
 		public IDisposable Busy(string statusText)
 		{
 			StatusBarProgressIndicator progressbar = StatusBar.GetForCurrentView().ProgressIndicator;
-			progressbar.Text = statusText ?? "Loading";
+			progressbar.Text = statusText ?? "Loading...";
 			progressbar.ShowAsync();
 
 			return Disposable.Create(() =>

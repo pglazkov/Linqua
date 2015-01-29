@@ -1,7 +1,9 @@
 ﻿using System;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
+using Linqua.Events;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -23,6 +25,10 @@ namespace Linqua
 				DataContext = ViewModel = CompositionManager.Current.GetInstance<ICompositionFactory>().Create<MainViewModel>();
 				ViewModel.View = this;
 				ViewModel.Initialize();
+
+				var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
+
+				eventAggregator.GetEvent<EntryCreatedEvent>().Subscribe(OnEntryCreated);
 			}
         }
 
@@ -58,5 +64,10 @@ namespace Linqua
 	    {
 		    Navigate(typeof (NewEntryPage));
 	    }
+
+		private void OnEntryCreated(EntryCreatedEvent e)
+		{
+			EntryListView.Focus(FocusState.Programmatic);
+		}
     }
 }

@@ -42,7 +42,7 @@ namespace Linqua
 
 		private void Add()
 		{
-			eventAggregator.Publish(new EntryCreationRequested(EntryText));
+			eventAggregator.Publish(new EntryCreationRequestedEvent(EntryText));
 		}
 
 		public void Clear()

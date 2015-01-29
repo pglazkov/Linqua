@@ -44,8 +44,8 @@ namespace Linqua
 
 		    EntryCreationViewModel = compositionFactory.Create<EntryCreationViewModel>();
 
-		    eventAggregator.GetEvent<EntryCreationRequested>().Subscribe(OnEntryCreationRequested);
-		    eventAggregator.GetEvent<EntryDeletionRequested>().Subscribe(OnEntryDeletionRequested);
+		    eventAggregator.GetEvent<EntryCreationRequestedEvent>().Subscribe(OnEntryCreationRequested);
+		    eventAggregator.GetEvent<EntryDeletionRequestedEvent>().Subscribe(OnEntryDeletionRequested);
 	    }
 
 	    public ICommand AddWordCommand { get; private set; }		
@@ -84,7 +84,7 @@ namespace Linqua
 			View.NavigateToNewWordPage();
 		}
 
-		private async void OnEntryCreationRequested(EntryCreationRequested e)
+		private async void OnEntryCreationRequested(EntryCreationRequestedEvent e)
 		{
 			var newEntry = new ClientEntry(e.EntryText);
 
@@ -95,10 +95,12 @@ namespace Linqua
 				EntryListViewModel.AddEntry(addedEntry);
 
 				EntryCreationViewModel.Clear();
+
+				EventAggregator.Publish(new EntryCreatedEvent(addedEntry));
 			}
 		}
 
-	    private async void OnEntryDeletionRequested(EntryDeletionRequested e)
+	    private async void OnEntryDeletionRequested(EntryDeletionRequestedEvent e)
 	    {
 		    using (statusBusyService.Busy("Deleting..."))
 		    {

@@ -57,11 +57,12 @@
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 			
-			<local:EntryListView DataContext="{Binding EntryListViewModel}" />
-			
-			<local:EntryCreationView Grid.Row="1" 
+			<local:EntryListView x:Name="EntryListView" 
+								 DataContext="{Binding EntryListViewModel}" />
+
+			<local:EntryCreationView Grid.Row="1"
 									 DataContext="{Binding EntryCreationViewModel}"
-									 Margin="0,24,0,0"/>
+									 Margin="0,24,0,12" />
 		</Grid>
 
 		<!--Uncomment to see an alignment grid to help ensure your controls are
