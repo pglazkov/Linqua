@@ -7,6 +7,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Framework;
+using Microsoft.WindowsAzure.MobileServices;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -114,6 +115,21 @@ namespace Linqua
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
         }
 #endif
+
+		protected override void OnActivated(IActivatedEventArgs args)
+		{
+			// Windows Phone 8.1 requires you to handle the respose from the WebAuthenticationBroker.
+#if WINDOWS_PHONE_APP
+			if (args.Kind == ActivationKind.WebAuthenticationBrokerContinuation)
+			{
+				// Completes the sign-in process started by LoginAsync.
+				// Change 'MobileService' to the name of your MobileServiceClient instance. 
+				MobileService.Client.LoginComplete(args as WebAuthenticationBrokerContinuationEventArgs);
+			}
+#endif
+
+			base.OnActivated(args);
+		}
 
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved

@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
 using Linqua.Events;
+using Microsoft.WindowsAzure.MobileServices;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -24,17 +27,35 @@ namespace Linqua
 			{
 				DataContext = ViewModel = CompositionManager.Current.GetInstance<ICompositionFactory>().Create<MainViewModel>();
 				ViewModel.View = this;
-				ViewModel.Initialize();
 
 				var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
 
 				eventAggregator.GetEvent<EntryCreatedEvent>().Subscribe(OnEntryCreated);
+
+				Loaded += OnLoaded;
 			}
         }
 
-		private MainViewModel ViewModel { get; set; }
+	    private MainViewModel ViewModel { get; set; }
 
-        /// <summary>
+		private void OnLoaded(object sender, RoutedEventArgs e)
+		{
+			// Schedule the initialization with the dispatcher because we need to run authentication
+			// outside of the Loaded event, otherwise an exception will be thrown. 
+			// For more details see: https://social.msdn.microsoft.com/Forums/vstudio/en-US/95c6569e-2fa2-43c8-af71-939e006a9b27/mobile-services-loginasync-remote-procedure-call-failed-hresult-0x800706be?forum=azuremobile
+			Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+			{
+				InitializeAsync().FireAndForget();
+			});
+		}
+
+	    private async Task InitializeAsync()
+	    {
+		    await SecurityManager.Authenticate();
+		    ViewModel.Initialize();
+	    }
+
+	    /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Web.Http;
 using AutoMapper;
 using Linqua.Service.DataObjects;
+using Linqua.Service.Migrations;
 using Linqua.Service.Models;
 using Microsoft.WindowsAzure.Mobile.Service;
 
@@ -23,14 +25,19 @@ namespace Linqua.Service
             // line. Comment it out again when you deploy your service for production use.
             config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
             
-            Database.SetInitializer(new LinquaInitializer());
+            //Database.SetInitializer(new LinquaInitializer());
+
+			var migrator = new DbMigrator(new Configuration());
+			migrator.Update();
 
 			Mapper.Initialize(cfg =>
 			{
 				cfg.CreateMap<Entry, ClientEntry>();
 				cfg.CreateMap<ClientEntry, Entry>();
 			});
-	        
+
+			// Uncomment this in order to debug authentication locally
+			config.SetIsHosted(true);
         }
     }
 

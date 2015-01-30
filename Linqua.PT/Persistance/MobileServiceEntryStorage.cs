@@ -10,16 +10,7 @@ namespace Linqua.Persistance
 	[Export(typeof(IEntryStorage))]
 	public class MobileServiceEntryStorage : IEntryStorage
 	{
-		private static readonly MobileServiceClient MobileService = new MobileServiceClient("http://localhost:59988");
-
-		// Use this constructor instead after publishing to the cloud
-		// public static MobileServiceClient MobileService = new MobileServiceClient(
-		//      "https://linqua.azure-mobile.net/",
-		//      "veBcEvMWjGNePbAKosRSIQzJGiTrfc50"
-		//);
-
-		private static readonly IMobileServiceTable<ClientEntry> EntryTable = MobileService.GetTable<ClientEntry>();
-
+		private static readonly IMobileServiceTable<ClientEntry> EntryTable = MobileService.Client.GetTable<ClientEntry>();
 
 		public async Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
