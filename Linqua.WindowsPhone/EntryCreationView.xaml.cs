@@ -19,7 +19,7 @@ namespace Linqua
 
 		private void EntryTextBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
 		{
-			if (e.Key == VirtualKey.Enter)
+			if (e.Key == VirtualKey.Enter && !ViewModel.IsCreatingEntry)
 			{
 				if (ViewModel.AddCommand.CanExecute())
 				{

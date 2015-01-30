@@ -16,7 +16,7 @@
 		</Grid.RowDefinitions>
 		
 		<TextBlock Text="{Binding Text}" 
-				   Style="{ThemeResource ControlHeaderTextBlockStyle}"/>
+				   Style="{ThemeResource ListViewItemTextBlockStyle}"/>
 		
 		<TextBlock Grid.Row="1" 
 				   Text="{Binding DateAdded}"/>

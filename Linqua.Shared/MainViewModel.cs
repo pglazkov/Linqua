@@ -16,6 +16,7 @@ namespace Linqua
 	    private readonly IEventAggregator eventAggregator;
 	    private readonly IStatusBusyService statusBusyService;
 	    private EntryListViewModel entryListViewModel;
+	    private bool isLoadingEntries;
 
 	    public MainViewModel()
 	    {
@@ -64,6 +65,17 @@ namespace Linqua
 	        }
         }
 
+	    public bool IsLoadingEntries
+	    {
+		    get { return isLoadingEntries; }
+		    private set
+		    {
+			    if (value.Equals(isLoadingEntries)) return;
+			    isLoadingEntries = value;
+			    RaisePropertyChanged();
+		    }
+	    }
+
 	    public void Initialize()
 	    {
 			InitializeWordListAsync(CompositionFactory, storage).FireAndForget();
@@ -73,9 +85,18 @@ namespace Linqua
 	    {
 		    using (statusBusyService.Busy())
 		    {
-			    var words = await storage.LoadAllEntries();
+			    IsLoadingEntries = true;
 
-			    EntryListViewModel = compositionFactory.Create<EntryListViewModel>(words);
+			    try
+			    {
+				    var words = await storage.LoadAllEntries();
+
+				    EntryListViewModel = compositionFactory.Create<EntryListViewModel>(words);
+			    }
+			    finally
+			    {
+				    IsLoadingEntries = false;
+			    }
 		    }
 		}
 

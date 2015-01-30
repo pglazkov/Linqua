@@ -90,7 +90,12 @@ namespace Linqua
 
 		private void OnEntryCreated(EntryCreatedEvent e)
 		{
-			EntryListView.Focus(FocusState.Programmatic);
+			var userControl = (UserControl)EntryListView.Content;
+
+			if (userControl != null)
+			{
+				userControl.Focus(FocusState.Programmatic);
+			}
 		}
     }
 }

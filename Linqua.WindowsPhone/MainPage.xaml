@@ -6,6 +6,7 @@
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	  xmlns:i="using:Microsoft.Xaml.Interactivity"
 	  xmlns:framework="using:Linqua.Framework"
+	  xmlns:framework1="using:Framework"
 	  mc:Ignorable="d"
 	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
@@ -77,12 +78,26 @@
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
 			
-			<local:EntryListView x:Name="EntryListView" 
-								 DataContext="{Binding EntryListViewModel}" />
+			<TextBlock Grid.Row="0" 
+					   x:Uid="LoadingEntriesTextBlock" 
+					   Style="{ThemeResource ListViewEmptyStaticTextBlockStyle}" 
+					   Visibility="{Binding IsLoadingEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
+					   Text="Please Wait..."
+					   VerticalAlignment="Center"
+					   HorizontalAlignment="Center"/>
+
+			<ContentPresenter Grid.Row="0"
+							  x:Name="EntryListView"
+							  framework1:ViewLocator.Model="{Binding EntryListViewModel}"/>
+			
+			<!--<local:EntryListView Grid.Row="0" 
+								 x:Name="EntryListView" 
+								 DataContext="{Binding EntryListViewModel}" />-->
 
 			<local:EntryCreationView Grid.Row="1"
 									 DataContext="{Binding EntryCreationViewModel}"
-									 Margin="0,24,0,12" />
+									 Margin="0,24,0,12"
+									 IsEnabled="{Binding IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"/>
 		</Grid>
 
 		<!--Uncomment to see an alignment grid to help ensure your controls are

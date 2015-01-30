@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="using:Linqua.Resources"
+					xmlns:converters="using:Framework.Converters">
+
+	<converters:InvertedBooleanConverter x:Key="InvertedBooleanConverter"/>
+	<converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+	<converters:BooleanToVisibilityConverter x:Key="InvertedBooleanToVisibilityConverter"
+											 IsReversed="True"/>
+
+</ResourceDictionary>

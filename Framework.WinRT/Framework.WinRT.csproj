@@ -38,6 +38,8 @@
     <TargetPlatform Include="Windows, Version=8.1" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Converters\InvertedBooleanConverter.cs" />
+    <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="FrameworkPhone.cs" />
     <Compile Include="PlatformServices\DesignModeDetectionService.cs" />
     <Compile Include="PlatformServices\DispatcherService.cs" />

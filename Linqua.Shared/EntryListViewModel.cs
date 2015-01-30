@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Composition;
 using System.Linq;
 using Framework;
@@ -10,6 +11,8 @@ namespace Linqua
 {
     public class EntryListViewModel : ViewModelBase
     {
+	    private bool thereAreNoEntries;
+
 	    public EntryListViewModel()
 	    {
 			if (DesignTimeDetection.IsInDesignTool)
@@ -25,13 +28,27 @@ namespace Linqua
 			: this()
 	    {
 			Guard.NotNull(entries, () => entries);
-
+			
 			Entries = new ObservableCollection<EntryListItemViewModel>(entries.Select(w => new EntryListItemViewModel(w)));
+		    Entries.CollectionChanged += OnEntriesCollectionChanged;
+
+		    UpdateThereAreNoEntries();
 	    }
 
-		public DelegateCommand<EntryListItemViewModel> DeleteEntryCommand { get; private set; }
+	    public DelegateCommand<EntryListItemViewModel> DeleteEntryCommand { get; private set; }
 
 		public ObservableCollection<EntryListItemViewModel> Entries { get; private set; }
+
+	    public bool ThereAreNoEntries
+	    {
+		    get { return thereAreNoEntries; }
+		    private set
+		    {
+			    if (value.Equals(thereAreNoEntries)) return;
+			    thereAreNoEntries = value;
+			    RaisePropertyChanged();
+		    }
+	    }
 
 	    public void AddEntry(ClientEntry newEntry)
 	    {
@@ -56,5 +73,15 @@ namespace Linqua
 
 		    Entries.Remove(entryVm);
 	    }
+
+		private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+			UpdateThereAreNoEntries();
+		}
+
+		private void UpdateThereAreNoEntries()
+		{
+			ThereAreNoEntries = Entries.Count == 0;
+		}
     }
 }
