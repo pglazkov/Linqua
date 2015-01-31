@@ -30,6 +30,19 @@
 													Text="Delete"
 													Command="{Binding ElementName=LayoutRoot, Path=DataContext.DeleteEntryCommand}"
 													CommandParameter="{Binding}"/>
+									
+									<MenuFlyout.MenuFlyoutPresenterStyle>
+										<Style TargetType="MenuFlyoutPresenter">
+											<Setter Property="ScrollViewer.ZoomMode"
+													Value="Disabled" />
+											<Setter Property="Background"
+													Value="White" />
+											<Setter Property="BorderBrush"
+													Value="Gray" />
+											<Setter Property="Foreground"
+													Value="Black"/>
+										</Style>
+									</MenuFlyout.MenuFlyoutPresenterStyle>
 								</MenuFlyout>
 							</FlyoutBase.AttachedFlyout>
 
