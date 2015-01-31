@@ -41,20 +41,6 @@ namespace Linqua
 				};
 
 				MobileService.Client.CurrentUser = user;
-
-				try
-				{
-					await TestRetrievingData();
-				}
-				catch (MobileServiceInvalidOperationException ex)
-				{
-					if (ex.Response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-					{
-						// Remove the credential with the expired token.
-						vault.Remove(vault.Retrieve(ProviderId, user.UserId));
-						user = null;
-					}
-				}
 			}
 			
 			if (user == null)
@@ -105,11 +91,6 @@ namespace Linqua
 					await dialog.ShowAsync();
 				}
 			}
-		}
-
-		private static async Task TestRetrievingData()
-		{
-			await MobileService.Client.GetTable<ClientEntry>().Take(1).ToListAsync();
 		}
 	}
 }
