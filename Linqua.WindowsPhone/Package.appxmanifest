@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest" xmlns:m3="http://schemas.microsoft.com/appx/2014/manifest" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest">
-  <Identity Name="f92399a9-90ef-450f-ade8-0362bf15d0d1" Publisher="CN=User" Version="1.0.0.0" />
-  <mp:PhoneIdentity PhoneProductId="f92399a9-90ef-450f-ade8-0362bf15d0d1" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
+  <Identity Name="24216PavloGlazkov.Linqua" Publisher="CN=E9D8E231-C5A5-4AB6-9999-41A6A9AFE6F5" Version="1.1.0.0" />
+  <mp:PhoneIdentity PhoneProductId="6ddedcb9-e456-4bff-a30b-7d5e9123aeae" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
-    <DisplayName>Linqua.WindowsPhone</DisplayName>
-    <PublisherDisplayName>User</PublisherDisplayName>
+    <DisplayName>Linqua</DisplayName>
+    <PublisherDisplayName>Pavlo Glazkov</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
   <Prerequisites>

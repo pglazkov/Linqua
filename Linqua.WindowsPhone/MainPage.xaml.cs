@@ -7,6 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
+using Framework.PlatformServices;
 using Linqua.Events;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -45,15 +46,19 @@ namespace Linqua
 			// Schedule the initialization with the dispatcher because we need to run authentication
 			// outside of the Loaded event, otherwise an exception will be thrown. 
 			// For more details see: https://social.msdn.microsoft.com/Forums/vstudio/en-US/95c6569e-2fa2-43c8-af71-939e006a9b27/mobile-services-loginasync-remote-procedure-call-failed-hresult-0x800706be?forum=azuremobile
-			Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-			{
-				InitializeAsync().FireAndForget();
-			});
+			//Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+			//{
+			//	InitializeAsync().FireAndForget();
+			//});
 		}
 
 	    private async Task InitializeAsync()
 	    {
-		    await SecurityManager.Authenticate();
+		    using (CompositionManager.Current.GetInstance<IStatusBusyService>().Busy("Logging in..."))
+		    {
+			    await SecurityManager.Authenticate();
+		    }
+
 		    ViewModel.Initialize();
 	    }
 
@@ -64,7 +69,12 @@ namespace Linqua
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            // TODO: Prepare page for display here.
+		    if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+		    {
+			    InitializeAsync().FireAndForget();
+		    }
+
+		    // TODO: Prepare page for display here.
 
             // TODO: If your application contains multiple pages, ensure that you are
             // handling the hardware Back button by registering for the

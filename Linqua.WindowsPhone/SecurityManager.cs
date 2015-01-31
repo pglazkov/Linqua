@@ -5,35 +5,38 @@ using Windows.UI.Popups;
 using Microsoft.WindowsAzure.MobileServices;
 using Windows.Security.Credentials;
 using Linqua.DataObjects;
+using Microsoft.Live;
 
 namespace Linqua
 {
 	public static class SecurityManager
 	{
-		private static MobileServiceUser user;
+		private static LiveConnectSession session;
 
 		public static async Task Authenticate()
 		{
-			const MobileServiceAuthenticationProvider Provider = MobileServiceAuthenticationProvider.MicrosoftAccount;
-
 			var vault = new PasswordVault();
 
 			PasswordCredential savedCredentials = null;
 
+			const string ProviderId = "MicrosoftLive";
+
 			try
 			{
-				savedCredentials = vault.FindAllByResource(Provider.ToString()).FirstOrDefault();
+				savedCredentials = vault.FindAllByResource(ProviderId).FirstOrDefault();
 			}
 			catch (Exception)
 			{
 				// No credentials found.
 			}
 
+			MobileServiceUser user = null;
+
 			if (savedCredentials != null)
 			{
 				user = new MobileServiceUser(savedCredentials.UserName)
 				{
-					MobileServiceAuthenticationToken = vault.Retrieve(Provider.ToString(), savedCredentials.UserName).Password
+					MobileServiceAuthenticationToken = vault.Retrieve(ProviderId, savedCredentials.UserName).Password
 				};
 
 				MobileService.Client.CurrentUser = user;
@@ -47,32 +50,37 @@ namespace Linqua
 					if (ex.Response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
 					{
 						// Remove the credential with the expired token.
-						vault.Remove(vault.Retrieve(Provider.ToString(), user.UserId));
+						vault.Remove(vault.Retrieve(ProviderId, user.UserId));
 						user = null;
 					}
 				}
 			}
-			else
+
+			if (user == null)
 			{
-				while (user == null)
+				LiveAuthClient liveIdClient = new LiveAuthClient("https://linqua.azure-mobile.net/");
+
+				while (session == null)
 				{
-					string message;
-					try
+					// Force a logout to make it easier to test with multiple Microsoft Accounts
+					if (liveIdClient.CanLogout)
+						liveIdClient.Logout();
+
+					LiveLoginResult result = await liveIdClient.LoginAsync(new[] { "wl.basic", "wl.signin" });
+					if (result.Status == LiveConnectSessionStatus.Connected)
 					{
-						user = await MobileService.Client.LoginAsync(Provider);
+						session = result.Session;
+						user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
 
-						message = string.Format("You are now logged in.");
-
-						vault.Add(new PasswordCredential(Provider.ToString(), user.UserId, user.MobileServiceAuthenticationToken));
+						vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
 					}
-					catch (InvalidOperationException)
+					else
 					{
-						message = "You must log in. Login Required";
+						session = null;
+						var dialog = new MessageDialog("You must log in.", "Login Required");
+						dialog.Commands.Add(new UICommand("OK"));
+						await dialog.ShowAsync();
 					}
-
-					var messageBox = new MessageDialog(message);
-
-					messageBox.ShowAsync();
 				}
 			}
 		}
