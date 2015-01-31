@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)EntryListItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)SecurityManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />

@@ -11,15 +11,20 @@ namespace Linqua
 {
 	public static class SecurityManager
 	{
+		private const string ProviderId = "MicrosoftLive";
+		private const string AuthenticationRedirectUrl = "https://linqua.azure-mobile.net/";
+
 		private static LiveConnectSession session;
+
+		private static readonly string[] AuthenticationScopes = new[] { "wl.basic", "wl.signin", "wl.offline_access" };
 
 		public static async Task Authenticate()
 		{
+			MobileServiceUser user = null;
+
 			var vault = new PasswordVault();
 
-			PasswordCredential savedCredentials = null;
-
-			const string ProviderId = "MicrosoftLive";
+			PasswordCredential savedCredentials = null;			
 
 			try
 			{
@@ -28,9 +33,7 @@ namespace Linqua
 			catch (Exception)
 			{
 				// No credentials found.
-			}
-
-			MobileServiceUser user = null;
+			}			
 
 			if (savedCredentials != null)
 			{
@@ -58,15 +61,11 @@ namespace Linqua
 
 			if (user == null)
 			{
-				LiveAuthClient liveIdClient = new LiveAuthClient("https://linqua.azure-mobile.net/");
+				LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
 
 				while (session == null)
 				{
-					// Force a logout to make it easier to test with multiple Microsoft Accounts
-					if (liveIdClient.CanLogout)
-						liveIdClient.Logout();
-
-					LiveLoginResult result = await liveIdClient.LoginAsync(new[] { "wl.basic", "wl.signin" });
+					var result = await liveIdClient.LoginAsync(AuthenticationScopes);
 					if (result.Status == LiveConnectSessionStatus.Connected)
 					{
 						session = result.Session;

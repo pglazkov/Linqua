@@ -43,24 +43,7 @@ namespace Linqua
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
-			// Schedule the initialization with the dispatcher because we need to run authentication
-			// outside of the Loaded event, otherwise an exception will be thrown. 
-			// For more details see: https://social.msdn.microsoft.com/Forums/vstudio/en-US/95c6569e-2fa2-43c8-af71-939e006a9b27/mobile-services-loginasync-remote-procedure-call-failed-hresult-0x800706be?forum=azuremobile
-			//Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-			//{
-			//	InitializeAsync().FireAndForget();
-			//});
 		}
-
-	    private async Task InitializeAsync()
-	    {
-		    using (CompositionManager.Current.GetInstance<IStatusBusyService>().Busy("Logging in..."))
-		    {
-			    await SecurityManager.Authenticate();
-		    }
-
-		    ViewModel.Initialize();
-	    }
 
 	    /// <summary>
         /// Invoked when this page is about to be displayed in a Frame.
@@ -71,7 +54,7 @@ namespace Linqua
         {
 		    if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
 		    {
-			    InitializeAsync().FireAndForget();
+			    ViewModel.Initialize();
 		    }
 
 		    // TODO: Prepare page for display here.

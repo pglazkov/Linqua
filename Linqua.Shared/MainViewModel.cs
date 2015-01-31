@@ -78,8 +78,18 @@ namespace Linqua
 
 	    public void Initialize()
 	    {
-			InitializeWordListAsync(CompositionFactory, storage).FireAndForget();
+			InitializeAsync().FireAndForget();
 	    }
+
+		private async Task InitializeAsync()
+		{
+			using (statusBusyService.Busy("Logging in..."))
+			{
+				await SecurityManager.Authenticate();
+			}
+
+			await InitializeWordListAsync(CompositionFactory, storage);
+		}
 
 	    private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IEntryStorage storage)
 	    {
