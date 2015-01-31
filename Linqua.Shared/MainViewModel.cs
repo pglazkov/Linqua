@@ -83,11 +83,6 @@ namespace Linqua
 
 		private async Task InitializeAsync()
 		{
-			using (statusBusyService.Busy("Logging in..."))
-			{
-				await SecurityManager.Authenticate();
-			}
-
 			await InitializeWordListAsync(CompositionFactory, storage);
 		}
 

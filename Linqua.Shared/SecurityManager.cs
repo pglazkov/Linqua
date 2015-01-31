@@ -14,17 +14,15 @@ namespace Linqua
 		private const string ProviderId = "MicrosoftLive";
 		private const string AuthenticationRedirectUrl = "https://linqua.azure-mobile.net/";
 
-		private static LiveConnectSession session;
-
 		private static readonly string[] AuthenticationScopes = new[] { "wl.basic", "wl.signin", "wl.offline_access" };
 
-		public static async Task Authenticate()
+		public static async Task<bool> TryAuthenticateSilently()
 		{
 			MobileServiceUser user = null;
 
 			var vault = new PasswordVault();
 
-			PasswordCredential savedCredentials = null;			
+			PasswordCredential savedCredentials = null;
 
 			try
 			{
@@ -33,7 +31,7 @@ namespace Linqua
 			catch (Exception)
 			{
 				// No credentials found.
-			}			
+			}
 
 			if (savedCredentials != null)
 			{
@@ -58,28 +56,53 @@ namespace Linqua
 					}
 				}
 			}
-
+			
 			if (user == null)
 			{
 				LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
 
-				while (session == null)
-				{
-					var result = await liveIdClient.LoginAsync(AuthenticationScopes);
-					if (result.Status == LiveConnectSessionStatus.Connected)
-					{
-						session = result.Session;
-						user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
+				var result = await liveIdClient.InitializeAsync(AuthenticationScopes);
 
-						vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
-					}
-					else
-					{
-						session = null;
-						var dialog = new MessageDialog("You must log in.", "Login Required");
-						dialog.Commands.Add(new UICommand("OK"));
-						await dialog.ShowAsync();
-					}
+				if (result.Status == LiveConnectSessionStatus.Connected)
+				{
+					user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
+
+					vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
+				}
+			}
+
+			return user != null;
+		}
+
+		public static async Task Authenticate()
+		{
+			var authenticated = await TryAuthenticateSilently();
+
+			if (authenticated)
+			{
+				return;
+			}
+
+			LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
+
+			MobileServiceUser user = null;
+
+			while (user == null)
+			{
+				var result = await liveIdClient.LoginAsync(AuthenticationScopes);
+
+				if (result.Status == LiveConnectSessionStatus.Connected)
+				{
+					user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
+
+					var vault = new PasswordVault();
+					vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
+				}
+				else
+				{
+					var dialog = new MessageDialog("You must log in.", "Login Required");
+					dialog.Commands.Add(new UICommand("OK"));
+					await dialog.ShowAsync();
 				}
 			}
 		}

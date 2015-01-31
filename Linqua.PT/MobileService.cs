@@ -8,7 +8,6 @@ namespace Linqua
 		//public static readonly MobileServiceClient Client = new MobileServiceClient("https://localhost:44300");
 
 		// Use this constructor instead after publishing to the cloud
-		public static readonly MobileServiceClient Client = new MobileServiceClient("https://linqua.azure-mobile.net/", "veBcEvMWjGNePbAKosRSIQzJGiTrfc50"
-	   );
+		public static readonly MobileServiceClient Client = new MobileServiceClient("https://linqua.azure-mobile.net/", "veBcEvMWjGNePbAKosRSIQzJGiTrfc50");
 	}
 }

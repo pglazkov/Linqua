@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMainView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INavigationView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)LoginViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryListItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryListViewModel.cs" />

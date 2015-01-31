@@ -8,26 +8,18 @@
 	  xmlns:framework="using:Linqua.Framework"
 	  xmlns:framework1="using:Framework"
 	  mc:Ignorable="d"
-	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+	  Background="{StaticResource ApplicationThemeBrush}"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
 	  RequestedTheme="Light">
 
-	<Page.Resources>
-		<ResourceDictionary>
-			<ResourceDictionary.MergedDictionaries>
-				<ResourceDictionary Source="Resources/CommonResources.xaml"/>
-			</ResourceDictionary.MergedDictionaries>
-		</ResourceDictionary>
-	</Page.Resources>
-
-	<i:Interaction.Behaviors>
+	<!--<i:Interaction.Behaviors>
 		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"
 									 ForegroundColor="White"/>
-	</i:Interaction.Behaviors>
+	</i:Interaction.Behaviors>-->
 	
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot"
-		  Background="Transparent">
+		  Background="White">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
