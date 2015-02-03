@@ -19,7 +19,7 @@
 	
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot"
-		  Background="White">
+		  Background="{StaticResource WordListBackground}">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
@@ -52,12 +52,12 @@
 				<TextBlock x:Uid="ApplicationHeader"
 						   Text="LINQUA"
 						   Style="{ThemeResource TitleTextBlockStyle}"
-						   Foreground="White"
+						   Foreground="{StaticResource TextOnThemeBackgroundBrush}"
 						   Margin="12,0" />
 				<TextBlock Text="my words"
 						   Margin="9,-7,0,0"
 						   Style="{ThemeResource HeaderTextBlockStyle}"
-						   Foreground="White"/>
+						   Foreground="{StaticResource TextOnThemeBackgroundBrush}"/>
 			</StackPanel>
 		</Border>
 
@@ -69,14 +69,12 @@
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
 			</Grid.RowDefinitions>
-			
-			<TextBlock Grid.Row="0" 
-					   x:Uid="LoadingEntriesTextBlock" 
-					   Style="{ThemeResource ListViewEmptyStaticTextBlockStyle}" 
-					   Visibility="{Binding IsLoadingEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
-					   Text="Please Wait..."
-					   VerticalAlignment="Center"
-					   HorizontalAlignment="Center"/>
+
+			<ProgressRing Grid.Row="0"
+						  IsActive="{Binding IsLoadingEntries}"
+						  VerticalAlignment="Center"
+						  HorizontalAlignment="Center"
+						  Foreground="{StaticResource ProgressRingBrush}"/>
 
 			<ContentPresenter Grid.Row="0"
 							  x:Name="EntryListView"

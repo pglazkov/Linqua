@@ -126,9 +126,6 @@
   <data name="DeleteFlyoutItem.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="LoadingEntriesTextBlock.Text" xml:space="preserve">
-    <value>Please Wait...</value>
-  </data>
   <data name="NoEntriesTextBlock.Text" xml:space="preserve">
     <value>It's lonely here...</value>
   </data>

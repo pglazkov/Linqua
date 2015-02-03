@@ -5,4 +5,13 @@
 	<Color x:Key="ApplicationThemeColor">#8CC63E</Color>
 	<SolidColorBrush x:Key="ApplicationThemeBrush"
 					 Color="{StaticResource ApplicationThemeColor}"/>
+	
+	<SolidColorBrush x:Key="ProgressRingBrush"
+					 Color="Gray"/>
+	
+	<SolidColorBrush x:Key="WordListBackground"
+					 Color="White"/>
+	
+	<SolidColorBrush x:Key="TextOnThemeBackgroundBrush"
+					 Color="White"/>
 </ResourceDictionary>
