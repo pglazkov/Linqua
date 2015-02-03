@@ -12,6 +12,11 @@ namespace Linqua.Persistance
 	{
 		private static readonly IMobileServiceTable<ClientEntry> EntryTable = MobileService.Client.GetTable<ClientEntry>();
 
+		static MobileServiceEntryStorage()
+		{
+			EntryTable.SystemProperties = MobileServiceSystemProperties.CreatedAt;
+		}
+
 		public async Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
 			return await EntryTable.ToListAsync();

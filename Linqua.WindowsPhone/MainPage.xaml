@@ -10,7 +10,8 @@
 	  mc:Ignorable="d"
 	  Background="{StaticResource ApplicationThemeBrush}"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
-	  RequestedTheme="Light">
+	  RequestedTheme="Light"
+	  x:Name="ThisPage">
 
 	<!--<i:Interaction.Behaviors>
 		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"
@@ -87,7 +88,7 @@
 			<local:EntryCreationView Grid.Row="1"
 									 DataContext="{Binding EntryCreationViewModel}"
 									 Margin="0,24,0,12"
-									 IsEnabled="{Binding IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"/>
+									 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"/>
 		</Grid>
 
 		<!--Uncomment to see an alignment grid to help ensure your controls are

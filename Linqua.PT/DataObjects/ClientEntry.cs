@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace Linqua.DataObjects
 {
@@ -22,6 +23,7 @@ namespace Linqua.DataObjects
 
 		public string Definition { get; set; }
 
+		[CreatedAt]
 		public DateTimeOffset? CreatedAt { get; set; }
 	}
 }
