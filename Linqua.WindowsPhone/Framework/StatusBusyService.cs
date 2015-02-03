@@ -2,6 +2,7 @@
 using System.Composition;
 using System.Reactive.Disposables;
 using Windows.UI.ViewManagement;
+using Framework;
 using Framework.PlatformServices;
 
 namespace Linqua.Framework
@@ -13,11 +14,11 @@ namespace Linqua.Framework
 		{
 			StatusBarProgressIndicator progressbar = StatusBar.GetForCurrentView().ProgressIndicator;
 			progressbar.Text = statusText ?? "Loading...";
-			progressbar.ShowAsync();
+			var _ = progressbar.ShowAsync();
 
 			return Disposable.Create(() =>
 			{
-				progressbar.HideAsync();
+				_ = progressbar.HideAsync();
 			});
 		}
 	}

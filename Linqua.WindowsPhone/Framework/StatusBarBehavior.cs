@@ -2,6 +2,7 @@
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Framework;
 using Microsoft.Xaml.Interactivity;
 
 namespace Linqua.Framework
@@ -89,11 +90,11 @@ namespace Linqua.Framework
 			bool isvisible = (bool)e.NewValue;
 			if (isvisible)
 			{
-				StatusBar.GetForCurrentView().ShowAsync();
+				var _ = StatusBar.GetForCurrentView().ShowAsync();
 			}
 			else
 			{
-				StatusBar.GetForCurrentView().HideAsync();
+				var _ = StatusBar.GetForCurrentView().HideAsync();
 			}
 		}
 

@@ -1,6 +1,7 @@
 using System;
 using System.Composition;
 using Windows.ApplicationModel.Core;
+using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 
