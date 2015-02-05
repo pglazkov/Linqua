@@ -15,5 +15,8 @@ namespace Linqua.Persistance
 
 		[NotNull]
 		Task DeleteEntry([NotNull] ClientEntry entry);
+
+		[NotNull]
+		Task InitializeAsync();
 	}
 }

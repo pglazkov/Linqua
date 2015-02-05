@@ -83,6 +83,7 @@ namespace Linqua
 
 		private async Task InitializeAsync()
 		{
+			await storage.InitializeAsync();
 			await InitializeWordListAsync(CompositionFactory, storage);
 		}
 

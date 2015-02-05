@@ -26,5 +26,10 @@ namespace Linqua.Persistance
 
 			return Task.FromResult(true);
 		}
+
+		public Task InitializeAsync()
+		{
+			return Task.FromResult(true);
+		}
 	}
 }

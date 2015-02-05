@@ -38,9 +38,11 @@
     <Compile Include="FakeData.cs" />
     <Compile Include="DataObjects\ClientEntry.cs" />
     <Compile Include="MobileService.cs" />
+    <Compile Include="Persistance\EntryStorage.cs" />
     <Compile Include="Persistance\IEntryStorage.cs" />
     <Compile Include="Persistance\MemoryEntryStorage.cs" />
     <Compile Include="Persistance\MobileServiceEntryStorage.cs" />
+    <Compile Include="Persistance\MobileServiceSyncHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
