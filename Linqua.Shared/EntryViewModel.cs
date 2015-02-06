@@ -27,7 +27,7 @@ namespace Linqua
 
 		public DateTime DateAdded
 		{
-			get { return Entry.CreatedAt.GetValueOrDefault().DateTime.ToLocalTime(); }
+			get { return Entry.CreatedAt.GetValueOrDefault().DateTime; }
 		}
 	}
 }

@@ -4,7 +4,7 @@ using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Newtonsoft.Json.Linq;
 
-namespace Linqua.Persistance
+namespace Linqua.Persistence
 {
 	[Export(typeof(IMobileServiceSyncHandler))]
 	public class MobileServiceSyncHandler : IMobileServiceSyncHandler

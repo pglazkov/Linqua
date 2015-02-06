@@ -4,7 +4,7 @@ using System.Windows.Input;
 using Framework;
 using Framework.PlatformServices;
 using Linqua.Events;
-using Linqua.Persistance;
+using Linqua.Persistence;
 using System;
 using Linqua.DataObjects;
 
@@ -82,8 +82,7 @@ namespace Linqua
 	    }
 
 		private async Task InitializeAsync()
-		{
-			await storage.InitializeAsync();
+		{			
 			await InitializeWordListAsync(CompositionFactory, storage);
 		}
 
@@ -95,6 +94,7 @@ namespace Linqua
 
 			    try
 			    {
+					await storage.InitializeAsync();
 				    var words = await storage.LoadAllEntries();
 
 				    EntryListViewModel = compositionFactory.Create<EntryListViewModel>(words);

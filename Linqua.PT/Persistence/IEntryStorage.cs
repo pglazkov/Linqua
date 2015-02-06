@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 
-namespace Linqua.Persistance
+namespace Linqua.Persistence
 {
 	public interface IEntryStorage
 	{

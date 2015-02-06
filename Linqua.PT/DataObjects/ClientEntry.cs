@@ -12,7 +12,7 @@ namespace Linqua.DataObjects
 		public ClientEntry(string text)
 		{
 			Id = Guid.NewGuid().ToString();
-			CreatedAt = DateTimeOffset.UtcNow;
+			CreatedAt = DateTimeOffset.Now;
 
 			Text = text;
 		}

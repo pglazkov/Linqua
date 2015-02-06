@@ -3,7 +3,7 @@ using System.Composition;
 using System.Threading.Tasks;
 using Linqua.DataObjects;
 
-namespace Linqua.Persistance
+namespace Linqua.Persistence
 {
 	//[Export(typeof(IEntryStorage))]
 	public class MemoryEntryStorage : IEntryStorage

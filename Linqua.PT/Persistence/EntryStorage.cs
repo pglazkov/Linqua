@@ -1,4 +1,4 @@
-﻿namespace Linqua.Persistance
+﻿namespace Linqua.Persistence
 {
 	public class EntryStorage
 	{

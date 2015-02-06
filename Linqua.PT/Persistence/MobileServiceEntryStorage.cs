@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Framework;
 using JetBrains.Annotations;
@@ -9,7 +10,7 @@ using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 
-namespace Linqua.Persistance
+namespace Linqua.Persistence
 {
 	[Export(typeof(IEntryStorage))]
 	public class MobileServiceEntryStorage : IEntryStorage
@@ -17,12 +18,16 @@ namespace Linqua.Persistance
 		//private readonly IMobileServiceTable<ClientEntry> entryTable;
 		private readonly IMobileServiceSyncTable<ClientEntry> entryTable;
 		private readonly IMobileServiceSyncHandler syncHandler;
+		private readonly ISyncFailedHandler syncFailedHandler;
 
-		public MobileServiceEntryStorage([NotNull] IMobileServiceSyncHandler syncHandler)
+		[ImportingConstructor]
+		public MobileServiceEntryStorage([NotNull] IMobileServiceSyncHandler syncHandler, [NotNull] ISyncFailedHandler syncFailedHandler)
 		{
 			Guard.NotNull(syncHandler, () => syncHandler);
+			Guard.NotNull(syncFailedHandler, () => syncFailedHandler);
 
 			this.syncHandler = syncHandler;
+			this.syncFailedHandler = syncFailedHandler;
 
 			//entryTable = MobileService.Client.GetTable<ClientEntry>();
 			entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
@@ -37,8 +42,6 @@ namespace Linqua.Persistance
 		public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{
 			await entryTable.InsertAsync(newEntry);
-
-			await entryTable.RefreshAsync(newEntry);
 
 			SyncAsync().FireAndForget();
 
@@ -61,13 +64,23 @@ namespace Linqua.Persistance
 				await MobileService.Client.SyncContext.InitializeAsync(store, syncHandler);
 			}
 
-			SyncAsync().FireAndForget();
+			await SyncAsync();
 		}
 
-		private async Task SyncAsync()
+		private Task SyncAsync()
 		{
-			await MobileService.Client.SyncContext.PushAsync();
-			await entryTable.PullAsync("entryItems", entryTable.CreateQuery());
+			return Task.Run(async () =>
+			{
+				try
+				{
+					await MobileService.Client.SyncContext.PushAsync();
+					await entryTable.PullAsync("entryItems", entryTable.CreateQuery());
+				}
+				catch (Exception ex)
+				{
+					syncFailedHandler.Handle(ex);
+				}
+			});
 		}
 
 	}

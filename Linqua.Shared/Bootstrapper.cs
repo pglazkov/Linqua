@@ -3,7 +3,7 @@ using System.Composition.Hosting;
 using System.Reflection;
 using Framework;
 using Framework.MefExtensions;
-using Linqua.Persistance;
+using Linqua.Persistence;
 
 namespace Linqua
 {
