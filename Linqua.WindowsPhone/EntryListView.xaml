@@ -18,7 +18,7 @@
 				   HorizontalAlignment="Center" />
 		
 		<ScrollViewer VerticalScrollBarVisibility="Auto">
-			<ItemsControl ItemsSource="{Binding Entries}">
+			<ItemsControl ItemsSource="{Binding EntryViewModels}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
 						<Grid Background="Transparent"

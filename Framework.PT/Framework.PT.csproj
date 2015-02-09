@@ -51,6 +51,7 @@
     <Compile Include="IEventAggregator.cs" />
     <Compile Include="IEventLocator.cs" />
     <Compile Include="IEventPublisher.cs" />
+    <Compile Include="ObservableCollectionExtensions.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultStatusBusyService.cs" />
     <Compile Include="PlatformServices\IStatusBusyService.cs" />
     <Compile Include="IViewModel.cs" />

@@ -9,6 +9,7 @@
     <Import_RootNamespace>Linqua</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BackgroundTaskHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bootstrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
@@ -25,7 +26,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)EntryListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Persistence\SyncFailedHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)SecurityManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />

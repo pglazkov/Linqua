@@ -12,13 +12,17 @@ namespace Linqua
     public class EntryListViewModel : ViewModelBase
     {
 	    private bool thereAreNoEntries;
+	    private IEnumerable<ClientEntry> entries;
 
 	    public EntryListViewModel()
 	    {
+		    EntryViewModels = new ObservableCollection<EntryListItemViewModel>();
+			EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
+
 			if (DesignTimeDetection.IsInDesignTool)
 			{
 				EventAggregator = DesignTimeHelper.EventAggregator;
-				Entries = new ObservableCollection<EntryListItemViewModel>(FakeData.FakeWords.Select(w => new EntryListItemViewModel(w)));
+				EntryViewModels.AddRange(FakeData.FakeWords.Select(w => new EntryListItemViewModel(w)));
 			}
 
 			DeleteEntryCommand = new DelegateCommand<EntryListItemViewModel>(DeleteEntry, CanDeleteEntry);
@@ -28,16 +32,34 @@ namespace Linqua
 			: this()
 	    {
 			Guard.NotNull(entries, () => entries);
-			
-			Entries = new ObservableCollection<EntryListItemViewModel>(entries.Select(w => new EntryListItemViewModel(w)));
-		    Entries.CollectionChanged += OnEntriesCollectionChanged;
 
-		    UpdateThereAreNoEntries();
+		    Entries = entries;
 	    }
 
 	    public DelegateCommand<EntryListItemViewModel> DeleteEntryCommand { get; private set; }
 
-		public ObservableCollection<EntryListItemViewModel> Entries { get; private set; }
+	    public IEnumerable<ClientEntry> Entries
+	    {
+		    get { return entries; }
+		    set
+		    {
+			    if (Equals(value, entries)) return;
+			    entries = value;
+
+				EntryViewModels.CollectionChanged -= OnEntriesCollectionChanged;
+
+				EntryViewModels.Clear();
+				EntryViewModels.AddRange(entries.Select(w => new EntryListItemViewModel(w)));
+
+				EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
+
+				UpdateThereAreNoEntries();
+
+			    RaisePropertyChanged();
+		    }
+	    }
+
+	    public ObservableCollection<EntryListItemViewModel> EntryViewModels { get; private set; }
 
 	    public bool ThereAreNoEntries
 	    {
@@ -52,7 +74,7 @@ namespace Linqua
 
 	    public void AddEntry(ClientEntry newEntry)
 	    {
-		    Entries.Add(new EntryListItemViewModel(newEntry));
+		    EntryViewModels.Add(new EntryListItemViewModel(newEntry));
 	    }
 
 		private void DeleteEntry(EntryListItemViewModel obj)
@@ -67,11 +89,11 @@ namespace Linqua
 
 	    public void DeleteEntryFromUI(ClientEntry entryToDelete)
 	    {
-		    var entryVm = Entries.SingleOrDefault(w => w.Entry.Id == entryToDelete.Id);
+		    var entryVm = EntryViewModels.SingleOrDefault(w => w.Entry.Id == entryToDelete.Id);
 
 			Guard.Assert(entryVm != null, "entryVm != null");
 
-		    Entries.Remove(entryVm);
+		    EntryViewModels.Remove(entryVm);
 	    }
 
 		private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -81,7 +103,7 @@ namespace Linqua
 
 		private void UpdateThereAreNoEntries()
 		{
-			ThereAreNoEntries = Entries.Count == 0;
+			ThereAreNoEntries = EntryViewModels.Count == 0;
 		}
     }
 }

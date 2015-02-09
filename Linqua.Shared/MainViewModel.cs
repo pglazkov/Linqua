@@ -43,6 +43,7 @@ namespace Linqua
 
 		    CompositionFactory = compositionFactory;
 
+			EntryListViewModel = compositionFactory.Create<EntryListViewModel>();
 		    EntryCreationViewModel = compositionFactory.Create<EntryCreationViewModel>();
 
 		    eventAggregator.GetEvent<EntryCreationRequestedEvent>().Subscribe(OnEntryCreationRequested);
@@ -97,7 +98,7 @@ namespace Linqua
 					await storage.InitializeAsync();
 				    var words = await storage.LoadAllEntries();
 
-				    EntryListViewModel = compositionFactory.Create<EntryListViewModel>(words);
+				    EntryListViewModel.Entries = words;
 			    }
 			    finally
 			    {
@@ -137,5 +138,11 @@ namespace Linqua
 		    }
 	    }
 
+	    public async Task RefreshAsync()
+	    {
+			var words = await storage.LoadAllEntries();
+
+			EntryListViewModel.Entries = words;
+	    }
     }
 }

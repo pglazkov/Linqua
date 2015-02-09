@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.UI.Popups;
-using Microsoft.WindowsAzure.MobileServices;
 using Windows.Security.Credentials;
-using Linqua.DataObjects;
 using Microsoft.Live;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace Linqua
 {
@@ -60,37 +58,30 @@ namespace Linqua
 			return user != null;
 		}
 
-		public static async Task Authenticate()
+		public static async Task<bool> Authenticate()
 		{
 			var authenticated = await TryAuthenticateSilently();
 
 			if (authenticated)
 			{
-				return;
+				return true;
 			}
 
 			LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
 
-			MobileServiceUser user = null;
+			var result = await liveIdClient.LoginAsync(AuthenticationScopes);
 
-			while (user == null)
+			if (result.Status == LiveConnectSessionStatus.Connected)
 			{
-				var result = await liveIdClient.LoginAsync(AuthenticationScopes);
+				var user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
 
-				if (result.Status == LiveConnectSessionStatus.Connected)
-				{
-					user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
+				var vault = new PasswordVault();
+				vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
 
-					var vault = new PasswordVault();
-					vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
-				}
-				else
-				{
-					var dialog = new MessageDialog("You must log in.", "Login Required");
-					dialog.Commands.Add(new UICommand("OK"));
-					await dialog.ShowAsync();
-				}
+				return true;
 			}
+
+			return false;
 		}
 	}
 }

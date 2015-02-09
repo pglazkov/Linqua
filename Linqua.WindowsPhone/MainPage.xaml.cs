@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel.Background;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
@@ -8,6 +9,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
 using Framework.PlatformServices;
+using Linqua.BackgroundTasks;
 using Linqua.Events;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -20,7 +22,9 @@ namespace Linqua
     /// </summary>
 	public sealed partial class MainPage : Page, IMainView
     {
-        public MainPage()
+	    private BackgroundTaskRegistration syncBackgroundTask;
+
+	    public MainPage()
         {
             this.InitializeComponent();
 			
@@ -50,10 +54,14 @@ namespace Linqua
         /// </summary>
         /// <param name="e">Event data that describes how this page was reached.
         /// This parameter is typically used to configure the page.</param>
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
 		    if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
 		    {
+			    syncBackgroundTask = await BackgroundTaskHelper.RegisterSyncTask();
+
+			    syncBackgroundTask.Completed += OnSyncCompleted;
+
 			    ViewModel.Initialize();
 		    }
 
@@ -65,6 +73,14 @@ namespace Linqua
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
         }
+
+	    private void OnSyncCompleted(BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args)
+	    {
+		    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+		    {
+			    ViewModel.RefreshAsync().FireAndForget();
+		    });
+	    }
 
 	    public bool Navigate(Type destination)
 	    {

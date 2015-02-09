@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Framework;
 using JetBrains.Annotations;
@@ -30,7 +31,19 @@ namespace Linqua
 					throw new Exception("Failed to create login page");
 				}
 
-				await SecurityManager.Authenticate();
+				bool authenticated = false;
+
+				while (!authenticated)
+				{
+					authenticated = await SecurityManager.Authenticate();
+
+					if (!authenticated)
+					{
+						var dialog = new MessageDialog("You must log in.", "Login Required");
+						dialog.Commands.Add(new UICommand("OK"));
+						await dialog.ShowAsync();
+					}
+				}
 			}
 
 			if (!frame.Navigate(typeof(MainPage), arguments))

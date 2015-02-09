@@ -24,6 +24,13 @@
         </m3:InitialRotationPreference>
         <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#8CC63E" />
       </m3:VisualElements>
+      <Extensions>
+        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.BackgroundTasks.SynchronizationTask">
+          <BackgroundTasks>
+            <Task Type="systemEvent" />
+          </BackgroundTasks>
+        </Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

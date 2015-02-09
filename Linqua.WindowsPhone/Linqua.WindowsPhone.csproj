@@ -246,9 +246,17 @@
       <Project>{175a1b89-42aa-495c-bfb6-657f54792fb4}</Project>
       <Name>Framework.PT</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Linqua.BackgroundTasks\Linqua.BackgroundTasks.csproj">
+      <Project>{02bba116-4753-4ea0-b76d-297ae3fc63c2}</Project>
+      <Name>Linqua.BackgroundTasks</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Linqua.PT\Linqua.PT.csproj">
       <Project>{55abb5ac-f778-455d-ba56-c5ee5089198c}</Project>
       <Name>Linqua.PT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Linqua.Windows.PT\Linqua.Windows.PT.csproj">
+      <Project>{60f309c7-dec9-4a4b-88d7-95575e5e5a99}</Project>
+      <Name>Linqua.Windows.PT</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

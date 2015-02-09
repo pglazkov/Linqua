@@ -7,7 +7,7 @@
 					 Color="{StaticResource ApplicationThemeColor}"/>
 	
 	<SolidColorBrush x:Key="ProgressRingBrush"
-					 Color="Gray"/>
+					 Color="{StaticResource ApplicationThemeColor}"/>
 	
 	<SolidColorBrush x:Key="WordListBackground"
 					 Color="White"/>

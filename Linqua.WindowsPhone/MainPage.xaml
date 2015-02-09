@@ -4,9 +4,7 @@
 	  xmlns:local="using:Linqua"
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	  xmlns:i="using:Microsoft.Xaml.Interactivity"
-	  xmlns:framework="using:Linqua.Framework"
-	  xmlns:framework1="using:Framework"
+	  xmlns:z="using:Framework"
 	  mc:Ignorable="d"
 	  Background="{StaticResource ApplicationThemeBrush}"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
@@ -72,6 +70,7 @@
 			</Grid.RowDefinitions>
 
 			<ProgressRing Grid.Row="0"
+						  x:Name="LoadingProgressRing"
 						  IsActive="{Binding IsLoadingEntries}"
 						  VerticalAlignment="Center"
 						  HorizontalAlignment="Center"
@@ -79,7 +78,8 @@
 
 			<ContentPresenter Grid.Row="0"
 							  x:Name="EntryListView"
-							  framework1:ViewLocator.Model="{Binding EntryListViewModel}"/>
+							  z:ViewLocator.Model="{Binding EntryListViewModel}"
+							  Visibility="{Binding ElementName=LoadingProgressRing, Path=IsActive, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
 			
 			<!--<local:EntryListView Grid.Row="0" 
 								 x:Name="EntryListView" 
