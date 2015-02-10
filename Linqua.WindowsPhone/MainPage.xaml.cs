@@ -59,7 +59,7 @@ namespace Linqua
 		    if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
 		    {
 			    syncBackgroundTask = await BackgroundTaskHelper.RegisterSyncTask();
-
+				
 			    syncBackgroundTask.Completed += OnSyncCompleted;
 
 			    ViewModel.Initialize();

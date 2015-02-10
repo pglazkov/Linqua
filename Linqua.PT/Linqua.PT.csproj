@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppPortable.cs" />
+    <Compile Include="ConnectionHelper.cs" />
     <Compile Include="FakeData.cs" />
     <Compile Include="DataObjects\ClientEntry.cs" />
     <Compile Include="MobileService.cs" />
@@ -50,6 +51,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="SecurityManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Live">

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Framework;
 using JetBrains.Annotations;
@@ -36,18 +38,27 @@ namespace Linqua.Persistence
 		{
 			await entryTable.InsertAsync(newEntry);
 
+			OfflineSync.EnqueueSync().FireAndForget();
+
 			return newEntry;
 		}
 
 		public async Task DeleteEntry(ClientEntry entry)
 		{
 			await entryTable.DeleteAsync(entry);
+
+			OfflineSync.EnqueueSync().FireAndForget();
 		}
 
 		public async Task InitializeAsync()
 		{
 			await OfflineSync.InitializeAsync(syncHandler);
+			await OfflineSync.DoInitialPullIfNeededAsync();
 		}
 
+		public Task EnqueueSync(Expression<Func<ClientEntry, bool>> query)
+		{
+			return OfflineSync.EnqueueSync(query);
+		}
 	}
 }

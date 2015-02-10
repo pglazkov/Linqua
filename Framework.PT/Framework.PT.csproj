@@ -42,6 +42,7 @@
     <Compile Include="DesignTimeDetection.cs" />
     <Compile Include="DesignTimeHelper.cs" />
     <Compile Include="DispatcherProxy.cs" />
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="EventBase.cs" />
     <Compile Include="EventManager.cs" />
     <Compile Include="FrameworkPortable.cs" />

@@ -6,6 +6,7 @@ using Framework.PlatformServices;
 using Linqua.Events;
 using Linqua.Persistence;
 using System;
+using System.Linq;
 using Linqua.DataObjects;
 
 namespace Linqua
@@ -89,10 +90,10 @@ namespace Linqua
 
 	    private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IEntryStorage storage)
 	    {
+			IsLoadingEntries = true;
+
 		    using (statusBusyService.Busy())
 		    {
-			    IsLoadingEntries = true;
-
 			    try
 			    {
 					await storage.InitializeAsync();
@@ -102,10 +103,30 @@ namespace Linqua
 			    }
 			    finally
 			    {
-				    IsLoadingEntries = false;
+				    if (EntryListViewModel.Entries.Any())
+				    {
+					    IsLoadingEntries = false;
+				    }
 			    }
 		    }
-		}
+
+			using (statusBusyService.Busy("Syncing..."))
+		    {
+			    try
+			    {
+					// Now when the data from cache is loaded and shown to the user sync with 
+				    // the cloud and refresh the data.
+				    await storage.EnqueueSync();
+				    await RefreshAsync();
+			    }
+			    finally
+			    {
+				    IsLoadingEntries = false;
+					EntryListViewModel.IsInitializationComplete = true;
+			    }
+		    }
+		    
+	    }
 
 		private void AddWord()
 		{

@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Microsoft SDKs\Windows Phone\v8.1\Tools\IsolatedStorageExplorerTool\ISETool.exe" ts xd 6ddedcb9-e456-4bff-a30b-7d5e9123aeae Temp

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Composition;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Linqua.DataObjects;
 
@@ -28,6 +30,11 @@ namespace Linqua.Persistence
 		}
 
 		public Task InitializeAsync()
+		{
+			return Task.FromResult(true);
+		}
+
+		public Task EnqueueSync(Expression<Func<ClientEntry, bool>> query = null)
 		{
 			return Task.FromResult(true);
 		}

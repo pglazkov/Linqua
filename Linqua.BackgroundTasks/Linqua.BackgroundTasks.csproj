@@ -73,10 +73,6 @@
       <Project>{55abb5ac-f778-455d-ba56-c5ee5089198c}</Project>
       <Name>Linqua.PT</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Linqua.Windows.PT\Linqua.Windows.PT.csproj">
-      <Project>{60f309c7-dec9-4a4b-88d7-95575e5e5a99}</Project>
-      <Name>Linqua.Windows.PT</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

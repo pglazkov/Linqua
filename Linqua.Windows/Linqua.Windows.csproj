@@ -205,10 +205,6 @@
       <Project>{55ABB5AC-F778-455D-BA56-C5EE5089198C}</Project>
       <Name>Linqua.PT</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Linqua.Windows.PT\Linqua.Windows.PT.csproj">
-      <Project>{60f309c7-dec9-4a4b-88d7-95575e5e5a99}</Project>
-      <Name>Linqua.Windows.PT</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="LiveSDKXAML, Version=5.6">

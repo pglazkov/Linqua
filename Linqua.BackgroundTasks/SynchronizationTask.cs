@@ -10,25 +10,20 @@ namespace Linqua.BackgroundTasks
 		{
 			var deferral = taskInstance.GetDeferral();
 
-			var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
-
-			if (authenticatedSilently)
+			try
 			{
-				await OfflineSync.InitializeAsync(new MobileServiceSyncHandler());
+				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
-				try
+				if (authenticatedSilently)
 				{
-					await OfflineSync.SyncAsync();
-				}
-				catch (Exception e)
-				{
-					// Synchronization failed, will try next time...
-
-					// TODO: Log the error.
+					await OfflineSync.InitializeAsync(new MobileServiceSyncHandler());
+					await OfflineSync.TrySyncAsync();
 				}
 			}
-
-			deferral.Complete();
+			finally
+			{
+				deferral.Complete();
+			}
 		}
     }
 }

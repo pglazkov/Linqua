@@ -25,5 +25,34 @@ namespace Linqua.DataObjects
 
 		[CreatedAt]
 		public DateTimeOffset? CreatedAt { get; set; }
+
+		#region Equality Members
+
+		protected bool Equals(ClientEntry other)
+		{
+			return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(Definition, other.Definition);
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (ReferenceEquals(null, obj)) return false;
+			if (ReferenceEquals(this, obj)) return true;
+			if (obj.GetType() != this.GetType()) return false;
+			return Equals((ClientEntry)obj);
+		}
+
+		public override int GetHashCode()
+		{
+			unchecked
+			{
+				var hashCode = (Id != null ? Id.GetHashCode() : 0);
+				hashCode = (hashCode * 397) ^ (Text != null ? Text.GetHashCode() : 0);
+				hashCode = (hashCode * 397) ^ (Definition != null ? Definition.GetHashCode() : 0);
+				return hashCode;
+			}
+		}
+
+		#endregion
+
 	}
 }

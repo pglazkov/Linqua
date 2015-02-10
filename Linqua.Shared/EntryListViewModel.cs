@@ -13,6 +13,7 @@ namespace Linqua
     {
 	    private bool thereAreNoEntries;
 	    private IEnumerable<ClientEntry> entries;
+	    private bool isInitializationComplete;
 
 	    public EntryListViewModel()
 	    {
@@ -43,7 +44,7 @@ namespace Linqua
 		    get { return entries; }
 		    set
 		    {
-			    if (Equals(value, entries)) return;
+			    if (value.ItemsEqual(entries)) return;
 			    entries = value;
 
 				EntryViewModels.CollectionChanged -= OnEntriesCollectionChanged;
@@ -69,6 +70,18 @@ namespace Linqua
 			    if (value.Equals(thereAreNoEntries)) return;
 			    thereAreNoEntries = value;
 			    RaisePropertyChanged();
+		    }
+	    }
+
+	    public bool IsInitializationComplete
+	    {
+		    get { return isInitializationComplete; }
+		    set
+		    {
+			    if (value.Equals(isInitializationComplete)) return;
+			    isInitializationComplete = value;
+			    RaisePropertyChanged();
+				UpdateThereAreNoEntries();
 		    }
 	    }
 
@@ -103,6 +116,11 @@ namespace Linqua
 
 		private void UpdateThereAreNoEntries()
 		{
+			if (!IsInitializationComplete)
+			{
+				return;
+			}
+
 			ThereAreNoEntries = EntryViewModels.Count == 0;
 		}
     }
