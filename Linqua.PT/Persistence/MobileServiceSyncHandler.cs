@@ -1,5 +1,6 @@
 ﻿using System.Composition;
 using System.Threading.Tasks;
+using MetroLog;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Newtonsoft.Json.Linq;
@@ -9,6 +10,8 @@ namespace Linqua.Persistence
 	[Export(typeof(IMobileServiceSyncHandler))]
 	public class MobileServiceSyncHandler : IMobileServiceSyncHandler
 	{
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MobileServiceSyncHandler>();
+
 		public Task OnPushCompleteAsync(MobileServicePushCompletionResult result)
 		{
 			return Task.FromResult(0);
@@ -28,6 +31,11 @@ namespace Linqua.Persistence
 				}
 				catch (MobileServicePreconditionFailedException e)
 				{
+					if (Log.IsErrorEnabled)
+					{
+						Log.Error("Synchronization failed. Looks like there is a conflict.", e);
+					}
+
 					ex = e;
 				}
 

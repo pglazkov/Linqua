@@ -6,11 +6,14 @@ using System.Linq;
 using Framework;
 using Linqua.DataObjects;
 using Linqua.Events;
+using MetroLog;
 
 namespace Linqua
 {
     public class EntryListViewModel : ViewModelBase
     {
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<EntryListViewModel>();
+
 	    private bool thereAreNoEntries;
 	    private IEnumerable<ClientEntry> entries;
 	    private bool isInitializationComplete;
@@ -46,6 +49,9 @@ namespace Linqua
 		    {
 			    if (value.ItemsEqual(entries)) return;
 			    entries = value;
+
+				if (Log.IsDebugEnabled)
+					Log.Debug("Updateting entries on UI. Entries count: {0}", entries.Count());
 
 				EntryViewModels.CollectionChanged -= OnEntriesCollectionChanged;
 

@@ -7,6 +7,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Framework;
+using MetroLog;
+using MetroLog.Targets;
 using Microsoft.WindowsAzure.MobileServices;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
@@ -18,6 +20,8 @@ namespace Linqua
     /// </summary>
     public sealed partial class App : Application
     {
+		private readonly ILogger Log;
+
 #if WINDOWS_PHONE_APP
         private TransitionCollection transitions;
 #endif
@@ -30,6 +34,21 @@ namespace Linqua
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+
+			var configuration = new LoggingConfiguration();
+#if DEBUG
+			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new DebugTarget());
+#endif
+			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new FileStreamingTarget());
+
+			configuration.IsEnabled = true;
+
+			LogManagerFactory.DefaultConfiguration = configuration;
+
+			// setup the global crash handler...
+			GlobalCrashHandler.Configure();
+
+			Log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
 
 			var bootstrapper = new Bootstrapper();
 
@@ -50,6 +69,8 @@ namespace Linqua
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
+			if (Log.IsInfoEnabled)
+				Log.Info("***** Application Launched. ******");
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -134,9 +155,12 @@ namespace Linqua
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
+
+			if (Log.IsInfoEnabled)
+				await ((ILoggerAsync)Log).InfoAsync("Application is suspending.");
 
             // TODO: Save application state and stop any background activity
             deferral.Complete();

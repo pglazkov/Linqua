@@ -7,6 +7,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Framework;
+using MetroLog;
+using MetroLog.Targets;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -29,6 +31,15 @@ namespace Linqua
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+
+#if DEBUG
+			LogManagerFactory.DefaultConfiguration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new FileStreamingTarget());
+#else
+			LogManagerFactory.DefaultConfiguration.AddTarget(LogLevel.Info, LogLevel.Fatal, new FileStreamingTarget());
+#endif
+
+			// setup the global crash handler...
+			GlobalCrashHandler.Configure();
 
 			var bootstrapper = new Bootstrapper();
 

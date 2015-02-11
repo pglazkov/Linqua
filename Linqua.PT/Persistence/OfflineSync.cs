@@ -5,6 +5,7 @@ using Windows.Networking.Connectivity;
 using Framework;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
+using MetroLog;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
@@ -13,6 +14,8 @@ namespace Linqua.Persistence
 {
 	public static class OfflineSync
 	{
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(OfflineSync).FullName);
+
 		private const string SqLiteDatabaseFileName = "localstore.db";
 
 		public static async Task InitializeAsync([NotNull] IMobileServiceSyncHandler syncHandler)
@@ -55,6 +58,11 @@ namespace Linqua.Persistence
 		{
 			if (!ConnectionHelper.IsConnectedToInternet)
 			{
+				if (Log.IsDebugEnabled)
+				{
+					Log.Debug("EnqueueSync. Not connected to the internet. Do nothing.");
+				}
+
 				return;
 			}
 
@@ -68,11 +76,23 @@ namespace Linqua.Persistence
 		{
 			try
 			{
+				if (Log.IsDebugEnabled)
+					Log.Debug("Sync Started.");
+
 				await SyncAsync(query);
+
+				if (Log.IsDebugEnabled)
+					Log.Debug("Sync completed.");
+
 				return true;
 			}
-			catch (Exception)
+			catch (Exception ex)
 			{
+				if (Log.IsErrorEnabled)
+				{
+					Log.Error("Synchronization failed.", ex);
+				}
+
 				return false;
 			}
 		}

@@ -8,11 +8,14 @@ using Linqua.Persistence;
 using System;
 using System.Linq;
 using Linqua.DataObjects;
+using MetroLog;
 
 namespace Linqua
 {
     public class MainViewModel : ViewModelBase
     {
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainViewModel>();
+
 	    private readonly IEntryStorage storage;
 	    private readonly IEventAggregator eventAggregator;
 	    private readonly IStatusBusyService statusBusyService;
@@ -99,6 +102,9 @@ namespace Linqua
 					await storage.InitializeAsync();
 				    var words = await storage.LoadAllEntries();
 
+				    if (Log.IsDebugEnabled)
+					    Log.Debug("Loaded {0} entries from local storage.", words.Count());
+
 				    EntryListViewModel.Entries = words;
 			    }
 			    finally
@@ -114,9 +120,13 @@ namespace Linqua
 		    {
 			    try
 			    {
+					if (Log.IsDebugEnabled)
+						Log.Debug("Starting synchronization.");
+
 					// Now when the data from cache is loaded and shown to the user sync with 
 				    // the cloud and refresh the data.
 				    await storage.EnqueueSync();
+
 				    await RefreshAsync();
 			    }
 			    finally
@@ -161,7 +171,17 @@ namespace Linqua
 
 	    public async Task RefreshAsync()
 	    {
-			var words = await storage.LoadAllEntries();
+		    if (Log.IsDebugEnabled)
+		    {
+				Log.Debug("RefreshAsync");
+		    }
+
+		    var words = await storage.LoadAllEntries();
+
+		    if (Log.IsDebugEnabled)
+		    {
+				Log.Debug("Loaded {0} entries from local storage.", words.Count());
+		    }
 
 			EntryListViewModel.Entries = words;
 	    }

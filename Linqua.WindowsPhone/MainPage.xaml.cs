@@ -11,6 +11,7 @@ using Framework;
 using Framework.PlatformServices;
 using Linqua.BackgroundTasks;
 using Linqua.Events;
+using MetroLog;
 using Microsoft.WindowsAzure.MobileServices;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
@@ -22,10 +23,12 @@ namespace Linqua
     /// </summary>
 	public sealed partial class MainPage : Page, IMainView
     {
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
+
 	    private BackgroundTaskRegistration syncBackgroundTask;
 
 	    public MainPage()
-        {
+	    {
             this.InitializeComponent();
 			
             this.NavigationCacheMode = NavigationCacheMode.Required;
@@ -76,6 +79,11 @@ namespace Linqua
 
 	    private void OnSyncCompleted(BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args)
 	    {
+			if (Log.IsTraceEnabled)
+			{
+				Log.Trace("Synchronization background task completed.");
+			}
+
 		    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 		    {
 			    ViewModel.RefreshAsync().FireAndForget();
