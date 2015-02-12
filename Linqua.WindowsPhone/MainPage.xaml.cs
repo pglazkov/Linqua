@@ -61,8 +61,14 @@ namespace Linqua
         {
 		    if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
 		    {
+				if (Log.IsDebugEnabled)
+					Log.Debug("Registering SyncTask background task.");
+
 			    syncBackgroundTask = await BackgroundTaskHelper.RegisterSyncTask();
-				
+
+				if (Log.IsDebugEnabled)
+					Log.Debug("Background task registered. TaskId: {0}", syncBackgroundTask.TaskId);
+
 			    syncBackgroundTask.Completed += OnSyncCompleted;
 
 			    ViewModel.Initialize();

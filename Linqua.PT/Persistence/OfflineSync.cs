@@ -14,7 +14,7 @@ namespace Linqua.Persistence
 {
 	public static class OfflineSync
 	{
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(OfflineSync).FullName);
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(OfflineSync).Name);
 
 		private const string SqLiteDatabaseFileName = "localstore.db";
 

@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Framework;
 using MetroLog;
+using MetroLog.Layouts;
 using MetroLog.Targets;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -37,9 +38,9 @@ namespace Linqua
 
 			var configuration = new LoggingConfiguration();
 #if DEBUG
-			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new DebugTarget());
+			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new DebugTarget(new LoggingLayout()));
 #endif
-			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new FileStreamingTarget());
+			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new FileStreamingTarget(new LoggingLayout()));
 
 			configuration.IsEnabled = true;
 

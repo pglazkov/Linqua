@@ -85,6 +85,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BackgroundTaskHelper.cs" />
     <Compile Include="EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
@@ -256,13 +257,13 @@
       <Project>{175a1b89-42aa-495c-bfb6-657f54792fb4}</Project>
       <Name>Framework.PT</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Linqua.BackgroundTasks\Linqua.BackgroundTasks.csproj">
-      <Project>{02bba116-4753-4ea0-b76d-297ae3fc63c2}</Project>
-      <Name>Linqua.BackgroundTasks</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Linqua.PT\Linqua.PT.csproj">
       <Project>{55abb5ac-f778-455d-ba56-c5ee5089198c}</Project>
       <Name>Linqua.PT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Linqua.BackgroundTasks.WindowsPhone\Linqua.BackgroundTasks.WindowsPhone.csproj">
+      <Project>{fbbbf002-c177-42d7-8d15-ae4de436ac4e}</Project>
+      <Name>Linqua.BackgroundTasks.WindowsPhone</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
