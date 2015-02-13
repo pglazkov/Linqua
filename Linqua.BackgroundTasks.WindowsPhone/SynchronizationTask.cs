@@ -29,8 +29,9 @@ namespace Linqua.BackgroundTasks
 
 				if (authenticatedSilently)
 				{
-					await OfflineSync.InitializeAsync(new MobileServiceSyncHandler());
-					await OfflineSync.TrySyncAsync();
+					IDataStore storage = new MobileServiceDataStore(new MobileServiceSyncHandler());
+					await storage.InitializeAsync();
+					await storage.EnqueueSync();
 				}
 				else
 				{

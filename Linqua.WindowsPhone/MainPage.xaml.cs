@@ -1,18 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
-using Windows.UI;
 using Windows.UI.Core;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
-using Framework.PlatformServices;
-using Linqua.BackgroundTasks;
 using Linqua.Events;
 using MetroLog;
-using Microsoft.WindowsAzure.MobileServices;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -33,7 +29,7 @@ namespace Linqua
 			
             this.NavigationCacheMode = NavigationCacheMode.Required;
 	        
-			if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+			if (!DesignMode.DesignModeEnabled)
 			{
 				DataContext = ViewModel = CompositionManager.Current.GetInstance<ICompositionFactory>().Create<MainViewModel>();
 				ViewModel.View = this;
@@ -50,6 +46,7 @@ namespace Linqua
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
+			
 		}
 
 	    /// <summary>
@@ -59,29 +56,62 @@ namespace Linqua
         /// This parameter is typically used to configure the page.</param>
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-		    if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-		    {
-				if (Log.IsDebugEnabled)
-					Log.Debug("Registering SyncTask background task.");
+		    if (DesignMode.DesignModeEnabled) return;
 
-			    syncBackgroundTask = await BackgroundTaskHelper.RegisterSyncTask();
+		    await SetUpBackgroundTasksAsync();
 
-				if (Log.IsDebugEnabled)
-					Log.Debug("Background task registered. TaskId: {0}", syncBackgroundTask.TaskId);
+		    SubscribeToEvents();
 
-			    syncBackgroundTask.Completed += OnSyncCompleted;
+		    ViewModel.Initialize();
 
-			    ViewModel.Initialize();
-		    }
-
-		    // TODO: Prepare page for display here.
-
-            // TODO: If your application contains multiple pages, ensure that you are
+		    // TODO: If your application contains multiple pages, ensure that you are
             // handling the hardware Back button by registering for the
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
         }
+
+	    protected override void OnNavigatedFrom(NavigationEventArgs e)
+	    {
+		    UnsubscribeFromEvents();
+	    }
+
+	    private void UnsubscribeFromEvents()
+	    {
+			ConnectionHelper.InternetConnectionChanged -= OnInternetConnectionChanged;
+	    }
+
+	    private void SubscribeToEvents()
+	    {
+		    ConnectionHelper.InternetConnectionChanged += OnInternetConnectionChanged;
+	    }
+
+	    private void OnInternetConnectionChanged(object sender, InternetConnectionChangedEventArgs e)
+	    {
+		    if (Log.IsInfoEnabled)
+				Log.Info("Internet connection changed. IsConnected={0}.", e.IsConnected);
+
+		    if (e.IsConnected)
+		    {
+				Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+				{
+					ViewModel.RefreshAsync().FireAndForget();
+				});
+		    }
+	    }
+
+	    private async Task SetUpBackgroundTasksAsync()
+	    {
+		    if (Log.IsDebugEnabled)
+			    Log.Debug("Registering SyncTask background task.");
+
+		    syncBackgroundTask = await BackgroundTaskHelper.RegisterSyncTask();
+
+		    if (Log.IsDebugEnabled)
+			    Log.Debug("Background task registered. TaskId: {0}", syncBackgroundTask.TaskId);
+
+		    syncBackgroundTask.Completed += OnSyncCompleted;
+	    }
 
 	    private void OnSyncCompleted(BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args)
 	    {

@@ -23,6 +23,15 @@ namespace Framework
 									 throw new AggregateException(t.Exception);
 								 }, null);
 						 }
+						 else
+						 {
+							 var dispatcher = DispatcherProxy.CreateDispatcher();
+
+							 dispatcher.BeginInvoke(new Action(() =>
+							 {
+								 throw new AggregateException(t.Exception);
+							 }));
+						 }
 					 }
 				 });
 		 }

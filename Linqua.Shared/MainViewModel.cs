@@ -16,7 +16,7 @@ namespace Linqua
     {
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainViewModel>();
 
-	    private readonly IEntryStorage storage;
+	    private readonly IDataStore storage;
 	    private readonly IEventAggregator eventAggregator;
 	    private readonly IStatusBusyService statusBusyService;
 	    private EntryListViewModel entryListViewModel;
@@ -33,7 +33,7 @@ namespace Linqua
 			AddWordCommand = new DelegateCommand(AddWord);
 	    }
 
-	    public MainViewModel(ICompositionFactory compositionFactory, IEntryStorage storage, IEventAggregator eventAggregator, IStatusBusyService statusBusyService)
+	    public MainViewModel(ICompositionFactory compositionFactory, IDataStore storage, IEventAggregator eventAggregator, IStatusBusyService statusBusyService)
 			: this()
 	    {
 		    Guard.NotNull(compositionFactory, () => compositionFactory);
@@ -91,7 +91,7 @@ namespace Linqua
 			await InitializeWordListAsync(CompositionFactory, storage);
 		}
 
-	    private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IEntryStorage storage)
+	    private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IDataStore storage)
 	    {
 			IsLoadingEntries = true;
 
@@ -116,29 +116,34 @@ namespace Linqua
 			    }
 		    }
 
-			using (statusBusyService.Busy("Syncing..."))
-		    {
-			    try
-			    {
-					if (Log.IsDebugEnabled)
-						Log.Debug("Starting synchronization.");
-
-					// Now when the data from cache is loaded and shown to the user sync with 
-				    // the cloud and refresh the data.
-				    await storage.EnqueueSync();
-
-				    await RefreshAsync();
-			    }
-			    finally
-			    {
-				    IsLoadingEntries = false;
-					EntryListViewModel.IsInitializationComplete = true;
-			    }
-		    }
+			try
+			{
+				await SyncAsync();
+			}
+			finally
+			{
+				IsLoadingEntries = false;
+				EntryListViewModel.IsInitializationComplete = true;
+			}
 		    
 	    }
 
-		private void AddWord()
+	    public async Task SyncAsync()
+	    {
+		    using (statusBusyService.Busy("Syncing..."))
+		    {
+			    if (Log.IsDebugEnabled)
+				    Log.Debug("Starting synchronization.");
+
+			    // Now when the data from cache is loaded and shown to the user sync with 
+			    // the cloud and refresh the data.
+			    await storage.EnqueueSync();
+
+			    await RefreshAsync();
+		    }
+	    }
+
+	    private void AddWord()
 		{
 			View.NavigateToNewWordPage();
 		}

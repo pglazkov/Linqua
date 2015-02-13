@@ -7,8 +7,8 @@ using Linqua.DataObjects;
 
 namespace Linqua.Persistence
 {
-	//[Export(typeof(IEntryStorage))]
-	public class MemoryEntryStorage : IEntryStorage
+	//[Export(typeof(IDataStore))]
+	public class MemoryDataStore : IDataStore
 	{
 		public Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
@@ -34,7 +34,7 @@ namespace Linqua.Persistence
 			return Task.FromResult(true);
 		}
 
-		public Task EnqueueSync(Expression<Func<ClientEntry, bool>> query = null)
+		public Task EnqueueSync(OfflineSyncArguments args)
 		{
 			return Task.FromResult(true);
 		}

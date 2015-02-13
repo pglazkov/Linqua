@@ -10,6 +10,9 @@ namespace Linqua.Framework
 	[Export(typeof(IStatusBusyService))]
 	public class StatusBusyService : IStatusBusyService
 	{
+		[Import]
+		public IDispatcherService Dispatcher { get; set; }
+
 		public IDisposable Busy(string statusText)
 		{
 			StatusBarProgressIndicator progressbar = StatusBar.GetForCurrentView().ProgressIndicator;

@@ -7,7 +7,7 @@ using Linqua.DataObjects;
 
 namespace Linqua.Persistence
 {
-	public interface IEntryStorage
+	public interface IDataStore
 	{
 		[NotNull]
 		Task<IEnumerable<ClientEntry>> LoadAllEntries();
@@ -22,6 +22,6 @@ namespace Linqua.Persistence
 		Task InitializeAsync();
 
 		[NotNull]
-		Task EnqueueSync([CanBeNull] Expression<Func<ClientEntry, bool>> query = null);
+		Task EnqueueSync(OfflineSyncArguments args = null);
 	}
 }

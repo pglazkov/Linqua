@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Framework;
 using MetroLog;
 using MetroLog.Layouts;
 
@@ -23,8 +24,9 @@ namespace Linqua
 			builder.Append(info.Message);
 			if (info.Exception != null)
 			{
-				builder.Append(" --> ");
-				builder.Append(info.Exception);
+				builder.AppendLine();
+				builder.AppendLine("EXCEPTION:");
+				builder.Append(string.Join(Environment.NewLine + Environment.NewLine, ExceptionUtils.UnwrapExceptions(info.Exception)));
 			}
 
 			return builder.ToString();

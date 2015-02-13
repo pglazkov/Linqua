@@ -10,15 +10,15 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 
 namespace Linqua.Persistence
 {
-	[Export(typeof(IEntryStorage))]
-	public class MobileServiceEntryStorage : IEntryStorage
+	[Export(typeof(IDataStore))]
+	public class MobileServiceDataStore : IDataStore
 	{
 		//private readonly IMobileServiceTable<ClientEntry> entryTable;
 		private readonly IMobileServiceSyncTable<ClientEntry> entryTable;
 		private readonly IMobileServiceSyncHandler syncHandler;
 
 		[ImportingConstructor]
-		public MobileServiceEntryStorage([NotNull] IMobileServiceSyncHandler syncHandler)
+		public MobileServiceDataStore([NotNull] IMobileServiceSyncHandler syncHandler)
 		{
 			Guard.NotNull(syncHandler, () => syncHandler);
 
@@ -38,7 +38,7 @@ namespace Linqua.Persistence
 		{
 			await entryTable.InsertAsync(newEntry);
 
-			OfflineSync.EnqueueSync().FireAndForget();
+			OfflineHelper.EnqueueSync().FireAndForget();
 
 			return newEntry;
 		}
@@ -47,18 +47,18 @@ namespace Linqua.Persistence
 		{
 			await entryTable.DeleteAsync(entry);
 
-			OfflineSync.EnqueueSync().FireAndForget();
+			OfflineHelper.EnqueueSync().FireAndForget();
 		}
 
 		public async Task InitializeAsync()
 		{
-			await OfflineSync.InitializeAsync(syncHandler);
-			await OfflineSync.DoInitialPullIfNeededAsync();
+			await OfflineHelper.InitializeAsync(syncHandler);
+			await OfflineHelper.DoInitialPullIfNeededAsync();
 		}
 
-		public Task EnqueueSync(Expression<Func<ClientEntry, bool>> query)
+		public Task EnqueueSync(OfflineSyncArguments args = null)
 		{
-			return OfflineSync.EnqueueSync(query);
+			return OfflineHelper.EnqueueSync(args);
 		}
 	}
 }

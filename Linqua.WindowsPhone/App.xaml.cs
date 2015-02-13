@@ -36,27 +36,14 @@ namespace Linqua
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
 
-			var configuration = new LoggingConfiguration();
-#if DEBUG
-			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new DebugTarget(new LoggingLayout()));
-#endif
-			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new FileStreamingTarget(new LoggingLayout()));
-
-			configuration.IsEnabled = true;
-
-			LogManagerFactory.DefaultConfiguration = configuration;
-
-			// setup the global crash handler...
-			GlobalCrashHandler.Configure();
-
-			Log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
-
 			var bootstrapper = new Bootstrapper();
 
 			bootstrapper.Run(this);
+
+			Log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
         }
 
-        /// <summary>
+	    /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used when the application is launched to open a specific file, to display
         /// search results, and so forth.
@@ -129,13 +116,16 @@ namespace Linqua
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
 			var rootFrame = (Frame)sender;
-            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection() { new NavigationThemeTransition() };
+            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection { new NavigationThemeTransition() };
             rootFrame.Navigated -= this.RootFrame_FirstNavigated;
         }
 #endif
 
 		protected override void OnActivated(IActivatedEventArgs args)
 		{
+			if (Log.IsInfoEnabled)
+				Log.Info("Application Activated.");
+
 			// Windows Phone 8.1 requires you to handle the respose from the WebAuthenticationBroker.
 #if WINDOWS_PHONE_APP
 			//if (args.Kind == ActivationKind.WebAuthenticationBrokerContinuation)

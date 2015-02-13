@@ -24,6 +24,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)EntryListItemViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Offline\IOfflineSyncController.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Offline\OfflineSyncController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Persistence\SyncFailedHandler.cs" />
   </ItemGroup>
   <ItemGroup>

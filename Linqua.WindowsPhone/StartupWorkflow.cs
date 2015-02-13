@@ -4,6 +4,7 @@ using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Framework;
 using JetBrains.Annotations;
+using Linqua.Offline;
 
 namespace Linqua
 {

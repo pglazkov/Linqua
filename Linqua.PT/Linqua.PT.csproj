@@ -41,12 +41,13 @@
     <Compile Include="LoggingHelper.cs" />
     <Compile Include="LoggingLayout.cs" />
     <Compile Include="MobileService.cs" />
-    <Compile Include="Persistence\IEntryStorage.cs" />
+    <Compile Include="Persistence\IDataStore.cs" />
     <Compile Include="Persistence\ISyncFailedHandler.cs" />
-    <Compile Include="Persistence\MemoryEntryStorage.cs" />
-    <Compile Include="Persistence\MobileServiceEntryStorage.cs" />
+    <Compile Include="Persistence\MemoryDataStore.cs" />
+    <Compile Include="Persistence\MobileServiceDataStore.cs" />
     <Compile Include="Persistence\MobileServiceSyncHandler.cs" />
-    <Compile Include="Persistence\OfflineSync.cs" />
+    <Compile Include="Persistence\OfflineHelper.cs" />
+    <Compile Include="Persistence\OfflineSyncArguments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>

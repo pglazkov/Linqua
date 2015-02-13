@@ -120,6 +120,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Framework.PT\Framework.PT.csproj">
+      <Project>{175A1B89-42AA-495C-BFB6-657F54792FB4}</Project>
+      <Name>Framework.PT</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Linqua.PT\Linqua.PT.csproj">
       <Project>{55ABB5AC-F778-455D-BA56-C5EE5089198C}</Project>
       <Name>Linqua.PT</Name>

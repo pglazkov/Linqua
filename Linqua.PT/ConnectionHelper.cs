@@ -31,8 +31,7 @@ namespace Linqua
 			{
 				var profile = NetworkInformation.GetInternetConnectionProfile();
 				var isConnected = (profile != null
-					&& profile.GetNetworkConnectivityLevel() ==
-					NetworkConnectivityLevel.InternetAccess);
+					&& profile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
 				return isConnected;
 			}
 		}

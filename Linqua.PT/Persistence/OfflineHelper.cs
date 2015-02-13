@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using Windows.Networking.Connectivity;
-using Framework;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using MetroLog;
@@ -12,9 +10,9 @@ using Microsoft.WindowsAzure.MobileServices.Sync;
 
 namespace Linqua.Persistence
 {
-	public static class OfflineSync
+	public static class OfflineHelper
 	{
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(OfflineSync).Name);
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(OfflineHelper).Name);
 
 		private const string SqLiteDatabaseFileName = "localstore.db";
 
@@ -28,33 +26,17 @@ namespace Linqua.Persistence
 			}
 		}
 
-		public static async Task DoInitialPullIfNeededAsync(Expression<Func<ClientEntry, bool>> query = null)
+		public static async Task DoInitialPullIfNeededAsync(OfflineSyncArguments args = null)
 		{
 			var firstEntry = await MobileService.Client.GetSyncTable<ClientEntry>().Take(1).ToListAsync();
 
 			if (firstEntry == null)
 			{
-				await TrySyncAsync(query);
+				await TrySyncAsync(args);
 			}
 		}
 
-		public static async Task SyncAsync(Expression<Func<ClientEntry, bool>> query = null)
-		{
-			await MobileService.Client.SyncContext.PushAsync();
-
-			var entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
-
-			var mobileServiceTableQuery = entryTable.CreateQuery();
-
-			if (query != null)
-			{
-				mobileServiceTableQuery = mobileServiceTableQuery.Where(query);
-			}
-
-			await entryTable.PullAsync("entryItems", mobileServiceTableQuery);
-		}
-
-		public static async Task EnqueueSync(Expression<Func<ClientEntry, bool>> query = null)
+		public static async Task EnqueueSync(OfflineSyncArguments args = null)
 		{
 			if (!ConnectionHelper.IsConnectedToInternet)
 			{
@@ -68,18 +50,31 @@ namespace Linqua.Persistence
 
 			await Task.Run(async () =>
 			{
-				await TrySyncAsync(query);
+				await TrySyncAsync(args);
 			});
 		}
 
-		public static async Task<bool> TrySyncAsync(Expression<Func<ClientEntry, bool>> query = null)
+		public static async Task<bool> TrySyncAsync(OfflineSyncArguments args = null)
 		{
+			args = args ?? OfflineSyncArguments.Default;
+
 			try
 			{
 				if (Log.IsDebugEnabled)
 					Log.Debug("Sync Started.");
 
-				await SyncAsync(query);
+				await MobileService.Client.SyncContext.PushAsync();
+
+				var entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
+
+				var mobileServiceTableQuery = entryTable.CreateQuery();
+
+				if (args.ClientEntryFilter != null)
+				{
+					mobileServiceTableQuery = mobileServiceTableQuery.Where(args.ClientEntryFilter);
+				}
+
+				await entryTable.PullAsync("entryItems", mobileServiceTableQuery);
 
 				if (Log.IsDebugEnabled)
 					Log.Debug("Sync completed.");

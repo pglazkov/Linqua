@@ -21,9 +21,9 @@ namespace Framework.PlatformServices
 			return Dispatcher.HasThreadAccess;
 		}
 
-		public void BeginInvoke(Delegate method, params Object[] args)
+		public async void BeginInvoke(Delegate method, params Object[] args)
 		{
-			Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => method.DynamicInvoke(args)).AsTask().FireAndForget();
+			await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => method.DynamicInvoke(args));
 		}
 	}
 }

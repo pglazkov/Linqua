@@ -45,6 +45,7 @@
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="EventBase.cs" />
     <Compile Include="EventManager.cs" />
+    <Compile Include="ExceptionUtils.cs" />
     <Compile Include="FrameworkPortable.cs" />
     <Compile Include="Guard.cs" />
     <Compile Include="ICompositionFactory.cs" />
