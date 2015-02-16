@@ -45,7 +45,7 @@
     <Compile Include="Persistence\ISyncFailedHandler.cs" />
     <Compile Include="Persistence\MemoryDataStore.cs" />
     <Compile Include="Persistence\MobileServiceDataStore.cs" />
-    <Compile Include="Persistence\MobileServiceSyncHandler.cs" />
+    <Compile Include="Persistence\SyncHandler.cs" />
     <Compile Include="Persistence\OfflineHelper.cs" />
     <Compile Include="Persistence\OfflineSyncArguments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

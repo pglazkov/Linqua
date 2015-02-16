@@ -93,7 +93,7 @@ namespace Linqua
 
 	    public void AddEntry(ClientEntry newEntry)
 	    {
-		    EntryViewModels.Add(new EntryListItemViewModel(newEntry));
+		    EntryViewModels.Add(new EntryListItemViewModel(newEntry, justAdded: true));
 	    }
 
 		private void DeleteEntry(EntryListItemViewModel obj)

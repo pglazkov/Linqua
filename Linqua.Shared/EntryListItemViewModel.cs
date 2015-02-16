@@ -14,8 +14,13 @@ namespace Linqua
 			}
 		}
 
-		public EntryListItemViewModel(ClientEntry entry) : base(entry)
+		public IEntryListViewModelView View { get; set; }
+
+		public bool JustAdded { get; private set; }
+
+		public EntryListItemViewModel(ClientEntry entry, bool justAdded = false) : base(entry)
 		{
+			JustAdded = justAdded;
 		}
 	}
 }

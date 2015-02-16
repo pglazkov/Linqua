@@ -9,16 +9,35 @@
 			 d:DesignWidth="480"
 			 d:DataContext="{d:DesignInstance loc:EntryListItemViewModel, IsDesignTimeCreatable=True}">
 
-	<Grid x:Name="LayoutRoot">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-		
-		<TextBlock Text="{Binding Text}" 
-				   Style="{ThemeResource ListViewItemTextBlockStyle}"/>
-		
-		<TextBlock Grid.Row="1" 
-				   Text="{Binding DateAdded}"/>
-	</Grid>
+	<UserControl.Resources>
+		<Storyboard x:Key="FlashBackgroundStoryboard">
+			<ColorAnimation From="Transparent"
+							To="#A3F4C4C4"
+							Duration="0:0:0.7"
+							AutoReverse="True"
+							Storyboard.TargetName="RootBorder"
+							Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
+				<ColorAnimation.EasingFunction>
+					<CircleEase EasingMode="EaseOut" />
+				</ColorAnimation.EasingFunction>
+			</ColorAnimation>
+		</Storyboard>
+	</UserControl.Resources>
+	
+	<Border x:Name="RootBorder"
+			Background="Transparent"
+			Padding="8,0,8,0">
+		<Grid x:Name="LayoutRoot">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+
+			<TextBlock Text="{Binding Text}"
+					   Style="{ThemeResource ListViewItemTextBlockStyle}" />
+
+			<TextBlock Grid.Row="1"
+					   Text="{Binding DateAdded}" />
+		</Grid>
+	</Border>
 </UserControl>

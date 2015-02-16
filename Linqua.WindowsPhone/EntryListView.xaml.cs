@@ -3,6 +3,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using Framework;
 
 namespace Linqua
 {
@@ -27,6 +28,33 @@ namespace Linqua
 			//var flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
 
 			//flyoutBase.ShowAt(senderElement);
+	    }
+
+	    private void EntryLoaded(object sender, RoutedEventArgs e)
+	    {
+			var entryView = (Control)sender;
+
+			var entryVm = (EntryListItemViewModel)entryView.DataContext;
+
+			Guard.Assert(entryVm != null, "entryVm != null");
+
+		    if (entryVm.JustAdded)
+		    {
+			    entryView.Focus(FocusState.Programmatic);
+		    }
+
+		    //if (entryVm.JustAdded)
+		    //{
+		    //	var entryView = EntryItemsControl.ItemContainerGenerator.ContainerFromItem(entryVm);
+
+		    //	var c = entryView as Control;
+
+
+		    //	if (c != null)
+		    //	{
+		    //		c.Focus(FocusState.Programmatic);
+		    //	}
+		    //}
 	    }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Composition;
+﻿using System;
+using System.Composition;
+using System.Net;
 using System.Threading.Tasks;
 using MetroLog;
 using Microsoft.WindowsAzure.MobileServices;
@@ -8,16 +10,25 @@ using Newtonsoft.Json.Linq;
 namespace Linqua.Persistence
 {
 	[Export(typeof(IMobileServiceSyncHandler))]
-	public class MobileServiceSyncHandler : IMobileServiceSyncHandler
+	public class SyncHandler : MobileServiceSyncHandler
 	{
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MobileServiceSyncHandler>();
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<SyncHandler>();
 
-		public Task OnPushCompleteAsync(MobileServicePushCompletionResult result)
+		public override async Task OnPushCompleteAsync(MobileServicePushCompletionResult result)
 		{
-			return Task.FromResult(0);
+			foreach (var error in result.Errors)
+			{
+				if (error.Status == HttpStatusCode.Conflict)
+				{
+					await error.CancelAndUpdateItemAsync(error.Result);
+					error.Handled = true;
+				}
+			}
+
+			await base.OnPushCompleteAsync(result);
 		}
 
-		public async Task<JObject> ExecuteTableOperationAsync(IMobileServiceTableOperation operation)
+		public override async Task<JObject> ExecuteTableOperationAsync(IMobileServiceTableOperation operation)
 		{
 			MobileServicePreconditionFailedException ex = null;
 			JObject result = null;
@@ -27,7 +38,7 @@ namespace Linqua.Persistence
 				ex = null;
 				try
 				{
-					result = await operation.ExecuteAsync();
+					result = await base.ExecuteTableOperationAsync(operation);
 				}
 				catch (MobileServicePreconditionFailedException e)
 				{
@@ -37,6 +48,15 @@ namespace Linqua.Persistence
 					}
 
 					ex = e;
+				}
+				catch (MobileServiceConflictException e)
+				{
+					if (Log.IsErrorEnabled)
+					{
+						Log.Error("Synchronization failed. Looks like there is a conflict.", e);
+					}
+
+					throw;
 				}
 
 				if (ex != null)
@@ -60,5 +80,6 @@ namespace Linqua.Persistence
 
 			return result;
 		}
+
 	}
 }

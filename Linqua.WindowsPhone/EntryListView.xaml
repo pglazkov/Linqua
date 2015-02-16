@@ -4,6 +4,8 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:linqua="using:Linqua"
+			 xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+			 xmlns:media="using:Microsoft.Xaml.Interactions.Media"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
@@ -17,20 +19,26 @@
 				   VerticalAlignment="Center"
 				   HorizontalAlignment="Center" />
 		
-		<ScrollViewer VerticalScrollBarVisibility="Auto">
-			<ItemsControl ItemsSource="{Binding EntryViewModels}">
+		<ScrollViewer x:Name="ItemsScrollViewer" 
+					  VerticalScrollBarVisibility="Auto"
+					  BringIntoViewOnFocusChange="True">
+			<ItemsControl x:Name="EntryItemsControl" 
+						  ItemsSource="{Binding EntryViewModels}">
 				<ItemsControl.ItemTemplate>
 					<DataTemplate>
-						<Grid Background="Transparent"
-							  Holding="EntryHolding"
-							  PointerPressed="EntryPressed">
+						<ContentControl Loaded="EntryLoaded"
+										Background="Transparent"
+										Holding="EntryHolding"
+										PointerPressed="EntryPressed"
+										HorizontalAlignment="Stretch"
+										HorizontalContentAlignment="Stretch">
 							<FlyoutBase.AttachedFlyout>
 								<MenuFlyout>
-									<MenuFlyoutItem x:Uid="DeleteFlyoutItem" 
+									<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
 													Text="Delete"
 													Command="{Binding ElementName=LayoutRoot, Path=DataContext.DeleteEntryCommand}"
-													CommandParameter="{Binding}"/>
-									
+													CommandParameter="{Binding}" />
+
 									<MenuFlyout.MenuFlyoutPresenterStyle>
 										<Style TargetType="MenuFlyoutPresenter">
 											<Setter Property="ScrollViewer.ZoomMode"
@@ -40,7 +48,7 @@
 											<Setter Property="BorderBrush"
 													Value="Gray" />
 											<Setter Property="Foreground"
-													Value="Black"/>
+													Value="Black" />
 										</Style>
 									</MenuFlyout.MenuFlyoutPresenterStyle>
 								</MenuFlyout>
@@ -48,7 +56,7 @@
 
 							<linqua:EntryListItemView DataContext="{Binding}"
 													  Margin="0,0,0,5" />
-						</Grid>
+						</ContentControl>
 					</DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
