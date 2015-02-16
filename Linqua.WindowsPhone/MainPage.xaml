@@ -107,12 +107,21 @@
 			   IsHitTestVisible="False" />-->
 	</Grid>
 
-	<!--<Page.BottomAppBar>
-		<CommandBar>
-			<AppBarButton x:Name="NewWordButton" 
-						  Content="new word"
-						  Icon="Add"
-						  Command="{Binding AddWordCommand}"/>
+	<Page.BottomAppBar>
+		<CommandBar ClosedDisplayMode="Minimal">
+			<!--<CommandBar.PrimaryCommands>
+				<AppBarButton x:Name="NewWordButton"
+							  Label="new word"
+							  Icon="Add"
+							  Command="{Binding AddWordCommand}" />
+			</CommandBar.PrimaryCommands>-->
+			<CommandBar.SecondaryCommands>
+				<AppBarButton x:Name="SendLogsButton"
+							  Label="(advanced) share logs"
+							  Command="{Binding SendLogsCommand}"/>
+			</CommandBar.SecondaryCommands>
 		</CommandBar>
-	</Page.BottomAppBar>-->
+	</Page.BottomAppBar>
+	
+
 </Page>

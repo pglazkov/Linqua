@@ -58,7 +58,7 @@ namespace Linqua
             }
 #endif
 			if (Log.IsInfoEnabled)
-				Log.Info("***** Application Launched. ******");
+				Log.Info("Application Launched. ============================================================================================");
 
             Frame rootFrame = Window.Current.Content as Frame;
 

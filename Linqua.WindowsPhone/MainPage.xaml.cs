@@ -63,7 +63,7 @@ namespace Linqua
 		    SubscribeToEvents();
 
 		    ViewModel.Initialize();
-
+			 
 		    // TODO: If your application contains multiple pages, ensure that you are
             // handling the hardware Back button by registering for the
             // Windows.Phone.UI.Input.HardwareButtons.BackPressed event.

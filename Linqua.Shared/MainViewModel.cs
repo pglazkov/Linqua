@@ -1,13 +1,12 @@
-﻿using System.Composition;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Framework;
 using Framework.PlatformServices;
+using Linqua.DataObjects;
 using Linqua.Events;
 using Linqua.Persistence;
-using System;
-using System.Linq;
-using Linqua.DataObjects;
 using MetroLog;
 
 namespace Linqua
@@ -30,6 +29,7 @@ namespace Linqua
 				EntryCreationViewModel = new EntryCreationViewModel(DesignTimeHelper.EventAggregator);
 			}
 
+			SendLogsCommand = new DelegateCommand(SendLogs);
 			AddWordCommand = new DelegateCommand(AddWord);
 	    }
 
@@ -54,6 +54,7 @@ namespace Linqua
 		    eventAggregator.GetEvent<EntryDeletionRequestedEvent>().Subscribe(OnEntryDeletionRequested);
 	    }
 
+		public ICommand SendLogsCommand { get; private set; }
 	    public ICommand AddWordCommand { get; private set; }		
 
 		public IMainView View { get; set; }
@@ -189,6 +190,21 @@ namespace Linqua
 		    }
 
 			EntryListViewModel.Entries = words;
+	    }
+
+		private void SendLogs()
+		{
+			SendLogsAsync().FireAndForget();
+		}
+
+	    private async Task SendLogsAsync()
+	    {
+			IWinRTLogManager logManager = LogManagerFactory.DefaultLogManager as IWinRTLogManager;
+
+			if (logManager != null)
+			{
+				await logManager.ShareLogFile(string.Format("Linqua Logs - {0:s}", DateTime.UtcNow), "Linqua compressed log files.");
+			}
 	    }
     }
 }
