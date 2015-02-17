@@ -10,6 +10,11 @@
 				<ResourceDictionary Source="Resources/Converters.xaml"/>
 				<ResourceDictionary Source="Resources/ButtonStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
+
+			<SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush"
+							 Color="{StaticResource ApplicationThemeColor}" />
+
+			<x:Double x:Key="ProgressBarThemeMinHeight">2</x:Double>
 		</ResourceDictionary>
 		
 	</Application.Resources>

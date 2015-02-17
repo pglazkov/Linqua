@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Windows.Storage;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using MetroLog;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
+using Nito.AsyncEx;
 
 namespace Linqua.Persistence
 {
@@ -15,6 +17,8 @@ namespace Linqua.Persistence
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(OfflineHelper).Name);
 
 		private const string SqLiteDatabaseFileName = "localstore.db";
+
+		private static readonly AsyncLock SyncLock = new AsyncLock();
 
 		public static async Task InitializeAsync([NotNull] IMobileServiceSyncHandler syncHandler)
 		{
@@ -26,8 +30,23 @@ namespace Linqua.Persistence
 			}
 		}
 
+		private static void CheckInitialized()
+		{
+			if (!MobileService.Client.SyncContext.IsInitialized)
+			{
+				throw new NotSupportedException("Sync context hasn't been initialized yet. Please call InitializeAsync first.");
+			}
+		}
+
+		public static AwaitableDisposable<IDisposable> AcquireDataAccessLockAsync()
+		{
+			return SyncLock.LockAsync();
+		}
+
 		public static async Task DoInitialPullIfNeededAsync(OfflineSyncArguments args = null)
 		{
+			CheckInitialized();
+
 			var firstEntry = await MobileService.Client.GetSyncTable<ClientEntry>().Take(1).ToListAsync();
 
 			if (firstEntry == null)
@@ -38,6 +57,8 @@ namespace Linqua.Persistence
 
 		public static async Task EnqueueSync(OfflineSyncArguments args = null)
 		{
+			CheckInitialized();
+
 			if (!ConnectionHelper.IsConnectedToInternet)
 			{
 				if (Log.IsDebugEnabled)
@@ -56,39 +77,44 @@ namespace Linqua.Persistence
 
 		public static async Task<bool> TrySyncAsync(OfflineSyncArguments args = null)
 		{
-			args = args ?? OfflineSyncArguments.Default;
+			CheckInitialized();
 
-			try
+			using (await AcquireDataAccessLockAsync())
 			{
-				if (Log.IsDebugEnabled)
-					Log.Debug("Sync Started.");
+				args = args ?? OfflineSyncArguments.Default;
 
-				await MobileService.Client.SyncContext.PushAsync();
-
-				var entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
-
-				var mobileServiceTableQuery = entryTable.CreateQuery();
-
-				if (args.ClientEntryFilter != null)
+				try
 				{
-					mobileServiceTableQuery = mobileServiceTableQuery.Where(args.ClientEntryFilter);
+					if (Log.IsDebugEnabled)
+						Log.Debug("Sync Started.");
+
+					await MobileService.Client.SyncContext.PushAsync();
+
+					var entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
+
+					var mobileServiceTableQuery = entryTable.CreateQuery();
+
+					if (args.ClientEntryFilter != null)
+					{
+						mobileServiceTableQuery = mobileServiceTableQuery.Where(args.ClientEntryFilter);
+					}
+
+					await entryTable.PullAsync("entryItems", mobileServiceTableQuery);
+
+					if (Log.IsDebugEnabled)
+						Log.Debug("Sync completed.");
+
+					return true;
 				}
-
-				await entryTable.PullAsync("entryItems", mobileServiceTableQuery);
-
-				if (Log.IsDebugEnabled)
-					Log.Debug("Sync completed.");
-
-				return true;
-			}
-			catch (Exception ex)
-			{
-				if (Log.IsErrorEnabled)
+				catch (Exception ex)
 				{
-					Log.Error("Synchronization failed.", ex);
-				}
+					if (Log.IsErrorEnabled)
+					{
+						Log.Error("Synchronization failed.", ex);
+					}
 
-				return false;
+					return false;
+				}
 			}
 		}
 	}

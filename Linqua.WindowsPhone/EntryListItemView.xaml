@@ -36,6 +36,7 @@
 
 			<TextBlock Text="{Binding Text}"
 					   Style="{ThemeResource ListViewItemTextBlockStyle}"
+					   TextWrapping="Wrap"
 					   Margin="0"/>
 
 			<TextBlock Grid.Row="1"

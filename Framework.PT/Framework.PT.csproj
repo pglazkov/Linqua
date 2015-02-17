@@ -75,6 +75,12 @@
     <Compile Include="WeakEventHandlerManager.Desktop.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Nito.AsyncEx">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\portable-net45+netcore45+wpa81+MonoTouch+MonoAndroid\Nito.AsyncEx.dll</HintPath>
+    </Reference>
+    <Reference Include="Nito.AsyncEx.Concurrent">
+      <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\portable-net45+netcore45+wpa81+MonoTouch+MonoAndroid\Nito.AsyncEx.Concurrent.dll</HintPath>
+    </Reference>
     <Reference Include="System.Composition.AttributedModel">
       <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
     </Reference>

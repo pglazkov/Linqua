@@ -31,12 +31,18 @@ namespace Linqua.Persistence
 
 		public async Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
-			return await entryTable.OrderByDescending(x => x.CreatedAt) .ToListAsync();
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				return await entryTable.OrderByDescending(x => x.CreatedAt).ToListAsync();
+			}
 		}
 
 		public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{
-			await entryTable.InsertAsync(newEntry);
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				await entryTable.InsertAsync(newEntry);
+			}
 
 			OfflineHelper.EnqueueSync().FireAndForget();
 
@@ -45,7 +51,10 @@ namespace Linqua.Persistence
 
 		public async Task DeleteEntry(ClientEntry entry)
 		{
-			await entryTable.DeleteAsync(entry);
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				await entryTable.DeleteAsync(entry);
+			}
 
 			OfflineHelper.EnqueueSync().FireAndForget();
 		}

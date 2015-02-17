@@ -16,9 +16,18 @@
 
 		<TextBox Text="{Binding EntryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 				 KeyDown="EntryTextBox_OnKeyDown"
-				 VerticalAlignment="Center"
-				 PlaceholderText="Add a New Word"
+				 VerticalAlignment="Bottom"
+				 PlaceholderText="Tap to Add a New Word or Phrase"
+				 TextWrapping="Wrap"
+				 Margin="0"
+				 Height="70"
 				 IsEnabled="{Binding IsCreatingEntry, Converter={StaticResource InvertedBooleanConverter}}"/>
+		
+		<ProgressBar Grid.Column="0" 
+					 IsIndeterminate="True"
+					 VerticalAlignment="Bottom"
+					 Margin="0,0,0,1"
+					 Padding="0"/>
 
 		<!--<Button Grid.Column="1"
 		        Content="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z"

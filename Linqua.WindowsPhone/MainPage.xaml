@@ -87,7 +87,7 @@
 
 			<local:EntryCreationView Grid.Row="1"
 									 DataContext="{Binding EntryCreationViewModel}"
-									 Margin="12,24,12,12"
+									 Margin="12,24,12,24"
 									 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"/>
 		</Grid>
 
