@@ -17,7 +17,7 @@ namespace Linqua.Service.Controllers
         {
             base.Initialize(controllerContext);
             LinquaContext context = new LinquaContext();
-            DomainManager = new EntryDomainManager(context, Request, Services);
+            DomainManager = new EntryDomainManager(context, Request, Services, true);
         }
 
         // GET tables/ClientEntry
