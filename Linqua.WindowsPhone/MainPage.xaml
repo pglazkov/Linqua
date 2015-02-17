@@ -63,7 +63,7 @@
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel"
 			  Grid.Row="1"
-			  Margin="24,12,24,0">
+			  Margin="12,12,12,0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="Auto"/>
@@ -87,7 +87,7 @@
 
 			<local:EntryCreationView Grid.Row="1"
 									 DataContext="{Binding EntryCreationViewModel}"
-									 Margin="0,24,0,12"
+									 Margin="12,24,12,12"
 									 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"/>
 		</Grid>
 

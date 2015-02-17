@@ -31,7 +31,7 @@ namespace Linqua.Persistence
 
 		public async Task<IEnumerable<ClientEntry>> LoadAllEntries()
 		{
-			return await entryTable.ToListAsync();
+			return await entryTable.OrderByDescending(x => x.CreatedAt) .ToListAsync();
 		}
 
 		public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
