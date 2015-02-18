@@ -13,7 +13,7 @@
 		<Storyboard x:Key="FlashBackgroundStoryboard">
 			<ColorAnimation From="Transparent"
 							To="#A3F4C4C4"
-							Duration="0:0:1.2"
+							Duration="0:0:0.8"
 							AutoReverse="True"
 							Storyboard.TargetName="RootBorder"
 							Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
@@ -27,7 +27,7 @@
 	<Border x:Name="RootBorder"
 			Background="Transparent"
 			Padding="12,0,12,6"
-			CornerRadius="2">
+			CornerRadius="3">
 		<Grid x:Name="LayoutRoot">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -36,11 +36,14 @@
 
 			<TextBlock Text="{Binding Text}"
 					   Style="{ThemeResource ListViewItemTextBlockStyle}"
+					   FontSize="{ThemeResource TextStyleExtraExtraLargeFontSize}"
 					   TextWrapping="Wrap"
 					   Margin="0"/>
 
 			<TextBlock Grid.Row="1"
-					   Text="{Binding DateAdded}" />
+					   Text="{Binding DateAdded}"
+					   Margin="0,2,0,0"
+					   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"/>
 		</Grid>
 	</Border>
 </UserControl>

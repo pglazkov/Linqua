@@ -15,6 +15,12 @@
 							 Color="{StaticResource ApplicationThemeColor}" />
 
 			<x:Double x:Key="ProgressBarThemeMinHeight">2</x:Double>
+
+			<SolidColorBrush x:Key="TextBoxBackgroundThemeBrush"
+							 Color="White" />
+
+			<!--<SolidColorBrush x:Key="TextBoxBorderThemeBrush"
+							 Color="{StaticResource ApplicationThemeColor}" />-->
 		</ResourceDictionary>
 		
 	</Application.Resources>

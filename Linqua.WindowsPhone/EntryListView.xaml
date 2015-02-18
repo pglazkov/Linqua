@@ -12,54 +12,63 @@
 			 d:DataContext="{d:DesignInstance linqua:EntryListViewModel, IsDesignTimeCreatable=True}">
 
 	<Grid x:Name="LayoutRoot">
-		<TextBlock x:Uid="NoEntriesTextBlock" 
+		<TextBlock x:Uid="NoEntriesTextBlock"
 				   Text="It's lonely here..."
 				   Style="{ThemeResource ListViewEmptyStaticTextBlockStyle}"
 				   Visibility="{Binding ThereAreNoEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
 				   VerticalAlignment="Center"
 				   HorizontalAlignment="Center" />
-		
-		<ScrollViewer x:Name="ItemsScrollViewer" 
-					  VerticalScrollBarVisibility="Auto"
-					  BringIntoViewOnFocusChange="True">
-			<ItemsControl x:Name="EntryItemsControl" 
-						  ItemsSource="{Binding EntryViewModels}">
-				<ItemsControl.ItemTemplate>
-					<DataTemplate>
-						<ContentControl Loaded="EntryLoaded"
-										Background="Transparent"
-										Holding="EntryHolding"
-										PointerPressed="EntryPressed"
-										HorizontalAlignment="Stretch"
-										HorizontalContentAlignment="Stretch">
-							<FlyoutBase.AttachedFlyout>
-								<MenuFlyout>
-									<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
-													Text="Delete"
-													Command="{Binding ElementName=LayoutRoot, Path=DataContext.DeleteEntryCommand}"
-													CommandParameter="{Binding}" />
 
-									<MenuFlyout.MenuFlyoutPresenterStyle>
-										<Style TargetType="MenuFlyoutPresenter">
-											<Setter Property="ScrollViewer.ZoomMode"
-													Value="Disabled" />
-											<Setter Property="Background"
-													Value="White" />
-											<Setter Property="BorderBrush"
-													Value="Gray" />
-											<Setter Property="Foreground"
-													Value="Black" />
-										</Style>
-									</MenuFlyout.MenuFlyoutPresenterStyle>
-								</MenuFlyout>
-							</FlyoutBase.AttachedFlyout>
+		<ListView x:Name="EntryItemsControl"
+				  ItemsSource="{Binding EntryViewModels}"
+				  HorizontalContentAlignment="Stretch"
+				  HorizontalAlignment="Stretch">
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment"
+							Value="Stretch"/>
+				</Style>
+				
+			</ListView.ItemContainerStyle>
+			<!--<ItemsControl.ItemContainerTransitions>
+					<ContentThemeTransition/>
+					<EntranceThemeTransition/>
+				</ItemsControl.ItemContainerTransitions>-->
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<linqua:EntryListItemView DataContext="{Binding}"
+											  Margin="0,0,0,5"
+											  Loaded="EntryLoaded"
+											  Background="Transparent"
+											  Holding="EntryHolding"
+											  PointerPressed="EntryPressed"
+											  HorizontalAlignment="Stretch"
+											  HorizontalContentAlignment="Stretch"
+											  IsTabStop="False">
+						<FlyoutBase.AttachedFlyout>
+							<MenuFlyout>
+								<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
+												Text="Delete"
+												Command="{Binding ElementName=LayoutRoot, Path=DataContext.DeleteEntryCommand}"
+												CommandParameter="{Binding}" />
 
-							<linqua:EntryListItemView DataContext="{Binding}"
-													  Margin="0,0,0,5" />
-						</ContentControl>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
+								<MenuFlyout.MenuFlyoutPresenterStyle>
+									<Style TargetType="MenuFlyoutPresenter">
+										<Setter Property="ScrollViewer.ZoomMode"
+												Value="Disabled" />
+										<Setter Property="Background"
+												Value="White" />
+										<Setter Property="BorderBrush"
+												Value="Gray" />
+										<Setter Property="Foreground"
+												Value="Black" />
+									</Style>
+								</MenuFlyout.MenuFlyoutPresenterStyle>
+							</MenuFlyout>
+						</FlyoutBase.AttachedFlyout>
+					</linqua:EntryListItemView>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
 	</Grid>
 </UserControl>

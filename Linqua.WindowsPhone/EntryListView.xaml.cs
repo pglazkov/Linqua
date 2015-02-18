@@ -25,10 +25,7 @@ namespace Linqua
 
 	    private void EntryPressed(object sender, PointerRoutedEventArgs e)
 	    {
-			//var senderElement = sender as FrameworkElement;
-			//var flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
-
-			//flyoutBase.ShowAt(senderElement);
+			
 	    }
 
 	    private void EntryLoaded(object sender, RoutedEventArgs e)
@@ -37,28 +34,27 @@ namespace Linqua
 
 			var entryVm = (EntryListItemViewModel)entryView.DataContext;
 
-			Guard.Assert(entryVm != null, "entryVm != null");
+		    if (entryVm == null)
+		    {
+			    return;
+		    }
 
 		    if (entryVm.JustAdded)
 		    {
+			    var itemView = EntryItemsControl.ContainerFromItem(entryVm) as Control;
+
+			    if (itemView != null)
+			    {
+				    itemView.Focus(FocusState.Programmatic);
+			    }
+
 			    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 			    {
-				    entryView.Focus(FocusState.Programmatic);
+				    EntryItemsControl.ScrollIntoView(entryVm);
 			    });
+
+			    entryVm.JustAdded = false;
 		    }
-
-		    //if (entryVm.JustAdded)
-		    //{
-		    //	var entryView = EntryItemsControl.ItemContainerGenerator.ContainerFromItem(entryVm);
-
-		    //	var c = entryView as Control;
-
-
-		    //	if (c != null)
-		    //	{
-		    //		c.Focus(FocusState.Programmatic);
-		    //	}
-		    //}
 	    }
     }
 }

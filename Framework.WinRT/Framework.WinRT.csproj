@@ -51,6 +51,7 @@
       <DependentUpon>LocalizedStrings.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewLocator.cs" />
+    <Compile Include="VisualTreeHelperExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Nito.AsyncEx">

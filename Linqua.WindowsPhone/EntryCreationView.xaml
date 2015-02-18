@@ -27,7 +27,8 @@
 					 IsIndeterminate="True"
 					 VerticalAlignment="Bottom"
 					 Margin="0,0,0,1"
-					 Padding="0"/>
+					 Padding="0"
+					 Visibility="{Binding IsCreatingEntry, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
 		<!--<Button Grid.Column="1"
 		        Content="F1 M 35,19L 41,19L 41,35L 57,35L 57,41L 41,41L 41,57L 35,57L 35,41L 19,41L 19,35L 35,35L 35,19 Z"

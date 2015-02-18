@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Composition;
@@ -112,7 +113,31 @@ namespace Linqua
 
 			Guard.Assert(entryVm != null, "entryVm != null");
 
-		    EntryViewModels.Remove(entryVm);
+		    var entryIndex = EntryViewModels.IndexOf(entryVm);
+
+		    var previousOrNextEntryIndex = entryIndex > 0
+			                                   ? entryIndex - 1
+			                                   : (entryIndex < EntryViewModels.Count - 1
+				                                      ? entryIndex + 1
+				                                      : -1);
+
+		    EntryListItemViewModel previousOrNextEntry = null;
+
+		    if (previousOrNextEntryIndex >= 0)
+		    {
+			    previousOrNextEntry = EntryViewModels[previousOrNextEntryIndex];
+		    }
+
+		    EntryViewModels.RemoveAt(entryIndex);
+
+			// Move focus to previous or next entry
+			Dispatcher.BeginInvoke(new Action(() =>
+			{
+				if (previousOrNextEntry != null)
+				{
+					previousOrNextEntry.Focus();
+				}
+			}));
 	    }
 
 		private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)

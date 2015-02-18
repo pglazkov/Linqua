@@ -6,5 +6,6 @@ namespace Linqua
 {
     public interface IEntryListViewModelView
     {
+	    void Focus();
     }
 }
