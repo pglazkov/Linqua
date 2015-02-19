@@ -13,6 +13,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryCreationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreatedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequestedEvent.cs" />

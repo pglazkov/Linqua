@@ -117,8 +117,11 @@
 							  Command="{Binding AddWordCommand}" />
 			</CommandBar.PrimaryCommands>-->
 			<CommandBar.SecondaryCommands>
-				<AppBarButton x:Name="SendLogsButton"
-							  Label="(advanced) share logs"
+				<AppBarButton x:Uid="SyncButton" 
+							  Label="RES_MISSING sync"
+							  Command="{Binding SyncCommand}" />
+				<AppBarButton x:Uid="SendLogsButton" 
+							  Label="RES_MISSING (advanced) share logs"
 							  Command="{Binding SendLogsCommand}"/>
 			</CommandBar.SecondaryCommands>
 		</CommandBar>

@@ -20,7 +20,6 @@
 				 PlaceholderText="Tap to Add a New Word or Phrase"
 				 TextWrapping="Wrap"
 				 Margin="0"
-				 Height="70"
 				 IsEnabled="{Binding IsCreatingEntry, Converter={StaticResource InvertedBooleanConverter}}"/>
 		
 		<ProgressBar Grid.Column="0" 

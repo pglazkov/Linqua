@@ -7,14 +7,11 @@ namespace Linqua.Persistence
 {
 	public class OfflineSyncArguments
 	{
-		public static readonly OfflineSyncArguments Default = new OfflineSyncArguments(null);
-
-		public OfflineSyncArguments([CanBeNull] Expression<Func<ClientEntry, bool>> clientEntryFilter)
-		{
-			ClientEntryFilter = clientEntryFilter;
-		}
+		public static readonly OfflineSyncArguments Default = new OfflineSyncArguments();
 
 		[CanBeNull]
-		public Expression<Func<ClientEntry, bool>> ClientEntryFilter { get; private set; }
+		public Expression<Func<ClientEntry, bool>> ClientEntryFilter { get; set; }
+
+		public bool PurgeCache { get; set; }
 	}
 }

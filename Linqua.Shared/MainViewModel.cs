@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Devices.Enumeration;
 using Framework;
 using Framework.PlatformServices;
 using Linqua.DataObjects;
@@ -29,6 +30,7 @@ namespace Linqua
 				EntryCreationViewModel = new EntryCreationViewModel(DesignTimeHelper.EventAggregator);
 			}
 
+			SyncCommand = new DelegateCommand(ForceSync);
 			SendLogsCommand = new DelegateCommand(SendLogs);
 			AddWordCommand = new DelegateCommand(AddWord);
 	    }
@@ -55,7 +57,8 @@ namespace Linqua
 	    }
 
 		public ICommand SendLogsCommand { get; private set; }
-	    public ICommand AddWordCommand { get; private set; }		
+	    public ICommand AddWordCommand { get; private set; }
+		public ICommand SyncCommand { get; private set; }
 
 		public IMainView View { get; set; }
 
@@ -129,7 +132,7 @@ namespace Linqua
 		    
 	    }
 
-	    public async Task SyncAsync()
+	    public async Task SyncAsync(bool force = false)
 	    {
 		    using (statusBusyService.Busy("Syncing..."))
 		    {
@@ -138,11 +141,19 @@ namespace Linqua
 
 			    // Now when the data from cache is loaded and shown to the user sync with 
 			    // the cloud and refresh the data.
-			    await storage.EnqueueSync();
+			    await storage.EnqueueSync(new OfflineSyncArguments
+			    {
+				    PurgeCache = force
+			    });
 
 			    await RefreshAsync();
 		    }
 	    }
+
+		private void ForceSync()
+		{
+			SyncAsync(true).FireAndForget();
+		}
 
 	    private void AddWord()
 		{
@@ -201,9 +212,9 @@ namespace Linqua
 	    {
 			IWinRTLogManager logManager = LogManagerFactory.DefaultLogManager as IWinRTLogManager;
 
-			if (logManager != null)
-			{
-				await logManager.ShareLogFile(string.Format("Linqua Logs - {0:s}", DateTime.UtcNow), "Linqua compressed log files.");
+		    if (logManager != null)
+		    {
+			    await logManager.ShareLogFile(string.Format("Linqua Logs - {0:s} | {1}", DateTime.UtcNow, DeviceInfo.DeviceId), "Linqua compressed log files.");
 			}
 	    }
     }

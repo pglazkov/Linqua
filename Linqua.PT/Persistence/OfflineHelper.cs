@@ -87,10 +87,15 @@ namespace Linqua.Persistence
 				{
 					if (Log.IsDebugEnabled)
 						Log.Debug("Sync Started.");
-
+					
 					await MobileService.Client.SyncContext.PushAsync();
 
-					var entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
+					IMobileServiceSyncTable<ClientEntry> entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
+
+					if (args.PurgeCache)
+					{
+						await entryTable.PurgeAsync();
+					}
 
 					var mobileServiceTableQuery = entryTable.CreateQuery();
 
