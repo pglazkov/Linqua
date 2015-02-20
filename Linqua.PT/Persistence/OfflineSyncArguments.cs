@@ -10,7 +10,7 @@ namespace Linqua.Persistence
 		public static readonly OfflineSyncArguments Default = new OfflineSyncArguments();
 
 		[CanBeNull]
-		public Expression<Func<ClientEntry, bool>> ClientEntryFilter { get; set; }
+		public EntryQuery Query { get; set; }
 
 		public bool PurgeCache { get; set; }
 	}

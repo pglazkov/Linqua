@@ -152,6 +152,8 @@ namespace Linqua
 
 		private void ForceSync()
 		{
+			Log.Debug("Forcing synchronization.");
+
 			SyncAsync(true).FireAndForget();
 		}
 

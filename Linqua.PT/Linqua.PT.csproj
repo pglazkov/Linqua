@@ -41,6 +41,7 @@
     <Compile Include="LoggingHelper.cs" />
     <Compile Include="LoggingLayout.cs" />
     <Compile Include="MobileService.cs" />
+    <Compile Include="Persistence\EntryQuery.cs" />
     <Compile Include="Persistence\IDataStore.cs" />
     <Compile Include="Persistence\ISyncFailedHandler.cs" />
     <Compile Include="Persistence\MemoryDataStore.cs" />

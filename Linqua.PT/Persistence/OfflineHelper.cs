@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
 using JetBrains.Annotations;
@@ -47,12 +49,14 @@ namespace Linqua.Persistence
 		{
 			CheckInitialized();
 
-			var firstEntry = await MobileService.Client.GetSyncTable<ClientEntry>().Take(1).ToListAsync();
+			var firstEntry = (await MobileService.Client.GetSyncTable<ClientEntry>().Take(1).ToListAsync()).SingleOrDefault();
 
 			if (firstEntry == null)
 			{
 				await TrySyncAsync(args);
 			}
+
+			await TrySyncAsync(args);
 		}
 
 		public static async Task EnqueueSync(OfflineSyncArguments args = null)
@@ -92,19 +96,23 @@ namespace Linqua.Persistence
 
 					IMobileServiceSyncTable<ClientEntry> entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
 
+					IMobileServiceTableQuery<ClientEntry> mobileServiceTableQuery = entryTable.CreateQuery();
+
+					if (args.Query != null)
+					{
+						mobileServiceTableQuery = mobileServiceTableQuery.Where(args.Query.Expression);
+					}
+
+					string queryId = "entryItems" + (args.Query != null ? args.Query.Id : string.Empty);
+
 					if (args.PurgeCache)
 					{
-						await entryTable.PurgeAsync();
+						Log.Debug("Purging local store.");
+
+						await entryTable.PurgeAsync(queryId, mobileServiceTableQuery, CancellationToken.None);
 					}
 
-					var mobileServiceTableQuery = entryTable.CreateQuery();
-
-					if (args.ClientEntryFilter != null)
-					{
-						mobileServiceTableQuery = mobileServiceTableQuery.Where(args.ClientEntryFilter);
-					}
-
-					await entryTable.PullAsync("entryItems", mobileServiceTableQuery);
+					await entryTable.PullAsync(queryId, mobileServiceTableQuery);
 
 					if (Log.IsDebugEnabled)
 						Log.Debug("Sync completed.");
