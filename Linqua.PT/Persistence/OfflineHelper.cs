@@ -55,8 +55,6 @@ namespace Linqua.Persistence
 			{
 				await TrySyncAsync(args);
 			}
-
-			await TrySyncAsync(args);
 		}
 
 		public static async Task EnqueueSync(OfflineSyncArguments args = null)
