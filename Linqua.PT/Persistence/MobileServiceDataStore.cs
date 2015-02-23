@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Framework;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
+using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 
 namespace Linqua.Persistence
@@ -29,11 +30,20 @@ namespace Linqua.Persistence
 			//entryTable.SystemProperties = MobileServiceSystemProperties.CreatedAt;
 		}
 
-		public async Task<IEnumerable<ClientEntry>> LoadAllEntries()
+		public async Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
 		{
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
-				return await entryTable.OrderByDescending(x => x.CreatedAt).ToListAsync();
+				IMobileServiceTableQuery<ClientEntry> query = entryTable.CreateQuery();
+
+				if (filter != null)
+				{
+					query = query.Where(filter);
+				}
+
+				query = query.OrderByDescending(x => x.CreatedAt);
+
+				return await query.ToListAsync();
 			}
 		}
 
@@ -54,6 +64,16 @@ namespace Linqua.Persistence
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
 				await entryTable.DeleteAsync(entry);
+			}
+
+			OfflineHelper.EnqueueSync().FireAndForget();
+		}
+
+		public async Task UpdateEntry(ClientEntry entry)
+		{
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				await entryTable.UpdateAsync(entry);
 			}
 
 			OfflineHelper.EnqueueSync().FireAndForget();

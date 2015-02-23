@@ -10,13 +10,16 @@ namespace Linqua.Persistence
 	public interface IDataStore
 	{
 		[NotNull]
-		Task<IEnumerable<ClientEntry>> LoadAllEntries();
+		Task<IEnumerable<ClientEntry>> LoadEntries([CanBeNull] Expression<Func<ClientEntry, bool>> filter = null);
 
 		[NotNull]
 		Task<ClientEntry> AddEntry([NotNull] ClientEntry newEntry);
 
 		[NotNull]
 		Task DeleteEntry([NotNull] ClientEntry entry);
+
+		[NotNull]
+		Task UpdateEntry([NotNull] ClientEntry entry);
 
 		[NotNull]
 		Task InitializeAsync();

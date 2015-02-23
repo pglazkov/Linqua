@@ -9,5 +9,7 @@ namespace Linqua.Service.Models
 		public string Definition { get; set; }
 
 		public string UserId { get; set; }
+
+		public bool IsLearnt { get; set; }
 	}
 }

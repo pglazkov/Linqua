@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Linqua.DataObjects;
@@ -10,9 +11,14 @@ namespace Linqua.Persistence
 	//[Export(typeof(IDataStore))]
 	public class MemoryDataStore : IDataStore
 	{
-		public Task<IEnumerable<ClientEntry>> LoadAllEntries()
+		public Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
 		{
-			return Task.Factory.StartNew(() => (IEnumerable<ClientEntry>)FakeData.FakeWords);
+			return Task.Factory.StartNew(() =>
+			{
+				var predicate = (filter ?? (x => true)).Compile();
+
+				return FakeData.FakeWords.Where(predicate);
+			});
 		}
 
 		public Task<ClientEntry> AddEntry(ClientEntry newEntry)
@@ -25,6 +31,14 @@ namespace Linqua.Persistence
 		public Task DeleteEntry(ClientEntry entry)
 		{
 			FakeData.FakeWords.Remove(entry);
+
+			return Task.FromResult(true);
+		}
+
+		public Task UpdateEntry(ClientEntry entry)
+		{
+			FakeData.FakeWords.Remove(entry);
+			FakeData.FakeWords.Add(entry);
 
 			return Task.FromResult(true);
 		}

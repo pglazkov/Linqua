@@ -1,6 +1,7 @@
 ﻿using System;
 using Framework;
 using Linqua.DataObjects;
+using Linqua.Events;
 
 namespace Linqua
 {
@@ -28,6 +29,23 @@ namespace Linqua
 		public DateTime DateAdded
 		{
 			get { return Entry.CreatedAt.GetValueOrDefault().DateTime; }
+		}
+
+		public bool IsLearnt
+		{
+			get { return Entry.IsLearnt; }
+			set
+			{
+				if (Equals(IsLearnt, value))
+				{
+					return;
+				}
+
+				Entry.IsLearnt = value;
+				RaisePropertyChanged();
+
+				EventAggregator.Publish(new EntryIsLearntChangedEvent(this));
+			}
 		}
 	}
 }

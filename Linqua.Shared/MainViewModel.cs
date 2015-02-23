@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Devices.Enumeration;
@@ -54,9 +56,10 @@ namespace Linqua
 
 		    eventAggregator.GetEvent<EntryCreationRequestedEvent>().Subscribe(OnEntryCreationRequested);
 		    eventAggregator.GetEvent<EntryDeletionRequestedEvent>().Subscribe(OnEntryDeletionRequested);
+		    eventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
 	    }
 
-		public ICommand SendLogsCommand { get; private set; }
+	    public ICommand SendLogsCommand { get; private set; }
 	    public ICommand AddWordCommand { get; private set; }
 		public ICommand SyncCommand { get; private set; }
 
@@ -104,7 +107,7 @@ namespace Linqua
 			    try
 			    {
 					await storage.InitializeAsync();
-				    var words = await storage.LoadAllEntries();
+				    var words = await LoadEntries(storage);
 
 				    if (Log.IsDebugEnabled)
 					    Log.Debug("Loaded {0} entries from local storage.", words.Count());
@@ -130,6 +133,11 @@ namespace Linqua
 				EntryListViewModel.IsInitializationComplete = true;
 			}
 		    
+	    }
+
+	    private static Task<IEnumerable<ClientEntry>> LoadEntries(IDataStore storage)
+	    {
+		    return storage.LoadEntries(x => !x.IsLearnt);
 	    }
 
 	    public async Task SyncAsync(bool force = false)
@@ -195,7 +203,7 @@ namespace Linqua
 				Log.Debug("RefreshAsync");
 		    }
 
-		    var words = await storage.LoadAllEntries();
+		    var words = await LoadEntries(storage);
 
 		    if (Log.IsDebugEnabled)
 		    {
@@ -219,5 +227,20 @@ namespace Linqua
 			    await logManager.ShareLogFile(string.Format("Linqua Logs - {0:s} | {1}", DateTime.UtcNow, DeviceInfo.DeviceId), "Linqua compressed log files.");
 			}
 	    }
+
+		private async void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
+		{
+			storage.UpdateEntry(e.EntryViewModel.Entry).FireAndForget();
+
+			if (e.EntryViewModel.IsLearnt)
+			{
+				await Observable.Timer(TimeSpan.FromMilliseconds(400));
+
+				Dispatcher.BeginInvoke(new Action(() =>
+				{
+					EntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
+				}));
+			}
+		}
     }
 }

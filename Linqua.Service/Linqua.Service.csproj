@@ -199,6 +199,10 @@
     <Compile Include="Migrations\201501301430288_AddEntryUserId.Designer.cs">
       <DependentUpon>201501301430288_AddEntryUserId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201502230623030_AddEntryIsLearnt.cs" />
+    <Compile Include="Migrations\201502230623030_AddEntryIsLearnt.Designer.cs">
+      <DependentUpon>201502230623030_AddEntryIsLearnt.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Entry.cs" />
     <Compile Include="Models\LinquaContext.cs" />
@@ -229,6 +233,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201501301430288_AddEntryUserId.resx">
       <DependentUpon>201501301430288_AddEntryUserId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201502230623030_AddEntryIsLearnt.resx">
+      <DependentUpon>201502230623030_AddEntryIsLearnt.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

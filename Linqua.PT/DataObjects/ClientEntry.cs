@@ -23,6 +23,8 @@ namespace Linqua.DataObjects
 
 		public string Definition { get; set; }
 
+		public bool IsLearnt { get; set; }
+
 		[CreatedAt]
 		public DateTimeOffset? CreatedAt { get; set; }
 
@@ -30,7 +32,7 @@ namespace Linqua.DataObjects
 
 		protected bool Equals(ClientEntry other)
 		{
-			return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(Definition, other.Definition) && CreatedAt.Equals(other.CreatedAt);
+			return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(Definition, other.Definition) && IsLearnt.Equals(other.IsLearnt) && CreatedAt.Equals(other.CreatedAt);
 		}
 
 		public override bool Equals(object obj)
@@ -48,6 +50,7 @@ namespace Linqua.DataObjects
 				var hashCode = (Id != null ? Id.GetHashCode() : 0);
 				hashCode = (hashCode * 397) ^ (Text != null ? Text.GetHashCode() : 0);
 				hashCode = (hashCode * 397) ^ (Definition != null ? Definition.GetHashCode() : 0);
+				hashCode = (hashCode * 397) ^ IsLearnt.GetHashCode();
 				hashCode = (hashCode * 397) ^ CreatedAt.GetHashCode();
 				return hashCode;
 			}

@@ -20,7 +20,7 @@ namespace Linqua.Service.Controllers
             DomainManager = new EntryDomainManager(context, Request, Services, true);
         }
 
-        // GET tables/ClientEntry
+		// GET tables/ClientEntry
         public IQueryable<ClientEntry> GetAllEntries()
         {
 			// Get the logged-in user.
