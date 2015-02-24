@@ -92,12 +92,16 @@ namespace Linqua
 		    }
 	    }
 
-	    public void AddEntry(ClientEntry newEntry)
+		public EntryListItemViewModel AddEntry(ClientEntry newEntry)
 	    {
-		    EntryViewModels.Insert(0, new EntryListItemViewModel(newEntry, justAdded: true));
+		    var viewModel = new EntryListItemViewModel(newEntry, justAdded: true);
+
+		    EntryViewModels.Insert(0, viewModel);
+
+			return viewModel;
 	    }
 
-		private void DeleteEntry(EntryListItemViewModel obj)
+	    private void DeleteEntry(EntryListItemViewModel obj)
 		{
 			EventAggregator.Publish(new EntryDeletionRequestedEvent(obj.Entry));
 		}

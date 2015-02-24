@@ -21,7 +21,7 @@ namespace Linqua
 
 		public IEntryListViewModelView View { get; set; }
 
-		public bool JustAdded { get; set; }
+		public bool JustAdded { get; set; }	
 
 		public void Focus()
 		{

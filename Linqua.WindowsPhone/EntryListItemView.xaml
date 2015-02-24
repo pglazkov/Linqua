@@ -47,17 +47,31 @@
 					   TextWrapping="Wrap"
 					   Margin="0" />
 
-			<TextBlock Grid.Row="1"
+			<!--<TextBlock Grid.Row="1"
 					   Grid.Column="0"
 					   Text="{Binding DateAdded}"
 					   Margin="0,2,0,0"
-					   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}" />
+					   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}" />-->
+			
+			<Grid Grid.Row="1" 
+				  Grid.Column="0"
+				  Margin="0,2,0,0"
+				  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+				<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock" 
+						   Text="RES_MISSING Translating..."
+						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+						   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+				<TextBlock Text="{Binding Definition}"
+						   TextWrapping="Wrap"
+						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+						   Visibility="{Binding IsTranslating, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+			</Grid>
 
 			<ToggleButton Grid.Row="0"
 						  Grid.RowSpan="2"
 						  Grid.Column="1"
 						  Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
-						  ToolTipService.ToolTip="Mark as Learned"
 						  Margin="10,0,0,0"
 						  Padding="0"
 						  VerticalContentAlignment="Center"

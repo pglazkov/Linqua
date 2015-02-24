@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)EntryCreationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreatedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequestedEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDefinitionChangedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryIsLearntChangedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEntryListViewModelView.cs" />

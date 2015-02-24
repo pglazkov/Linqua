@@ -126,6 +126,9 @@
   <data name="DeleteFlyoutItem.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
+  <data name="EntryListItemView_TranslatingBusyTextBlock.Text" xml:space="preserve">
+    <value>Translating...</value>
+  </data>
   <data name="NoEntriesTextBlock.Text" xml:space="preserve">
     <value>It's lonely here...</value>
   </data>

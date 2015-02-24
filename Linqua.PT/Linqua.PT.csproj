@@ -56,6 +56,11 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="SecurityManager.cs" />
+    <Compile Include="Translation\ITranslationService.cs" />
+    <Compile Include="Translation\Microsoft\AdmAccessToken.cs" />
+    <Compile Include="Translation\Microsoft\AdmAuthentication.cs" />
+    <Compile Include="Translation\Microsoft\MicrosoftTranslationService.cs" />
+    <Compile Include="Translation\Microsoft\TranslatorServiceConsts.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MetroLog">

@@ -7,6 +7,8 @@ namespace Linqua
 {
 	public class EntryViewModel : ViewModelBase
 	{
+		private bool isTranslating;
+
 		protected EntryViewModel()
 		{
 			
@@ -46,6 +48,41 @@ namespace Linqua
 
 				EventAggregator.Publish(new EntryIsLearntChangedEvent(this));
 			}
+		}
+
+		public bool IsTranslating
+		{
+			get { return isTranslating; }
+			set
+			{
+				if (value.Equals(isTranslating)) return;
+				isTranslating = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsDefinitionVisible);
+			}
+		}
+
+		public string Definition
+		{
+			get { return Entry.Definition; }
+			set
+			{
+				if (Equals(Definition, value))
+				{
+					return;
+				}
+
+				Entry.Definition = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsDefinitionVisible);
+
+				EventAggregator.Publish(new EntryDefinitionChangedEvent(this));
+			}
+		}
+
+		public bool IsDefinitionVisible
+		{
+			get { return !string.IsNullOrEmpty(Definition) || IsTranslating; }
 		}
 	}
 }
