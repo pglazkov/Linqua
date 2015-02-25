@@ -49,11 +49,12 @@
 			<StackPanel x:Name="TitlePanel"
 						Margin="12,17,0,17">
 				<TextBlock x:Uid="ApplicationHeader"
-						   Text="LINQUA"
+						   Text="REST_MISSING LINQUA"
 						   Style="{ThemeResource TitleTextBlockStyle}"
 						   Foreground="{StaticResource TextOnThemeBackgroundBrush}"
 						   Margin="12,0" />
-				<TextBlock Text="my words"
+				<TextBlock x:Uid="MainPageHeader"
+						   Text="RES_MISSING vocabulary"
 						   Margin="9,-7,0,0"
 						   Style="{ThemeResource HeaderTextBlockStyle}"
 						   Foreground="{StaticResource TextOnThemeBackgroundBrush}"/>
