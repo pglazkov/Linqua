@@ -286,7 +286,7 @@ namespace Linqua
 
 			if (e.EntryViewModel.IsLearnt)
 			{
-				await Observable.Timer(TimeSpan.FromMilliseconds(400));
+				await Observable.Timer(TimeSpan.FromMilliseconds(300));
 
 				Dispatcher.BeginInvoke(new Action(() =>
 				{
