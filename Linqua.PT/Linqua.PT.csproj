@@ -58,7 +58,10 @@
     <Compile Include="SecurityManager.cs" />
     <Compile Include="Translation\ITranslationService.cs" />
     <Compile Include="Translation\Microsoft\AdmAccessToken.cs" />
-    <Compile Include="Translation\Microsoft\AdmAuthentication.cs" />
+    <Compile Include="Translation\Microsoft\MicrosoftAccessTokenProvider.cs" />
+    <Compile Include="Translation\Microsoft\IMicrosoftAccessTokenProvider.cs" />
+    <Compile Include="Translation\Microsoft\MicrosoftApiException.cs" />
+    <Compile Include="Translation\Microsoft\MicrosoftApiHelper.cs" />
     <Compile Include="Translation\Microsoft\MicrosoftTranslationService.cs" />
     <Compile Include="Translation\Microsoft\TranslatorServiceConsts.cs" />
   </ItemGroup>

@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Framework;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace Linqua.Translation.Microsoft
@@ -11,22 +12,32 @@ namespace Linqua.Translation.Microsoft
 	[Export(typeof(ITranslationService))]
 	public class MicrosoftTranslationService : ITranslationService
 	{
-		private AdmAuthentication authentication;
+		private const string DetectLanguageUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Detect?text={0}";
+		private const string TranslateUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text={0}&from={1}&to={2}";
+
+		private readonly IMicrosoftAccessTokenProvider accessTokenProvider;
+
+		[ImportingConstructor]
+		public MicrosoftTranslationService([NotNull] IMicrosoftAccessTokenProvider accessTokenProvider)
+		{
+			Guard.NotNull(accessTokenProvider, () => accessTokenProvider);
+
+			this.accessTokenProvider = accessTokenProvider;
+		}
 
 		public async Task<string> DetectLanguageAsync(string text)
 		{
 			Guard.NotNullOrEmpty(text, () => text);
 
-			var accessToken = await GetAccessTokenAsync();
-
-			var uri = "http://api.microsofttranslator.com/v2/Http.svc/Detect?text=" + text;
+			var uri = string.Format(DetectLanguageUriTemplate, text);
 
 			using (var httpClient = new HttpClient())
 			{
-				httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+				await ConfigureRequestAuthentication(httpClient);
+
 				var response = await httpClient.GetAsync(uri);
 
-				await ThrowIfErrorResponse(response);
+				await MicrosoftApiHelper.ThrowIfErrorResponse(response);
 
 				var responseStream = await response.Content.ReadAsStreamAsync();
 
@@ -43,16 +54,14 @@ namespace Linqua.Translation.Microsoft
 			Guard.NotNullOrEmpty(fromLanguageCode, () => fromLanguageCode);
 			Guard.NotNullOrEmpty(toLanguageCode, () => toLanguageCode);
 
-			var accessToken = await GetAccessTokenAsync();
-
-			string uri = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text=" + Uri.EscapeUriString(text) + "&from=" + fromLanguageCode + "&to=" + toLanguageCode;
+			string uri = string.Format(TranslateUriTemplate, Uri.EscapeUriString(text), fromLanguageCode, toLanguageCode);
 
 			using (var httpClient = new HttpClient())
 			{
-				httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+				await ConfigureRequestAuthentication(httpClient);
 				var response = await httpClient.GetAsync(uri);
 
-				await ThrowIfErrorResponse(response);
+				await MicrosoftApiHelper.ThrowIfErrorResponse(response);
 
 				var responseStream = await response.Content.ReadAsStreamAsync();
 
@@ -63,27 +72,10 @@ namespace Linqua.Translation.Microsoft
 			}
 		}
 
-		private static async Task ThrowIfErrorResponse(HttpResponseMessage response)
+		private async Task ConfigureRequestAuthentication(HttpClient httpClient)
 		{
-			if (!response.IsSuccessStatusCode)
-			{
-				string responseString = await response.Content.ReadAsStringAsync();
-				var responseJson = JToken.Parse(responseString);
-
-				string errorType = responseJson.Value<string>("error");
-				string errorDescription = responseJson.Value<string>("error_description");
-				throw new HttpRequestException(string.Format("Azure market place request failed: {0} {1}", errorType, errorDescription));
-			}
-		}
-
-		private async Task<string> GetAccessTokenAsync()
-		{
-			if (authentication == null)
-			{
-				authentication = await AdmAuthentication.CreateAndAuthenticateAsync();
-			}
-
-			return authentication.GetAccessToken().access_token;
+			var accessToken = await accessTokenProvider.GetAccessTokenAsync();
+			httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
 		}
 	}
 }
