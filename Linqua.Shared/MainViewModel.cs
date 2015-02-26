@@ -209,21 +209,47 @@ namespace Linqua
 
 			try
 			{
-				if (Log.IsDebugEnabled)
-					Log.Debug("Detecting language of \"{0}\"", entryItem.Entry.Text);
+				string translation = null;
 
-				var entryLanguage = await translator.Value.DetectLanguageAsync(entryItem.Entry.Text);
+				try
+				{
+					if (Log.IsDebugEnabled)
+						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entryItem.Text);
 
-				if (Log.IsDebugEnabled)
-					Log.Debug("Detected language: " + entryLanguage);
+					var existingEntry = await storage.LookupAlreadyExisting(entryItem.Entry);
 
-				if (Log.IsDebugEnabled)
-					Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entryItem.Entry.Text, entryLanguage, "en");
+					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
+					{
+						if (Log.IsDebugEnabled)
+							Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
 
-				var translation = await translator.Value.TranslateAsync(entryItem.Entry.Text, entryLanguage, "en");
+						translation = existingEntry.Definition;
+					}
+				}
+				catch (Exception ex)
+				{
+					if (Log.IsErrorEnabled)
+						Log.Error("An error occured while trying to find an existing entry.", ex);
+				}
 
-				if (Log.IsDebugEnabled)
-					Log.Debug("Translation: \"{0}\"", translation);
+				if (string.IsNullOrEmpty(translation))
+				{
+					if (Log.IsDebugEnabled)
+						Log.Debug("Detecting language of \"{0}\"", entryItem.Entry.Text);
+
+					var entryLanguage = await translator.Value.DetectLanguageAsync(entryItem.Entry.Text);
+
+					if (Log.IsDebugEnabled)
+						Log.Debug("Detected language: " + entryLanguage);
+
+					if (Log.IsDebugEnabled)
+						Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entryItem.Entry.Text, entryLanguage, "en");
+
+					translation = await translator.Value.TranslateAsync(entryItem.Entry.Text, entryLanguage, "en");
+
+					if (Log.IsDebugEnabled)
+						Log.Debug("Translation: \"{0}\"", translation);
+				}
 
 				entryItem.Definition = translation;
 			}

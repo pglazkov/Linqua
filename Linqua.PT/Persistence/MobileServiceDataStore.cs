@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Composition;
 using System.Linq.Expressions;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Framework;
 using JetBrains.Annotations;
@@ -15,7 +16,7 @@ namespace Linqua.Persistence
 	public class MobileServiceDataStore : IDataStore
 	{
 		//private readonly IMobileServiceTable<ClientEntry> entryTable;
-		private readonly IMobileServiceSyncTable<ClientEntry> entryTable;
+		private readonly IMobileServiceSyncTable<ClientEntry> entrySyncTable;
 		private readonly IMobileServiceSyncHandler syncHandler;
 
 		[ImportingConstructor]
@@ -26,7 +27,7 @@ namespace Linqua.Persistence
 			this.syncHandler = syncHandler;
 
 			//entryTable = MobileService.Client.GetTable<ClientEntry>();
-			entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
+			entrySyncTable = MobileService.Client.GetSyncTable<ClientEntry>();
 			//entryTable.SystemProperties = MobileServiceSystemProperties.CreatedAt;
 		}
 
@@ -34,7 +35,7 @@ namespace Linqua.Persistence
 		{
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
-				IMobileServiceTableQuery<ClientEntry> query = entryTable.CreateQuery();
+				IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
 
 				if (filter != null)
 				{
@@ -47,11 +48,37 @@ namespace Linqua.Persistence
 			}
 		}
 
+		public async Task<ClientEntry> LookupAlreadyExisting(ClientEntry example)
+		{
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				if (ConnectionHelper.IsConnectedToInternet)
+				{
+					var parameters = new Dictionary<string, string>();
+
+					parameters.Add("entryText", example.Text);
+
+					var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("EntryLookup", HttpMethod.Post, parameters);
+
+					return serviceResult;
+				}
+
+				var existingEntiesInLocalStorage = await entrySyncTable.Where(x => x.Text == example.Text && x.Id != example.Id).ToListAsync();
+
+				if (existingEntiesInLocalStorage.Count > 0)
+				{
+					return existingEntiesInLocalStorage[0];
+				}
+			}
+
+			return null;
+		}
+
 		public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
-				await entryTable.InsertAsync(newEntry);
+				await entrySyncTable.InsertAsync(newEntry);
 			}
 
 			OfflineHelper.EnqueueSync().FireAndForget();
@@ -63,7 +90,7 @@ namespace Linqua.Persistence
 		{
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
-				await entryTable.DeleteAsync(entry);
+				await entrySyncTable.DeleteAsync(entry);
 			}
 
 			OfflineHelper.EnqueueSync().FireAndForget();
@@ -73,7 +100,7 @@ namespace Linqua.Persistence
 		{
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
-				await entryTable.UpdateAsync(entry);
+				await entrySyncTable.UpdateAsync(entry);
 			}
 
 			OfflineHelper.EnqueueSync().FireAndForget();

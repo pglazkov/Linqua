@@ -21,6 +21,14 @@ namespace Linqua.Persistence
 			});
 		}
 
+		public Task<ClientEntry> LookupAlreadyExisting(ClientEntry example)
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				return example;
+			});
+		}
+
 		public Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{
 			FakeData.FakeWords.Add(newEntry);
