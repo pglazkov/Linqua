@@ -47,7 +47,7 @@
 		<Border Grid.Row="0"
 				Background="{StaticResource ApplicationThemeBrush}">
 			<StackPanel x:Name="TitlePanel"
-						Margin="12,17,0,17">
+						Margin="12,8,0,12">
 				<TextBlock x:Uid="ApplicationHeader"
 						   Text="REST_MISSING LINQUA"
 						   Style="{ThemeResource TitleTextBlockStyle}"
