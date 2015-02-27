@@ -182,25 +182,37 @@ namespace Linqua
 
 		private async void OnEntryCreationRequested(EntryCreationRequestedEvent e)
 		{
-			var newEntry = new ClientEntry(e.EntryText);
-
-			EntryListItemViewModel newEntryViewModel = null;
-
-			using (statusBusyService.Busy("Saving..."))
-			{
-				var addedEntry = await storage.AddEntry(newEntry);
-
-				newEntryViewModel = EntryListViewModel.AddEntry(addedEntry);
-
-				EntryCreationViewModel.Clear();
-
-				EventAggregator.Publish(new EntryCreatedEvent(addedEntry));
-			}
+			EntryListItemViewModel newEntryViewModel = EntryListViewModel.MoveToTopIfExists(e.EntryText);
 
 			if (newEntryViewModel != null)
 			{
-				await TranslateEntryItemAsync(newEntryViewModel);
+				OnEntryAdded(newEntryViewModel.Entry);
 			}
+			else
+			{
+				var newEntry = new ClientEntry(e.EntryText);
+
+				using (statusBusyService.Busy("Saving..."))
+				{
+					var addedEntry = await storage.AddEntry(newEntry);
+
+					newEntryViewModel = EntryListViewModel.AddEntry(addedEntry);
+
+					OnEntryAdded(addedEntry);
+				}
+
+				if (newEntryViewModel != null && string.IsNullOrWhiteSpace(newEntryViewModel.Definition))
+				{
+					await TranslateEntryItemAsync(newEntryViewModel);
+				}
+			}
+		}
+
+		private void OnEntryAdded(ClientEntry addedEntry)
+		{
+			EntryCreationViewModel.Clear();
+
+			EventAggregator.Publish(new EntryCreatedEvent(addedEntry));
 		}
 
 		private async Task TranslateEntryItemAsync(EntryListItemViewModel entryItem)

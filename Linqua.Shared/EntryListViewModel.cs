@@ -158,5 +158,23 @@ namespace Linqua
 
 			ThereAreNoEntries = EntryViewModels.Count == 0;
 		}
+
+	    public EntryListItemViewModel MoveToTopIfExists(string entryText)
+	    {
+		    var existingEntry = EntryViewModels.FirstOrDefault(x => string.Equals(x.Text, entryText, StringComparison.CurrentCultureIgnoreCase));
+
+		    if (existingEntry != null)
+		    {
+			    EntryViewModels.Remove(existingEntry);
+
+			    existingEntry.JustAdded = true;
+
+				EntryViewModels.Insert(0, existingEntry);
+
+			    return existingEntry;
+		    }
+
+		    return null;
+	    }
     }
 }

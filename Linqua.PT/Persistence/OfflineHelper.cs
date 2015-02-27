@@ -93,7 +93,7 @@ namespace Linqua.Persistence
 					await MobileService.Client.SyncContext.PushAsync();
 
 					IMobileServiceSyncTable<ClientEntry> entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
-
+					
 					IMobileServiceTableQuery<ClientEntry> mobileServiceTableQuery = entryTable.CreateQuery();
 
 					if (args.Query != null)

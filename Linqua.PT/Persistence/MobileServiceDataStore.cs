@@ -76,14 +76,30 @@ namespace Linqua.Persistence
 
 		public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{
+			ClientEntry resultEntry = null;
+
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
-				await entrySyncTable.InsertAsync(newEntry);
+				var existingEntries = await entrySyncTable.Where(x => x.Text == newEntry.Text).ToListAsync();
+
+				if (existingEntries.Count > 0)
+				{
+					resultEntry = existingEntries[0];
+					resultEntry.IsLearnt = false;
+
+					await entrySyncTable.UpdateAsync(resultEntry);
+				}
+				else
+				{
+					resultEntry = newEntry;
+
+					await entrySyncTable.InsertAsync(newEntry);
+				}
 			}
 
 			OfflineHelper.EnqueueSync().FireAndForget();
 
-			return newEntry;
+			return resultEntry;
 		}
 
 		public async Task DeleteEntry(ClientEntry entry)
