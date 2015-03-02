@@ -12,6 +12,7 @@ using Linqua.Events;
 using Linqua.Persistence;
 using Linqua.Translation;
 using MetroLog;
+using Nito.AsyncEx;
 
 namespace Linqua
 {
@@ -25,6 +26,7 @@ namespace Linqua
 		private readonly Lazy<ITranslationService> translator;
 		private EntryListViewModel entryListViewModel;
 		private bool isLoadingEntries;
+		private static readonly AsyncLock RefreshLock = new AsyncLock();
 
 		public MainViewModel()
 		{
@@ -66,7 +68,7 @@ namespace Linqua
 			eventAggregator.GetEvent<EntryCreationRequestedEvent>().Subscribe(OnEntryCreationRequested);
 			eventAggregator.GetEvent<EntryDeletionRequestedEvent>().Subscribe(OnEntryDeletionRequested);
 			eventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
-			eventAggregator.GetEvent<EntryDefinitionChangedEvent>().Subscribe(OnEntryDefinitionChanged);
+			eventAggregator.GetEvent<EntryDefinitionChangedEvent>().SubscribeWithAsync(OnEntryDefinitionChangedAsync);
 		}
 
 		public ICommand SendLogsCommand { get; private set; }
@@ -182,28 +184,31 @@ namespace Linqua
 
 		private async void OnEntryCreationRequested(EntryCreationRequestedEvent e)
 		{
-			EntryListItemViewModel newEntryViewModel = EntryListViewModel.MoveToTopIfExists(e.EntryText);
-
-			if (newEntryViewModel != null)
+			using (await RefreshLock.LockAsync())
 			{
-				OnEntryAdded(newEntryViewModel.Entry);
-			}
-			else
-			{
-				var newEntry = new ClientEntry(e.EntryText);
+				EntryListItemViewModel newEntryViewModel = EntryListViewModel.MoveToTopIfExists(e.EntryText);
 
-				using (statusBusyService.Busy("Saving..."))
+				if (newEntryViewModel != null)
 				{
-					var addedEntry = await storage.AddEntry(newEntry);
-
-					newEntryViewModel = EntryListViewModel.AddEntry(addedEntry);
-
-					OnEntryAdded(addedEntry);
+					OnEntryAdded(newEntryViewModel.Entry);
 				}
-
-				if (newEntryViewModel != null && string.IsNullOrWhiteSpace(newEntryViewModel.Definition))
+				else
 				{
-					await TranslateEntryItemAsync(newEntryViewModel);
+					var newEntry = new ClientEntry(e.EntryText);
+
+					using (statusBusyService.Busy("Saving..."))
+					{
+						var addedEntry = await storage.AddEntry(newEntry);
+
+						newEntryViewModel = EntryListViewModel.AddEntry(addedEntry);
+
+						OnEntryAdded(addedEntry);
+					}
+
+					if (newEntryViewModel != null && string.IsNullOrWhiteSpace(newEntryViewModel.Definition))
+					{
+						await TranslateEntryItemAsync(newEntryViewModel);
+					}
 				}
 			}
 		}
@@ -217,90 +222,99 @@ namespace Linqua
 
 		private async Task TranslateEntryItemAsync(EntryListItemViewModel entryItem)
 		{
-			entryItem.IsTranslating = true;
-
-			try
+			using (await RefreshLock.LockAsync())
 			{
-				string translation = null;
+				entryItem.IsTranslating = true;
 
 				try
 				{
-					if (Log.IsDebugEnabled)
-						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entryItem.Text);
+					string translation = null;
 
-					var existingEntry = await storage.LookupAlreadyExisting(entryItem.Entry);
-
-					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
+					try
 					{
 						if (Log.IsDebugEnabled)
-							Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
+							Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entryItem.Text);
 
-						translation = existingEntry.Definition;
+						var existingEntry = await storage.LookupAlreadyExisting(entryItem.Entry);
+
+						if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
+						{
+							if (Log.IsDebugEnabled)
+								Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
+
+							translation = existingEntry.Definition;
+						}
 					}
+					catch (Exception ex)
+					{
+						if (Log.IsErrorEnabled)
+							Log.Error("An error occured while trying to find an existing entry.", ex);
+					}
+
+					if (string.IsNullOrEmpty(translation))
+					{
+						if (Log.IsDebugEnabled)
+							Log.Debug("Detecting language of \"{0}\"", entryItem.Entry.Text);
+
+						var entryLanguage = await translator.Value.DetectLanguageAsync(entryItem.Entry.Text);
+
+						if (Log.IsDebugEnabled)
+							Log.Debug("Detected language: " + entryLanguage);
+
+						if (Log.IsDebugEnabled)
+							Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entryItem.Entry.Text, entryLanguage, "en");
+
+						translation = await translator.Value.TranslateAsync(entryItem.Entry.Text, entryLanguage, "en");
+
+						if (Log.IsDebugEnabled)
+							Log.Debug("Translation: \"{0}\"", translation);
+					}
+
+					entryItem.Definition = translation;
 				}
 				catch (Exception ex)
 				{
 					if (Log.IsErrorEnabled)
-						Log.Error("An error occured while trying to find an existing entry.", ex);
+						Log.Error("An error occured while trying to translate an entry.", ex);
 				}
-
-				if (string.IsNullOrEmpty(translation))
+				finally
 				{
-					if (Log.IsDebugEnabled)
-						Log.Debug("Detecting language of \"{0}\"", entryItem.Entry.Text);
-
-					var entryLanguage = await translator.Value.DetectLanguageAsync(entryItem.Entry.Text);
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Detected language: " + entryLanguage);
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entryItem.Entry.Text, entryLanguage, "en");
-
-					translation = await translator.Value.TranslateAsync(entryItem.Entry.Text, entryLanguage, "en");
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Translation: \"{0}\"", translation);
+					entryItem.IsTranslating = false;
 				}
-
-				entryItem.Definition = translation;
-			}
-			catch (Exception ex)
-			{
-				if (Log.IsErrorEnabled)
-					Log.Error("An error occured while trying to translate an entry.", ex);
-			}
-			finally
-			{
-				entryItem.IsTranslating = false;
 			}
 		}
 
 		private async void OnEntryDeletionRequested(EntryDeletionRequestedEvent e)
 		{
-			using (statusBusyService.Busy("Deleting..."))
+			using (await RefreshLock.LockAsync())
 			{
-				await storage.DeleteEntry(e.EntryToDelete);
+				using (statusBusyService.Busy("Deleting..."))
+				{
+					await storage.DeleteEntry(e.EntryToDelete);
 
-				EntryListViewModel.DeleteEntryFromUI(e.EntryToDelete);
+					EntryListViewModel.DeleteEntryFromUI(e.EntryToDelete);
+				}
 			}
 		}
 
 		public async Task RefreshAsync()
 		{
-			if (Log.IsDebugEnabled)
+			using (await RefreshLock.LockAsync())
 			{
-				Log.Debug("RefreshAsync");
+				if (Log.IsDebugEnabled)
+				{
+					Log.Debug("RefreshAsync");
+				}
+
+				var words = await LoadEntries(storage);
+
+				if (Log.IsDebugEnabled)
+				{
+					Log.Debug("Loaded {0} entries from local storage.", words.Count());
+				}
+
+				EntryListViewModel.Entries = words;
 			}
-
-			var words = await LoadEntries(storage);
-
-			if (Log.IsDebugEnabled)
-			{
-				Log.Debug("Loaded {0} entries from local storage.", words.Count());
-			}
-
-			EntryListViewModel.Entries = words;
 		}
 
 		private void SendLogs()
@@ -320,22 +334,28 @@ namespace Linqua
 
 		private async void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
 		{
-			storage.UpdateEntry(e.EntryViewModel.Entry).FireAndForget();
-
-			if (e.EntryViewModel.IsLearnt)
+			using (await RefreshLock.LockAsync())
 			{
-				await Observable.Timer(TimeSpan.FromMilliseconds(300));
+				storage.UpdateEntry(e.EntryViewModel.Entry).FireAndForget();
 
-				Dispatcher.BeginInvoke(new Action(() =>
+				if (e.EntryViewModel.IsLearnt)
 				{
-					EntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
-				}));
+					await Observable.Timer(TimeSpan.FromMilliseconds(300));
+
+					Dispatcher.BeginInvoke(new Action(() =>
+					{
+						EntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
+					}));
+				}
 			}
 		}
 
-		private void OnEntryDefinitionChanged(EntryDefinitionChangedEvent e)
+		private async Task OnEntryDefinitionChangedAsync(EntryDefinitionChangedEvent e)
 		{
-			storage.UpdateEntry(e.EntryViewModel.Entry).FireAndForget();
+			using (await RefreshLock.LockAsync())
+			{
+				await storage.UpdateEntry(e.EntryViewModel.Entry);
+			}
 		}
 	}
 }

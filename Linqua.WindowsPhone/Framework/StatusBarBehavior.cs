@@ -7,7 +7,7 @@ using Microsoft.Xaml.Interactivity;
 
 namespace Linqua.Framework
 {
-	// Take from here: http://www.visuallylocated.com/post/2014/04/08/Creating-a-behavior-to-control-the-new-StatusBar-(SystemTray)-in-Windows-Phone-81-XAML-apps.aspx
+	// Taken from here: http://www.visuallylocated.com/post/2014/04/08/Creating-a-behavior-to-control-the-new-StatusBar-(SystemTray)-in-Windows-Phone-81-XAML-apps.aspx
 	public class StatusBarBehavior : DependencyObject, IBehavior
 	{
 		#region IsVisible DP

@@ -5,16 +5,11 @@
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	  xmlns:z="using:Framework"
-	  mc:Ignorable="d"
+      mc:Ignorable="d"
 	  Background="{StaticResource ApplicationThemeBrush}"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
 	  RequestedTheme="Light"
 	  x:Name="ThisPage">
-
-	<!--<i:Interaction.Behaviors>
-		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"
-									 ForegroundColor="White"/>
-	</i:Interaction.Behaviors>-->
 	
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot"
@@ -48,11 +43,22 @@
 				Background="{StaticResource ApplicationThemeBrush}">
 			<StackPanel x:Name="TitlePanel"
 						Margin="12,8,0,12">
-				<TextBlock x:Uid="ApplicationHeader"
-						   Text="REST_MISSING LINQUA"
-						   Style="{ThemeResource TitleTextBlockStyle}"
-						   Foreground="{StaticResource TextOnThemeBackgroundBrush}"
-						   Margin="12,0" />
+				<StackPanel Orientation="Horizontal"
+							Margin="12,0">
+					<Image Source="Resources/Images/icon-48x48px.png"
+						   Width="32"
+						   Height="32"
+						   Stretch="UniformToFill"
+						   VerticalAlignment="Center"/>
+
+					<TextBlock x:Uid="ApplicationHeader"
+							   Text="REST_MISSING LINQUA"
+							   Style="{ThemeResource TitleTextBlockStyle}"
+							   Foreground="{StaticResource TextOnThemeBackgroundBrush}"
+							   VerticalAlignment="Center"
+							   Margin="8,0,0,2"/>
+				</StackPanel>
+				
 				<TextBlock x:Uid="MainPageHeader"
 						   Text="RES_MISSING vocabulary"
 						   Margin="9,-7,0,0"
