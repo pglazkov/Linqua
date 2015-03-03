@@ -116,21 +116,24 @@ namespace Linqua
 
 			using (statusBusyService.Busy())
 			{
-				try
+				using (await RefreshLock.LockAsync())
 				{
-					await storage.InitializeAsync();
-					var words = await LoadEntries(storage);
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Loaded {0} entries from local storage.", words.Count());
-
-					EntryListViewModel.Entries = words;
-				}
-				finally
-				{
-					if (EntryListViewModel.Entries.Any())
+					try
 					{
-						IsLoadingEntries = false;
+						await storage.InitializeAsync();
+						var words = await LoadEntries(storage);
+
+						if (Log.IsDebugEnabled)
+							Log.Debug("Loaded {0} entries from local storage.", words.Count());
+
+						EntryListViewModel.Entries = words;
+					}
+					finally
+					{
+						if (EntryListViewModel.Entries.Any())
+						{
+							IsLoadingEntries = false;
+						}
 					}
 				}
 			}
@@ -156,17 +159,20 @@ namespace Linqua
 		{
 			using (statusBusyService.Busy("Syncing..."))
 			{
-				if (Log.IsDebugEnabled)
-					Log.Debug("Starting synchronization.");
-
-				// Now when the data from cache is loaded and shown to the user sync with 
-				// the cloud and refresh the data.
-				await storage.EnqueueSync(new OfflineSyncArguments
+				using (await RefreshLock.LockAsync())
 				{
-					PurgeCache = force
-				});
+					if (Log.IsDebugEnabled)
+						Log.Debug("Starting synchronization.");
 
-				await RefreshAsync();
+					// Now when the data from cache is loaded and shown to the user sync with 
+					// the cloud and refresh the data.
+					await storage.EnqueueSync(new OfflineSyncArguments
+					{
+						PurgeCache = force
+					});
+
+					await RefreshInternalAsync();
+				}
 			}
 		}
 
@@ -184,15 +190,15 @@ namespace Linqua
 
 		private async void OnEntryCreationRequested(EntryCreationRequestedEvent e)
 		{
-			using (await RefreshLock.LockAsync())
-			{
-				EntryListItemViewModel newEntryViewModel = EntryListViewModel.MoveToTopIfExists(e.EntryText);
+			EntryListItemViewModel newEntryViewModel = EntryListViewModel.MoveToTopIfExists(e.EntryText);
 
-				if (newEntryViewModel != null)
-				{
-					OnEntryAdded(newEntryViewModel.Entry);
-				}
-				else
+			if (newEntryViewModel != null)
+			{
+				OnEntryAdded(newEntryViewModel.Entry);
+			}
+			else
+			{
+				using (await RefreshLock.LockAsync())
 				{
 					var newEntry = new ClientEntry(e.EntryText);
 
@@ -222,73 +228,72 @@ namespace Linqua
 
 		private async Task TranslateEntryItemAsync(EntryListItemViewModel entryItem)
 		{
-			using (await RefreshLock.LockAsync())
+			entryItem.IsTranslating = true;
+
+			try
 			{
-				entryItem.IsTranslating = true;
+				string translation = null;
 
 				try
 				{
-					string translation = null;
+					if (Log.IsDebugEnabled)
+						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entryItem.Text);
 
-					try
+					var existingEntry = await storage.LookupAlreadyExisting(entryItem.Entry);
+
+					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
 					{
 						if (Log.IsDebugEnabled)
-							Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entryItem.Text);
+							Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
 
-						var existingEntry = await storage.LookupAlreadyExisting(entryItem.Entry);
-
-						if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
-						{
-							if (Log.IsDebugEnabled)
-								Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
-
-							translation = existingEntry.Definition;
-						}
+						translation = existingEntry.Definition;
 					}
-					catch (Exception ex)
-					{
-						if (Log.IsErrorEnabled)
-							Log.Error("An error occured while trying to find an existing entry.", ex);
-					}
-
-					if (string.IsNullOrEmpty(translation))
-					{
-						if (Log.IsDebugEnabled)
-							Log.Debug("Detecting language of \"{0}\"", entryItem.Entry.Text);
-
-						var entryLanguage = await translator.Value.DetectLanguageAsync(entryItem.Entry.Text);
-
-						if (Log.IsDebugEnabled)
-							Log.Debug("Detected language: " + entryLanguage);
-
-						if (Log.IsDebugEnabled)
-							Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entryItem.Entry.Text, entryLanguage, "en");
-
-						translation = await translator.Value.TranslateAsync(entryItem.Entry.Text, entryLanguage, "en");
-
-						if (Log.IsDebugEnabled)
-							Log.Debug("Translation: \"{0}\"", translation);
-					}
-
-					entryItem.Definition = translation;
 				}
 				catch (Exception ex)
 				{
 					if (Log.IsErrorEnabled)
-						Log.Error("An error occured while trying to translate an entry.", ex);
+						Log.Error("An error occured while trying to find an existing entry.", ex);
 				}
-				finally
+
+				if (string.IsNullOrEmpty(translation))
 				{
-					entryItem.IsTranslating = false;
+					if (Log.IsDebugEnabled)
+						Log.Debug("Detecting language of \"{0}\"", entryItem.Entry.Text);
+
+					var entryLanguage = await translator.Value.DetectLanguageAsync(entryItem.Entry.Text);
+
+					if (Log.IsDebugEnabled)
+						Log.Debug("Detected language: " + entryLanguage);
+
+					if (Log.IsDebugEnabled)
+						Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entryItem.Entry.Text, entryLanguage, "en");
+
+					translation = await translator.Value.TranslateAsync(entryItem.Entry.Text, entryLanguage, "en");
+
+					if (Log.IsDebugEnabled)
+						Log.Debug("Translation: \"{0}\"", translation);
 				}
+
+				entryItem.Definition = translation;
+
+				await storage.UpdateEntry(entryItem.Entry);
+			}
+			catch (Exception ex)
+			{
+				if (Log.IsErrorEnabled)
+					Log.Error("An error occured while trying to translate an entry.", ex);
+			}
+			finally
+			{
+				entryItem.IsTranslating = false;
 			}
 		}
 
 		private async void OnEntryDeletionRequested(EntryDeletionRequestedEvent e)
 		{
-			using (await RefreshLock.LockAsync())
+			using (statusBusyService.Busy("Deleting..."))
 			{
-				using (statusBusyService.Busy("Deleting..."))
+				using (await RefreshLock.LockAsync())
 				{
 					await storage.DeleteEntry(e.EntryToDelete);
 
@@ -301,20 +306,25 @@ namespace Linqua
 		{
 			using (await RefreshLock.LockAsync())
 			{
-				if (Log.IsDebugEnabled)
-				{
-					Log.Debug("RefreshAsync");
-				}
-
-				var words = await LoadEntries(storage);
-
-				if (Log.IsDebugEnabled)
-				{
-					Log.Debug("Loaded {0} entries from local storage.", words.Count());
-				}
-
-				EntryListViewModel.Entries = words;
+				await RefreshInternalAsync();
 			}
+		}
+
+		private async Task RefreshInternalAsync()
+		{
+			if (Log.IsDebugEnabled)
+			{
+				Log.Debug("RefreshAsync");
+			}
+
+			var words = await LoadEntries(storage);
+
+			if (Log.IsDebugEnabled)
+			{
+				Log.Debug("Loaded {0} entries from local storage.", words.Count());
+			}
+
+			EntryListViewModel.Entries = words;
 		}
 
 		private void SendLogs()
@@ -352,10 +362,7 @@ namespace Linqua
 
 		private async Task OnEntryDefinitionChangedAsync(EntryDefinitionChangedEvent e)
 		{
-			using (await RefreshLock.LockAsync())
-			{
-				await storage.UpdateEntry(e.EntryViewModel.Entry);
-			}
+			
 		}
 	}
 }
