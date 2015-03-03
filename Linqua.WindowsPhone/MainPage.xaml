@@ -61,7 +61,7 @@
 				
 				<TextBlock x:Uid="MainPageHeader"
 						   Text="RES_MISSING vocabulary"
-						   Margin="9,-7,0,0"
+						   Margin="9,-15,0,0"
 						   Style="{ThemeResource HeaderTextBlockStyle}"
 						   Foreground="{StaticResource TextOnThemeBackgroundBrush}"/>
 			</StackPanel>
@@ -87,7 +87,7 @@
 							  x:Name="EntryListView"
 							  z:ViewLocator.Model="{Binding EntryListViewModel}"
 							  Visibility="{Binding ElementName=LoadingProgressRing, Path=IsActive, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-							  Margin="12,0,12,0"/>
+							  Margin="12,12,12,0"/>
 			
 			<!--<local:EntryListView Grid.Row="0" 
 								 x:Name="EntryListView" 

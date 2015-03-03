@@ -132,8 +132,16 @@
   <data name="MainPageHeader.Text" xml:space="preserve">
     <value>vocabulary</value>
   </data>
+  <data name="NextWordsButton.Content" xml:space="preserve">
+    <value>Next Random 3</value>
+  </data>
   <data name="NoEntriesTextBlock.Text" xml:space="preserve">
-    <value>It's lonely here...</value>
+    <value>There are no words to learn yet. 
+
+Start by adding a word or phrase.</value>
+  </data>
+  <data name="PreviousWordsButton.Content" xml:space="preserve">
+    <value>Previous 3</value>
   </data>
   <data name="SendLogsButton.Label" xml:space="preserve">
     <value>(advanced) share logs</value>
