@@ -13,8 +13,8 @@
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
+			<RowDefinition Height="3*"/>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		
 		<TextBlock x:Uid="NoEntriesTextBlock"
@@ -81,8 +81,8 @@
 		</ListView>
 		
 		<Grid Grid.Row="1"
-			  Margin="24,24,24,24"
-			  Visibility="{Binding IsPagingControlsVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+			  Visibility="{Binding IsPagingControlsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+			  VerticalAlignment="Top">
 			
 			<!--<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
@@ -93,16 +93,30 @@
 					x:Uid="PreviousWordsButton"
 					Content="RES_MISSING PreviousWordsButton"
 					Command="{Binding ShowPreviousEntriesCommand}"/>-->
+
+			<Grid VerticalAlignment="Center"
+				  HorizontalAlignment="Center">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*"/>
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<Button x:Uid="NextWordsButton"
+						Content="RES_MISSING NextWordsButton"
+						Command="{Binding ShowNextEntriesCommand}"
+						Background="{StaticResource ApplicationThemeBrush}"
+						HorizontalAlignment="Center"
+						Foreground="White"
+						BorderBrush="White"
+						Padding="48,12,48,16" />
+				
+				<TextBlock Grid.Row="1" 
+						   Text="{Binding TotalCountText}"
+						   Margin="0,8,0,0"
+						   HorizontalAlignment="Center"
+						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"/>
+			</Grid>
 			
-			<Button x:Uid="NextWordsButton"
-					Content="RES_MISSING NextWordsButton"
-					Command="{Binding ShowNextEntriesCommand}"
-					Background="{StaticResource ApplicationThemeBrush}"
-					VerticalAlignment="Center"
-					HorizontalAlignment="Center"
-					Foreground="White"
-					BorderBrush="White"
-					Padding="12,8,12,12" />
 		</Grid>
 	</Grid>
 </UserControl>

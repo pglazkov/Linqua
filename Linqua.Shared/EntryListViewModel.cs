@@ -5,6 +5,8 @@ using System.Collections.Specialized;
 using System.Composition;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Linq;
+using Windows.ApplicationModel.Resources;
 using Windows.Foundation.Collections;
 using Windows.UI.WebUI;
 using Windows.UI.Xaml.Data;
@@ -75,9 +77,9 @@ namespace Linqua
 
 				EntryViewModels.Clear();
 				EntryViewModels.AddRange(entries.Select(w => new EntryListItemViewModel(w)));
-
+				
 			    UpdateDisplayedEntries();
-				UpdatePagingControlsVisibility();
+				OnEntriesCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
 				EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
 
@@ -125,6 +127,14 @@ namespace Linqua
 		    }
 	    }
 
+	    public string TotalCountText
+	    {
+		    get
+		    {
+				return string.Format(ResourceLoader.GetForCurrentView().GetString("EntryListView_TotalCountTemplate"), EntryViewModels.Count);
+		    }
+	    }
+
 		public EntryListItemViewModel AddEntry(ClientEntry newEntry)
 	    {
 		    var viewModel = new EntryListItemViewModel(newEntry, justAdded: true);
@@ -137,7 +147,14 @@ namespace Linqua
 	    private void AddEntry(EntryListItemViewModel viewModel)
 	    {
 		    EntryViewModels.Insert(0, viewModel);
+
+		    if (DisplayEntryViewModels.Count == EntriesToDisplayCount)
+		    {
+			    DisplayEntryViewModels.RemoveAt(0);
+		    }
+
 		    DisplayEntryViewModels.Insert(0, viewModel);
+
 		    UpdateDisplayedIndexes();
 	    }
 
@@ -184,13 +201,9 @@ namespace Linqua
 
 		    EntryViewModels.RemoveAt(entryIndex);
 
-			if (displayedIndexes.Contains(entryIndex))
-			{
-				displayedIndexes.Remove(entryIndex);
-				DisplayEntryViewModels.Remove(entryVm);
+			DisplayEntryViewModels.Remove(entryVm);
 
-				UpdateDisplayedIndexes();
-			}
+			UpdateDisplayedIndexes();
 
 			// Move focus to previous or next entry
 			Dispatcher.BeginInvoke(new Action(() =>
@@ -200,12 +213,19 @@ namespace Linqua
 					previousOrNextEntry.Focus();
 				}
 			}));
+
+		    Observable.Timer(TimeSpan.FromMilliseconds(600)).Subscribe(_ =>
+		    {
+			    Dispatcher.BeginInvoke(new Action(UpdateDisplayedEntries));
+		    });
 	    }
 
 		private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			UpdateThereAreNoEntries();
 			UpdatePagingControlsVisibility();
+
+			RaisePropertyChanged(() => TotalCountText);
 		}
 
 	    private void UpdatePagingControlsVisibility()
@@ -257,15 +277,7 @@ namespace Linqua
 			{
 				var entriesToAdd = EntriesToDisplayCount - DisplayEntryViewModels.Count;
 
-				for (int i = 0; i < entriesToAdd; i++)
-				{
-					var index = GenerateNextDisplayIndex();
-
-					if (index == null) break;
-
-					DisplayEntryViewModels.Add(EntryViewModels[index.Value]);
-					displayedIndexes.Add(index.Value);
-				}
+				AddRandomDisplayedEntries(entriesToAdd);
 			}
 			else
 			{
@@ -277,20 +289,30 @@ namespace Linqua
 				{
 					displayedIndexes.RemoveAt(0);
 				}
-				
-				for (int i = 0; i < EntriesToDisplayCount; i++)
-				{
-					var index = GenerateNextDisplayIndex();
 
-					if (index == null) break;
-
-					DisplayEntryViewModels.Add(EntryViewModels[index.Value]);
-					displayedIndexes.Add(index.Value);
-				}
+				AddRandomDisplayedEntries(EntriesToDisplayCount);
 			}
 
 			UpdateDisplayedIndexes();
 		}
+
+	    private void AddRandomDisplayedEntries(int entriesToAdd)
+	    {
+		    for (int i = 0; i < entriesToAdd; i++)
+		    {
+			    var index = GenerateNextDisplayIndex();
+
+			    if (index == null) break;
+
+			    var vm = EntryViewModels[index.Value];
+
+			    vm.JustAdded = false;
+
+			    DisplayEntryViewModels.Add(vm);
+
+			    displayedIndexes.Add(index.Value);
+		    }
+	    }
 
 	    private int? GenerateNextDisplayIndex()
 	    {
@@ -341,7 +363,7 @@ namespace Linqua
 
 		private void OnDisplayEntriesCollectonChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
-
+			UpdatePagingControlsVisibility();
 		}
     }
 }

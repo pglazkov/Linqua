@@ -116,7 +116,9 @@
 	</Grid>
 
 	<Page.BottomAppBar>
-		<CommandBar ClosedDisplayMode="Minimal">
+		<CommandBar ClosedDisplayMode="Minimal"
+					Background="{StaticResource ApplicationThemeBrush}"
+					Foreground="{StaticResource TextOnThemeBackgroundBrush}">
 			<!--<CommandBar.PrimaryCommands>
 				<AppBarButton x:Name="NewWordButton"
 							  Label="new word"

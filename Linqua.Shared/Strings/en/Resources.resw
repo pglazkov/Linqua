@@ -118,22 +118,25 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddEntryButton.Content" xml:space="preserve">
-    <value>Add</value>
+    <value>add</value>
   </data>
   <data name="ApplicationHeader.Text" xml:space="preserve">
     <value>LINQUA</value>
   </data>
   <data name="DeleteFlyoutItem.Text" xml:space="preserve">
-    <value>Delete</value>
+    <value>delete</value>
   </data>
   <data name="EntryListItemView_TranslatingBusyTextBlock.Text" xml:space="preserve">
-    <value>Translating...</value>
+    <value>translating...</value>
+  </data>
+  <data name="EntryListView_TotalCountTemplate" xml:space="preserve">
+    <value>total {0}</value>
   </data>
   <data name="MainPageHeader.Text" xml:space="preserve">
     <value>vocabulary</value>
   </data>
   <data name="NextWordsButton.Content" xml:space="preserve">
-    <value>Next Random 3</value>
+    <value>next 3 random</value>
   </data>
   <data name="NoEntriesTextBlock.Text" xml:space="preserve">
     <value>There are no words to learn yet. 
@@ -141,7 +144,7 @@
 Start by adding a word or phrase.</value>
   </data>
   <data name="PreviousWordsButton.Content" xml:space="preserve">
-    <value>Previous 3</value>
+    <value>previous 3</value>
   </data>
   <data name="SendLogsButton.Label" xml:space="preserve">
     <value>(advanced) share logs</value>
