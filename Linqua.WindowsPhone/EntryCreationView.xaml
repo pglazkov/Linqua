@@ -14,12 +14,14 @@
 			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
 
-		<TextBox Text="{Binding EntryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+		<TextBox x:Uid="NewEntryTextBox" 
+				 Text="{Binding EntryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 				 KeyDown="EntryTextBox_OnKeyDown"
 				 VerticalAlignment="Bottom"
-				 PlaceholderText="Tap to Add a New Word or Phrase"
+				 PlaceholderText="RES_MISSING NewEntryTextBox"
 				 TextWrapping="Wrap"
 				 Margin="0"
+				 BorderBrush="{StaticResource ApplicationThemeBrush}"
 				 IsEnabled="{Binding IsCreatingEntry, Converter={StaticResource InvertedBooleanConverter}}"/>
 		
 		<ProgressBar Grid.Column="0" 

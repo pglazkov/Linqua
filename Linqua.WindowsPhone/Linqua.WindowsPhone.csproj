@@ -120,6 +120,8 @@
     <Content Include="Assets\Icons\Dark\add.png" />
     <Content Include="Assets\Icons\Dark\delete.png" />
     <Content Include="Assets\Icons\Dark\edit.png" />
+    <Content Include="Assets\Icons\icon-16x16px.png" />
+    <Content Include="Assets\Icons\icon-48x48px.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
     <Content Include="Assets\SplashScreen.scale-240.png" />

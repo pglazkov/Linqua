@@ -135,6 +135,9 @@
   <data name="MainPageHeader.Text" xml:space="preserve">
     <value>vocabulary</value>
   </data>
+  <data name="NewEntryTextBox.PlaceholderText" xml:space="preserve">
+    <value>Add a New Word or Phrase</value>
+  </data>
   <data name="NextWordsButton.Content" xml:space="preserve">
     <value>next 3 random</value>
   </data>

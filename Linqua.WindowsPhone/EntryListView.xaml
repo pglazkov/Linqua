@@ -106,9 +106,9 @@
 						Command="{Binding ShowNextEntriesCommand}"
 						Background="{StaticResource ApplicationThemeBrush}"
 						HorizontalAlignment="Center"
-						Foreground="White"
-						BorderBrush="White"
-						Padding="48,12,48,16" />
+						Foreground="{StaticResource TextOnThemeBackgroundBrush}"
+						BorderThickness="0"
+						Padding="36,8,36,12" />
 				
 				<TextBlock Grid.Row="1" 
 						   Text="{Binding TotalCountText}"

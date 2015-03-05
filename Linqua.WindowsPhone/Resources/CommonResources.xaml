@@ -16,5 +16,5 @@
 					 Color="White"/>
 	
 	<SolidColorBrush x:Key="EntryTextForegroundBrush"
-					 Color="#272727"/>
+					 Color="{ThemeResource PhoneTextHighColor}"/>
 </ResourceDictionary>

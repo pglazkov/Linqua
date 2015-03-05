@@ -6,14 +6,11 @@
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	  xmlns:z="using:Framework"
       mc:Ignorable="d"
-	  Background="{StaticResource ApplicationThemeBrush}"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
-	  RequestedTheme="Light"
 	  x:Name="ThisPage">
 	
 	<!--LayoutRoot is the root grid where all page content is placed-->
-	<Grid x:Name="LayoutRoot"
-		  Background="{StaticResource WordListBackground}">
+	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
@@ -40,12 +37,13 @@
 
 		<!--TitlePanel contains the name of the application and page title-->
 		<Border Grid.Row="0"
-				Background="{StaticResource ApplicationThemeBrush}">
+				BorderBrush="{StaticResource ApplicationThemeBrush}"
+				BorderThickness="0,0,0,1">
 			<StackPanel x:Name="TitlePanel"
 						Margin="12,8,0,12">
 				<StackPanel Orientation="Horizontal"
 							Margin="12,0">
-					<Image Source="Resources/Images/icon-48x48px.png"
+					<Image Source="Assets/Icons/icon-48x48px.png"
 						   Width="32"
 						   Height="32"
 						   Stretch="UniformToFill"
@@ -54,16 +52,14 @@
 					<TextBlock x:Uid="ApplicationHeader"
 							   Text="REST_MISSING LINQUA"
 							   Style="{ThemeResource TitleTextBlockStyle}"
-							   Foreground="{StaticResource TextOnThemeBackgroundBrush}"
 							   VerticalAlignment="Center"
-							   Margin="8,0,0,2"/>
+							   Margin="8,0,0,2" />
 				</StackPanel>
 				
 				<TextBlock x:Uid="MainPageHeader"
 						   Text="RES_MISSING vocabulary"
 						   Margin="9,-15,0,0"
-						   Style="{ThemeResource HeaderTextBlockStyle}"
-						   Foreground="{StaticResource TextOnThemeBackgroundBrush}"/>
+						   Style="{ThemeResource HeaderTextBlockStyle}" />
 			</StackPanel>
 		</Border>
 
@@ -81,7 +77,8 @@
 						  IsActive="{Binding IsLoadingEntries}"
 						  VerticalAlignment="Center"
 						  HorizontalAlignment="Center"
-						  Foreground="{StaticResource ProgressRingBrush}"/>
+						  Foreground="{StaticResource ProgressRingBrush}"
+						  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
 
 			<ContentPresenter Grid.Row="0"
 							  x:Name="EntryListView"

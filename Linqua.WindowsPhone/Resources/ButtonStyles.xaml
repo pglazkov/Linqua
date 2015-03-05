@@ -181,7 +181,7 @@
 	<SolidColorBrush x:Key="ToggleButtonPointerOverBackgroundThemeBrush"
 					 Color="#21000000" />
 	<SolidColorBrush x:Key="ToggleButtonPressedBackgroundThemeBrush"
-					 Color="#FFFFFFFF" />
+					 Color="{ThemeResource PhoneBackgroundColor}" />
 	<SolidColorBrush x:Key="ToggleButtonPressedForegroundThemeBrush"
 					 Color="{StaticResource ApplicationThemeColor}" />
 	<SolidColorBrush x:Key="ToggleButtonPressedBorderThemeBrush"

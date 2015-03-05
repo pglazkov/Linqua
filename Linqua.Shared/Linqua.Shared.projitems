@@ -37,9 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Framework\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Resources\Images\icon-16x16px.png" />
-    <Content Include="$(MSBuildThisFileDirectory)Resources\Images\icon-48x48px.png" />
+    <Folder Include="$(MSBuildThisFileDirectory)Resources\Images\" />
   </ItemGroup>
 </Project>
