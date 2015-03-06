@@ -191,9 +191,9 @@
 		   TargetType="ToggleButton"
 		   BasedOn="{StaticResource BaseIconButtonStyle}">
 		<Setter Property="Foreground"
-				Value="LightGray"/>
+				Value="#BFBFBF"/>
 		<Setter Property="BorderBrush"
-				Value="LightGray" />
+				Value="#BFBFBF" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ToggleButton">

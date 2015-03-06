@@ -21,7 +21,6 @@
 				 PlaceholderText="RES_MISSING NewEntryTextBox"
 				 TextWrapping="Wrap"
 				 Margin="0"
-				 BorderBrush="{StaticResource ApplicationThemeBrush}"
 				 IsEnabled="{Binding IsCreatingEntry, Converter={StaticResource InvertedBooleanConverter}}"/>
 		
 		<ProgressBar Grid.Column="0" 

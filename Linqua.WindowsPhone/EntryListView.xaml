@@ -31,7 +31,8 @@
 				  x:Name="EntryItemsControl"
 				  ItemsSource="{Binding DisplayEntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
-				  HorizontalAlignment="Stretch">
+				  HorizontalAlignment="Stretch"
+				  VerticalAlignment="Center">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment"
@@ -104,10 +105,9 @@
 				<Button x:Uid="NextWordsButton"
 						Content="RES_MISSING NextWordsButton"
 						Command="{Binding ShowNextEntriesCommand}"
-						Background="{StaticResource ApplicationThemeBrush}"
+						BorderBrush="#BFBFBF"
+						Foreground="#BFBFBF"
 						HorizontalAlignment="Center"
-						Foreground="{StaticResource TextOnThemeBackgroundBrush}"
-						BorderThickness="0"
 						Padding="36,8,36,12" />
 				
 				<TextBlock Grid.Row="1" 

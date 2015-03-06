@@ -40,7 +40,8 @@
 				BorderBrush="{StaticResource ApplicationThemeBrush}"
 				BorderThickness="0,0,0,1">
 			<StackPanel x:Name="TitlePanel"
-						Margin="12,8,0,12">
+						Margin="12,8,0,12"
+						Orientation="Horizontal">
 				<StackPanel Orientation="Horizontal"
 							Margin="12,0">
 					<Image Source="Assets/Icons/icon-48x48px.png"
@@ -56,10 +57,13 @@
 							   Margin="8,0,0,2" />
 				</StackPanel>
 				
-				<TextBlock x:Uid="MainPageHeader"
+				<!--<TextBlock x:Uid="MainPageHeader"
 						   Text="RES_MISSING vocabulary"
-						   Margin="9,-15,0,0"
-						   Style="{ThemeResource HeaderTextBlockStyle}" />
+						   Margin="9,-5,0,0"
+						   Style="{ThemeResource HeaderTextBlockStyle}"
+						   Opacity="0.5"
+						   FontSize="20"
+						   VerticalAlignment="Bottom"/>-->
 			</StackPanel>
 		</Border>
 
@@ -113,9 +117,7 @@
 	</Grid>
 
 	<Page.BottomAppBar>
-		<CommandBar ClosedDisplayMode="Minimal"
-					Background="{StaticResource ApplicationThemeBrush}"
-					Foreground="{StaticResource TextOnThemeBackgroundBrush}">
+		<CommandBar ClosedDisplayMode="Minimal">
 			<!--<CommandBar.PrimaryCommands>
 				<AppBarButton x:Name="NewWordButton"
 							  Label="new word"
