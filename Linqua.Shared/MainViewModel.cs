@@ -26,6 +26,7 @@ namespace Linqua
 		private readonly Lazy<ITranslationService> translator;
 		private EntryListViewModel entryListViewModel;
 		private bool isLoadingEntries;
+		private bool isEntryCreationViewVisible;
 		private static readonly AsyncLock RefreshLock = new AsyncLock();
 
 		public MainViewModel()
@@ -38,7 +39,7 @@ namespace Linqua
 
 			SyncCommand = new DelegateCommand(ForceSync);
 			SendLogsCommand = new DelegateCommand(SendLogs);
-			AddWordCommand = new DelegateCommand(AddWord);
+			AddWordCommand = new DelegateCommand(AddWord, CanAddWord);
 		}
 
 		public MainViewModel(
@@ -71,13 +72,25 @@ namespace Linqua
 			eventAggregator.GetEvent<EntryDefinitionChangedEvent>().SubscribeWithAsync(OnEntryDefinitionChangedAsync);
 		}
 
-		public ICommand SendLogsCommand { get; private set; }
-		public ICommand AddWordCommand { get; private set; }
-		public ICommand SyncCommand { get; private set; }
+		public DelegateCommand SendLogsCommand { get; private set; }
+		public DelegateCommand AddWordCommand { get; private set; }
+		public DelegateCommand SyncCommand { get; private set; }
 
 		public IMainView View { get; set; }
 
 		public EntryCreationViewModel EntryCreationViewModel { get; private set; }
+
+		public bool IsEntryCreationViewVisible
+		{
+			get { return isEntryCreationViewVisible; }
+			set
+			{
+				if (value.Equals(isEntryCreationViewVisible)) return;
+				isEntryCreationViewVisible = value;
+				RaisePropertyChanged();
+				AddWordCommand.RaiseCanExecuteChanged();
+			}
+		}
 
 		public EntryListViewModel EntryListViewModel
 		{
@@ -183,9 +196,15 @@ namespace Linqua
 			SyncAsync(true).FireAndForget();
 		}
 
+		private bool CanAddWord()
+		{
+			return !IsEntryCreationViewVisible;
+		}
+
 		private void AddWord()
 		{
-			View.NavigateToNewWordPage();
+			IsEntryCreationViewVisible = true;
+			View.FocusEntryCreationView();
 		}
 
 		private async void OnEntryCreationRequested(EntryCreationRequestedEvent e)
@@ -222,6 +241,7 @@ namespace Linqua
 		private void OnEntryAdded(ClientEntry addedEntry)
 		{
 			EntryCreationViewModel.Clear();
+			IsEntryCreationViewVisible = false;
 
 			EventAggregator.Publish(new EntryCreatedEvent(addedEntry));
 		}

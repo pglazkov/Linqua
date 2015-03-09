@@ -1,4 +1,5 @@
-﻿using Windows.System;
+﻿using System;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -12,9 +13,26 @@ namespace Linqua
 			InitializeComponent();
 		}
 
+		#region InputTargetLostFocus Event
+
+		public event EventHandler InputTargetLostFocus;
+
+		protected virtual void OnInputTargetLostFocus()
+		{
+			var handler = InputTargetLostFocus;
+			if (handler != null) handler(this, EventArgs.Empty);
+		}
+
+		#endregion
+
 		private EntryCreationViewModel ViewModel
 		{
 			get { return (EntryCreationViewModel)DataContext; }
+		}
+
+		public void FocusInputTarget()
+		{
+			NewEntryTextBox.Focus(FocusState.Programmatic);
 		}
 
 		private void EntryTextBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
@@ -26,6 +44,11 @@ namespace Linqua
 					ViewModel.AddCommand.Execute();
 				}
 			}
+		}
+
+		private void EntryTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+		{
+			OnInputTargetLostFocus();
 		}
 	}
 }

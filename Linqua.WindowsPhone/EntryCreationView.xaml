@@ -14,14 +14,16 @@
 			<ColumnDefinition Width="Auto" />
 		</Grid.ColumnDefinitions>
 
-		<TextBox x:Uid="NewEntryTextBox" 
+		<TextBox x:Uid="NewEntryTextBox"
+				 x:Name="NewEntryTextBox"
 				 Text="{Binding EntryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 				 KeyDown="EntryTextBox_OnKeyDown"
 				 VerticalAlignment="Bottom"
 				 PlaceholderText="RES_MISSING NewEntryTextBox"
 				 TextWrapping="Wrap"
 				 Margin="0"
-				 IsEnabled="{Binding IsCreatingEntry, Converter={StaticResource InvertedBooleanConverter}}"/>
+				 IsEnabled="{Binding IsCreatingEntry, Converter={StaticResource InvertedBooleanConverter}}"
+				 LostFocus="EntryTextBox_OnLostFocus"/>
 		
 		<ProgressBar Grid.Column="0" 
 					 IsIndeterminate="True"

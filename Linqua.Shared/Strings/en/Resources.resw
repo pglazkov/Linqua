@@ -123,6 +123,9 @@
   <data name="ApplicationHeader.Text" xml:space="preserve">
     <value>LINQUA</value>
   </data>
+  <data name="ConfirmNewWordButton.Label" xml:space="preserve">
+    <value>save</value>
+  </data>
   <data name="DeleteFlyoutItem.Text" xml:space="preserve">
     <value>delete</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="NewEntryTextBox.PlaceholderText" xml:space="preserve">
     <value>Add a New Word or Phrase</value>
+  </data>
+  <data name="NewWordButton.Label" xml:space="preserve">
+    <value>new entry</value>
   </data>
   <data name="NextWordsButton.Content" xml:space="preserve">
     <value>next 3 random</value>

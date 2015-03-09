@@ -141,7 +141,15 @@ namespace Linqua
 		    Navigate(typeof (NewEntryPage));
 	    }
 
-		private void OnEntryCreated(EntryCreatedEvent e)
+	    public async void FocusEntryCreationView()
+	    {
+		    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+		    {
+				EntryCreationView.FocusInputTarget();
+		    });
+	    }
+
+	    private void OnEntryCreated(EntryCreatedEvent e)
 		{
 			var userControl = (UserControl)EntryListView.Content;
 
@@ -150,5 +158,13 @@ namespace Linqua
 				userControl.Focus(FocusState.Programmatic);
 			}
 		}
+
+	    private void EntryCreationView_OnInputTargetLostFocus(object sender, EventArgs e)
+	    {
+		    if (string.IsNullOrEmpty(ViewModel.EntryCreationViewModel.EntryText))
+		    {
+			    ViewModel.IsEntryCreationViewVisible = false;
+		    }
+	    }
     }
 }

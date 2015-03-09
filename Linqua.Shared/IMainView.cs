@@ -3,5 +3,6 @@
 	public interface IMainView : INavigationView
 	{
 		void NavigateToNewWordPage();
+		void FocusEntryCreationView();
 	}
 }

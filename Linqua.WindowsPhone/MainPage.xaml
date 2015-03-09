@@ -94,10 +94,13 @@
 								 x:Name="EntryListView" 
 								 DataContext="{Binding EntryListViewModel}" />-->
 
-			<local:EntryCreationView Grid.Row="1"
+			<local:EntryCreationView x:Name="EntryCreationView" 
+									 Grid.Row="1"
 									 DataContext="{Binding EntryCreationViewModel}"
 									 Margin="8,24,8,24"
-									 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"/>
+									 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
+									 Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+									 InputTargetLostFocus="EntryCreationView_OnInputTargetLostFocus"/>
 		</Grid>
 
 		<!--Uncomment to see an alignment grid to help ensure your controls are
@@ -117,13 +120,19 @@
 	</Grid>
 
 	<Page.BottomAppBar>
-		<CommandBar ClosedDisplayMode="Minimal">
-			<!--<CommandBar.PrimaryCommands>
-				<AppBarButton x:Name="NewWordButton"
-							  Label="new word"
+		<CommandBar ClosedDisplayMode="Compact">
+			<CommandBar.PrimaryCommands>
+				<AppBarButton x:Uid="NewWordButton"
+							  Label="RES_MISSIN NewWordButton"
 							  Icon="Add"
-							  Command="{Binding AddWordCommand}" />
-			</CommandBar.PrimaryCommands>-->
+							  Command="{Binding AddWordCommand}"
+							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+				<AppBarButton x:Uid="ConfirmNewWordButton"
+							  Label="RES_MISSING ConfirmNewWordButton"
+							  Icon="Accept"
+							  Command="{Binding EntryCreationViewModel.AddCommand}"
+							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+			</CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>
 				<AppBarButton x:Uid="SyncButton" 
 							  Label="RES_MISSING sync"
