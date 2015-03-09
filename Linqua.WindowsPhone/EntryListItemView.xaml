@@ -45,7 +45,6 @@
 					   Style="{ThemeResource ListViewItemTextBlockStyle}"
 					   FontSize="{ThemeResource TextStyleExtraExtraLargeFontSize}"
 					   Foreground="{StaticResource EntryTextForegroundBrush}"
-					   FontWeight="Bold"
 					   TextWrapping="Wrap"
 					   Margin="0" />
 

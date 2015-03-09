@@ -38,12 +38,12 @@
 		<!--TitlePanel contains the name of the application and page title-->
 		<Border Grid.Row="0"
 				BorderBrush="{StaticResource ApplicationThemeBrush}"
-				BorderThickness="0,0,0,1">
+				BorderThickness="0,0,0,3"
+				Margin="24,0,24,0"
+				Padding="0,12,0,8">
 			<StackPanel x:Name="TitlePanel"
-						Margin="12,8,0,12"
 						Orientation="Horizontal">
-				<StackPanel Orientation="Horizontal"
-							Margin="12,0">
+				<StackPanel Orientation="Horizontal">
 					<Image Source="Assets/Icons/icon-48x48px.png"
 						   Width="32"
 						   Height="32"
