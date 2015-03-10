@@ -5,9 +5,15 @@
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	  xmlns:z="using:Framework"
-      mc:Ignorable="d"
+	  xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+	  xmlns:framework="using:Linqua.Framework"
+	  mc:Ignorable="d"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
 	  x:Name="ThisPage">
+	
+	<!--<interactivity:Interaction.Behaviors>
+		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"/>
+	</interactivity:Interaction.Behaviors>-->
 	
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot">
@@ -120,7 +126,8 @@
 	</Grid>
 
 	<Page.BottomAppBar>
-		<CommandBar ClosedDisplayMode="Compact">
+		<CommandBar ClosedDisplayMode="Compact"
+					Foreground="{StaticResource ApplicationThemeBrush}">
 			<CommandBar.PrimaryCommands>
 				<AppBarButton x:Uid="NewWordButton"
 							  Label="RES_MISSIN NewWordButton"
