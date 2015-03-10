@@ -11,22 +11,43 @@
 
 	<UserControl.Resources>
 		<Storyboard x:Key="FlashBackgroundStoryboard">
-			<ColorAnimation From="Transparent"
-							To="#A3F4C4C4"
-							Duration="0:0:0.8"
-							AutoReverse="True"
-							Storyboard.TargetName="RootBorder"
-							Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)">
-				<ColorAnimation.EasingFunction>
+			<DoubleAnimation From="1"
+							 To="0.3"
+							 Duration="0:0:0.8"
+							 AutoReverse="True"
+							 Storyboard.TargetName="RootBorder"
+							 Storyboard.TargetProperty="Opacity">
+				<DoubleAnimation.EasingFunction>
 					<CircleEase EasingMode="EaseOut" />
-				</ColorAnimation.EasingFunction>
-			</ColorAnimation>
+				</DoubleAnimation.EasingFunction>
+			</DoubleAnimation>
 		</Storyboard>
 	</UserControl.Resources>
 
+	<FlyoutBase.AttachedFlyout>
+		<MenuFlyout>
+			<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
+							Text="Delete"
+							Command="{Binding DeleteCommand}" />
+
+			<MenuFlyout.MenuFlyoutPresenterStyle>
+				<Style TargetType="MenuFlyoutPresenter">
+					<Setter Property="ScrollViewer.ZoomMode"
+							Value="Disabled" />
+					<Setter Property="Background"
+							Value="White" />
+					<Setter Property="BorderBrush"
+							Value="Gray" />
+					<Setter Property="Foreground"
+							Value="Black" />
+				</Style>
+			</MenuFlyout.MenuFlyoutPresenterStyle>
+		</MenuFlyout>
+	</FlyoutBase.AttachedFlyout>
+
 	<Border x:Name="RootBorder"
 			Background="Transparent"
-			Padding="12,0,12,6"
+			Padding="0,0,0,6"
 			CornerRadius="3">
 		<Grid x:Name="LayoutRoot">
 			<Grid.RowDefinitions>
@@ -39,7 +60,8 @@
 				<ColumnDefinition Width="Auto" />
 			</Grid.ColumnDefinitions>
 
-			<TextBlock Grid.Row="0"
+			<TextBlock x:Name="EntryTextBox"
+					   Grid.Row="0"
 					   Grid.Column="0"
 					   Text="{Binding Text}"
 					   Style="{ThemeResource ListViewItemTextBlockStyle}"
@@ -53,15 +75,15 @@
 					   Text="{Binding DateAdded}"
 					   Margin="0,2,0,0"
 					   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}" />-->
-			
-			<Grid Grid.Row="1" 
+
+			<Grid Grid.Row="1"
 				  Grid.Column="0"
 				  Margin="0,2,0,0"
 				  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-				<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock" 
+				<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
 						   Text="RES_MISSING Translating..."
 						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-						   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+						   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
 				<TextBlock Text="{Binding Definition}"
 						   TextWrapping="Wrap"

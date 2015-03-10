@@ -11,15 +11,19 @@ namespace Linqua
 
 		protected EntryViewModel()
 		{
-			
+			DeleteCommand = new DelegateCommand(DeleteSelf);
 		}
 
 		public EntryViewModel(ClientEntry entry)
+			: this()
 		{
 			Guard.NotNull(entry, () => entry);
 
 			Entry = entry;
 		}
+
+
+		public DelegateCommand DeleteCommand { get; private set; }
 
 		public ClientEntry Entry { get; protected set; }
 
@@ -83,6 +87,11 @@ namespace Linqua
 		public bool IsDefinitionVisible
 		{
 			get { return !string.IsNullOrEmpty(Definition) || IsTranslating; }
+		}
+
+		private void DeleteSelf()
+		{
+			EventAggregator.Publish(new EntryDeletionRequestedEvent(Entry));
 		}
 	}
 }

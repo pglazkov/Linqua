@@ -150,14 +150,16 @@ namespace Linqua
 	    }
 
 	    private void OnEntryCreated(EntryCreatedEvent e)
-		{
-			var userControl = (UserControl)EntryListView.Content;
+	    {
+		    //Pivot.Focus(FocusState.Programmatic);
 
-			if (userControl != null)
-			{
-				userControl.Focus(FocusState.Programmatic);
-			}
-		}
+		    //var userControl = (UserControl)RandomEntryListView.Content;
+
+		    //if (userControl != null)
+		    //{
+		    //	userControl.Focus(FocusState.Programmatic);
+		    //}
+	    }
 
 	    private void EntryCreationView_OnInputTargetLostFocus(object sender, EventArgs e)
 	    {

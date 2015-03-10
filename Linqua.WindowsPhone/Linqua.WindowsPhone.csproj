@@ -91,6 +91,9 @@
     </Compile>
     <Compile Include="Framework\StatusBarBehavior.cs" />
     <Compile Include="Framework\StatusBusyService.cs" />
+    <Compile Include="FullEntryListView.xaml.cs">
+      <DependentUpon>FullEntryListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -105,8 +108,8 @@
     <Compile Include="EntryListItemView.xaml.cs">
       <DependentUpon>EntryListItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EntryListView.xaml.cs">
-      <DependentUpon>EntryListView.xaml</DependentUpon>
+    <Compile Include="RandomEntryListView.xaml.cs">
+      <DependentUpon>RandomEntryListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartupWorkflow.cs" />
   </ItemGroup>
@@ -143,6 +146,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="FullEntryListView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -159,7 +166,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="EntryListView.xaml">
+    <Page Include="RandomEntryListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Linqua.EntryListView"
+﻿<UserControl x:Class="Linqua.RandomEntryListView"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -32,7 +32,8 @@
 				  ItemsSource="{Binding DisplayEntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
-				  VerticalAlignment="Center">
+				  VerticalAlignment="Center"
+				  ContinuumNavigationTransitionInfo.ExitElementContainer="True">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment"
@@ -55,27 +56,6 @@
 											  HorizontalAlignment="Stretch"
 											  HorizontalContentAlignment="Stretch"
 											  IsTabStop="False">
-						<FlyoutBase.AttachedFlyout>
-							<MenuFlyout>
-								<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
-												Text="Delete"
-												Command="{Binding ElementName=LayoutRoot, Path=DataContext.DeleteEntryCommand}"
-												CommandParameter="{Binding}" />
-
-								<MenuFlyout.MenuFlyoutPresenterStyle>
-									<Style TargetType="MenuFlyoutPresenter">
-										<Setter Property="ScrollViewer.ZoomMode"
-												Value="Disabled" />
-										<Setter Property="Background"
-												Value="White" />
-										<Setter Property="BorderBrush"
-												Value="Gray" />
-										<Setter Property="Foreground"
-												Value="Black" />
-									</Style>
-								</MenuFlyout.MenuFlyoutPresenterStyle>
-							</MenuFlyout>
-						</FlyoutBase.AttachedFlyout>
 					</linqua:EntryListItemView>
 				</DataTemplate>
 			</ListView.ItemTemplate>

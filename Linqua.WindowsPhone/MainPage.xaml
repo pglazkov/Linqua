@@ -10,11 +10,11 @@
 	  mc:Ignorable="d"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
 	  x:Name="ThisPage">
-	
+
 	<!--<interactivity:Interaction.Behaviors>
 		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"/>
 	</interactivity:Interaction.Behaviors>-->
-	
+
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
@@ -44,7 +44,7 @@
 		<!--TitlePanel contains the name of the application and page title-->
 		<Border Grid.Row="0"
 				BorderBrush="{StaticResource ApplicationThemeBrush}"
-				BorderThickness="0,0,0,3"
+				BorderThickness="0,0,0,2"
 				Margin="24,0,24,0"
 				Padding="0,12,0,8">
 			<StackPanel x:Name="TitlePanel"
@@ -54,7 +54,7 @@
 						   Width="32"
 						   Height="32"
 						   Stretch="UniformToFill"
-						   VerticalAlignment="Center"/>
+						   VerticalAlignment="Center" />
 
 					<TextBlock x:Uid="ApplicationHeader"
 							   Text="REST_MISSING LINQUA"
@@ -62,7 +62,7 @@
 							   VerticalAlignment="Center"
 							   Margin="8,0,0,2" />
 				</StackPanel>
-				
+
 				<!--<TextBlock x:Uid="MainPageHeader"
 						   Text="RES_MISSING vocabulary"
 						   Margin="9,-5,0,0"
@@ -78,8 +78,8 @@
 			  Grid.Row="1"
 			  Margin="12,12,12,0">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="*" />
+				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 
 			<ProgressRing Grid.Row="0"
@@ -88,25 +88,49 @@
 						  VerticalAlignment="Center"
 						  HorizontalAlignment="Center"
 						  Foreground="{StaticResource ProgressRingBrush}"
-						  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"/>
+						  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
 
-			<ContentPresenter Grid.Row="0"
-							  x:Name="EntryListView"
-							  z:ViewLocator.Model="{Binding EntryListViewModel}"
-							  Visibility="{Binding ElementName=LoadingProgressRing, Path=IsActive, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-							  Margin="12,12,12,0"/>
+			<Pivot Grid.Row="0" 
+				   x:Uid="Pivot"
+				   CommonNavigationTransitionInfo.IsStaggerElement="True">
+				<PivotItem x:Uid="PivotRandomItem"
+						   Header="RES_MISSING PivotRandomItemHeader">
+					<local:RandomEntryListView DataContext="{Binding EntryListViewModel}" />
+				</PivotItem>
+				
+				<PivotItem x:Uid="PivotAllItem" 
+						   Header="RES_MISSING PivotAllItemHeader"
+						   CommonNavigationTransitionInfo.IsStaggerElement="True">
+					<local:FullEntryListView DataContext="{Binding EntryListViewModel}" />
+				</PivotItem>
+			</Pivot>
 			
+			<!--<Pivot x:Name="Pivot"
+				   Grid.Row="0"
+				   Margin="12,12,12,0"
+				   Visibility="{Binding ElementName=LoadingProgressRing, Path=IsActive, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+				<PivotItem Header="All">
+					<TextBlock Text="All"></TextBlock>
+					--><!--<local:FullEntryListView DataContext="{Binding EntryListViewModel}" />--><!--
+				</PivotItem>
+				
+				<PivotItem Header="Random">
+					<TextBlock Text="Random"></TextBlock>
+					--><!--<local:RandomEntryListView DataContext="{Binding EntryListViewModel}" />--><!--
+				</PivotItem>
+			</Pivot>-->
+
 			<!--<local:EntryListView Grid.Row="0" 
 								 x:Name="EntryListView" 
 								 DataContext="{Binding EntryListViewModel}" />-->
 
-			<local:EntryCreationView x:Name="EntryCreationView" 
+			<local:EntryCreationView x:Name="EntryCreationView"
 									 Grid.Row="1"
 									 DataContext="{Binding EntryCreationViewModel}"
 									 Margin="8,24,8,24"
 									 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
 									 Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-									 InputTargetLostFocus="EntryCreationView_OnInputTargetLostFocus"/>
+									 InputTargetLostFocus="EntryCreationView_OnInputTargetLostFocus" />
 		</Grid>
 
 		<!--Uncomment to see an alignment grid to help ensure your controls are
@@ -126,14 +150,13 @@
 	</Grid>
 
 	<Page.BottomAppBar>
-		<CommandBar ClosedDisplayMode="Compact"
-					Foreground="{StaticResource ApplicationThemeBrush}">
+		<CommandBar ClosedDisplayMode="Compact">
 			<CommandBar.PrimaryCommands>
 				<AppBarButton x:Uid="NewWordButton"
 							  Label="RES_MISSIN NewWordButton"
 							  Icon="Add"
 							  Command="{Binding AddWordCommand}"
-							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
 				<AppBarButton x:Uid="ConfirmNewWordButton"
 							  Label="RES_MISSING ConfirmNewWordButton"
 							  Icon="Accept"
@@ -141,15 +164,15 @@
 							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
 			</CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>
-				<AppBarButton x:Uid="SyncButton" 
+				<AppBarButton x:Uid="SyncButton"
 							  Label="RES_MISSING sync"
 							  Command="{Binding SyncCommand}" />
-				<AppBarButton x:Uid="SendLogsButton" 
+				<AppBarButton x:Uid="SendLogsButton"
 							  Label="RES_MISSING (advanced) share logs"
-							  Command="{Binding SendLogsCommand}"/>
+							  Command="{Binding SendLogsCommand}" />
 			</CommandBar.SecondaryCommands>
 		</CommandBar>
 	</Page.BottomAppBar>
-	
+
 
 </Page>

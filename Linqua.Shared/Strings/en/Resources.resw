@@ -152,6 +152,12 @@
 
 Start by adding a word or phrase.</value>
   </data>
+  <data name="PivotAllItem.Header" xml:space="preserve">
+    <value>all</value>
+  </data>
+  <data name="PivotRandomItem.Header" xml:space="preserve">
+    <value>random</value>
+  </data>
   <data name="PreviousWordsButton.Content" xml:space="preserve">
     <value>previous 3</value>
   </data>

@@ -1,0 +1,53 @@
+﻿<UserControl x:Class="Linqua.FullEntryListView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:local="using:Linqua"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d"
+			 d:DesignHeight="300"
+			 d:DesignWidth="400"
+			 d:DataContext="{d:DesignInstance local:EntryListViewModel, IsDesignTimeCreatable=True}">
+
+	<Grid x:Name="LayoutRoot">
+		<TextBlock x:Uid="NoEntriesTextBlock"
+				   Text="RES_MISSING NoEntriesTextBlock"
+				   Style="{ThemeResource ListViewEmptyStaticTextBlockStyle}"
+				   Visibility="{Binding ThereAreNoEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
+				   TextWrapping="Wrap"
+				   TextAlignment="Center"
+				   VerticalAlignment="Center"
+				   HorizontalAlignment="Center"
+				   Margin="24,0,24,0" />
+
+		<ListView Grid.Row="0"
+				  x:Name="EntryItemsControl"
+				  ItemsSource="{Binding EntryViewModels}"
+				  HorizontalContentAlignment="Stretch"
+				  HorizontalAlignment="Stretch"
+				  VerticalAlignment="Top">
+			<ListView.ItemContainerStyle>
+				<Style TargetType="ListViewItem">
+					<Setter Property="HorizontalContentAlignment"
+							Value="Stretch" />
+				</Style>
+
+			</ListView.ItemContainerStyle>
+			
+			<ListView.ItemTemplate>
+				<DataTemplate>
+					<local:EntryListItemView DataContext="{Binding}"
+											  Margin="0,0,0,12"
+											  Loaded="EntryLoaded"
+											  Background="Transparent"
+											  Holding="EntryHolding"
+											  PointerPressed="EntryPressed"
+											  HorizontalAlignment="Stretch"
+											  HorizontalContentAlignment="Stretch"
+											  IsTabStop="False">
+					</local:EntryListItemView>
+				</DataTemplate>
+			</ListView.ItemTemplate>
+		</ListView>
+	</Grid>
+</UserControl>

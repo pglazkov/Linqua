@@ -8,9 +8,9 @@ using Framework;
 
 namespace Linqua
 {
-    public partial class EntryListView : UserControl
+    public partial class RandomEntryListView : UserControl
     {
-        public EntryListView()
+        public RandomEntryListView()
         {
             InitializeComponent();
         }
