@@ -18,6 +18,12 @@
 			<SolidColorBrush x:Key="TextBoxBackgroundThemeBrush"
 							 Color="White" />
 
+			<SolidColorBrush x:Key="PivotHeaderForegroundUnselectedBrush"
+							 Color="{StaticResource TextOnThemeBackgroundColor}"
+							 Opacity="0.5"/>
+			<SolidColorBrush x:Key="PivotHeaderForegroundSelectedBrush"
+							 Color="{StaticResource TextOnThemeBackgroundColor}" />
+
 			<!--<SolidColorBrush x:Key="TextBoxBorderThemeBrush"
 							 Color="{StaticResource ApplicationThemeColor}" />-->
 		</ResourceDictionary>

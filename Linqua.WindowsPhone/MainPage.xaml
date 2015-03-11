@@ -10,10 +10,105 @@
 	  mc:Ignorable="d"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
 	  x:Name="ThisPage">
+	
+	<Page.Resources>
+		<Thickness x:Key="PivotPortraitThemePadding">12,24,0,0</Thickness>
+		<Thickness x:Key="PivotLandscapeThemePadding">12,25,0,0</Thickness>
+		
+		<Style x:Key="MainPivotStyle"
+			   TargetType="Pivot">
+			<Setter Property="Margin"
+					Value="0" />
+			<Setter Property="Padding"
+					Value="0" />
+			<Setter Property="Foreground"
+					Value="{StaticResource TextOnThemeBackgroundBrush}" />
+			<Setter Property="Background"
+					Value="Transparent" />
+			<Setter Property="ItemsPanel">
+				<Setter.Value>
+					<ItemsPanelTemplate>
+						<Grid />
+					</ItemsPanelTemplate>
+				</Setter.Value>
+			</Setter>
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate TargetType="Pivot">
+						<Grid x:Name="RootElement"
+							  Background="{TemplateBinding Background}"
+							  HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+							  VerticalAlignment="{TemplateBinding VerticalAlignment}">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto" />
+								<RowDefinition Height="*" />
+							</Grid.RowDefinitions>
+							<VisualStateManager.VisualStateGroups>
+								<VisualStateGroup x:Name="Orientation">
+									<VisualState x:Name="Portrait">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin"
+																		   Storyboard.TargetName="TitleContentControl">
+												<DiscreteObjectKeyFrame KeyTime="0"
+																		Value="{ThemeResource PivotPortraitThemePadding}" />
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+									<VisualState x:Name="Landscape">
+										<Storyboard>
+											<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Margin"
+																		   Storyboard.TargetName="TitleContentControl">
+												<DiscreteObjectKeyFrame KeyTime="0"
+																		Value="{ThemeResource PivotLandscapeThemePadding}" />
+											</ObjectAnimationUsingKeyFrames>
+										</Storyboard>
+									</VisualState>
+								</VisualStateGroup>
+							</VisualStateManager.VisualStateGroups>
+							<ContentControl x:Name="TitleContentControl"
+											ContentTemplate="{TemplateBinding TitleTemplate}"
+											Content="{TemplateBinding Title}"
+											Style="{StaticResource PivotTitleContentControlStyle}" />
+							<ScrollViewer x:Name="ScrollViewer"
+										  HorizontalSnapPointsAlignment="Center"
+										  HorizontalSnapPointsType="MandatorySingle"
+										  HorizontalScrollBarVisibility="Hidden"
+										  Margin="{TemplateBinding Padding}"
+										  Grid.Row="1"
+										  Template="{StaticResource ScrollViewerScrollBarlessTemplate}"
+										  VerticalSnapPointsType="None"
+										  VerticalScrollBarVisibility="Disabled"
+										  VerticalScrollMode="Disabled"
+										  VerticalContentAlignment="Stretch"
+										  ZoomMode="Disabled">
+								<PivotPanel x:Name="Panel"
+											VerticalAlignment="Stretch">
+									<PivotHeaderPanel x:Name="Header"
+													  Background="{StaticResource ApplicationThemeBrush}">
+										<PivotHeaderPanel.RenderTransform>
+											<CompositeTransform x:Name="HeaderTranslateTransform"
+																TranslateX="0" />
+										</PivotHeaderPanel.RenderTransform>
+									</PivotHeaderPanel>
+									<ItemsPresenter x:Name="PivotItemPresenter">
+										<ItemsPresenter.RenderTransform>
+											<TranslateTransform x:Name="ItemsPresenterTranslateTransform"
+																X="0" />
+										</ItemsPresenter.RenderTransform>
+									</ItemsPresenter>
+								</PivotPanel>
+							</ScrollViewer>
+						</Grid>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+	</Page.Resources>
 
-	<!--<interactivity:Interaction.Behaviors>
-		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"/>
-	</interactivity:Interaction.Behaviors>-->
+	<interactivity:Interaction.Behaviors>
+		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"
+									 ForegroundColor="{StaticResource TextOnThemeBackgroundColor}"/>
+	</interactivity:Interaction.Behaviors>
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot">
@@ -43,14 +138,13 @@
 
 		<!--TitlePanel contains the name of the application and page title-->
 		<Border Grid.Row="0"
-				BorderBrush="{StaticResource ApplicationThemeBrush}"
-				BorderThickness="0,0,0,2"
-				Margin="24,0,24,0"
-				Padding="0,12,0,8">
+				Background="{StaticResource ApplicationThemeBrush}"
+				Margin="0,0,0,0"
+				Padding="12,12,12,0">
 			<StackPanel x:Name="TitlePanel"
 						Orientation="Horizontal">
 				<StackPanel Orientation="Horizontal">
-					<Image Source="Assets/Icons/icon-48x48px.png"
+					<Image Source="Assets/Icons/icon-48x48px-white.png"
 						   Width="32"
 						   Height="32"
 						   Stretch="UniformToFill"
@@ -59,6 +153,7 @@
 					<TextBlock x:Uid="ApplicationHeader"
 							   Text="REST_MISSING LINQUA"
 							   Style="{ThemeResource TitleTextBlockStyle}"
+							   Foreground="{StaticResource TextOnThemeBackgroundBrush}"
 							   VerticalAlignment="Center"
 							   Margin="8,0,0,2" />
 				</StackPanel>
@@ -76,7 +171,7 @@
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel"
 			  Grid.Row="1"
-			  Margin="12,12,12,0">
+			  Margin="0,0,0,0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*" />
 				<RowDefinition Height="Auto" />
@@ -90,33 +185,44 @@
 						  Foreground="{StaticResource ProgressRingBrush}"
 						  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
 
-			<Pivot Grid.Row="0" 
+			<Pivot Grid.Row="0"
 				   x:Uid="Pivot"
-				   CommonNavigationTransitionInfo.IsStaggerElement="True">
+				   CommonNavigationTransitionInfo.IsStaggerElement="True"
+				   Style="{StaticResource MainPivotStyle}"
+				   Margin="0,0,0,12"
+				   Foreground="{StaticResource TextOnThemeBackgroundBrush}">
 				<PivotItem x:Uid="PivotRandomItem"
-						   Header="RES_MISSING PivotRandomItemHeader">
-					<local:RandomEntryListView DataContext="{Binding EntryListViewModel}" />
+						   Header="RES_MISSING PivotRandomItemHeader"
+						   Foreground="{StaticResource TextOnThemeBackgroundBrush}">
+					<local:RandomEntryListView DataContext="{Binding EntryListViewModel}"
+											   Margin="0,0,0,0"/>
 				</PivotItem>
-				
-				<PivotItem x:Uid="PivotAllItem" 
+
+				<PivotItem x:Uid="PivotAllItem"
 						   Header="RES_MISSING PivotAllItemHeader"
-						   CommonNavigationTransitionInfo.IsStaggerElement="True">
-					<local:FullEntryListView DataContext="{Binding EntryListViewModel}" />
+						   CommonNavigationTransitionInfo.IsStaggerElement="True"
+						   Foreground="{StaticResource TextOnThemeBackgroundBrush}">
+					<local:FullEntryListView DataContext="{Binding EntryListViewModel}"
+											 Margin="0,0,0,0"/>
 				</PivotItem>
 			</Pivot>
-			
+
 			<!--<Pivot x:Name="Pivot"
 				   Grid.Row="0"
 				   Margin="12,12,12,0"
 				   Visibility="{Binding ElementName=LoadingProgressRing, Path=IsActive, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
 				<PivotItem Header="All">
 					<TextBlock Text="All"></TextBlock>
-					--><!--<local:FullEntryListView DataContext="{Binding EntryListViewModel}" />--><!--
+					-->
+			<!--<local:FullEntryListView DataContext="{Binding EntryListViewModel}" />-->
+			<!--
 				</PivotItem>
 				
 				<PivotItem Header="Random">
 					<TextBlock Text="Random"></TextBlock>
-					--><!--<local:RandomEntryListView DataContext="{Binding EntryListViewModel}" />--><!--
+					-->
+			<!--<local:RandomEntryListView DataContext="{Binding EntryListViewModel}" />-->
+			<!--
 				</PivotItem>
 			</Pivot>-->
 
@@ -127,7 +233,7 @@
 			<local:EntryCreationView x:Name="EntryCreationView"
 									 Grid.Row="1"
 									 DataContext="{Binding EntryCreationViewModel}"
-									 Margin="8,24,8,24"
+									 Margin="8,12,8,24"
 									 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
 									 Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
 									 InputTargetLostFocus="EntryCreationView_OnInputTargetLostFocus" />
@@ -150,7 +256,9 @@
 	</Grid>
 
 	<Page.BottomAppBar>
-		<CommandBar ClosedDisplayMode="Compact">
+		<CommandBar ClosedDisplayMode="Compact"
+					Background="{StaticResource ApplicationThemeBrush}"
+					Foreground="{StaticResource TextOnThemeBackgroundBrush}">
 			<CommandBar.PrimaryCommands>
 				<AppBarButton x:Uid="NewWordButton"
 							  Label="RES_MISSIN NewWordButton"

@@ -11,9 +11,10 @@
 	
 	<SolidColorBrush x:Key="WordListBackground"
 					 Color="White"/>
-	
+
+	<Color x:Key="TextOnThemeBackgroundColor">White</Color>
 	<SolidColorBrush x:Key="TextOnThemeBackgroundBrush"
-					 Color="White"/>
+					 Color="{StaticResource TextOnThemeBackgroundColor}"/>
 	
 	<SolidColorBrush x:Key="EntryTextForegroundBrush"
 					 Color="{ThemeResource PhoneTextHighColor}"/>

@@ -13,7 +13,7 @@
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="3*"/>
+			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		
@@ -32,7 +32,7 @@
 				  ItemsSource="{Binding DisplayEntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
-				  VerticalAlignment="Center"
+				  VerticalAlignment="Top"
 				  ContinuumNavigationTransitionInfo.ExitElementContainer="True">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
@@ -63,7 +63,7 @@
 		
 		<Grid Grid.Row="1"
 			  Visibility="{Binding IsPagingControlsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-			  VerticalAlignment="Top">
+			  VerticalAlignment="Center">
 			
 			<!--<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="*"/>
@@ -88,7 +88,7 @@
 						BorderBrush="#BFBFBF"
 						Foreground="#BFBFBF"
 						HorizontalAlignment="Center"
-						Padding="36,8,36,12" />
+						Padding="36,12,36,12" />
 				
 				<TextBlock Grid.Row="1" 
 						   Text="{Binding TotalCountText}"
