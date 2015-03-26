@@ -128,8 +128,7 @@
 							   Text="RES_MISSING PivotRandomItemHeader" />
 				</ListBoxItem>
 				<ListBoxItem>
-					<TextBlock x:Uid="PivotAllItemHeader"
-							   Text="RES_MISSING PivotAllItemHeader" />
+					<TextBlock Text="{Binding EntryListViewModel.Header}" />
 				</ListBoxItem>
 			</ListBox>
 

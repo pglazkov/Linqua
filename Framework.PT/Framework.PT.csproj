@@ -57,6 +57,7 @@
     <Compile Include="ObservableExtensions.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultLocalSettingsService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultStatusBusyService.cs" />
+    <Compile Include="PlatformServices\DefaultImpl\DefaultStringResourceManager.cs" />
     <Compile Include="PlatformServices\ILocalSettingsService.cs" />
     <Compile Include="PlatformServices\IStatusBusyService.cs" />
     <Compile Include="IViewModel.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="PlatformServices\DefaultImpl\DefaultViewLocationService.cs" />
     <Compile Include="PlatformServices\IDesignModeDetectionService.cs" />
     <Compile Include="PlatformServices\IDispatcherService.cs" />
+    <Compile Include="PlatformServices\IStringResourceManager.cs" />
     <Compile Include="PlatformServices\IViewLocationService.cs" />
     <Compile Include="PlatformServices\LocalSettingsServiceExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

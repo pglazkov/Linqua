@@ -12,6 +12,8 @@ using Windows.UI.WebUI;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Interop;
 using Framework;
+using Framework.PlatformServices;
+using JetBrains.Annotations;
 using Linqua.DataObjects;
 using Linqua.Events;
 using MetroLog;
@@ -30,9 +32,14 @@ namespace Linqua
 		private readonly List<int> displayedIndexes = new List<int>();
 		private readonly Random displayEntriesIndexGenerator = new Random((int)DateTime.UtcNow.Ticks);
 	    private bool isPagingControlsVisible;
+		private readonly IStringResourceManager resourceManager;
 
-	    public EntryListViewModel()
+		[ImportingConstructor]
+	    public EntryListViewModel([NotNull] IStringResourceManager resourceManager)
 	    {
+			Guard.NotNull(resourceManager, () => resourceManager);
+
+		    this.resourceManager = resourceManager;
 		    EntryViewModels = new ObservableCollection<EntryListItemViewModel>();
 			EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
 
@@ -51,7 +58,7 @@ namespace Linqua
 	    }
 
 	    public EntryListViewModel(IEnumerable<ClientEntry> entries)
-			: this()
+			: this(new StringResourceManager())
 	    {
 			Guard.NotNull(entries, () => entries);
 
@@ -131,7 +138,15 @@ namespace Linqua
 	    {
 		    get
 		    {
-				return string.Format(ResourceLoader.GetForCurrentView().GetString("EntryListView_TotalCountTemplate"), EntryViewModels.Count);
+				return string.Format(resourceManager.GetString("EntryListView_TotalCountTemplate"), EntryViewModels.Count);
+		    }
+	    }
+
+	    public string Header
+	    {
+		    get
+		    {
+				return string.Format(resourceManager.GetString("EntryListView_Header"), EntryViewModels.Count);
 		    }
 	    }
 
@@ -226,6 +241,7 @@ namespace Linqua
 			UpdatePagingControlsVisibility();
 
 			RaisePropertyChanged(() => TotalCountText);
+			RaisePropertyChanged(() => Header);
 		}
 
 	    private void UpdatePagingControlsVisibility()
