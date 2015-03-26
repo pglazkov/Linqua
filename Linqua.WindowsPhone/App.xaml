@@ -7,24 +7,9 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Resources/CommonResources.xaml" />
 				<ResourceDictionary Source="Resources/Converters.xaml"/>
+				<ResourceDictionary Source="Resources/CommonStyles.xaml" />
 				<ResourceDictionary Source="Resources/ButtonStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-
-			<SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush"
-							 Color="{StaticResource ApplicationThemeColor}" />
-
-			<x:Double x:Key="ProgressBarThemeMinHeight">2</x:Double>
-
-			<SolidColorBrush x:Key="TextBoxBackgroundThemeBrush"
-							 Color="White" />
-
-			<!--<SolidColorBrush x:Key="PivotHeaderForegroundUnselectedBrush"
-							 Color="{StaticResource TextOnThemeBackgroundColor}"
-							 Opacity="0.5"/>
-			<SolidColorBrush x:Key="PivotHeaderForegroundSelectedBrush"
-							 Color="{StaticResource TextOnThemeBackgroundColor}" />-->
-
-			<x:Double x:Key="PivotHeaderItemFontSize">24</x:Double>
 		</ResourceDictionary>
 		
 	</Application.Resources>

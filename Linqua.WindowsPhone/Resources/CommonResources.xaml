@@ -18,4 +18,15 @@
 	
 	<SolidColorBrush x:Key="EntryTextForegroundBrush"
 					 Color="{ThemeResource PhoneTextHighColor}"/>
+	
+	<LinearGradientBrush x:Key="UnderlineBrush"
+						 StartPoint="0,0"
+						 EndPoint="1,0">
+		<GradientStop Color="{StaticResource ApplicationThemeColor}"
+					  Offset="0.0" />
+		<GradientStop Color="{StaticResource ApplicationThemeColor}"
+					  Offset="0.5" />
+		<GradientStop Color="Transparent"
+					  Offset="1.0" />
+	</LinearGradientBrush>
 </ResourceDictionary>
