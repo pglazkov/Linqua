@@ -4,10 +4,7 @@
 	  xmlns:local="using:Linqua"
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	  xmlns:z="using:Framework"
-	  xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
-	  xmlns:framework="using:Linqua.Framework"
-	  xmlns:controls="using:Framework.Controls"
+      xmlns:controls="using:Framework.Controls"
 	  mc:Ignorable="d"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
 	  x:Name="ThisPage">
@@ -123,11 +120,11 @@
 					</ItemsPanelTemplate>
 				</ListBox.ItemsPanel>
 
-				<ListBoxItem>
+				<ListBoxItem Margin="8,0,8,0">
 					<TextBlock x:Uid="PivotRandomItemHeader"
 							   Text="RES_MISSING PivotRandomItemHeader" />
 				</ListBoxItem>
-				<ListBoxItem>
+				<ListBoxItem Margin="8,0,8,0">
 					<TextBlock Text="{Binding EntryListViewModel.Header}" />
 				</ListBoxItem>
 			</ListBox>
