@@ -68,7 +68,9 @@
 					   FontSize="{ThemeResource TextStyleExtraExtraLargeFontSize}"
 					   Foreground="{StaticResource EntryTextForegroundBrush}"
 					   TextWrapping="Wrap"
-					   Margin="0" />
+					   Margin="0"
+					   Pivot.SlideInAnimationGroup="1"
+					   CommonNavigationTransitionInfo.IsStaggerElement="True" />
 
 			<!--<TextBlock Grid.Row="1"
 					   Grid.Column="0"
@@ -79,7 +81,9 @@
 			<Grid Grid.Row="1"
 				  Grid.Column="0"
 				  Margin="0,2,0,0"
-				  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+				  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+				  Pivot.SlideInAnimationGroup="2"
+				  CommonNavigationTransitionInfo.IsStaggerElement="True">
 				<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
 						   Text="RES_MISSING Translating..."
 						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"

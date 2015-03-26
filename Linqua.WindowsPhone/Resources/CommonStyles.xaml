@@ -21,13 +21,13 @@
 		<Setter Property="Padding"
 				Value="0,8" />
 		<Setter Property="HorizontalAlignment"
-				Value="Stretch" />
+				Value="Center" />
 		<Setter Property="HorizontalContentAlignment"
-				Value="Stretch" />
+				Value="Center" />
 		<Setter Property="Foreground"
 				Value="{ThemeResource PivotHeaderForegroundUnselectedBrush}" />
 		<Setter Property="FontSize"
-				Value="22" />
+				Value="20" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ListBoxItem">
@@ -157,7 +157,7 @@
 									   Fill="Transparent"
 									   Opacity="0" />
 							<Border x:Name="UnderlineBorder"
-									BorderBrush="{StaticResource UnderlineBrush}"
+									BorderBrush="{StaticResource ApplicationThemeBrush}"
 									BorderThickness="0,0,0,0">
 								<ContentPresenter x:Name="ContentPresenter"
 												  ContentTemplate="{TemplateBinding ContentTemplate}"

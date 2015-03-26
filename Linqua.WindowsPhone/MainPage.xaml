@@ -15,6 +15,16 @@
 	<Page.Resources>
 	</Page.Resources>
 
+	<Page.Transitions>
+		<TransitionCollection>
+			<NavigationThemeTransition>
+				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
+					<CommonNavigationTransitionInfo IsStaggeringEnabled="True" />
+				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
+			</NavigationThemeTransition>
+		</TransitionCollection>
+	</Page.Transitions>
+
 	<!--<interactivity:Interaction.Behaviors>
 		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"
 									 ForegroundColor="{StaticResource TextOnThemeBackgroundColor}"/>
@@ -105,8 +115,8 @@
 					 SelectedIndex="{Binding SelectedIndex, ElementName=Pivot, Mode=TwoWay}"
 					 Background="Transparent"
 					 Margin="8,8,12,8"
-					 HorizontalAlignment="Stretch"
-					 HorizontalContentAlignment="Left">
+					 HorizontalAlignment="Center"
+					 HorizontalContentAlignment="Center">
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>
 						<controls:SplitPanel />
@@ -127,15 +137,15 @@
 				   x:Name="Pivot"
 				   x:Uid="Pivot"
 				   CommonNavigationTransitionInfo.IsStaggerElement="True"
-				   Margin="0,38,0,12.5"
+				   Margin="0,38,0,24"
 				   Style="{StaticResource HeaderlessPivotStyle}">
-				<PivotItem Margin="12,0,12,0">
+				<PivotItem Margin="12,0,12,0"
+						   CommonNavigationTransitionInfo.IsStaggerElement="True">
 					<local:RandomEntryListView DataContext="{Binding EntryListViewModel}"
 											   Margin="0,0,0,0" />
 				</PivotItem>
 
-				<PivotItem Margin="12,0,12,0"
-						   CommonNavigationTransitionInfo.IsStaggerElement="True">
+				<PivotItem Margin="12,0,12,0">
 					<local:FullEntryListView DataContext="{Binding EntryListViewModel}"
 											 Margin="0,0,0,0" />
 				</PivotItem>
