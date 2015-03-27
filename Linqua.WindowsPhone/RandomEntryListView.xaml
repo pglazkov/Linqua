@@ -29,7 +29,7 @@
 
 		<ListView Grid.Row="0" 
 				  x:Name="EntryItemsControl"
-				  ItemsSource="{Binding DisplayEntryViewModels}"
+				  ItemsSource="{Binding RandomEntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
 				  VerticalAlignment="Top"

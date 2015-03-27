@@ -33,6 +33,8 @@ namespace Linqua
 		private readonly Random displayEntriesIndexGenerator = new Random((int)DateTime.UtcNow.Ticks);
 	    private bool isPagingControlsVisible;
 		private readonly IStringResourceManager resourceManager;
+		private readonly IDictionary<string, EntryListItemTimeGroupViewModel> groupsDictionary = new Dictionary<string, EntryListItemTimeGroupViewModel>();
+		private readonly IDictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel> itemGroupDictionary = new Dictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel>();
 
 		[ImportingConstructor]
 	    public EntryListViewModel([NotNull] IStringResourceManager resourceManager)
@@ -43,8 +45,11 @@ namespace Linqua
 		    EntryViewModels = new ObservableCollection<EntryListItemViewModel>();
 			EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
 
-			DisplayEntryViewModels = new ObservableCollection<EntryListItemViewModel>();
-		    DisplayEntryViewModels.CollectionChanged += OnDisplayEntriesCollectonChanged;
+			RandomEntryViewModels = new ObservableCollection<EntryListItemViewModel>();
+		    RandomEntryViewModels.CollectionChanged += OnDisplayEntriesCollectonChanged;
+
+			TimeGroupViewModels = new ObservableCollection<EntryListItemTimeGroupViewModel>();
+			TimeGroupViewModels.CollectionChanged += OnTimeGroupsCollectionChanged;
 
 			if (DesignTimeDetection.IsInDesignTool)
 			{
@@ -84,8 +89,10 @@ namespace Linqua
 
 				EntryViewModels.Clear();
 				EntryViewModels.AddRange(entries.Select(w => new EntryListItemViewModel(w)));
-				
-			    UpdateDisplayedEntries();
+
+			    UpdateTimeGroups();
+			    UpdateRandomEntries();
+
 				OnEntriesCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
 				EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
@@ -96,8 +103,11 @@ namespace Linqua
 		    }
 	    }
 
-	    public ObservableCollection<EntryListItemViewModel> DisplayEntryViewModels { get; private set; }
+	    public ObservableCollection<EntryListItemViewModel> RandomEntryViewModels { get; private set; }
 	    public ObservableCollection<EntryListItemViewModel> EntryViewModels { get; private set; }
+
+		public ObservableCollection<EntryListItemTimeGroupViewModel> TimeGroupViewModels { get; private set; }
+		
 
 	    public bool ThereAreNoEntries
 	    {
@@ -163,21 +173,44 @@ namespace Linqua
 	    {
 		    EntryViewModels.Insert(0, viewModel);
 
-		    if (DisplayEntryViewModels.Count == EntriesToDisplayCount)
+		    if (RandomEntryViewModels.Count == EntriesToDisplayCount)
 		    {
-			    DisplayEntryViewModels.RemoveAt(0);
+			    RandomEntryViewModels.RemoveAt(0);
 		    }
 
-		    DisplayEntryViewModels.Insert(0, viewModel);
+		    AddEntryToGroup(viewModel);
+
+		    RandomEntryViewModels.Insert(0, viewModel);
 
 		    UpdateDisplayedIndexes();
+	    }
+
+	    private void AddEntryToGroup(EntryListItemViewModel viewModel)
+	    {
+		    var group = GetTimeGroupForItem(viewModel);
+
+		    EntryListItemTimeGroupViewModel groupViewModel;
+
+		    if (!groupsDictionary.TryGetValue(group.GroupName, out groupViewModel))
+		    {
+			    groupViewModel = new EntryListItemTimeGroupViewModel(group.GroupName);
+
+				groupViewModel.Items = new ObservableCollection<EntryListItemViewModel>();
+
+				TimeGroupViewModels.Insert(0, groupViewModel);
+
+				groupsDictionary.Add(group.GroupName, groupViewModel);
+		    }
+			
+			groupViewModel.Items.Insert(0, viewModel);
+			itemGroupDictionary.Add(viewModel, groupViewModel);
 	    }
 
 	    private void UpdateDisplayedIndexes()
 	    {
 			displayedIndexes.Clear();
 
-		    foreach (var vm in DisplayEntryViewModels)
+		    foreach (var vm in RandomEntryViewModels)
 		    {
 			    displayedIndexes.Add(EntryViewModels.IndexOf(vm));
 		    }
@@ -216,9 +249,11 @@ namespace Linqua
 
 		    EntryViewModels.RemoveAt(entryIndex);
 
-			DisplayEntryViewModels.Remove(entryVm);
+			RandomEntryViewModels.Remove(entryVm);
 
 			UpdateDisplayedIndexes();
+
+		    DeleteEntryFromTimeGroup(entryVm);
 
 			// Move focus to previous or next entry
 			Dispatcher.BeginInvoke(new Action(() =>
@@ -231,11 +266,28 @@ namespace Linqua
 
 		    Observable.Timer(TimeSpan.FromMilliseconds(600)).Subscribe(_ =>
 		    {
-			    Dispatcher.BeginInvoke(new Action(UpdateDisplayedEntries));
+			    Dispatcher.BeginInvoke(new Action(UpdateRandomEntries));
 		    });
 	    }
 
-		private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+	    private void DeleteEntryFromTimeGroup(EntryListItemViewModel entryVm)
+	    {
+		    EntryListItemTimeGroupViewModel groupViewModel;
+
+		    if (itemGroupDictionary.TryGetValue(entryVm, out groupViewModel))
+		    {
+			    groupViewModel.Items.Remove(entryVm);
+
+			    if (groupViewModel.Items.Count == 0)
+			    {
+				    groupsDictionary.Remove(groupViewModel.GroupName);
+
+				    TimeGroupViewModels.Remove(groupViewModel);
+			    }
+		    }
+	    }
+
+	    private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			UpdateThereAreNoEntries();
 			UpdatePagingControlsVisibility();
@@ -246,7 +298,7 @@ namespace Linqua
 
 	    private void UpdatePagingControlsVisibility()
 	    {
-		    IsPagingControlsVisible = EntryViewModels.Count > DisplayEntryViewModels.Count;
+		    IsPagingControlsVisible = EntryViewModels.Count > RandomEntryViewModels.Count;
 	    }
 
 	    private void UpdateThereAreNoEntries()
@@ -266,7 +318,7 @@ namespace Linqua
 		    if (existingEntry != null)
 		    {
 			    EntryViewModels.Remove(existingEntry);
-			    DisplayEntryViewModels.Remove(existingEntry);
+			    RandomEntryViewModels.Remove(existingEntry);
 			    
 				UpdateDisplayedIndexes();
 
@@ -280,24 +332,24 @@ namespace Linqua
 		    return null;
 	    }
 
-		private void UpdateDisplayedEntries()
+		private void UpdateRandomEntries()
 		{
 			if (EntryViewModels.Count == 0)
 			{
-				DisplayEntryViewModels.Clear();
+				RandomEntryViewModels.Clear();
 				UpdateDisplayedIndexes();
 				return;
 			}
 
-			if (DisplayEntryViewModels.Count < EntriesToDisplayCount)
+			if (RandomEntryViewModels.Count < EntriesToDisplayCount)
 			{
-				var entriesToAdd = EntriesToDisplayCount - DisplayEntryViewModels.Count;
+				var entriesToAdd = EntriesToDisplayCount - RandomEntryViewModels.Count;
 
 				AddRandomDisplayedEntries(entriesToAdd);
 			}
 			else
 			{
-				DisplayEntryViewModels.Clear();
+				RandomEntryViewModels.Clear();
 
 				var notDisplayedIndexCount = EntryViewModels.Count - displayedIndexes.Count;
 
@@ -324,7 +376,7 @@ namespace Linqua
 
 			    vm.JustAdded = false;
 
-			    DisplayEntryViewModels.Add(vm);
+			    RandomEntryViewModels.Add(vm);
 
 			    displayedIndexes.Add(index.Value);
 		    }
@@ -357,14 +409,58 @@ namespace Linqua
 		    return result;
 	    }
 
-		private bool CanShowNextEntries()
+		private void UpdateTimeGroups()
+		{
+			TimeGroupViewModels.CollectionChanged -= OnTimeGroupsCollectionChanged;
+
+			TimeGroupViewModels.Clear();
+			groupsDictionary.Clear();
+			itemGroupDictionary.Clear();
+
+			var entriesWithGroups = EntryViewModels.Select(x => new
+			{
+				TimeGroup = GetTimeGroupForItem(x),
+				EntryVm = x
+			}).ToList();
+
+			var groupedItems = entriesWithGroups.GroupBy(i => i.TimeGroup).OrderByDescending(g => g.Key.OrderIndex).ToList();
+
+			foreach (var group in groupedItems)
+			{
+				var groupName = @group.Key.GroupName;
+
+				var groupVm = new EntryListItemTimeGroupViewModel(groupName);
+
+				var sortedItems = @group.OrderByDescending(i => i.EntryVm.DateAdded).Select(x => x.EntryVm);
+
+				groupVm.Items = new ObservableCollection<EntryListItemViewModel>(sortedItems);
+
+				TimeGroupViewModels.Add(groupVm);
+
+				foreach (var entry in groupVm.Items)
+				{
+					itemGroupDictionary.Add(entry, groupVm);
+				}
+
+				groupsDictionary.Add(groupName, groupVm);
+			}
+
+			TimeGroupViewModels.CollectionChanged += OnTimeGroupsCollectionChanged;
+		}
+
+		private static DateTimeGroupInfo GetTimeGroupForItem(EntryListItemViewModel x)
+	    {
+		    return DateTimeGrouping.GetGroup(x.DateAdded, DateTime.Now);
+	    }
+
+	    private bool CanShowNextEntries()
 		{
 			return true;
 		}
 
 		private void ShowNextEntries()
 		{
-			UpdateDisplayedEntries();
+			UpdateRandomEntries();
 		}
 
 		private bool CanShowPreviousEntries()
@@ -380,6 +476,11 @@ namespace Linqua
 		private void OnDisplayEntriesCollectonChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			UpdatePagingControlsVisibility();
+		}
+
+		private void OnTimeGroupsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+		{
+
 		}
     }
 }

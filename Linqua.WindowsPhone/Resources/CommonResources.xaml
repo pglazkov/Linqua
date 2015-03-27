@@ -16,9 +16,25 @@
 	<SolidColorBrush x:Key="EntryTextForegroundBrush"
 					 Color="{ThemeResource PhoneTextHighColor}"/>
 	
+	<SolidColorBrush x:Key="ApplicationThemeDimmedBrush"
+					 Color="{StaticResource ApplicationThemeColor}"
+					 Opacity="0.3"/>
+	
 	<LinearGradientBrush x:Key="UnderlineBrush"
 						 StartPoint="0,0"
 						 EndPoint="1,0">
+		<GradientStop Color="{StaticResource ApplicationThemeColor}"
+					  Offset="0.0" />
+		<GradientStop Color="{StaticResource ApplicationThemeColor}"
+					  Offset="0.5" />
+		<GradientStop Color="Transparent"
+					  Offset="1.0" />
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="UnderlineDimmedBrush"
+						 StartPoint="0,0"
+						 EndPoint="1,0"
+						 Opacity="0.4">
 		<GradientStop Color="{StaticResource ApplicationThemeColor}"
 					  Offset="0.0" />
 		<GradientStop Color="{StaticResource ApplicationThemeColor}"

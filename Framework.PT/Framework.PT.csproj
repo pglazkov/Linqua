@@ -37,6 +37,8 @@
     <Compile Include="Annotations.cs" />
     <Compile Include="CompositionFactory.cs" />
     <Compile Include="CompositionManager.cs" />
+    <Compile Include="DateTimeGroupInfo.cs" />
+    <Compile Include="DateTimeGrouping.cs" />
     <Compile Include="DelegateCommand.cs" />
     <Compile Include="DelegateCommandBase.cs" />
     <Compile Include="DesignTimeDetection.cs" />

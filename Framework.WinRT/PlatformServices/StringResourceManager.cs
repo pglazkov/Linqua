@@ -6,9 +6,16 @@ namespace Framework.PlatformServices
 	[Export(typeof(IStringResourceManager))]
 	public class StringResourceManager : IStringResourceManager
 	{
-		public string GetString(string key)
+		public string GetString(string key, string defaultValue)
 		{
-			return ResourceLoader.GetForCurrentView().GetString(key);
+			var result = ResourceLoader.GetForCurrentView().GetString(key);
+
+			if (string.IsNullOrEmpty(result))
+			{
+				result = defaultValue;
+			}
+
+			return result;
 		}
 	}
 }

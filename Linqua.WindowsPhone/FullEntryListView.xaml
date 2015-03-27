@@ -9,6 +9,13 @@
 			 d:DesignWidth="400"
 			 d:DataContext="{d:DesignInstance local:EntryListViewModel, IsDesignTimeCreatable=True}">
 
+	<UserControl.Resources>
+		<CollectionViewSource x:Name="TimeGroupsSource" 
+							  Source="{Binding TimeGroupViewModels}"
+							  IsSourceGrouped="True"
+							  ItemsPath="Items"/>
+	</UserControl.Resources>
+	
 	<Grid x:Name="LayoutRoot">
 		<TextBlock x:Uid="NoEntriesTextBlock"
 				   Text="RES_MISSING NoEntriesTextBlock"
@@ -22,10 +29,10 @@
 
 		<ListView Grid.Row="0"
 				  x:Name="EntryItemsControl"
-				  ItemsSource="{Binding EntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
-				  VerticalAlignment="Top">
+				  VerticalAlignment="Top"
+				  ItemsSource="{Binding Source={StaticResource TimeGroupsSource}}">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment"
@@ -34,6 +41,33 @@
 
 			</ListView.ItemContainerStyle>
 			
+			<ListView.GroupStyle>
+				<GroupStyle>
+					<GroupStyle.HeaderContainerStyle>
+						<Style TargetType="ListViewHeaderItem">
+							<Setter Property="HorizontalContentAlignment"
+									Value="Stretch" />
+							<Setter Property="VerticalContentAlignment"
+									Value="Center" />
+						</Style>
+					</GroupStyle.HeaderContainerStyle>
+					<GroupStyle.HeaderTemplate>
+						<DataTemplate>
+							<Border Margin="24,0,24,0"
+									Padding="0,0,0,8"
+									d:DataContext="{d:DesignInstance local:EntryListItemTimeGroupViewModel}"
+									BorderThickness="0,0,0,1"
+									BorderBrush="{ThemeResource ApplicationThemeDimmedBrush}">
+								<TextBlock Text="{Binding GroupName}"
+										   Style="{ThemeResource GroupHeaderTextBlockStyle}"
+										   FontSize="14"
+										   HorizontalAlignment="Center"/>
+							</Border>
+						</DataTemplate>
+					</GroupStyle.HeaderTemplate>
+				</GroupStyle>
+			</ListView.GroupStyle>
+
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<local:EntryListItemView DataContext="{Binding}"

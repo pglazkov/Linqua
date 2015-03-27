@@ -15,6 +15,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryCreationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntryListItemTimeGroupViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreatedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDefinitionChangedEvent.cs" />
@@ -31,6 +32,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Offline\IOfflineSyncController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Offline\OfflineSyncController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Persistence\SyncFailedHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TimeGroupViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />

@@ -167,4 +167,91 @@ Start by adding a word or phrase.</value>
   <data name="SyncButton.Label" xml:space="preserve">
     <value>sync</value>
   </data>
+  <data name="TimeGroup_2NextWeek" xml:space="preserve">
+    <value>next week</value>
+  </data>
+  <data name="TimeGroup_2WeeksAgo" xml:space="preserve">
+    <value>2 weeks ago</value>
+  </data>
+  <data name="TimeGroup_3WeeksAgo" xml:space="preserve">
+    <value>3 weeks ago</value>
+  </data>
+  <data name="TimeGroup_4WeeksAgo" xml:space="preserve">
+    <value>4 weeks ago</value>
+  </data>
+  <data name="TimeGroup_Friday" xml:space="preserve">
+    <value>friday</value>
+  </data>
+  <data name="TimeGroup_Friday2" xml:space="preserve">
+    <value>friday</value>
+  </data>
+  <data name="TimeGroup_In2Weeks" xml:space="preserve">
+    <value>in 2 weeks</value>
+  </data>
+  <data name="TimeGroup_In3Weeks" xml:space="preserve">
+    <value>in 3 weeks</value>
+  </data>
+  <data name="TimeGroup_In4Weeks" xml:space="preserve">
+    <value>in 4 weeks</value>
+  </data>
+  <data name="TimeGroup_LastMonth" xml:space="preserve">
+    <value>last month</value>
+  </data>
+  <data name="TimeGroup_LastWeek" xml:space="preserve">
+    <value>last week</value>
+  </data>
+  <data name="TimeGroup_Monday" xml:space="preserve">
+    <value>monday</value>
+  </data>
+  <data name="TimeGroup_Monday2" xml:space="preserve">
+    <value>monday</value>
+  </data>
+  <data name="TimeGroup_Newer" xml:space="preserve">
+    <value>newer</value>
+  </data>
+  <data name="TimeGroup_NextMonth" xml:space="preserve">
+    <value>next month</value>
+  </data>
+  <data name="TimeGroup_Older" xml:space="preserve">
+    <value>older</value>
+  </data>
+  <data name="TimeGroup_Saturday" xml:space="preserve">
+    <value>saturday</value>
+  </data>
+  <data name="TimeGroup_Saturday2" xml:space="preserve">
+    <value>saturday</value>
+  </data>
+  <data name="TimeGroup_Sunday" xml:space="preserve">
+    <value>sunday</value>
+  </data>
+  <data name="TimeGroup_Sunday2" xml:space="preserve">
+    <value>sunday</value>
+  </data>
+  <data name="TimeGroup_Thursday" xml:space="preserve">
+    <value>thursday</value>
+  </data>
+  <data name="TimeGroup_Thursday2" xml:space="preserve">
+    <value>thursday</value>
+  </data>
+  <data name="TimeGroup_Today" xml:space="preserve">
+    <value>today</value>
+  </data>
+  <data name="TimeGroup_Tomorrow" xml:space="preserve">
+    <value>tomorrow</value>
+  </data>
+  <data name="TimeGroup_Tuesday" xml:space="preserve">
+    <value>tuesday</value>
+  </data>
+  <data name="TimeGroup_Tuesday2" xml:space="preserve">
+    <value>tuesday</value>
+  </data>
+  <data name="TimeGroup_Wednesday" xml:space="preserve">
+    <value>wednesday</value>
+  </data>
+  <data name="TimeGroup_Wednesday2" xml:space="preserve">
+    <value>wednesday</value>
+  </data>
+  <data name="TimeGroup_Yesterday" xml:space="preserve">
+    <value>yesterday</value>
+  </data>
 </root>
