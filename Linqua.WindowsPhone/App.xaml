@@ -7,9 +7,53 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Resources/CommonResources.xaml" />
 				<ResourceDictionary Source="Resources/Converters.xaml"/>
-				<ResourceDictionary Source="Resources/CommonStyles.xaml" />
 				<ResourceDictionary Source="Resources/ButtonStyles.xaml" />
 			</ResourceDictionary.MergedDictionaries>
+
+			<!--<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key="Default">
+					<Color x:Key="SystemColorControlAccentColor">#8CC63E</Color>
+					<SolidColorBrush x:Key="PhoneAccentBrush"
+									 Color="{StaticResource SystemColorControlAccentColor}"/>
+
+					<SolidColorBrush x:Key="ButtonPressedBackgroundThemeBrush"
+									 Color="{ThemeResource SystemColorControlAccentColor}" />
+				</ResourceDictionary>
+
+				<ResourceDictionary x:Key="Dark">
+					<Color x:Key="SystemColorControlAccentColor">#8CC63E</Color>
+					<SolidColorBrush x:Key="PhoneAccentBrush"
+									 Color="{StaticResource SystemColorControlAccentColor}" />
+
+					<SolidColorBrush x:Key="ButtonPressedBackgroundThemeBrush"
+									 Color="{ThemeResource SystemColorControlAccentColor}" />
+				</ResourceDictionary>
+
+				<ResourceDictionary x:Key="Light">
+					<Color x:Key="SystemColorControlAccentColor">#8CC63E</Color>
+					<SolidColorBrush x:Key="PhoneAccentBrush"
+									 Color="{StaticResource SystemColorControlAccentColor}" />
+
+					<SolidColorBrush x:Key="ButtonPressedBackgroundThemeBrush"
+									 Color="{ThemeResource SystemColorControlAccentColor}" />
+				</ResourceDictionary>
+
+				<ResourceDictionary x:Key="HighContrast">
+
+				</ResourceDictionary>
+
+				<ResourceDictionary x:Key="HighContrastBlack">
+
+				</ResourceDictionary>
+
+				<ResourceDictionary x:Key="HighContrastWhite">
+
+				</ResourceDictionary>
+
+				<ResourceDictionary x:Key="HighContrastCustom">
+
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>-->
 		</ResourceDictionary>
 		
 	</Application.Resources>

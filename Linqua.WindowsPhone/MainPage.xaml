@@ -28,8 +28,7 @@
 	</interactivity:Interaction.Behaviors>-->
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
-	<Grid x:Name="LayoutRoot"
-		  Margin="12,0,12,0">
+	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
@@ -56,7 +55,7 @@
 
 		<!--TitlePanel contains the name of the application and page title-->
 		<Border Grid.Row="0"
-				Margin="12,0,12,0"
+				Margin="24,0,24,0"
 				Padding="0,12,0,12"
 				BorderThickness="0,0,0,2"
 				BorderBrush="{StaticResource ApplicationThemeBrush}">
@@ -111,7 +110,7 @@
 					 ItemContainerStyle="{StaticResource TabHeaderItemStyle}"
 					 SelectedIndex="{Binding SelectedIndex, ElementName=Pivot, Mode=TwoWay}"
 					 Background="Transparent"
-					 Margin="8,8,12,8"
+					 Margin="20,8,24,8"
 					 HorizontalAlignment="Center"
 					 HorizontalContentAlignment="Center">
 				<ListBox.ItemsPanel>
@@ -133,15 +132,14 @@
 				   x:Name="Pivot"
 				   x:Uid="Pivot"
 				   CommonNavigationTransitionInfo.IsStaggerElement="True"
-				   Margin="0,38,0,24"
-				   Style="{StaticResource HeaderlessPivotStyle}">
-				<PivotItem Margin="12,0,12,0"
+				   Margin="0,38,0,24">
+				<PivotItem Margin="0"
 						   CommonNavigationTransitionInfo.IsStaggerElement="True">
 					<local:RandomEntryListView DataContext="{Binding EntryListViewModel}"
 											   Margin="0,0,0,0" />
 				</PivotItem>
 
-				<PivotItem Margin="12,0,12,0">
+				<PivotItem Margin="0">
 					<local:FullEntryListView DataContext="{Binding EntryListViewModel}"
 											 Margin="0,0,0,0" />
 				</PivotItem>
@@ -150,7 +148,7 @@
 			<local:EntryCreationView x:Name="EntryCreationView"
 									 Grid.Row="2"
 									 DataContext="{Binding EntryCreationViewModel}"
-									 Margin="8,11.5,8,24.5"
+									 Margin="20,11.5,20,24.5"
 									 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
 									 Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
 									 InputTargetLostFocus="EntryCreationView_OnInputTargetLostFocus"
