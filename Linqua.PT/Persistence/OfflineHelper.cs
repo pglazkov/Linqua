@@ -89,11 +89,11 @@ namespace Linqua.Persistence
 				{
 					if (Log.IsDebugEnabled)
 						Log.Debug("Sync Started.");
-					
+
 					await MobileService.Client.SyncContext.PushAsync();
 
 					IMobileServiceSyncTable<ClientEntry> entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
-					
+
 					IMobileServiceTableQuery<ClientEntry> mobileServiceTableQuery = entryTable.CreateQuery();
 
 					if (args.Query != null)
@@ -116,6 +116,15 @@ namespace Linqua.Persistence
 						Log.Debug("Sync completed.");
 
 					return true;
+				}
+				catch (MobileServicePushFailedException ex)
+				{
+					if (Log.IsErrorEnabled)
+					{
+						Log.Error("Push Failed. Status: {0}. Errors: {1}", ex.PushResult.Status, ex.PushResult.Errors.Count > 0 ? string.Join("; ", ex.PushResult.Errors) : "<none>");
+					}
+
+					return false;
 				}
 				catch (Exception ex)
 				{

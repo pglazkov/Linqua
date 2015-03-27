@@ -54,14 +54,16 @@
 					<GroupStyle.HeaderTemplate>
 						<DataTemplate>
 							<Border Margin="24,0,24,0"
-									Padding="0,0,0,8"
+									Padding="0,8,0,2"
 									d:DataContext="{d:DesignInstance local:EntryListItemTimeGroupViewModel}"
 									BorderThickness="0,0,0,1"
-									BorderBrush="{ThemeResource ApplicationThemeDimmedBrush}">
+									BorderBrush="{ThemeResource UnderlineDimmedBrush}">
 								<TextBlock Text="{Binding GroupName}"
 										   Style="{ThemeResource GroupHeaderTextBlockStyle}"
 										   FontSize="14"
-										   HorizontalAlignment="Center"/>
+										   Foreground="{StaticResource ApplicationThemeBrush}"
+										   Opacity="0.8"
+										   HorizontalAlignment="Left"/>
 							</Border>
 						</DataTemplate>
 					</GroupStyle.HeaderTemplate>
@@ -71,7 +73,7 @@
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<local:EntryListItemView DataContext="{Binding}"
-											  Margin="24,0,24,12"
+											  Margin="24,2,24,10"
 											  Loaded="EntryLoaded"
 											  Background="Transparent"
 											  Holding="EntryHolding"

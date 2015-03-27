@@ -58,6 +58,15 @@ namespace Linqua.Persistence
 
 					throw;
 				}
+				catch (MobileServiceInvalidOperationException e)
+				{
+					if (Log.IsErrorEnabled)
+					{
+						Log.Error("Synchronization failed. An unexpected exception occured.", e);
+					}
+
+					throw;
+				}
 
 				if (ex != null)
 				{

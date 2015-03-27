@@ -50,6 +50,7 @@
     <Compile Include="ExceptionUtils.cs" />
     <Compile Include="FrameworkPortable.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="HttpUtils.cs" />
     <Compile Include="ICompositionFactory.cs" />
     <Compile Include="ICompositionManager.cs" />
     <Compile Include="IEventAggregator.cs" />

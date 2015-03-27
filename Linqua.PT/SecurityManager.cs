@@ -14,7 +14,7 @@ namespace Linqua
 
 		private static readonly string[] AuthenticationScopes = new[] { "wl.basic", "wl.signin", "wl.offline_access" };
 
-		public static async Task<bool> TryAuthenticateSilently()
+		public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
 		{
 			MobileServiceUser user = null;
 
@@ -22,13 +22,16 @@ namespace Linqua
 
 			PasswordCredential savedCredentials = null;
 
-			try
+			if (useCachedCredentials)
 			{
-				savedCredentials = vault.FindAllByResource(ProviderId).FirstOrDefault();
-			}
-			catch (Exception)
-			{
-				// No credentials found.
+				try
+				{
+					savedCredentials = vault.FindAllByResource(ProviderId).FirstOrDefault();
+				}
+				catch (Exception)
+				{
+					// No credentials found.
+				}
 			}
 
 			if (savedCredentials != null)
@@ -58,9 +61,9 @@ namespace Linqua
 			return user != null;
 		}
 
-		public static async Task<bool> Authenticate()
+		public static async Task<bool> Authenticate(bool useCachedCredentials = true)
 		{
-			var authenticated = await TryAuthenticateSilently();
+			var authenticated = await TryAuthenticateSilently(useCachedCredentials);
 
 			if (authenticated)
 			{

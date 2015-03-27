@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AppPortable.cs" />
+    <Compile Include="AuthFailureHandler.cs" />
     <Compile Include="ConnectionHelper.cs" />
     <Compile Include="FakeData.cs" />
     <Compile Include="DataObjects\ClientEntry.cs" />
