@@ -70,8 +70,7 @@
 
 					<TextBlock x:Uid="ApplicationHeader"
 							   Text="REST_MISSING LINQUA"
-							   Style="{ThemeResource TitleTextBlockStyle}"
-							   Foreground="{StaticResource TextOnThemeBackgroundBrush}"
+							   Style="{ThemeResource TitleTextBlockStyle}"							   
 							   VerticalAlignment="Center"
 							   Margin="8,0,0,2" />
 				</StackPanel>
