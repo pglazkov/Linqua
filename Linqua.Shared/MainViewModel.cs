@@ -1,14 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.ApplicationModel.DataTransfer;
 using Windows.Devices.Enumeration;
+using Windows.Foundation;
 using Framework;
 using Framework.PlatformServices;
 using Linqua.DataObjects;
 using Linqua.Events;
+using Linqua.Logging;
 using Linqua.Persistence;
 using Linqua.Translation;
 using MetroLog;
@@ -349,16 +353,60 @@ namespace Linqua
 
 		private void SendLogs()
 		{
-			SendLogsAsync().FireAndForget();
+			try
+			{
+				var dtm = DataTransferManager.GetForCurrentView();
+
+				dtm.DataRequested += OnLogFilesShareDataRequested;
+
+				DataTransferManager.ShowShareUI();
+			}
+			catch (Exception ex)
+			{
+				if (Log.IsErrorEnabled)
+					Log.Error("Unexpected exception occured while trying to share the log files.", ex);
+			}
 		}
 
-		private async Task SendLogsAsync()
+		private static async void OnLogFilesShareDataRequested(object sender, DataRequestedEventArgs args)
 		{
-			IWinRTLogManager logManager = LogManagerFactory.DefaultLogManager as IWinRTLogManager;
+			if (Log.IsDebugEnabled)
+				Log.Debug("Prepearing compressed logs to share.");
 
-			if (logManager != null)
+			if (Log.IsDebugEnabled)
+				Log.Debug("Deferral deadline is: {0}", args.Request.Deadline);
+
+			Stopwatch sw = new Stopwatch();
+			
+			var deferral = args.Request.GetDeferral();
+
+			sw.Start();
+
+			try
 			{
-				await logManager.ShareLogFile(string.Format("Linqua Logs - {0:s} | {1}", DateTime.UtcNow, DeviceInfo.DeviceId), "Linqua compressed log files.");
+				args.Request.Data.Properties.Title = string.Format("Linqua Logs - {0:s} | {1}", DateTime.UtcNow, DeviceInfo.DeviceId);
+				args.Request.Data.Properties.Description = "Linqua compressed log files.";
+
+				var file = await FileStreamingTarget.Instance.GetCompressedLogFile();
+
+				args.Request.Data.SetStorageItems(new[] { file });
+			}
+			catch (Exception ex)
+			{
+				if (Log.IsErrorEnabled)
+					Log.Error("Unexpected exception occured while trying to share the log files.", ex);
+			}
+			finally
+			{
+				sw.Stop();
+
+				if (Log.IsDebugEnabled)
+					Log.Debug("Compressed log file obtained at {0}", DateTime.Now);
+
+				deferral.Complete();
+
+				var dtm = DataTransferManager.GetForCurrentView();
+				dtm.DataRequested -= OnLogFilesShareDataRequested;
 			}
 		}
 

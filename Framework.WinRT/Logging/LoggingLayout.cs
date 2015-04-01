@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Text;
-using Framework;
 using MetroLog;
 using MetroLog.Layouts;
 
-namespace Linqua
+namespace Framework.Logging
 {
 	public class LoggingLayout : Layout
 	{

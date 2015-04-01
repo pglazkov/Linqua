@@ -42,6 +42,8 @@
     <Compile Include="Converters\InvertedBooleanConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
     <Compile Include="FrameworkPhone.cs" />
+    <Compile Include="Logging\FileTargetBase.cs" />
+    <Compile Include="Logging\LoggingLayout.cs" />
     <Compile Include="PlatformServices\DesignModeDetectionService.cs" />
     <Compile Include="PlatformServices\DispatcherService.cs" />
     <Compile Include="PlatformServices\LocalSettingsService.cs" />
@@ -55,8 +57,12 @@
     </Compile>
     <Compile Include="ViewLocator.cs" />
     <Compile Include="VisualTreeHelperExtensions.cs" />
+    <Compile Include="ZipFile.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="MetroLog">
+      <HintPath>..\packages\MetroLog.0.8.6\lib\portable-net45+wp8+win8+wpa81\MetroLog.dll</HintPath>
+    </Reference>
     <Reference Include="Nito.AsyncEx">
       <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\portable-net45+netcore45+wpa81+MonoTouch+MonoAndroid\Nito.AsyncEx.dll</HintPath>
     </Reference>

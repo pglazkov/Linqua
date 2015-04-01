@@ -2,10 +2,12 @@
 using System.Composition.Hosting;
 using System.Reflection;
 using Framework;
+using Framework.Logging;
 using Framework.MefExtensions;
 using Linqua.Persistence;
 using MetroLog;
 using MetroLog.Targets;
+using FileStreamingTarget = Linqua.Logging.FileStreamingTarget;
 
 namespace Linqua
 {
@@ -32,10 +34,10 @@ namespace Linqua
 #if DEBUG
 			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new DebugTarget(new LoggingLayout()));
 #endif
-			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new FileStreamingTarget(new LoggingLayout()));
+		    configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, FileStreamingTarget.Instance);
 
 			configuration.IsEnabled = true;
-
+			
 			LogManagerFactory.DefaultConfiguration = configuration;
 
 			// setup the global crash handler...

@@ -141,9 +141,6 @@
     <Reference Include="MetroLog.Platform">
       <HintPath>..\packages\MetroLog.0.8.6\lib\netcore45\MetroLog.Platform.dll</HintPath>
     </Reference>
-    <Reference Include="MetroLog.Targets">
-      <HintPath>..\packages\MetroLog.Targets.1.0.0.0\lib\portable-win81+wpa81\MetroLog.Targets.dll</HintPath>
-    </Reference>
     <Reference Include="MetroLog.WinRT">
       <HintPath>..\packages\MetroLog.0.8.6\lib\netcore45\MetroLog.WinRT.winmd</HintPath>
     </Reference>

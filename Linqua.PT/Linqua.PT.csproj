@@ -39,8 +39,6 @@
     <Compile Include="ConnectionHelper.cs" />
     <Compile Include="FakeData.cs" />
     <Compile Include="DataObjects\ClientEntry.cs" />
-    <Compile Include="LoggingHelper.cs" />
-    <Compile Include="LoggingLayout.cs" />
     <Compile Include="MobileService.cs" />
     <Compile Include="Persistence\EntryQuery.cs" />
     <Compile Include="Persistence\IDataStore.cs" />
@@ -69,9 +67,6 @@
   <ItemGroup>
     <Reference Include="MetroLog">
       <HintPath>..\packages\MetroLog.0.8.6\lib\portable-net45+wp8+win8+wpa81\MetroLog.dll</HintPath>
-    </Reference>
-    <Reference Include="MetroLog.Targets">
-      <HintPath>..\packages\MetroLog.Targets.1.0.0.0\lib\portable-win81+wpa81\MetroLog.Targets.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Live">
       <HintPath>C:\Program Files (x86)\Microsoft SDKs\Live\v5.6\Windows Store app XAML\References\CommonConfiguration\Neutral\Microsoft.Live.dll</HintPath>

@@ -1,9 +1,11 @@
 ﻿using System;
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
+using Framework.Logging;
 using Linqua.Persistence;
 using MetroLog;
 using MetroLog.Targets;
+using FileStreamingTarget = MetroLog.Targets.FileStreamingTarget;
 
 namespace Linqua.BackgroundTasks
 {

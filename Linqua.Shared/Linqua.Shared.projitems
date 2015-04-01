@@ -24,6 +24,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)IEntryListViewModelView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMainView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INavigationView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\FileStreamingTarget.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Logging\WinRTFileTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)LoginViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryListItemViewModel.cs" />
@@ -38,7 +40,6 @@
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Framework\" />
     <Folder Include="$(MSBuildThisFileDirectory)Resources\Images\" />
   </ItemGroup>
 </Project>
