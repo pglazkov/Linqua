@@ -89,6 +89,9 @@
     <Compile Include="EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EntryDetailsPage.xaml.cs">
+      <DependentUpon>EntryDetailsPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Framework\StatusBarBehavior.cs" />
     <Compile Include="Framework\StatusBusyService.cs" />
     <Compile Include="FullEntryListView.xaml.cs">
@@ -103,6 +106,9 @@
     <Compile Include="NavigationConstants.cs" />
     <Compile Include="NewEntryPage.xaml.cs">
       <DependentUpon>NewEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageHeader.xaml.cs">
+      <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="EntryListItemView.xaml.cs">
@@ -148,6 +154,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="EntryDetailsPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FullEntryListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -167,6 +177,10 @@
     <Page Include="EntryListItemView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PageHeader.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="RandomEntryListView.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -283,9 +297,7 @@
       <Name>Linqua.BackgroundTasks.WindowsPhone</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>

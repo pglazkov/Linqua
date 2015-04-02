@@ -3,18 +3,20 @@ using System.Collections.Generic;
 using System.Text;
 using Framework;
 using JetBrains.Annotations;
+using Linqua.DataObjects;
 
 namespace Linqua.Events
 {
 	public class EntryDefinitionChangedEvent : EventBase
     {
-		public EntryDefinitionChangedEvent([NotNull] EntryViewModel entryViewModel)
+		public EntryDefinitionChangedEvent([NotNull] ClientEntry entry)
 		{
-			Guard.NotNull(entryViewModel, () => entryViewModel);
+			Guard.NotNull(entry, () => entry);
 
-			EntryViewModel = entryViewModel;
+			Entry = entry;
 		}
 
-		public EntryViewModel EntryViewModel { get; private set; }
+		public ClientEntry Entry { get; private set; }
     }
 }
+	

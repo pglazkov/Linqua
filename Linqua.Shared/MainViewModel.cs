@@ -74,6 +74,7 @@ namespace Linqua
 			eventAggregator.GetEvent<EntryDeletionRequestedEvent>().Subscribe(OnEntryDeletionRequested);
 			eventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
 			eventAggregator.GetEvent<EntryDefinitionChangedEvent>().SubscribeWithAsync(OnEntryDefinitionChangedAsync);
+			eventAggregator.GetEvent<EntryDetailsRequestedEvent>().Subscribe(OnEntryDetailsRequested);
 		}
 
 		public DelegateCommand SendLogsCommand { get; private set; }
@@ -263,7 +264,7 @@ namespace Linqua
 					if (Log.IsDebugEnabled)
 						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entryItem.Text);
 
-					var existingEntry = await storage.LookupAlreadyExisting(entryItem.Entry);
+					var existingEntry = await storage.LookupByExample(entryItem.Entry);
 
 					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
 					{
@@ -431,6 +432,11 @@ namespace Linqua
 		private async Task OnEntryDefinitionChangedAsync(EntryDefinitionChangedEvent e)
 		{
 			
+		}
+
+		private void OnEntryDetailsRequested(EntryDetailsRequestedEvent e)
+		{
+			View.NavigateToEntryDetails(e.EntryId);
 		}
 	}
 }

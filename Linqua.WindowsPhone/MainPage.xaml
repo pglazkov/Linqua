@@ -54,36 +54,7 @@
          -->
 
 		<!--TitlePanel contains the name of the application and page title-->
-		<Border Grid.Row="0"
-				Margin="24,0,24,0"
-				Padding="0,12,0,12"
-				BorderThickness="0,0,0,2"
-				BorderBrush="{StaticResource ApplicationThemeBrush}">
-			<StackPanel x:Name="TitlePanel"
-						Orientation="Horizontal">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="Assets/Icons/icon-48x48px.png"
-						   Width="32"
-						   Height="32"
-						   Stretch="UniformToFill"
-						   VerticalAlignment="Center" />
-
-					<TextBlock x:Uid="ApplicationHeader"
-							   Text="REST_MISSING LINQUA"
-							   Style="{ThemeResource TitleTextBlockStyle}"							   
-							   VerticalAlignment="Center"
-							   Margin="8,0,0,2" />
-				</StackPanel>
-
-				<!--<TextBlock x:Uid="MainPageHeader"
-						   Text="RES_MISSING vocabulary"
-						   Margin="9,-5,0,0"
-						   Style="{ThemeResource HeaderTextBlockStyle}"
-						   Opacity="0.5"
-						   FontSize="20"
-						   VerticalAlignment="Bottom"/>-->
-			</StackPanel>
-		</Border>
+		<local:PageHeader Grid.Row="0"/>
 
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel"

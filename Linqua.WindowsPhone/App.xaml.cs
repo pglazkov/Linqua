@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
@@ -7,10 +6,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Framework;
+using Linqua.Common;
 using MetroLog;
-using MetroLog.Layouts;
-using MetroLog.Targets;
-using Microsoft.WindowsAzure.MobileServices;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -21,7 +18,7 @@ namespace Linqua
     /// </summary>
     public sealed partial class App : Application
     {
-		private readonly ILogger Log;
+		private readonly ILogger log;
 
 #if WINDOWS_PHONE_APP
         private TransitionCollection transitions;
@@ -33,14 +30,14 @@ namespace Linqua
         /// </summary>
         public App()
         {
-            this.InitializeComponent();
-            this.Suspending += this.OnSuspending;
+            InitializeComponent();
+            Suspending += OnSuspending;
 
 			var bootstrapper = new Bootstrapper();
 
 			bootstrapper.Run(this);
 
-			Log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
+			log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
         }
 
 	    /// <summary>
@@ -49,16 +46,16 @@ namespace Linqua
         /// search results, and so forth.
         /// </summary>
         /// <param name="e">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override async void OnLaunched(LaunchActivatedEventArgs e)
         {
 #if DEBUG
             if (Debugger.IsAttached)
             {
-                this.DebugSettings.EnableFrameRateCounter = true;
+                DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-			if (Log.IsInfoEnabled)
-				Log.Info("Application Launched. ============================================================================================");
+			if (log.IsInfoEnabled)
+				log.Info("OnLaunched");
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -69,12 +66,24 @@ namespace Linqua
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
+				// Associate the frame with a SuspensionManager key.
+				SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
+
                 // TODO: change this value to a cache size that is appropriate for your application
                 rootFrame.CacheSize = 1;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    // TODO: Load state from previously suspended application
+					// Restore the saved session state only when appropriate.
+					try
+					{
+						await SuspensionManager.RestoreAsync();
+					}
+					catch (SuspensionManagerException)
+					{
+						// Something went wrong restoring state.
+						// Assume there is no state and continue.
+					}
                 }
 
                 // Place the frame in the current Window
@@ -87,15 +96,15 @@ namespace Linqua
                 // Removes the turnstile navigation for startup.
                 if (rootFrame.ContentTransitions != null)
                 {
-                    this.transitions = new TransitionCollection();
+                    transitions = new TransitionCollection();
                     foreach (var c in rootFrame.ContentTransitions)
                     {
-                        this.transitions.Add(c);
+                        transitions.Add(c);
                     }
                 }
 
                 rootFrame.ContentTransitions = null;
-                rootFrame.Navigated += this.RootFrame_FirstNavigated;
+                rootFrame.Navigated += RootFrame_FirstNavigated;
 #endif
 
 	            var startupWorkflow = new StartupWorkflow(rootFrame, e.Arguments);
@@ -116,15 +125,15 @@ namespace Linqua
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
 			var rootFrame = (Frame)sender;
-            rootFrame.ContentTransitions = this.transitions ?? new TransitionCollection { new NavigationThemeTransition() };
-            rootFrame.Navigated -= this.RootFrame_FirstNavigated;
+            rootFrame.ContentTransitions = transitions ?? new TransitionCollection { new NavigationThemeTransition() };
+            rootFrame.Navigated -= RootFrame_FirstNavigated;
         }
 #endif
 
 		protected override void OnActivated(IActivatedEventArgs args)
 		{
-			if (Log.IsInfoEnabled)
-				Log.Info("Application Activated.");
+			if (log.IsInfoEnabled)
+				log.Info("Application Activated.");
 
 			// Windows Phone 8.1 requires you to handle the respose from the WebAuthenticationBroker.
 #if WINDOWS_PHONE_APP
@@ -150,10 +159,11 @@ namespace Linqua
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
-			if (Log.IsInfoEnabled)
-				await ((ILoggerAsync)Log).InfoAsync("Application is suspending.");
+			if (log.IsInfoEnabled)
+				await ((ILoggerAsync)log).InfoAsync("Application is suspending.");
 
-            // TODO: Save application state and stop any background activity
+			await SuspensionManager.SaveAsync();
+
             deferral.Complete();
         }
     }

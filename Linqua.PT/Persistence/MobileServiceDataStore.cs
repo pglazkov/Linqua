@@ -48,7 +48,19 @@ namespace Linqua.Persistence
 			}
 		}
 
-		public async Task<ClientEntry> LookupAlreadyExisting(ClientEntry example)
+		public async Task<ClientEntry> LookupById(string entryId)
+		{
+			Guard.NotNull(entryId, () => entryId);
+
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				var result = await entrySyncTable.LookupAsync(entryId);
+
+				return result;
+			}
+		}
+
+		public async Task<ClientEntry> LookupByExample(ClientEntry example)
 		{
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{

@@ -15,11 +15,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryCreationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)EntryDetailsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)EntryListItemTimeGroupViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreatedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDefinitionChangedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequestedEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDetailsRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryIsLearntChangedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEntryListViewModelView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMainView.cs" />

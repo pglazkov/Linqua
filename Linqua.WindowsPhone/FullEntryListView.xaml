@@ -32,7 +32,9 @@
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
 				  VerticalAlignment="Top"
-				  ItemsSource="{Binding Source={StaticResource TimeGroupsSource}}">
+				  ItemsSource="{Binding Source={StaticResource TimeGroupsSource}}"
+				  ItemClick="OnItemClicked"
+				  IsItemClickEnabled="True">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment"

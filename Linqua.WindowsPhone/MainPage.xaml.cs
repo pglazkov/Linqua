@@ -57,7 +57,7 @@ namespace Linqua
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
 		    if (DesignMode.DesignModeEnabled) return;
-
+			
 		    await SetUpBackgroundTasksAsync();
 
 		    SubscribeToEvents();
@@ -139,6 +139,13 @@ namespace Linqua
 	    public void NavigateToNewWordPage()
 	    {
 		    Navigate(typeof (NewEntryPage));
+	    }
+
+	    public void NavigateToEntryDetails(string entryId)
+	    {
+		    Guard.NotNullOrEmpty(entryId, () => entryId);
+
+		    Navigate(typeof(EntryDetailsPage), entryId);
 	    }
 
 	    public async void FocusEntryCreationView()

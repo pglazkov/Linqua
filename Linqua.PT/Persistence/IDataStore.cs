@@ -13,7 +13,10 @@ namespace Linqua.Persistence
 		Task<IEnumerable<ClientEntry>> LoadEntries([CanBeNull] Expression<Func<ClientEntry, bool>> filter = null);
 
 		[NotNull]
-		Task<ClientEntry> LookupAlreadyExisting([NotNull] ClientEntry example);
+		Task<ClientEntry> LookupById([NotNull] string entryId);
+
+		[NotNull]
+		Task<ClientEntry> LookupByExample([NotNull] ClientEntry example);
 
 		[NotNull]
 		Task<ClientEntry> AddEntry([NotNull] ClientEntry newEntry);

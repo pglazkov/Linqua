@@ -20,6 +20,9 @@ namespace Linqua
 			ConfigureLogger();
 
 			if (Log.IsInfoEnabled)
+				Log.Info("Application Launched. ============================================================================================");
+
+			if (Log.IsInfoEnabled)
 				Log.Info("Bootstrapper sequence started.");
 			
             ConfigureMef();

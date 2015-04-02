@@ -13,6 +13,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Framework;
+using Linqua.Events;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -65,6 +67,15 @@ namespace Linqua
 
 				entryVm.JustAdded = false;
 			}
+		}
+
+		private void OnItemClicked(object sender, ItemClickEventArgs e)
+		{
+			var entryVm = (EntryListItemViewModel)e.ClickedItem;
+
+			var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
+
+			eventAggregator.Publish(new EntryDetailsRequestedEvent(entryVm.Entry.Id));
 		}
 	}
 }

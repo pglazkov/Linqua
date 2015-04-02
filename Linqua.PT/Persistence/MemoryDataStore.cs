@@ -21,7 +21,15 @@ namespace Linqua.Persistence
 			});
 		}
 
-		public Task<ClientEntry> LookupAlreadyExisting(ClientEntry example)
+		public Task<ClientEntry> LookupById(string entryId)
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				return FakeData.FakeWords.SingleOrDefault(x => x.Id == entryId);
+			});
+		}
+
+		public Task<ClientEntry> LookupByExample(ClientEntry example)
 		{
 			return Task.Factory.StartNew(() =>
 			{

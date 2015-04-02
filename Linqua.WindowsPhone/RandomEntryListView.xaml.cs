@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Framework;
+using Linqua.Events;
 
 namespace Linqua
 {
@@ -56,5 +57,14 @@ namespace Linqua
 			    entryVm.JustAdded = false;
 		    }
 	    }
+
+		private void OnItemClicked(object sender, ItemClickEventArgs e)
+		{
+			var entryVm = (EntryListItemViewModel)e.ClickedItem;
+
+			var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
+			
+			eventAggregator.Publish(new EntryDetailsRequestedEvent(entryVm.Entry.Id));
+		}
     }
 }

@@ -80,7 +80,7 @@ namespace Linqua
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => IsDefinitionVisible);
 
-				EventAggregator.Publish(new EntryDefinitionChangedEvent(this));
+				EventAggregator.Publish(new EntryDefinitionChangedEvent(Entry));
 			}
 		}
 
