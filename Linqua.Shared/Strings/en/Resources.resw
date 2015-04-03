@@ -138,6 +138,9 @@
   <data name="EntryListView_TotalCountTemplate" xml:space="preserve">
     <value>total {0}</value>
   </data>
+  <data name="GoHomeButton.Label" xml:space="preserve">
+    <value>home</value>
+  </data>
   <data name="MainPageHeader.Text" xml:space="preserve">
     <value>vocabulary</value>
   </data>

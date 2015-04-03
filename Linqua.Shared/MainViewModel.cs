@@ -32,6 +32,7 @@ namespace Linqua
 		private bool isLoadingEntries;
 		private bool isEntryCreationViewVisible;
 		private static readonly AsyncLock RefreshLock = new AsyncLock();
+		private bool initialized;
 
 		public MainViewModel()
 		{
@@ -125,7 +126,14 @@ namespace Linqua
 
 		private async Task InitializeAsync()
 		{
+			if (initialized)
+			{
+				return;
+			}
+
 			await InitializeWordListAsync(CompositionFactory, storage);
+
+			initialized = true;
 		}
 
 		private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IDataStore storage)

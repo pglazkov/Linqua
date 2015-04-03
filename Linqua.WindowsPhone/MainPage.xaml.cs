@@ -79,11 +79,21 @@ namespace Linqua
 	    private void UnsubscribeFromEvents()
 	    {
 			ConnectionHelper.InternetConnectionChanged -= OnInternetConnectionChanged;
+
+		    if (syncBackgroundTask != null)
+		    {
+			    syncBackgroundTask.Completed -= OnSyncCompleted;
+		    }
 	    }
 
 	    private void SubscribeToEvents()
 	    {
 		    ConnectionHelper.InternetConnectionChanged += OnInternetConnectionChanged;
+
+			if (syncBackgroundTask != null)
+			{
+				syncBackgroundTask.Completed += OnSyncCompleted;
+			}
 	    }
 
 	    private void OnInternetConnectionChanged(object sender, InternetConnectionChangedEventArgs e)
@@ -102,15 +112,7 @@ namespace Linqua
 
 	    private async Task SetUpBackgroundTasksAsync()
 	    {
-		    if (Log.IsDebugEnabled)
-			    Log.Debug("Registering SyncTask background task.");
-
 		    syncBackgroundTask = await BackgroundTaskHelper.RegisterSyncTask();
-
-		    if (Log.IsDebugEnabled)
-			    Log.Debug("Background task registered. TaskId: {0}", syncBackgroundTask.TaskId);
-
-		    syncBackgroundTask.Completed += OnSyncCompleted;
 	    }
 
 	    private void OnSyncCompleted(BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args)

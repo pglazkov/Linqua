@@ -14,6 +14,7 @@
 
 	<Page.Transitions>
 		<TransitionCollection>
+			<!--<EntranceThemeTransition IsStaggeringEnabled="True" />-->
 			<NavigationThemeTransition>
 				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
 					<CommonNavigationTransitionInfo IsStaggeringEnabled="True" />

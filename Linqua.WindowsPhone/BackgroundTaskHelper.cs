@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
 using Linqua.BackgroundTasks;
+using MetroLog;
 
 namespace Linqua
 {
@@ -12,15 +13,33 @@ namespace Linqua
 	{
 		private const string SyncTaskName = "LinquaOfflineSync";
 
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(BackgroundTaskHelper));
+
+		private static BackgroundTaskRegistration SyncTask { get; set; }
+
 		public static async Task<BackgroundTaskRegistration> RegisterSyncTask()
 		{
+			if (SyncTask != null)
+			{
+				return SyncTask;
+			}
+
+			if (Log.IsDebugEnabled)
+				Log.Debug("Registering SyncTask background task.");
+
 			var accessStatus = await SetUpAccess();
 			if (accessStatus == BackgroundAccessStatus.Denied) return null;
 
-			return RegisterBackgroundTask(typeof(SynchronizationTask).FullName,
-			                              SyncTaskName,
-			                              new SystemTrigger(SystemTriggerType.InternetAvailable, false),
-			                              new SystemCondition(SystemConditionType.InternetAvailable));
+			var result = RegisterBackgroundTask(typeof(SynchronizationTask).FullName,
+			                                    SyncTaskName,
+			                                    new SystemTrigger(SystemTriggerType.InternetAvailable, false),
+			                                    new SystemCondition(SystemConditionType.InternetAvailable));
+			SyncTask = result;
+
+			if (Log.IsDebugEnabled)
+				Log.Debug("Background task registered. TaskId: {0}", result.TaskId);
+
+			return result;
 		}
 		
 		public static BackgroundTaskRegistration RegisterBackgroundTask(string taskEntryPoint, string taskName, IBackgroundTrigger trigger, IBackgroundCondition condition)

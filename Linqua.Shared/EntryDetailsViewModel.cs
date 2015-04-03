@@ -21,7 +21,7 @@ namespace Linqua
 
 		public EntryDetailsViewModel()
 		{
-
+			GoHomeCommand = new DelegateCommand(GoHome);
 		}
 
 		public EntryDetailsViewModel(
@@ -45,6 +45,8 @@ namespace Linqua
 			EventAggregator = eventAggregator;
 			CompositionFactory = compositionFactory;
 		}
+
+		public DelegateCommand GoHomeCommand { get; private set; }
 
 		public bool IsLoadingData
 		{
@@ -113,6 +115,8 @@ namespace Linqua
 			}
 		}
 
+		public IEntryDetailsView View { get; set; }
+
 		public async Task InitializeAsync([NotNull] string entryId)
 		{
 			Guard.NotNullOrEmpty(entryId, () => entryId);
@@ -130,6 +134,11 @@ namespace Linqua
 					IsLoadingData = false;
 				}
 			}
+		}
+
+		private void GoHome()
+		{
+			View.NavigateHome();
 		}
 	}
 }

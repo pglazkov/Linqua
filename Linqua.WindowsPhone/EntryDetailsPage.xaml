@@ -8,13 +8,17 @@
 	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	  d:DataContext="{d:DesignInstance local:EntryDetailsViewModel, IsDesignTimeCreatable=True}">
 
+	<Page.Transitions>
+		<TransitionCollection>
+			<NavigationThemeTransition>
+				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
+					<ContinuumNavigationTransitionInfo />
+				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
+			</NavigationThemeTransition>
+		</TransitionCollection>
+	</Page.Transitions>
+	
 	<Grid x:Name="LayoutRoot">
-
-		<Grid.ChildrenTransitions>
-			<TransitionCollection>
-				<EntranceThemeTransition />
-			</TransitionCollection>
-		</Grid.ChildrenTransitions>
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -48,6 +52,12 @@
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
+				<Grid.ChildrenTransitions>
+					<TransitionCollection>
+						<EntranceThemeTransition FromHorizontalOffset="400"/>
+					</TransitionCollection>
+				</Grid.ChildrenTransitions>
+				
 				<Viewbox Grid.Row="0"
 						 Grid.Column="0"
 						 Stretch="Uniform"
@@ -88,4 +98,17 @@
 			</Grid>
 		</Grid>
 	</Grid>
+
+	<Page.BottomAppBar>
+		<CommandBar ClosedDisplayMode="Compact">
+			<CommandBar.PrimaryCommands>
+				<AppBarButton x:Uid="GoHomeButton"
+							  Label="RES_MISSING GoHomeButton"
+							  Icon="Home"
+							  Command="{Binding GoHomeCommand}" />
+			</CommandBar.PrimaryCommands>
+			<CommandBar.SecondaryCommands>
+			</CommandBar.SecondaryCommands>
+		</CommandBar>
+	</Page.BottomAppBar>
 </Page>

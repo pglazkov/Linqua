@@ -13,7 +13,7 @@ namespace Linqua
 	/// <summary>
 	/// An empty page that can be used on its own or navigated to within a Frame.
 	/// </summary>
-	public sealed partial class EntryDetailsPage : Page
+	public sealed partial class EntryDetailsPage : Page, IEntryDetailsView
 	{
 		private NavigationHelper navigationHelper;
 
@@ -24,6 +24,7 @@ namespace Linqua
 			if (!DesignMode.DesignModeEnabled)
 			{
 				DataContext = CompositionManager.Current.GetInstance<ICompositionFactory>().Create<EntryDetailsViewModel>();
+				ViewModel.View = this;
 			}
 
 			navigationHelper = new NavigationHelper(this);
@@ -105,5 +106,10 @@ namespace Linqua
 		}
 
 		#endregion
+
+		public void NavigateHome()
+		{
+			Frame.Navigate(typeof(MainPage));
+		}
 	}
 }

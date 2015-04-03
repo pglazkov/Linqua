@@ -23,6 +23,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDetailsRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryIsLearntChangedEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IEntryDetailsView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEntryListViewModelView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMainView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)INavigationView.cs" />
