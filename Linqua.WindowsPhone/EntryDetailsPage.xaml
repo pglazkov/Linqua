@@ -52,17 +52,19 @@
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
-				<Grid.ChildrenTransitions>
+				<!--<Grid.ChildrenTransitions>
 					<TransitionCollection>
 						<EntranceThemeTransition FromHorizontalOffset="400"/>
 					</TransitionCollection>
-				</Grid.ChildrenTransitions>
+				</Grid.ChildrenTransitions>-->
 				
 				<Viewbox Grid.Row="0"
 						 Grid.Column="0"
 						 Stretch="Uniform"
 						 Margin="36,0,36,0"
-						 VerticalAlignment="Bottom">
+						 VerticalAlignment="Bottom"
+						 ContinuumNavigationTransitionInfo.IsEntranceElement="True"
+						 CommonNavigationTransitionInfo.IsStaggerElement="True">
 					<TextBlock x:Name="EntryTextBox"
 							   Text="{Binding EntryText}"
 							   Style="{ThemeResource ListViewItemTextBlockStyle}"
@@ -70,8 +72,6 @@
 							   Foreground="{StaticResource EntryTextForegroundBrush}"
 							   TextWrapping="Wrap"
 							   Margin="0"
-							   Pivot.SlideInAnimationGroup="1"
-							   CommonNavigationTransitionInfo.IsStaggerElement="True"
 							   HorizontalAlignment="Center" />
 				</Viewbox>
 
@@ -79,7 +79,6 @@
 					  Grid.Column="0"
 					  Margin="0,12,0,0"
 					  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-					  Pivot.SlideInAnimationGroup="2"
 					  CommonNavigationTransitionInfo.IsStaggerElement="True"
 					  HorizontalAlignment="Center"
 					  VerticalAlignment="Top">
