@@ -13,7 +13,7 @@
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="2*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		
@@ -32,7 +32,7 @@
 				  ItemsSource="{Binding RandomEntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
-				  VerticalAlignment="Top"
+				  VerticalAlignment="Bottom"
 				  ContinuumNavigationTransitionInfo.ExitElementContainer="True"
 				  ItemClick="OnItemClicked"
 				  IsItemClickEnabled="True">
@@ -84,13 +84,30 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
-				<Button x:Uid="NextWordsButton"
+				<HyperlinkButton x:Uid="NextWordsButton"
+								 Content="RES_MISSING NextWordsButton"
+								 Command="{Binding ShowNextEntriesCommand}"
+								 HorizontalAlignment="Center"
+								 Foreground="{StaticResource ApplicationThemeBrush}"
+								 FontSize="{StaticResource TextStyleExtraLargeFontSize}"
+								 Opacity="0.7">
+					<HyperlinkButton.ContentTemplate>
+						<DataTemplate>
+							<TextBlock>
+								<Underline>
+									<Run Text="{Binding}" />
+								</Underline>
+							</TextBlock>
+						</DataTemplate>
+					</HyperlinkButton.ContentTemplate>
+				</HyperlinkButton>
+				<!--<Button x:Uid="NextWordsButton"
 						Content="RES_MISSING NextWordsButton"
 						Command="{Binding ShowNextEntriesCommand}"
 						BorderBrush="#BFBFBF"
 						Foreground="#BFBFBF"
 						HorizontalAlignment="Center"
-						Padding="36,8,36,12" />
+						Padding="36,8,36,12" />-->
 				
 				<TextBlock Grid.Row="1" 
 						   Text="{Binding TotalCountText}"
