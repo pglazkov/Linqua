@@ -64,7 +64,8 @@
 						 Margin="36,0,36,0"
 						 VerticalAlignment="Bottom"
 						 ContinuumNavigationTransitionInfo.IsEntranceElement="True"
-						 CommonNavigationTransitionInfo.IsStaggerElement="True">
+						 CommonNavigationTransitionInfo.IsStaggerElement="True"
+						 MaxHeight="80">
 					<TextBlock x:Name="EntryTextBox"
 							   Text="{Binding EntryText}"
 							   Style="{ThemeResource ListViewItemTextBlockStyle}"
