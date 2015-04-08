@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.ApplicationModel;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
@@ -97,6 +98,8 @@ namespace Linqua
 		/// handlers that cannot cancel the navigation request.</param>
 		protected override void OnNavigatedTo(NavigationEventArgs e)
 		{
+			ApplicationView.GetForCurrentView().SetDesiredBoundsMode(ApplicationViewBoundsMode.UseCoreWindow);
+
 			navigationHelper.OnNavigatedTo(e);
 		}
 

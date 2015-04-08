@@ -34,8 +34,7 @@
 				  VerticalAlignment="Top"
 				  ItemsSource="{Binding Source={StaticResource TimeGroupsSource}}"
 				  ItemClick="OnItemClicked"
-				  IsItemClickEnabled="True"
-				  ContinuumNavigationTransitionInfo.ExitElementContainer="True">
+				  IsItemClickEnabled="True">
 			<ListView.ItemContainerStyle>
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment"

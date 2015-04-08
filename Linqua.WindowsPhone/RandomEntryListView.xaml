@@ -33,7 +33,6 @@
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
 				  VerticalAlignment="Bottom"
-				  ContinuumNavigationTransitionInfo.ExitElementContainer="True"
 				  ItemClick="OnItemClicked"
 				  IsItemClickEnabled="True">
 			<ListView.ItemContainerStyle>

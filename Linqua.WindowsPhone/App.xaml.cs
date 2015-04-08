@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
@@ -21,7 +22,7 @@ namespace Linqua
 		private readonly ILogger log;
 
 #if WINDOWS_PHONE_APP
-        private TransitionCollection transitions;
+        //private TransitionCollection transitions;
 #endif
 		public static ICompositionManager CompositionManager { get; internal set; }
         /// <summary>
@@ -94,14 +95,14 @@ namespace Linqua
             {
 #if WINDOWS_PHONE_APP
                 // Removes the turnstile navigation for startup.
-                if (rootFrame.ContentTransitions != null)
-                {
-                    transitions = new TransitionCollection();
-                    foreach (var c in rootFrame.ContentTransitions)
-                    {
-                        transitions.Add(c);
-                    }
-                }
+				//if (rootFrame.ContentTransitions != null)
+				//{
+				//	transitions = new TransitionCollection();
+				//	foreach (var c in rootFrame.ContentTransitions)
+				//	{
+				//		transitions.Add(c);
+				//	}
+				//}
 
                 rootFrame.ContentTransitions = null;
                 rootFrame.Navigated += RootFrame_FirstNavigated;
@@ -125,7 +126,7 @@ namespace Linqua
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
 			var rootFrame = (Frame)sender;
-            rootFrame.ContentTransitions = transitions ?? new TransitionCollection { new NavigationThemeTransition() };
+            //rootFrame.ContentTransitions = transitions ?? new TransitionCollection { new NavigationThemeTransition() };
             rootFrame.Navigated -= RootFrame_FirstNavigated;
         }
 #endif

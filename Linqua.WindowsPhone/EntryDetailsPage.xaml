@@ -18,7 +18,8 @@
 		</TransitionCollection>
 	</Page.Transitions>
 	
-	<Grid x:Name="LayoutRoot">
+	<Grid x:Name="LayoutRoot"
+		  Margin="0,27,0,72">
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
@@ -52,18 +53,17 @@
 					<ColumnDefinition Width="Auto" />
 				</Grid.ColumnDefinitions>
 
-				<!--<Grid.ChildrenTransitions>
+				<Grid.ChildrenTransitions>
 					<TransitionCollection>
-						<EntranceThemeTransition FromHorizontalOffset="400"/>
+						<EntranceThemeTransition FromHorizontalOffset="200"/>
 					</TransitionCollection>
-				</Grid.ChildrenTransitions>-->
+				</Grid.ChildrenTransitions>
 				
 				<Viewbox Grid.Row="0"
 						 Grid.Column="0"
 						 Stretch="Uniform"
 						 Margin="36,0,36,0"
 						 VerticalAlignment="Bottom"
-						 ContinuumNavigationTransitionInfo.IsEntranceElement="True"
 						 CommonNavigationTransitionInfo.IsStaggerElement="True"
 						 MaxHeight="80">
 					<TextBlock x:Name="EntryTextBox"

@@ -14,14 +14,23 @@
 
 	<Page.Transitions>
 		<TransitionCollection>
-			<!--<EntranceThemeTransition IsStaggeringEnabled="True" />-->
+			<NavigationThemeTransition>
+				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
+					<ContinuumNavigationTransitionInfo/>
+				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
+			</NavigationThemeTransition>
+		</TransitionCollection>
+	</Page.Transitions>
+	
+	<!--<Page.Transitions>
+		<TransitionCollection>
 			<NavigationThemeTransition>
 				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
 					<CommonNavigationTransitionInfo IsStaggeringEnabled="True" />
 				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
 			</NavigationThemeTransition>
 		</TransitionCollection>
-	</Page.Transitions>
+	</Page.Transitions>-->
 
 	<!--<interactivity:Interaction.Behaviors>
 		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"
@@ -29,7 +38,8 @@
 	</interactivity:Interaction.Behaviors>-->
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
-	<Grid x:Name="LayoutRoot">
+	<Grid x:Name="LayoutRoot"
+		  Margin="0,27,0,72">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />

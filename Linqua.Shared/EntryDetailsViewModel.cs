@@ -127,6 +127,8 @@ namespace Linqua
 
 				try
 				{
+					await storage.InitializeAsync();
+
 					Entry = await storage.LookupById(entryId);
 				}
 				finally
