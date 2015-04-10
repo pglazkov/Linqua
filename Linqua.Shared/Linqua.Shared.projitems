@@ -9,6 +9,7 @@
     <Import_RootNamespace>Linqua</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)ApplicationController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bootstrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
@@ -23,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDetailsRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryIsLearntChangedEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)IApplicationController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEntryDetailsView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IEntryListViewModelView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IMainView.cs" />

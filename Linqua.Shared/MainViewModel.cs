@@ -27,7 +27,7 @@ namespace Linqua
 		private readonly IDataStore storage;
 		private readonly IEventAggregator eventAggregator;
 		private readonly IStatusBusyService statusBusyService;
-		private readonly Lazy<ITranslationService> translator;
+		private readonly IApplicationController applicationController;
 		private EntryListViewModel entryListViewModel;
 		private bool isLoadingEntries;
 		private bool isEntryCreationViewVisible;
@@ -52,19 +52,19 @@ namespace Linqua
 			IDataStore storage,
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
-			Lazy<ITranslationService> translator)
+			IApplicationController applicationController)
 			: this()
 		{
 			Guard.NotNull(compositionFactory, () => compositionFactory);
 			Guard.NotNull(storage, () => storage);
 			Guard.NotNull(eventAggregator, () => eventAggregator);
 			Guard.NotNull(statusBusyService, () => statusBusyService);
-			Guard.NotNull(translator, () => translator);
+			Guard.NotNull(applicationController, () => applicationController);
 
 			this.storage = storage;
 			this.eventAggregator = eventAggregator;
 			this.statusBusyService = statusBusyService;
-			this.translator = translator;
+			this.applicationController = applicationController;
 
 			CompositionFactory = compositionFactory;
 
@@ -245,7 +245,7 @@ namespace Linqua
 
 					if (newEntryViewModel != null && string.IsNullOrWhiteSpace(newEntryViewModel.Definition))
 					{
-						await TranslateEntryItemAsync(newEntryViewModel);
+						await applicationController.TranslateEntryItemAsync(newEntryViewModel);
 					}
 				}
 			}
@@ -257,69 +257,6 @@ namespace Linqua
 			IsEntryCreationViewVisible = false;
 
 			EventAggregator.Publish(new EntryCreatedEvent(addedEntry));
-		}
-
-		private async Task TranslateEntryItemAsync(EntryListItemViewModel entryItem)
-		{
-			entryItem.IsTranslating = true;
-
-			try
-			{
-				string translation = null;
-
-				try
-				{
-					if (Log.IsDebugEnabled)
-						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entryItem.Text);
-
-					var existingEntry = await storage.LookupByExample(entryItem.Entry);
-
-					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
-					{
-						if (Log.IsDebugEnabled)
-							Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
-
-						translation = existingEntry.Definition;
-					}
-				}
-				catch (Exception ex)
-				{
-					if (Log.IsErrorEnabled)
-						Log.Error("An error occured while trying to find an existing entry.", ex);
-				}
-
-				if (string.IsNullOrEmpty(translation))
-				{
-					if (Log.IsDebugEnabled)
-						Log.Debug("Detecting language of \"{0}\"", entryItem.Entry.Text);
-
-					var entryLanguage = await translator.Value.DetectLanguageAsync(entryItem.Entry.Text);
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Detected language: " + entryLanguage);
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entryItem.Entry.Text, entryLanguage, "en");
-
-					translation = await translator.Value.TranslateAsync(entryItem.Entry.Text, entryLanguage, "en");
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Translation: \"{0}\"", translation);
-				}
-
-				entryItem.Definition = translation;
-
-				await storage.UpdateEntry(entryItem.Entry);
-			}
-			catch (Exception ex)
-			{
-				if (Log.IsErrorEnabled)
-					Log.Error("An error occured while trying to translate an entry.", ex);
-			}
-			finally
-			{
-				entryItem.IsTranslating = false;
-			}
 		}
 
 		private async void OnEntryDeletionRequested(EntryDeletionRequestedEvent e)
@@ -423,8 +360,6 @@ namespace Linqua
 		{
 			using (await RefreshLock.LockAsync())
 			{
-				storage.UpdateEntry(e.EntryViewModel.Entry).FireAndForget();
-
 				if (e.EntryViewModel.IsLearnt)
 				{
 					await Observable.Timer(TimeSpan.FromMilliseconds(300));

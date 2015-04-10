@@ -229,7 +229,10 @@ namespace Linqua
 	    {
 		    var entryVm = EntryViewModels.SingleOrDefault(w => w.Entry.Id == entryToDelete.Id);
 
-			Guard.Assert(entryVm != null, "entryVm != null");
+		    if (entryVm == null)
+		    {
+			    return;
+		    }
 
 		    var entryIndex = EntryViewModels.IndexOf(entryVm);
 

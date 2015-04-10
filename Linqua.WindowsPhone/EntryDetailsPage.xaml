@@ -78,23 +78,54 @@
 
 				<Grid Grid.Row="1"
 					  Grid.Column="0"
-					  Margin="0,12,0,0"
-					  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-					  CommonNavigationTransitionInfo.IsStaggerElement="True"
 					  HorizontalAlignment="Center"
 					  VerticalAlignment="Top">
-					<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
-							   Text="RES_MISSING Translating..."
-							   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-							   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}"
-							   HorizontalAlignment="Center" />
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto"/>
+						<RowDefinition Height="Auto"/>
+					</Grid.RowDefinitions>
+					
+					<Grid Grid.Row="0"
+						  Grid.Column="0"
+						  Margin="0,12,0,0"
+						  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+						  CommonNavigationTransitionInfo.IsStaggerElement="True"
+						  HorizontalAlignment="Center"
+						  VerticalAlignment="Top">
+						<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
+								   Text="RES_MISSING Translating..."
+								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+								   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}"
+								   HorizontalAlignment="Center" />
 
-					<TextBlock Text="{Binding Definition}"
-							   TextWrapping="Wrap"
-							   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-							   Visibility="{Binding IsTranslating, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-							   HorizontalAlignment="Center" />
+						<TextBlock Text="{Binding Definition}"
+								   TextWrapping="Wrap"
+								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+								   Visibility="{Binding IsTranslating, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+								   HorizontalAlignment="Center" />
+					</Grid>
+
+					<StackPanel Grid.Row="1"
+								Grid.Column="0"
+								Orientation="Vertical"
+								HorizontalAlignment="Center"
+								Margin="0,54,0,0">
+						<ToggleButton Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
+									  Padding="0"
+									  VerticalContentAlignment="Center"
+									  HorizontalAlignment="Center"
+									  Style="{StaticResource IconToggleButtonStyle}"
+									  IsChecked="{Binding IsLearnt, Mode=TwoWay}">
+						</ToggleButton>
+						
+						<TextBlock Text="{Binding IsLearnStatusText}"
+								   FontSize="{ThemeResource TextStyleSmallFontSize}"
+								   HorizontalAlignment="Center"
+								   Margin="0,12,0,0"/>
+					</StackPanel>
+					
 				</Grid>
+				
 			</Grid>
 		</Grid>
 	</Grid>

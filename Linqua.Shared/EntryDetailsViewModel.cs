@@ -10,14 +10,12 @@ using Linqua.Translation;
 
 namespace Linqua
 {
-	public class EntryDetailsViewModel : ViewModelBase
+	public class EntryDetailsViewModel : EntryViewModel
 	{
 		private readonly IDataStore storage;
 		private readonly IStatusBusyService statusBusyService;
 		private Lazy<ITranslationService> translator;
 		private bool isLoadingData;
-		private ClientEntry entry;
-		private bool isTranslating;
 
 		public EntryDetailsViewModel()
 		{
@@ -59,60 +57,9 @@ namespace Linqua
 			}
 		}
 
-		public ClientEntry Entry
-		{
-			get { return entry; }
-			private set
-			{
-				if (Equals(value, entry)) return;
-				entry = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(() => EntryText);
-				RaisePropertyChanged(() => Definition);
-				RaisePropertyChanged(() => IsDefinitionVisible);
-			}
-		}
-
 		public string EntryText
 		{
 			get { return Entry != null ? Entry.Text : string.Empty; }
-		}
-
-		public string Definition
-		{
-			get { return Entry != null ? Entry.Definition : string.Empty; }
-			set
-			{
-				if (Equals(Definition, value))
-				{
-					return;
-				}
-
-				Guard.Assert(Entry != null, "Entry != null");
-
-				Entry.Definition = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(() => IsDefinitionVisible);
-
-				EventAggregator.Publish(new EntryDefinitionChangedEvent(Entry));
-			}
-		}
-
-		public bool IsDefinitionVisible
-		{
-			get { return !string.IsNullOrEmpty(Definition) || IsTranslating; }
-		}
-
-		public bool IsTranslating
-		{
-			get { return isTranslating; }
-			set
-			{
-				if (value.Equals(isTranslating)) return;
-				isTranslating = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(() => IsDefinitionVisible);
-			}
 		}
 
 		public IEntryDetailsView View { get; set; }
@@ -141,6 +88,11 @@ namespace Linqua
 		private void GoHome()
 		{
 			View.NavigateHome();
+		}
+
+		protected override void OnEntryChangedOverride()
+		{
+			RaisePropertyChanged(() => EntryText);
 		}
 	}
 }

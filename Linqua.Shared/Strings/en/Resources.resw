@@ -138,6 +138,12 @@
   <data name="EntryListView_TotalCountTemplate" xml:space="preserve">
     <value>total {0}</value>
   </data>
+  <data name="EntryViewModel_LearntStatus" xml:space="preserve">
+    <value>learnt</value>
+  </data>
+  <data name="EntryViewModel_NotLearntStatus" xml:space="preserve">
+    <value>not learnt</value>
+  </data>
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>home</value>
   </data>
