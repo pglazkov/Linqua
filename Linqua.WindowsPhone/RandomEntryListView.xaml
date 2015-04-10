@@ -13,7 +13,7 @@
 
 	<Grid x:Name="LayoutRoot">
 		<Grid.RowDefinitions>
-			<RowDefinition Height="2*"/>
+			<RowDefinition Height="2.5*"/>
 			<RowDefinition Height="*"/>
 		</Grid.RowDefinitions>
 		
@@ -42,10 +42,6 @@
 				</Style>
 				
 			</ListView.ItemContainerStyle>
-			<!--<ItemsControl.ItemContainerTransitions>
-					<ContentThemeTransition/>
-					<EntranceThemeTransition/>
-				</ItemsControl.ItemContainerTransitions>-->
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<linqua:EntryListItemView DataContext="{Binding}"
@@ -83,7 +79,7 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
-				<HyperlinkButton x:Uid="NextWordsButton"
+				<!--<HyperlinkButton x:Uid="NextWordsButton"
 								 Content="RES_MISSING NextWordsButton"
 								 Command="{Binding ShowNextEntriesCommand}"
 								 HorizontalAlignment="Center"
@@ -99,7 +95,7 @@
 							</TextBlock>
 						</DataTemplate>
 					</HyperlinkButton.ContentTemplate>
-				</HyperlinkButton>
+				</HyperlinkButton>-->
 				<!--<Button x:Uid="NextWordsButton"
 						Content="RES_MISSING NextWordsButton"
 						Command="{Binding ShowNextEntriesCommand}"
@@ -107,12 +103,35 @@
 						Foreground="#BFBFBF"
 						HorizontalAlignment="Center"
 						Padding="36,8,36,12" />-->
-				
-				<TextBlock Grid.Row="1" 
+
+				<Button Command="{Binding ShowNextEntriesCommand}"
+						BorderThickness="0"
+						BorderBrush="#BFBFBF"
+						Foreground="#BFBFBF"
+						HorizontalAlignment="Center"
+						Padding="32,6,32,8">
+					<StackPanel Orientation="Vertical">
+						<Path Stretch="Uniform"
+							  RenderTransformOrigin="0.5,0.5"
+							  Margin="6"
+							  Fill="{Binding ElementName=NextWordsButtonHint, Path=Foreground}"
+							  Width="36"
+							  Height="36"
+							  Data="F1 M 14.25,45.9166L 20.5834,45.9167L 39.1874,23.75L 47.8958,23.75L 41.1667,17.4167L 51.4583,17.4167L 61.75,26.9166L 51.4583,36.4167L 41.1667,36.4167L 47.8958,30.0833L 41.1667,30.0833L 22.1667,52.25L 14.25,52.25L 14.25,45.9166 Z M 14.25,30.0833L 14.25,23.75L 22.1667,23.75L 29.6875,32.5243L 26.1226,36.6834L 20.5833,30.0833L 14.25,30.0833 Z M 41.1667,45.9167L 47.8958,45.9167L 41.1666,39.5833L 51.4583,39.5834L 61.75,49.0834L 51.4583,58.5833L 41.1666,58.5833L 47.8958,52.25L 39.1873,52.25L 31.9416,43.6167L 35.5684,39.3854L 41.1667,45.9167 Z " />
+
+						<TextBlock x:Name="NextWordsButtonHint" 
+								   x:Uid="NextWordsButtonHint" 
+								   Text="RES_MISSING tap to see next 3 random words"
+								   FontSize="{ThemeResource TextStyleSmallFontSize}"/>
+					</StackPanel>
+					
+				</Button>
+
+				<!--<TextBlock Grid.Row="1" 
 						   Text="{Binding TotalCountText}"
 						   Margin="0,8,0,0"
 						   HorizontalAlignment="Center"
-						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"/>
+						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"/>-->
 			</Grid>
 			
 		</Grid>

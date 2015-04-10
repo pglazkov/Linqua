@@ -36,7 +36,7 @@ namespace Linqua
 		private readonly IDictionary<string, EntryListItemTimeGroupViewModel> groupsDictionary = new Dictionary<string, EntryListItemTimeGroupViewModel>();
 		private readonly IDictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel> itemGroupDictionary = new Dictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel>();
 
-		[ImportingConstructor]
+	    [ImportingConstructor]
 	    public EntryListViewModel([NotNull] IStringResourceManager resourceManager)
 	    {
 			Guard.NotNull(resourceManager, () => resourceManager);
@@ -107,7 +107,6 @@ namespace Linqua
 	    public ObservableCollection<EntryListItemViewModel> EntryViewModels { get; private set; }
 
 		public ObservableCollection<EntryListItemTimeGroupViewModel> TimeGroupViewModels { get; private set; }
-		
 
 	    public bool ThereAreNoEntries
 	    {
@@ -336,7 +335,7 @@ namespace Linqua
 		{
 			if (EntryViewModels.Count == 0)
 			{
-				RandomEntryViewModels.Clear();
+				ClearRandomItems();
 				UpdateDisplayedIndexes();
 				return;
 			}
@@ -349,7 +348,7 @@ namespace Linqua
 			}
 			else
 			{
-				RandomEntryViewModels.Clear();
+				ClearRandomItems();
 
 				var notDisplayedIndexCount = EntryViewModels.Count - displayedIndexes.Count;
 
@@ -363,6 +362,17 @@ namespace Linqua
 
 			UpdateDisplayedIndexes();
 		}
+
+	    private void ClearRandomItems()
+	    {
+			// Delete items one by one in order to have the list change animations.
+			var itemsToDelete = new List<EntryListItemViewModel>(RandomEntryViewModels);
+
+			foreach (var item in itemsToDelete)
+			{
+				RandomEntryViewModels.Remove(item);
+			}
+	    }
 
 	    private void AddRandomDisplayedEntries(int entriesToAdd)
 	    {

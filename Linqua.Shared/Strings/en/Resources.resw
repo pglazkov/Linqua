@@ -153,6 +153,9 @@
   <data name="NextWordsButton.Content" xml:space="preserve">
     <value>next 3 random</value>
   </data>
+  <data name="NextWordsButtonHint.Text" xml:space="preserve">
+    <value>tap to see next 3 random words</value>
+  </data>
   <data name="NoEntriesTextBlock.Text" xml:space="preserve">
     <value>There are no words to learn yet. 
 
