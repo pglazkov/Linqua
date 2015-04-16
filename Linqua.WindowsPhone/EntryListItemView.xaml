@@ -46,10 +46,13 @@
 	</FlyoutBase.AttachedFlyout>
 
 	<Border x:Name="RootBorder"
-			Background="Transparent"
-			Padding="0,0,0,6"
-			CornerRadius="3">
-		<Grid x:Name="LayoutRoot">
+			Background="{ThemeResource EntryBoxBackgroundBrush}"
+			Padding="12,0,12,6"
+			BorderThickness="1"
+			BorderBrush="{ThemeResource EntryBoxBorderBrush}"
+			CornerRadius="0">
+		<Grid x:Name="LayoutRoot"
+			  VerticalAlignment="Center">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
 				<RowDefinition Height="Auto" />
@@ -69,6 +72,7 @@
 					   Foreground="{StaticResource EntryTextForegroundBrush}"
 					   TextWrapping="Wrap"
 					   Margin="0"
+					   VerticalAlignment="Top"
 					   Pivot.SlideInAnimationGroup="1"
 					   CommonNavigationTransitionInfo.IsStaggerElement="True" />
 
@@ -83,6 +87,7 @@
 				  Margin="0,2,0,0"
 				  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
 				  Pivot.SlideInAnimationGroup="2"
+				  VerticalAlignment="Top"
 				  CommonNavigationTransitionInfo.IsStaggerElement="True">
 				<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
 						   Text="RES_MISSING Translating..."
@@ -99,7 +104,7 @@
 						  Grid.RowSpan="2"
 						  Grid.Column="1"
 						  Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
-						  Margin="10,0,0,0"
+						  Margin="10,6,0,0"
 						  Padding="0"
 						  VerticalContentAlignment="Center"
 						  Style="{StaticResource IconToggleButtonStyle}"

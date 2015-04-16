@@ -91,20 +91,21 @@
 					 ItemContainerStyle="{StaticResource TabHeaderItemStyle}"
 					 SelectedIndex="{Binding SelectedIndex, ElementName=Pivot, Mode=TwoWay}"
 					 Background="Transparent"
-					 Margin="20,8,24,8"
-					 HorizontalAlignment="Center"
-					 HorizontalContentAlignment="Center">
+					 Margin="24,-2,24,8"
+					 HorizontalAlignment="Stretch"
+					 HorizontalContentAlignment="Stretch"
+					 BorderThickness="0">
 				<ListBox.ItemsPanel>
 					<ItemsPanelTemplate>
 						<controls:SplitPanel />
 					</ItemsPanelTemplate>
 				</ListBox.ItemsPanel>
 
-				<ListBoxItem Margin="8,0,8,0">
+				<ListBoxItem>
 					<TextBlock x:Uid="PivotRandomItemHeader"
 							   Text="RES_MISSING PivotRandomItemHeader" />
 				</ListBoxItem>
-				<ListBoxItem Margin="8,0,8,0">
+				<ListBoxItem>
 					<TextBlock Text="{Binding EntryListViewModel.Header}" />
 				</ListBoxItem>
 			</ListBox>

@@ -133,7 +133,7 @@
     <value>translating...</value>
   </data>
   <data name="EntryListView_Header" xml:space="preserve">
-    <value>all ({0})</value>
+    <value>ALL ({0})</value>
   </data>
   <data name="EntryListView_TotalCountTemplate" xml:space="preserve">
     <value>total {0}</value>
@@ -168,7 +168,7 @@
 Start by adding a word or phrase.</value>
   </data>
   <data name="PivotRandomItemHeader.Text" xml:space="preserve">
-    <value>random 3</value>
+    <value>RANDOM 3</value>
   </data>
   <data name="PreviousWordsButton.Content" xml:space="preserve">
     <value>previous 3</value>

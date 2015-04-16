@@ -55,7 +55,7 @@
 					</GroupStyle.HeaderContainerStyle>
 					<GroupStyle.HeaderTemplate>
 						<DataTemplate>
-							<Border Margin="24,0,24,0"
+							<Border Margin="24,0,24,8"
 									Padding="0,8,0,2"
 									d:DataContext="{d:DesignInstance local:EntryListItemTimeGroupViewModel}"
 									BorderThickness="0,0,0,1"
