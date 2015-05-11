@@ -5,14 +5,9 @@
 					 Color="#565759" />
 	
 	<SolidColorBrush x:Key="EntryBoxBorderBrush"
-					 Color="#333436" />
+					 Color="#333435" />
 	
-	<LinearGradientBrush x:Key="EntryBoxBackgroundBrush"
-						 StartPoint="0,0"
-						 EndPoint="0,1">
-		<GradientStop Offset="0.0"
-					  Color="#1A1A1A"/>
-		<GradientStop Offset="1.0"
-					  Color="#151515"/>
-	</LinearGradientBrush>
+	<SolidColorBrush x:Key="EntryBoxBackgroundBrush"
+					 Color="#222425"/>
+	
 </ResourceDictionary>

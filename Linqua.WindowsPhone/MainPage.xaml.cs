@@ -180,5 +180,24 @@ namespace Linqua
 			    ViewModel.IsEntryCreationViewVisible = false;
 		    }
 	    }
+
+	    private void Pivot_OnPivotItemLoaded(Pivot sender, PivotItemEventArgs args)
+	    {
+		    if (Equals(args.Item.Tag, "RendomEntryList"))
+		    {
+			    if (ViewModel.EntryListViewModel.IsPagingControlsVisible)
+			    {
+				    NextRendomItemsButton.Visibility = Visibility.Visible;
+			    }
+		    }
+	    }
+
+	    private void Pivot_OnPivotItemUnloaded(Pivot sender, PivotItemEventArgs args)
+	    {
+			if (Equals(args.Item.Tag, "RendomEntryList"))
+			{
+				NextRendomItemsButton.Visibility = Visibility.Collapsed;
+			}
+	    }
     }
 }

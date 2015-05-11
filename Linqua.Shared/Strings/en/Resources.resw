@@ -156,6 +156,9 @@
   <data name="NewWordButton.Label" xml:space="preserve">
     <value>new entry</value>
   </data>
+  <data name="NextRendomItemsButton.Label" xml:space="preserve">
+    <value>next 3 random words</value>
+  </data>
   <data name="NextWordsButton.Content" xml:space="preserve">
     <value>next 3 random</value>
   </data>

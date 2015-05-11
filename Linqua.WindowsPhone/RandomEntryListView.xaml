@@ -58,51 +58,15 @@
 			</ListView.ItemTemplate>
 		</ListView>
 		
-		<Grid Grid.Row="1"
+		<!--<Grid Grid.Row="1"
 			  Visibility="{Binding IsPagingControlsVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
 			  VerticalAlignment="Center">
-			
-			<!--<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="*" />
-			</Grid.ColumnDefinitions>-->
-			
-			<!--<Button Grid.Column="0" 
-					x:Uid="PreviousWordsButton"
-					Content="RES_MISSING PreviousWordsButton"
-					Command="{Binding ShowPreviousEntriesCommand}"/>-->
-
 			<Grid VerticalAlignment="Center"
 				  HorizontalAlignment="Center">
 				<Grid.RowDefinitions>
 					<RowDefinition Height="Auto"/>
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
-
-				<!--<HyperlinkButton x:Uid="NextWordsButton"
-								 Content="RES_MISSING NextWordsButton"
-								 Command="{Binding ShowNextEntriesCommand}"
-								 HorizontalAlignment="Center"
-								 Foreground="{StaticResource ApplicationThemeBrush}"
-								 FontSize="{StaticResource TextStyleExtraLargeFontSize}"
-								 Opacity="0.7">
-					<HyperlinkButton.ContentTemplate>
-						<DataTemplate>
-							<TextBlock>
-								<Underline>
-									<Run Text="{Binding}" />
-								</Underline>
-							</TextBlock>
-						</DataTemplate>
-					</HyperlinkButton.ContentTemplate>
-				</HyperlinkButton>-->
-				<!--<Button x:Uid="NextWordsButton"
-						Content="RES_MISSING NextWordsButton"
-						Command="{Binding ShowNextEntriesCommand}"
-						BorderBrush="#BFBFBF"
-						Foreground="#BFBFBF"
-						HorizontalAlignment="Center"
-						Padding="36,8,36,12" />-->
 
 				<Button Command="{Binding ShowNextEntriesCommand}"
 						BorderThickness="0"
@@ -126,14 +90,8 @@
 					</StackPanel>
 					
 				</Button>
-
-				<!--<TextBlock Grid.Row="1" 
-						   Text="{Binding TotalCountText}"
-						   Margin="0,8,0,0"
-						   HorizontalAlignment="Center"
-						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"/>-->
 			</Grid>
 			
-		</Grid>
+		</Grid>-->
 	</Grid>
 </UserControl>
