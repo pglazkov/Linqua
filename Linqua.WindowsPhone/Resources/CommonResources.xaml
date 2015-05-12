@@ -61,9 +61,6 @@
 
 	<SolidColorBrush x:Key="TextSelectionHighlightColorThemeBrush"
 					 Color="{ThemeResource SystemColorControlAccentColor}" />
-	
-	<SolidColorBrush x:Key="HeaderUnderlineBrush"
-					 Color="#565759"/>
 
 	<!-- ===================================================== -->
 

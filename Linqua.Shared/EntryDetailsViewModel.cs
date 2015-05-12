@@ -20,6 +20,8 @@ namespace Linqua
 		public EntryDetailsViewModel()
 		{
 			GoHomeCommand = new DelegateCommand(GoHome);
+			MarkLearnedCommand = new DelegateCommand(() => IsLearnt = true);
+			MarkNotLearnedCommand = new DelegateCommand(() => IsLearnt = false);
 		}
 
 		public EntryDetailsViewModel(
@@ -45,6 +47,8 @@ namespace Linqua
 		}
 
 		public DelegateCommand GoHomeCommand { get; private set; }
+		public DelegateCommand MarkLearnedCommand { get; private set; }
+		public DelegateCommand MarkNotLearnedCommand { get; private set; }
 
 		public bool IsLoadingData
 		{
@@ -88,6 +92,11 @@ namespace Linqua
 		private void GoHome()
 		{
 			View.NavigateHome();
+		}
+
+		protected override void OnDeleted()
+		{
+			GoHome();
 		}
 
 		protected override void OnEntryChangedOverride()

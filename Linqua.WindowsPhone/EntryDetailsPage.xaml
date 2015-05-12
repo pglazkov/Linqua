@@ -109,15 +109,28 @@
 								Grid.Column="0"
 								Orientation="Vertical"
 								HorizontalAlignment="Center"
-								Margin="0,54,0,0">
-						<ToggleButton Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
+								Margin="0,54,0,0"
+								Visibility="{Binding IsLearnt, Converter={StaticResource BooleanToVisibilityConverter}}">
+						<!--<ToggleButton Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
 									  Padding="0"
 									  VerticalContentAlignment="Center"
 									  HorizontalAlignment="Center"
 									  Style="{StaticResource IconToggleButtonStyle}"
 									  IsChecked="{Binding IsLearnt, Mode=TwoWay}">
-						</ToggleButton>
+						</ToggleButton>-->
+
+						<Border Width="36"
+								Height="36"
+								CornerRadius="33"
+								Background="{StaticResource ApplicationThemeBrush}">
+							<Path Stretch="Uniform"
+								  RenderTransformOrigin="0.5,0.5"
+								  Margin="8"
+								  Fill="White"
+								  Data="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z " />
+						</Border>
 						
+
 						<TextBlock Text="{Binding IsLearnStatusText}"
 								   FontSize="{ThemeResource TextStyleSmallFontSize}"
 								   HorizontalAlignment="Center"
@@ -137,6 +150,23 @@
 							  Label="RES_MISSING GoHomeButton"
 							  Icon="Home"
 							  Command="{Binding GoHomeCommand}" />
+
+				<AppBarButton x:Uid="MarkLearnedButton"
+							  Label="RES_MISSING MarkLearnedButton"
+							  Icon="Accept"
+							  Command="{Binding MarkLearnedCommand}"
+							  Visibility="{Binding IsLearnt, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"/>
+
+				<AppBarButton x:Uid="MarkNotLearnedButton"
+							  Label="RES_MISSING MarkNotLearnedButton"
+							  Icon="Undo"
+							  Command="{Binding MarkNotLearnedCommand}"
+							  Visibility="{Binding IsLearnt, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+				<AppBarButton x:Uid="EntryDetailsPage_DeleteButton"
+							  Label="RES_MISSING EntryDetailsPage_DeleteButton"
+							  Icon="Delete"
+							  Command="{Binding DeleteCommand}" />
 			</CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>
 			</CommandBar.SecondaryCommands>

@@ -12,10 +12,10 @@
 			 d:DataContext="{d:DesignInstance linqua:EntryListViewModel, IsDesignTimeCreatable=True}">
 
 	<Grid x:Name="LayoutRoot">
-		<Grid.RowDefinitions>
+		<!--<Grid.RowDefinitions>
 			<RowDefinition Height="2.5*"/>
 			<RowDefinition Height="*"/>
-		</Grid.RowDefinitions>
+		</Grid.RowDefinitions>-->
 		
 		<TextBlock x:Uid="NoEntriesTextBlock"
 				   Text="RES_MISSING NoEntriesTextBlock"
@@ -32,7 +32,8 @@
 				  ItemsSource="{Binding RandomEntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
-				  VerticalAlignment="Bottom"
+				  VerticalAlignment="Top"
+				  Margin="0,24,0,0"
 				  ItemClick="OnItemClicked"
 				  IsItemClickEnabled="True">
 			<ListView.ItemContainerStyle>

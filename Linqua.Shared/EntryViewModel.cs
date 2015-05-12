@@ -135,6 +135,12 @@ namespace Linqua
 			Guard.Assert(Entry != null, "Entry != null");
 
 			EventAggregator.Publish(new EntryDeletionRequestedEvent(Entry));
+
+			OnDeleted();
+		}
+
+		protected virtual void OnDeleted()
+		{
 		}
 
 		protected virtual void OnEntryChangedOverride()

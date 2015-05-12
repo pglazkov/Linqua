@@ -129,6 +129,9 @@
   <data name="DeleteFlyoutItem.Text" xml:space="preserve">
     <value>delete</value>
   </data>
+  <data name="EntryDetailsPage_DeleteButton.Label" xml:space="preserve">
+    <value>delete</value>
+  </data>
   <data name="EntryListItemView_TranslatingBusyTextBlock.Text" xml:space="preserve">
     <value>translating...</value>
   </data>
@@ -139,16 +142,22 @@
     <value>total {0}</value>
   </data>
   <data name="EntryViewModel_LearntStatus" xml:space="preserve">
-    <value>learnt</value>
+    <value>learned</value>
   </data>
   <data name="EntryViewModel_NotLearntStatus" xml:space="preserve">
-    <value>not learnt</value>
+    <value>not learned</value>
   </data>
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>home</value>
   </data>
   <data name="MainPageHeader.Text" xml:space="preserve">
     <value>vocabulary</value>
+  </data>
+  <data name="MarkLearnedButton.Label" xml:space="preserve">
+    <value>learned</value>
+  </data>
+  <data name="MarkNotLearnedButton.Label" xml:space="preserve">
+    <value>not learned</value>
   </data>
   <data name="NewEntryTextBox.PlaceholderText" xml:space="preserve">
     <value>Add a New Word or Phrase</value>
@@ -157,7 +166,7 @@
     <value>new entry</value>
   </data>
   <data name="NextRendomItemsButton.Label" xml:space="preserve">
-    <value>next 3 random words</value>
+    <value>next 3</value>
   </data>
   <data name="NextWordsButton.Content" xml:space="preserve">
     <value>next 3 random</value>
