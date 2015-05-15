@@ -4,8 +4,8 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
-using Linqua.Common;
 using Linqua.Events;
+using Linqua.Framework;
 
 // The Basic Page item template is documented at http://go.microsoft.com/fwlink/?LinkID=390556
 

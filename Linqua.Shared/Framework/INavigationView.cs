@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Linqua
+namespace Linqua.Framework
 {
 	public interface INavigationView
 	{

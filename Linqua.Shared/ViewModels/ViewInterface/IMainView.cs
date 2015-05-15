@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using Linqua.Framework;
 
 namespace Linqua
 {

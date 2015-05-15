@@ -11,13 +11,11 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bootstrapper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\NavigationHelper.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\ObservableDictionary.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\SuspensionManager.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framework\INavigationView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framework\NavigationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framework\ObservableDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Framework\SuspensionManager.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EntryCreationViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EntryDetailsViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EntryListItemTimeGroupViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreatedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDefinitionChangedEvent.cs" />
@@ -25,21 +23,23 @@
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDetailsRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryIsLearntChangedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IApplicationController.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IEntryDetailsView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IEntryListViewModelView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)IMainView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)INavigationView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\FileStreamingTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\WinRTFileTarget.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)LoginViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)MainViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EntryListItemViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EntryListViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)EntryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Offline\IOfflineSyncController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Offline\OfflineSyncController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Persistence\SyncFailedHandler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)TimeGroupViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryCreationViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryDetailsViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryListItemTimeGroupViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryListItemViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeGroupViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IEntryDetailsView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IEntryListViewModelView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IMainView.cs" />
   </ItemGroup>
   <ItemGroup>
     <PRIResource Include="$(MSBuildThisFileDirectory)Strings\en\Resources.resw" />

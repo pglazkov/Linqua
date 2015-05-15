@@ -86,35 +86,35 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="BackgroundTaskHelper.cs" />
-    <Compile Include="EntryCreationView.xaml.cs">
+    <Compile Include="Views\EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EntryDetailsPage.xaml.cs">
+    <Compile Include="Views\Pages\EntryDetailsPage.xaml.cs">
       <DependentUpon>EntryDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Framework\StatusBarBehavior.cs" />
     <Compile Include="Framework\StatusBusyService.cs" />
-    <Compile Include="FullEntryListView.xaml.cs">
+    <Compile Include="Views\FullEntryListView.xaml.cs">
       <DependentUpon>FullEntryListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="LoginPage.xaml.cs">
+    <Compile Include="Views\Pages\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Views\Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="NavigationConstants.cs" />
-    <Compile Include="NewEntryPage.xaml.cs">
+    <Compile Include="Views\NewEntryPage.xaml.cs">
       <DependentUpon>NewEntryPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PageHeader.xaml.cs">
+    <Compile Include="Views\Parts\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EntryListItemView.xaml.cs">
+    <Compile Include="Views\EntryListItemView.xaml.cs">
       <DependentUpon>EntryListItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RandomEntryListView.xaml.cs">
+    <Compile Include="Views\RandomEntryListView.xaml.cs">
       <DependentUpon>RandomEntryListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartupWorkflow.cs" />
@@ -150,39 +150,39 @@
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="EntryCreationView.xaml">
+    <Page Include="Views\EntryCreationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="EntryDetailsPage.xaml">
+    <Page Include="Views\Pages\EntryDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FullEntryListView.xaml">
+    <Page Include="Views\FullEntryListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="LoginPage.xaml">
+    <Page Include="Views\Pages\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Views\Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="NewEntryPage.xaml">
+    <Page Include="Views\NewEntryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="EntryListItemView.xaml">
+    <Page Include="Views\EntryListItemView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PageHeader.xaml">
+    <Page Include="Views\Parts\PageHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RandomEntryListView.xaml">
+    <Page Include="Views\RandomEntryListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
