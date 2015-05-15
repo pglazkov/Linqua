@@ -166,13 +166,13 @@
     <value>new entry</value>
   </data>
   <data name="NextRendomItemsButton.Label" xml:space="preserve">
-    <value>next 3</value>
+    <value>next 1</value>
   </data>
   <data name="NextWordsButton.Content" xml:space="preserve">
-    <value>next 3 random</value>
+    <value>next 1 random</value>
   </data>
   <data name="NextWordsButtonHint.Text" xml:space="preserve">
-    <value>tap to see next 3 random words</value>
+    <value>tap to see next 1 random word</value>
   </data>
   <data name="NoEntriesTextBlock.Text" xml:space="preserve">
     <value>There are no words to learn yet. 
@@ -180,10 +180,10 @@
 Start by adding a word or phrase.</value>
   </data>
   <data name="PivotRandomItemHeader.Text" xml:space="preserve">
-    <value>RANDOM 3</value>
+    <value>RANDOM 1</value>
   </data>
   <data name="PreviousWordsButton.Content" xml:space="preserve">
-    <value>previous 3</value>
+    <value>previous 1</value>
   </data>
   <data name="SendLogsButton.Label" xml:space="preserve">
     <value>(advanced) share logs</value>

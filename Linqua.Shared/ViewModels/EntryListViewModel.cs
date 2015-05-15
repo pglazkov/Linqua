@@ -22,7 +22,7 @@ namespace Linqua
 {
     public class EntryListViewModel : ViewModelBase
     {
-	    private const int EntriesToDisplayCount = 3;
+	    private const int EntriesToDisplayCount = 1;
 
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<EntryListViewModel>();
 

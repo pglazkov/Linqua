@@ -32,7 +32,7 @@
 				  ItemsSource="{Binding RandomEntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
 				  HorizontalAlignment="Stretch"
-				  VerticalAlignment="Top"
+				  VerticalAlignment="Center"
 				  Margin="0,24,0,0"
 				  ItemClick="OnItemClicked"
 				  IsItemClickEnabled="True">

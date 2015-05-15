@@ -4,24 +4,32 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:loc="using:Linqua"
+			 xmlns:parts="using:Linqua.Views.Parts"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
 			 d:DataContext="{d:DesignInstance loc:EntryListItemViewModel, IsDesignTimeCreatable=True}">
 
 	<UserControl.Resources>
-		<Storyboard x:Key="FlashBackgroundStoryboard">
-			<DoubleAnimation From="1"
-							 To="0.3"
-							 Duration="0:0:0.8"
-							 AutoReverse="True"
-							 Storyboard.TargetName="RootBorder"
-							 Storyboard.TargetProperty="Opacity">
-				<DoubleAnimation.EasingFunction>
-					<CircleEase EasingMode="EaseOut" />
-				</DoubleAnimation.EasingFunction>
-			</DoubleAnimation>
-		</Storyboard>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="Resources/CommonResources.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+			
+			<Storyboard x:Key="FlashBackgroundStoryboard">
+				<DoubleAnimation From="1"
+								 To="0.3"
+								 Duration="0:0:0.8"
+								 AutoReverse="True"
+								 Storyboard.TargetName="RootBorder"
+								 Storyboard.TargetProperty="Opacity">
+					<DoubleAnimation.EasingFunction>
+						<CircleEase EasingMode="EaseOut" />
+					</DoubleAnimation.EasingFunction>
+				</DoubleAnimation>
+			</Storyboard>
+		</ResourceDictionary>
+		
 	</UserControl.Resources>
 
 	<FlyoutBase.AttachedFlyout>
@@ -82,32 +90,19 @@
 					   Margin="0,2,0,0"
 					   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}" />-->
 
-			<Grid Grid.Row="1"
-				  Grid.Column="0"
-				  Margin="0,2,0,0"
-				  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-				  Pivot.SlideInAnimationGroup="2"
-				  VerticalAlignment="Top"
-				  CommonNavigationTransitionInfo.IsStaggerElement="True">
-				<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
-						   Text="RES_MISSING Translating..."
-						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-						   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-				<TextBlock Text="{Binding Definition}"
-						   TextWrapping="Wrap"
-						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-						   Visibility="{Binding IsTranslating, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
-			</Grid>
+			<parts:TranslationViewControl Grid.Row="1"
+										  Grid.Column="0"
+										  Margin="0,2,0,0"
+										  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+										  Pivot.SlideInAnimationGroup="2"
+										  VerticalAlignment="Top"
+										  CommonNavigationTransitionInfo.IsStaggerElement="True" />
 
 			<ToggleButton Grid.Row="0"
 						  Grid.RowSpan="2"
 						  Grid.Column="1"
-						  Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
-						  Margin="10,6,0,0"
-						  Padding="0"
-						  VerticalContentAlignment="Center"
-						  Style="{StaticResource IconToggleButtonStyle}"
+			              Margin="10,6,0,0"
+			              Style="{StaticResource MarkLearnedButtonStyle}"
 						  IsChecked="{Binding IsLearnt, Mode=TwoWay}">
 			</ToggleButton>
 		</Grid>

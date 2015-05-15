@@ -114,6 +114,9 @@
     <Compile Include="Views\EntryListItemView.xaml.cs">
       <DependentUpon>EntryListItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Parts\TranslationViewControl.xaml.cs">
+      <DependentUpon>TranslationViewControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RandomEntryListView.xaml.cs">
       <DependentUpon>RandomEntryListView.xaml</DependentUpon>
     </Compile>
@@ -182,6 +185,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\Parts\TranslationViewControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RandomEntryListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -207,6 +214,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Resources\Theme\Light.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Views\Resources\CommonResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

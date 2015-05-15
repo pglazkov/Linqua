@@ -4,6 +4,7 @@
 	  xmlns:local="using:Linqua"
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:parts="using:Linqua.Views.Parts"
 	  mc:Ignorable="d"
 	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 	  d:DataContext="{d:DesignInstance local:EntryDetailsViewModel, IsDesignTimeCreatable=True}">
@@ -84,26 +85,15 @@
 						<RowDefinition Height="Auto"/>
 						<RowDefinition Height="Auto"/>
 					</Grid.RowDefinitions>
-					
-					<Grid Grid.Row="0"
-						  Grid.Column="0"
-						  Margin="0,12,0,0"
-						  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-						  CommonNavigationTransitionInfo.IsStaggerElement="True"
-						  HorizontalAlignment="Center"
-						  VerticalAlignment="Top">
-						<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
-								   Text="RES_MISSING Translating..."
-								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-								   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}"
-								   HorizontalAlignment="Center" />
 
-						<TextBlock Text="{Binding Definition}"
-								   TextWrapping="Wrap"
-								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-								   Visibility="{Binding IsTranslating, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-								   HorizontalAlignment="Center" />
-					</Grid>
+					<parts:TranslationViewControl Grid.Row="0"
+												  Grid.Column="0"
+												  Margin="0,12,0,0"
+												  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+												  CommonNavigationTransitionInfo.IsStaggerElement="True"
+												  HorizontalAlignment="Center"
+												  HorizontalContentAlignment="Center"
+												  VerticalAlignment="Top" />
 
 					<StackPanel Grid.Row="1"
 								Grid.Column="0"

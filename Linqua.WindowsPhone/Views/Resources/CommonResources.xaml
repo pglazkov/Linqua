@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="using:Linqua.Views">
+	<Style x:Key="MarkLearnedButtonStyle"
+		   TargetType="ToggleButton"
+		   BasedOn="{StaticResource IconToggleButtonStyle}">
+		<Setter Property="Content"
+				Value="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z " />
+		<Setter Property="Padding"
+				Value="0" />
+		<Setter Property="VerticalContentAlignment"
+				Value="Center" />
+	</Style>
+	
+	
+</ResourceDictionary>
