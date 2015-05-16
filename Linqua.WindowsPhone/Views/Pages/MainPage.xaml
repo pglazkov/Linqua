@@ -114,12 +114,9 @@
 				   x:Name="Pivot"
 				   x:Uid="Pivot"
 				   CommonNavigationTransitionInfo.IsStaggerElement="True"
-				   Margin="0,0,0,24"
-				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
-				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded">
+				   Margin="0,0,0,24">
 				<PivotItem Margin="0"
-						   CommonNavigationTransitionInfo.IsStaggerElement="True"
-						   Tag="RendomEntryList">
+						   CommonNavigationTransitionInfo.IsStaggerElement="True">
 					<local:RandomEntryListView DataContext="{Binding EntryListViewModel}"
 											   Margin="0,0,0,0" />
 					
@@ -170,13 +167,6 @@
 							  Icon="Accept"
 							  Command="{Binding EntryCreationViewModel.AddCommand}"
 							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-				<AppBarButton x:Uid="NextRendomItemsButton"
-							  x:Name="NextRendomItemsButton"
-							  Label="RES_MISSING NextRendomItemsButton"
-							  Icon="Refresh"
-							  Command="{Binding EntryListViewModel.ShowNextEntriesCommand}"
-							  Visibility="Collapsed"/>
 			</CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>
 				<AppBarButton x:Uid="SyncButton"

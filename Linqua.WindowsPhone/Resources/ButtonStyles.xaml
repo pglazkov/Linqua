@@ -20,10 +20,6 @@
 		   TargetType="ButtonBase">
 		<Setter Property="Background"
 				Value="Transparent" />
-		<Setter Property="BorderBrush"
-				Value="{ThemeResource PhoneForegroundBrush}" />
-		<Setter Property="Foreground"
-				Value="{ThemeResource PhoneForegroundBrush}" />
 		<Setter Property="BorderThickness"
 				Value="{ThemeResource PhoneBorderThickness}" />
 		<Setter Property="FontFamily"
@@ -46,6 +42,10 @@
 				Value="Left" />
 		<Setter Property="VerticalAlignment"
 				Value="Center" />
+		<Setter Property="Foreground"
+				Value="#BFBFBF" />
+		<Setter Property="BorderBrush"
+				Value="#BFBFBF" />
 		<Setter Property="ContentTemplate">
 			<Setter.Value>
 				<DataTemplate>
@@ -190,10 +190,6 @@
 	<Style x:Key="IconToggleButtonStyle"
 		   TargetType="ToggleButton"
 		   BasedOn="{StaticResource BaseIconButtonStyle}">
-		<Setter Property="Foreground"
-				Value="#BFBFBF"/>
-		<Setter Property="BorderBrush"
-				Value="#BFBFBF" />
 		<Setter Property="Template">
 			<Setter.Value>
 				<ControlTemplate TargetType="ToggleButton">

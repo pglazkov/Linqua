@@ -6,6 +6,7 @@
 			 xmlns:linqua="using:Linqua"
 			 xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
 			 xmlns:media="using:Microsoft.Xaml.Interactions.Media"
+			 xmlns:views="using:Linqua.Views"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
@@ -45,16 +46,16 @@
 			</ListView.ItemContainerStyle>
 			<ListView.ItemTemplate>
 				<DataTemplate>
-					<linqua:EntryListItemView DataContext="{Binding}"
-											  Margin="24,0,24,12"
-											  Loaded="EntryLoaded"
-											  Background="Transparent"
-											  Holding="EntryHolding"
-											  PointerPressed="EntryPressed"
-											  HorizontalAlignment="Stretch"
-											  HorizontalContentAlignment="Stretch"
-											  IsTabStop="False">
-					</linqua:EntryListItemView>
+					<views:RandomEntryListItemView DataContext="{Binding}"
+												  Margin="24,0,24,12"
+												  Loaded="EntryLoaded"
+												  Background="Transparent"
+												  Holding="EntryHolding"
+												  PointerPressed="EntryPressed"
+												  HorizontalAlignment="Stretch"
+												  HorizontalContentAlignment="Stretch"
+												  IsTabStop="False">
+					</views:RandomEntryListItemView>
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>

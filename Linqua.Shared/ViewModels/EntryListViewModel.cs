@@ -16,6 +16,7 @@ using Framework.PlatformServices;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using Linqua.Events;
+using Linqua.ViewModels.Behaviors;
 using MetroLog;
 
 namespace Linqua
@@ -54,7 +55,7 @@ namespace Linqua
 			if (DesignTimeDetection.IsInDesignTool)
 			{
 				EventAggregator = DesignTimeHelper.EventAggregator;
-				EntryViewModels.AddRange(FakeData.FakeWords.Select(w => new EntryListItemViewModel(w)));
+				EntryViewModels.AddRange(FakeData.FakeWords.Select(w => CreateListItemViewModel(w)));
 			}
 			
 			DeleteEntryCommand = new DelegateCommand<EntryListItemViewModel>(DeleteEntry, CanDeleteEntry);
@@ -88,7 +89,7 @@ namespace Linqua
 				EntryViewModels.CollectionChanged -= OnEntriesCollectionChanged;
 
 				EntryViewModels.Clear();
-				EntryViewModels.AddRange(entries.Select(w => new EntryListItemViewModel(w)));
+				EntryViewModels.AddRange(entries.Select(w => CreateListItemViewModel(w)));
 
 			    UpdateTimeGroups();
 			    UpdateRandomEntries();
@@ -127,6 +128,7 @@ namespace Linqua
 			    if (value.Equals(isPagingControlsVisible)) return;
 			    isPagingControlsVisible = value;
 			    RaisePropertyChanged();
+				ShowNextEntriesCommand.RaiseCanExecuteChanged();
 		    }
 	    }
 
@@ -161,11 +163,20 @@ namespace Linqua
 
 		public EntryListItemViewModel AddEntry(ClientEntry newEntry)
 	    {
-		    var viewModel = new EntryListItemViewModel(newEntry, justAdded: true);
+		    var viewModel = CreateListItemViewModel(newEntry, justAdded: true);
 
 		    AddEntry(viewModel);
 
 			return viewModel;
+	    }
+
+	    private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
+	    {
+		    var result = new EntryListItemViewModel(newEntry, justAdded: justAdded);
+
+			result.AddBehavior(RequestNextRandomEntryCommandBehavior.Key, new RequestNextRandomEntryCommandBehavior(ShowNextEntriesCommand));
+
+		    return result;
 	    }
 
 	    private void AddEntry(EntryListItemViewModel viewModel)
@@ -468,7 +479,7 @@ namespace Linqua
 
 	    private bool CanShowNextEntries()
 		{
-			return true;
+			return IsPagingControlsVisible;
 		}
 
 		private void ShowNextEntries()

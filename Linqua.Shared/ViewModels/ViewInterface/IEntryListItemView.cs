@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Linqua
 {
-    public interface IEntryListViewModelView
+    public interface IEntryListItemView
     {
 	    void Focus();
     }

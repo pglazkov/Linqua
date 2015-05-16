@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Offline\IOfflineSyncController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Offline\OfflineSyncController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Persistence\SyncFailedHandler.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\Behaviors\RequestNextRandomEntryCommandBehavior.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryCreationViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryDetailsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryListItemTimeGroupViewModel.cs" />
@@ -38,7 +39,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeGroupViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IEntryDetailsView.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IEntryListViewModelView.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IEntryListItemView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IMainView.cs" />
   </ItemGroup>
   <ItemGroup>

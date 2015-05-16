@@ -7,7 +7,7 @@ using Framework;
 
 namespace Linqua
 {
-	public partial class EntryListItemView : UserControl, IEntryListViewModelView
+	public partial class EntryListItemView : UserControl, IEntryListItemView
 	{
 		private bool isLoaded;
 

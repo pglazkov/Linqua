@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Windows.Input;
 using Framework;
 using Linqua.DataObjects;
+using Linqua.ViewModels.Behaviors;
 
 namespace Linqua
 {
@@ -19,7 +23,7 @@ namespace Linqua
 			JustAdded = justAdded;
 		}
 
-		public IEntryListViewModelView View { get; set; }
+		public IEntryListItemView View { get; set; }
 
 		public bool JustAdded { get; set; }	
 

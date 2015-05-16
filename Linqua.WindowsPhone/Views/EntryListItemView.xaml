@@ -15,7 +15,8 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Resources/CommonResources.xaml" />
 			</ResourceDictionary.MergedDictionaries>
-			
+
+			<!-- ReSharper disable Xaml.RedundantResource -->
 			<Storyboard x:Key="FlashBackgroundStoryboard">
 				<DoubleAnimation From="1"
 								 To="0.3"
@@ -28,28 +29,18 @@
 					</DoubleAnimation.EasingFunction>
 				</DoubleAnimation>
 			</Storyboard>
+			<!-- ReSharper restore Xaml.RedundantResource -->
+			
 		</ResourceDictionary>
 		
 	</UserControl.Resources>
 
 	<FlyoutBase.AttachedFlyout>
-		<MenuFlyout>
+		<MenuFlyout MenuFlyoutPresenterStyle="{StaticResource EntryItemMenuFlyoutPresenterStyle}">
 			<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
 							Text="Delete"
 							Command="{Binding DeleteCommand}" />
-
-			<MenuFlyout.MenuFlyoutPresenterStyle>
-				<Style TargetType="MenuFlyoutPresenter">
-					<Setter Property="ScrollViewer.ZoomMode"
-							Value="Disabled" />
-					<Setter Property="Background"
-							Value="White" />
-					<Setter Property="BorderBrush"
-							Value="Gray" />
-					<Setter Property="Foreground"
-							Value="Black" />
-				</Style>
-			</MenuFlyout.MenuFlyoutPresenterStyle>
+			
 		</MenuFlyout>
 	</FlyoutBase.AttachedFlyout>
 
@@ -83,12 +74,6 @@
 					   VerticalAlignment="Top"
 					   Pivot.SlideInAnimationGroup="1"
 					   CommonNavigationTransitionInfo.IsStaggerElement="True" />
-
-			<!--<TextBlock Grid.Row="1"
-					   Grid.Column="0"
-					   Text="{Binding DateAdded}"
-					   Margin="0,2,0,0"
-					   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}" />-->
 
 			<parts:TranslationViewControl Grid.Row="1"
 										  Grid.Column="0"

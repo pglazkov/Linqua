@@ -89,6 +89,9 @@
     <Compile Include="Views\EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RandomEntryListItemView.xaml.cs">
+      <DependentUpon>RandomEntryListItemView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Pages\EntryDetailsPage.xaml.cs">
       <DependentUpon>EntryDetailsPage.xaml</DependentUpon>
     </Compile>
@@ -156,6 +159,10 @@
     <Page Include="Views\EntryCreationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\RandomEntryListItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\Pages\EntryDetailsPage.xaml">
       <SubType>Designer</SubType>
@@ -355,6 +362,7 @@
     <Error Condition="!Exists('..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.targets'))" />
   </Target>
   <Import Project="..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.targets" Condition="Exists('..\packages\SQLitePCL.3.8.7.2\build\wpa81\SQLitePCL.targets')" />
+  <Import Project="$(XamlSpyInstallPath)MSBuild\FirstFloor.XamlSpy.WindowsPhone.targets" Condition="'$(XamlSpyInstallPath)' != '' and '$(Configuration)' == 'DEBUG'" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
