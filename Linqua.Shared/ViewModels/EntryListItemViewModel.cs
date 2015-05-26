@@ -10,6 +10,8 @@ namespace Linqua
 {
 	public class EntryListItemViewModel : EntryViewModel
 	{
+		private bool isTranslationShown;
+
 		public EntryListItemViewModel()
 		{
 			if (DesignTimeDetection.IsInDesignTool)
@@ -25,7 +27,18 @@ namespace Linqua
 
 		public IEntryListItemView View { get; set; }
 
-		public bool JustAdded { get; set; }	
+		public bool JustAdded { get; set; }
+
+		public bool IsTranslationShown
+		{
+			get { return isTranslationShown; }
+			set
+			{
+				if (value == isTranslationShown) return;
+				isTranslationShown = value;
+				RaisePropertyChanged();
+			}
+		}
 
 		public void Focus()
 		{

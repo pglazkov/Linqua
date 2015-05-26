@@ -28,8 +28,6 @@
 				Value="{ThemeResource PhoneButtonFontWeight}" />
 		<Setter Property="FontSize"
 				Value="{ThemeResource TextStyleLargeFontSize}" />
-		<Setter Property="Padding"
-				Value="{ThemeResource PhoneButtonContentPadding}" />
 		<Setter Property="MinHeight"
 				Value="{ThemeResource PhoneButtonMinHeight}" />
 		<Setter Property="MinWidth"
@@ -42,6 +40,10 @@
 				Value="Left" />
 		<Setter Property="VerticalAlignment"
 				Value="Center" />
+		<Setter Property="VerticalContentAlignment"
+				Value="Center"/>
+		<Setter Property="Padding"
+				Value="0"/>
 		<Setter Property="Foreground"
 				Value="#BFBFBF" />
 		<Setter Property="BorderBrush"

@@ -90,6 +90,9 @@
     <Compile Include="Views\EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Parts\FlipControl.xaml.cs">
+      <DependentUpon>FlipControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\RandomEntryListItemView.xaml.cs">
       <DependentUpon>RandomEntryListItemView.xaml</DependentUpon>
     </Compile>
@@ -160,6 +163,10 @@
     <Page Include="Views\EntryCreationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\Parts\FlipControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\RandomEntryListItemView.xaml">
       <SubType>Designer</SubType>
