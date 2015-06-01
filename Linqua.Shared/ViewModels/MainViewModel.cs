@@ -4,17 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Windows.ApplicationModel.DataTransfer;
-using Windows.Devices.Enumeration;
-using Windows.Foundation;
 using Framework;
 using Framework.PlatformServices;
 using Linqua.DataObjects;
 using Linqua.Events;
 using Linqua.Logging;
 using Linqua.Persistence;
-using Linqua.Translation;
 using MetroLog;
 using Nito.AsyncEx;
 

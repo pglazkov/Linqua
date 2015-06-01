@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Windows.Foundation.Metadata;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -53,7 +54,7 @@ namespace Linqua.Framework
 	///     }
 	/// </code>
 	/// </example>
-	[Windows.Foundation.Metadata.WebHostHidden]
+	[WebHostHidden]
 	public class NavigationHelper : DependencyObject
 	{
 		private Page Page { get; set; }

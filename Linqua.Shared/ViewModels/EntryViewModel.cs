@@ -1,7 +1,6 @@
 ﻿using System;
 using Framework;
 using Framework.PlatformServices;
-using JetBrains.Annotations;
 using Linqua.DataObjects;
 using Linqua.Events;
 

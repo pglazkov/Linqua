@@ -5,7 +5,6 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:loc="using:Linqua"
 			 xmlns:parts="using:Linqua.Views.Parts"
-			 xmlns:behaviors="using:Linqua.ViewModels.Behaviors"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
@@ -34,66 +33,25 @@
 					 Height="182"
 					 IsFlipped="{Binding IsTranslationShown, Mode=TwoWay}">
 		<loc:FlipControl.FrontSideContent>
-			<Grid VerticalAlignment="Center"
-				  Margin="24,24,24,24">
-				<!--<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>-->
-
-				<Viewbox Grid.Row="0"
-						 Grid.Column="0"
-						 Stretch="Uniform"
-						 StretchDirection="DownOnly"
-						 VerticalAlignment="Center"						 
-						 Height="40"
-						 Margin="0,0,0,12">
-
-					<TextBlock Text="{Binding Text}"
-							   Style="{ThemeResource ListViewItemTextBlockStyle}"
-							   LineHeight="21.5"
-							   TextLineBounds="Tight"
-							   FontSize="72"
-							   Foreground="{StaticResource EntryTextForegroundBrush}"
-							   TextWrapping="Wrap"
-							   VerticalAlignment="Top"
-							   Pivot.SlideInAnimationGroup="1"
-							   CommonNavigationTransitionInfo.IsStaggerElement="True"
-							   HorizontalAlignment="Center" />
-				</Viewbox>
-
-				<!--<Border Grid.Row="1"
-						BorderThickness="0,1,0,0"
-						BorderBrush="{ThemeResource EntryBoxBorderBrush}"
-						Margin="0,24,0,12" />
-
-				<Grid Grid.Row="2"
-					  HorizontalAlignment="Stretch">
-					--><!--<Button Style="{StaticResource NextButtonStyle}"
-							DataContext="{Binding Behaviors[RequestNextRandomEntryCommandBehavior]}"
-							d:DataContext="{d:DesignInstance behaviors:RequestNextRandomEntryCommandBehavior}"
-							Command="{Binding RequestNextRandomEntryCommand}"
-							Visibility="{Binding CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center"
-							Margin="8,0,0,0" />-->
-
-					<!--<Button Style="{StaticResource RedoButtonStyle}"
-							DataContext="{Binding Behaviors[RequestNextRandomEntryCommandBehavior]}"
-							d:DataContext="{d:DesignInstance behaviors:RequestNextRandomEntryCommandBehavior}"
-							Command="{Binding RequestNextRandomEntryCommand}"
-							Visibility="{Binding CanExecute, Converter={StaticResource BooleanToVisibilityConverter}}"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center" />--><!--
-
-					<Button Style="{StaticResource InfoButtonStyle}"
-							Click="OnFlipBackButtonPressed"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Center" />
-				</Grid>-->
-
-			</Grid>
+			<Viewbox Grid.Row="0"
+					 Grid.Column="0"
+					 Stretch="Uniform"
+					 StretchDirection="DownOnly"
+					 VerticalAlignment="Center"
+					 Height="40"
+					 Margin="24,24,24,36">
+				<TextBlock Text="{Binding Text}"
+						   Style="{ThemeResource ListViewItemTextBlockStyle}"
+						   LineHeight="21.5"
+						   TextLineBounds="Tight"
+						   FontSize="72"
+						   Foreground="{StaticResource EntryTextForegroundBrush}"
+						   TextWrapping="Wrap"
+						   VerticalAlignment="Top"
+						   Pivot.SlideInAnimationGroup="1"
+						   CommonNavigationTransitionInfo.IsStaggerElement="True"
+						   HorizontalAlignment="Center" />
+			</Viewbox>
 		</loc:FlipControl.FrontSideContent>
 		
 		<loc:FlipControl.BackSideContent>
@@ -142,21 +100,8 @@
 						<ToggleButton Style="{StaticResource MarkLearnedButtonStyle}"
 									  IsChecked="{Binding IsLearnt, Mode=TwoWay}"
 									  VerticalAlignment="Center" />
-
-						<!--<TextBlock Text="mark learned"
-								   FontSize="{ThemeResource TextStyleSmallFontSize}"
-								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-								   VerticalAlignment="Center"
-								   Margin="4,0,0,0" />-->
 					</StackPanel>
-
-
-					<!--<Button Style="{StaticResource UndoButtonStyle}"
-							Click="OnFlipFrontButtonPressed"
-							VerticalAlignment="Center"
-							HorizontalAlignment="Right" />-->
 				</Grid>
-
 			</Grid>
 		</loc:FlipControl.BackSideContent>
 	</loc:FlipControl>

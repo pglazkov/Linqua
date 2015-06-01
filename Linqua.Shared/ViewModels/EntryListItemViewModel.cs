@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Windows.Input;
-using Framework;
+﻿using Framework;
 using Linqua.DataObjects;
-using Linqua.ViewModels.Behaviors;
 
 namespace Linqua
 {

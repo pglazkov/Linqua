@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Composition;
-using System.Text;
 using System.Threading.Tasks;
 using Framework;
 using Framework.PlatformServices;

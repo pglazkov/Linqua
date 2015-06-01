@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Linqua
+﻿namespace Linqua
 {
     public interface IEntryDetailsView
     {

@@ -4,7 +4,6 @@ using System.Reflection;
 using Framework;
 using Framework.Logging;
 using Framework.MefExtensions;
-using Linqua.Persistence;
 using MetroLog;
 using MetroLog.Targets;
 using FileStreamingTarget = Linqua.Logging.FileStreamingTarget;

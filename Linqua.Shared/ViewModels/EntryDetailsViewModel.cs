@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 using Framework;
 using Framework.PlatformServices;
 using JetBrains.Annotations;
-using Linqua.DataObjects;
-using Linqua.Events;
 using Linqua.Persistence;
 using Linqua.Translation;
 

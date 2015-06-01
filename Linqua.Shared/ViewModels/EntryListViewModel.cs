@@ -3,20 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
-using Windows.ApplicationModel.Resources;
-using Windows.Foundation.Collections;
-using Windows.UI.WebUI;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Interop;
 using Framework;
 using Framework.PlatformServices;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using Linqua.Events;
-using Linqua.ViewModels.Behaviors;
 using MetroLog;
 
 namespace Linqua
@@ -173,8 +166,6 @@ namespace Linqua
 	    private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
 	    {
 		    var result = new EntryListItemViewModel(newEntry, justAdded: justAdded);
-
-			result.AddBehavior(RequestNextRandomEntryCommandBehavior.Key, new RequestNextRandomEntryCommandBehavior(ShowNextEntriesCommand));
 
 		    return result;
 	    }
