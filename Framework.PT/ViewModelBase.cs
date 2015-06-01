@@ -12,6 +12,8 @@ namespace Framework
 	    private ICompositionFactory compositionFactory;
 	    private IEventAggregator eventAggregator;
 	    private IDispatcherService dispatcher;
+	    private IDialogService dialogService;
+	    private IStringResourceManager resources;
 
 	    public ViewModelBase()
 	    {
@@ -22,25 +24,37 @@ namespace Framework
 		[Import]
 	    public ICompositionFactory CompositionFactory
 		{
-			get { return compositionFactory ?? CompositionManager.Current.GetInstance<ICompositionFactory>(); }
+			get { return compositionFactory ?? (compositionFactory = CompositionManager.Current.GetInstance<ICompositionFactory>()); }
 			set { compositionFactory = value; }
 		}
 
 	    [Import]
 	    public IEventAggregator EventAggregator
 	    {
-			get { return eventAggregator ?? (DesignTimeDetection.IsInDesignTool ? DesignTimeHelper.EventAggregator : CompositionManager.Current.GetInstance<IEventAggregator>()); }
+			get { return eventAggregator ?? (eventAggregator = DesignTimeDetection.IsInDesignTool ? DesignTimeHelper.EventAggregator : CompositionManager.Current.GetInstance<IEventAggregator>()); }
 		    set { eventAggregator = value; }
 	    }
 
 		[Import]
 		public IDispatcherService Dispatcher
 		{
-			get { return dispatcher ?? (DesignTimeDetection.IsInDesignTool ? new DefaultDispatcherService() : CompositionManager.Current.GetInstance<IDispatcherService>()); }
+			get { return dispatcher ?? (dispatcher = DesignTimeDetection.IsInDesignTool ? new DefaultDispatcherService() : CompositionManager.Current.GetInstance<IDispatcherService>()); }
 			set { dispatcher = value; }
 		}
 
-		public IDictionary<string, IViewModelBahavior> Behaviors { get; private set; }
+	    public IDialogService DialogService
+	    {
+		    get { return dialogService ?? (dialogService = DesignTimeDetection.IsInDesignTool ? new DefaultDialogService() : CompositionManager.Current.GetInstance<IDialogService>()); }
+		    set { dialogService = value; }
+	    }
+
+	    public IStringResourceManager Resources
+	    {
+		    get { return resources ?? (resources = DesignTimeDetection.IsInDesignTool ? new DefaultStringResourceManager() : CompositionManager.Current.GetInstance<IStringResourceManager>()); }
+		    set { resources = value; }
+	    }
+
+	    public IDictionary<string, IViewModelBahavior> Behaviors { get; private set; }
 		public IDictionary<string, ICommand> AttachedCommands { get; private set; }
 
 	    public void RegisterAttachedCommand([NotNull] string commandKey, [NotNull] ICommand command)

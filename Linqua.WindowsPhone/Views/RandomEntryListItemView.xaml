@@ -63,8 +63,9 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
-				<TextBlock Grid.Row="0"
-						   Text="translation"
+				<TextBlock x:Uid="TranslationTitleTextBlock" 
+						   Grid.Row="0"
+						   Text="RES_MISSING translation"
 						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
 						   FontSize="10"
 						   HorizontalAlignment="Center"

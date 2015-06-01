@@ -129,6 +129,12 @@
   <data name="DeleteFlyoutItem.Text" xml:space="preserve">
     <value>delete</value>
   </data>
+  <data name="DialogService_Confirmation_Cancel" xml:space="preserve">
+    <value>cancel</value>
+  </data>
+  <data name="DialogService_Confirmation_Ok" xml:space="preserve">
+    <value>ok</value>
+  </data>
   <data name="EntryDetailsPage_DeleteButton.Label" xml:space="preserve">
     <value>delete</value>
   </data>
@@ -144,8 +150,26 @@
   <data name="EntryViewModel_LearntStatus" xml:space="preserve">
     <value>learned</value>
   </data>
+  <data name="EntryViewModel_MarkLearnedConfirmationOk" xml:space="preserve">
+    <value>mark learned</value>
+  </data>
+  <data name="EntryViewModel_MarkLearnedConfirmationText" xml:space="preserve">
+    <value>This entry will be marked as learned and will not show up in the list of your words anymore. </value>
+  </data>
+  <data name="EntryViewModel_MarkLearnedConfirmationTitle" xml:space="preserve">
+    <value>Mark Learned</value>
+  </data>
   <data name="EntryViewModel_NotLearntStatus" xml:space="preserve">
     <value>not learned</value>
+  </data>
+  <data name="EntryViewModel_UnMarkLearnedConfirmationOk" xml:space="preserve">
+    <value>un-mark learned</value>
+  </data>
+  <data name="EntryViewModel_UnMarkLearnedConfirmationText" xml:space="preserve">
+    <value>This entry will be marked as not learned and will again be shown in the list of your words to learn.</value>
+  </data>
+  <data name="EntryViewModel_UnMarkLearnedConfirmationTitle" xml:space="preserve">
+    <value>Mark Not Learned</value>
   </data>
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>home</value>
@@ -277,5 +301,8 @@ Start by adding a word or phrase.</value>
   </data>
   <data name="TimeGroup_Yesterday" xml:space="preserve">
     <value>yesterday</value>
+  </data>
+  <data name="TranslationTitleTextBlock.Text" xml:space="preserve">
+    <value>translation</value>
   </data>
 </root>

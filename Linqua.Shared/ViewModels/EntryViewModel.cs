@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Framework;
 using Framework.PlatformServices;
 using Linqua.DataObjects;
@@ -72,11 +73,7 @@ namespace Linqua
 
 				Guard.Assert(Entry != null, "Entry != null");
 
-				Entry.IsLearnt = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(() => IsLearnStatusText);
-
-				ApplicationController.OnIsLearntChanged(this);
+				UpdateIsLearntAsync(value).FireAndForget();
 			}
 		}
 
@@ -84,9 +81,7 @@ namespace Linqua
 		{
 			get
 			{
-				var res = CompositionFactory.Create<IStringResourceManager>();
-
-				var result = IsLearnt ? res.GetString("EntryViewModel_LearntStatus") : res.GetString("EntryViewModel_NotLearntStatus");
+				var result = IsLearnt ? Resources.GetString("EntryViewModel_LearntStatus") : Resources.GetString("EntryViewModel_NotLearntStatus");
 
 				return result;
 			}
@@ -136,6 +131,35 @@ namespace Linqua
 			EventAggregator.Publish(new EntryDeletionRequestedEvent(Entry));
 
 			OnDeleted();
+		}
+
+		private async Task UpdateIsLearntAsync(bool value)
+		{
+			bool confirmed;
+
+			if (value)
+			{
+				confirmed = await DialogService.ShowConfirmation(
+					Resources.GetString("EntryViewModel_MarkLearnedConfirmationTitle"),
+					Resources.GetString("EntryViewModel_MarkLearnedConfirmationText"),
+					okCommandText: Resources.GetString("EntryViewModel_MarkLearnedConfirmationOk"));
+			}
+			else
+			{
+				confirmed = await DialogService.ShowConfirmation(
+					Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationTitle"),
+					Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationText"),
+					okCommandText: Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationOk"));
+			}
+
+			if (confirmed)
+			{
+				Entry.IsLearnt = value;
+				ApplicationController.OnIsLearntChanged(this);
+			}
+
+			RaisePropertyChanged(() => IsLearnt);
+			RaisePropertyChanged(() => IsLearnStatusText);
 		}
 
 		protected virtual void OnDeleted()

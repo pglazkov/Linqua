@@ -45,6 +45,7 @@
     <Compile Include="Logging\FileTargetBase.cs" />
     <Compile Include="Logging\LoggingLayout.cs" />
     <Compile Include="PlatformServices\DesignModeDetectionService.cs" />
+    <Compile Include="PlatformServices\DialogService.cs" />
     <Compile Include="PlatformServices\DispatcherService.cs" />
     <Compile Include="PlatformServices\LocalSettingsService.cs" />
     <Compile Include="PlatformServices\StringResourceManager.cs" />

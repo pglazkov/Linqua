@@ -60,9 +60,12 @@
     <Compile Include="IViewModelWithBehaviors.cs" />
     <Compile Include="ObservableCollectionExtensions.cs" />
     <Compile Include="ObservableExtensions.cs" />
+    <Compile Include="PlatformServices\DefaultImpl\DefaultDialogService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultLocalSettingsService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultStatusBusyService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultStringResourceManager.cs" />
+    <Compile Include="PlatformServices\DispatcherServiceExtensions.cs" />
+    <Compile Include="PlatformServices\IDialogService.cs" />
     <Compile Include="PlatformServices\ILocalSettingsService.cs" />
     <Compile Include="PlatformServices\IStatusBusyService.cs" />
     <Compile Include="IViewModel.cs" />
