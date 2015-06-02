@@ -5,7 +5,9 @@
 	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:controls="using:Framework.Controls"
-	  mc:Ignorable="d"
+      xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+      xmlns:framework="using:Linqua.Framework"
+      mc:Ignorable="d"
 	  d:DataContext="{d:DesignInstance local:MainViewModel, IsDesignTimeCreatable=True}"
 	  x:Name="ThisPage">
 
@@ -117,6 +119,10 @@
 				   Margin="0,0,0,24"
 				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
 				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded">
+				<interactivity:Interaction.Behaviors>
+					<framework:PivotSwipeLockBehavior />
+				</interactivity:Interaction.Behaviors>
+				
 				<PivotItem Margin="0"
 						   CommonNavigationTransitionInfo.IsStaggerElement="True"
 						   Tag="RendomEntryList">

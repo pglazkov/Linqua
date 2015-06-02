@@ -5,6 +5,8 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:loc="using:Linqua"
 			 xmlns:parts="using:Linqua.Views.Parts"
+			 xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+			 xmlns:framework="using:Linqua.Framework"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
@@ -19,6 +21,10 @@
 
 	</UserControl.Resources>
 
+	<!--<interactivity:Interaction.Behaviors>
+		<framework:SwipeDetectionBehavior HorizontalSwipe="SwipeDetectionBehavior_OnHorizontalSwipe"/>
+	</interactivity:Interaction.Behaviors>-->
+	
 	<FlyoutBase.AttachedFlyout>
 		<MenuFlyout MenuFlyoutPresenterStyle="{StaticResource EntryItemMenuFlyoutPresenterStyle}">
 			<MenuFlyoutItem x:Uid="DeleteFlyoutItem"

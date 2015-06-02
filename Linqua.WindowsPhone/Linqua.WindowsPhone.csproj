@@ -87,6 +87,8 @@
     </Compile>
     <Compile Include="BackgroundTaskHelper.cs" />
     <Compile Include="Framework\BusyStatus.cs" />
+    <Compile Include="Framework\PivotSwipeLockBehavior.cs" />
+    <Compile Include="Framework\SwipeDetectionBehavior.cs" />
     <Compile Include="Views\EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
