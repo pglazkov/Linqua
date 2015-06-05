@@ -1,4 +1,5 @@
-﻿using Windows.UI.Core;
+﻿using System;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -16,6 +17,11 @@ namespace Linqua
             InitializeComponent();
         }
 
+	    private EntryListViewModel ViewModel
+	    {
+		    get { return (EntryListViewModel)DataContext; }
+	    }
+
 	    private void EntryHolding(object sender, HoldingRoutedEventArgs e)
 	    {
 			var senderElement = sender as FrameworkElement;
@@ -31,31 +37,31 @@ namespace Linqua
 
 	    private void EntryLoaded(object sender, RoutedEventArgs e)
 	    {
-			var entryView = (Control)sender;
+			//var entryView = (Control)sender;
 
-			var entryVm = (EntryListItemViewModel)entryView.DataContext;
+			//var entryVm = (EntryListItemViewModel)entryView.DataContext;
 
-		    if (entryVm == null)
-		    {
-			    return;
-		    }
+			//if (entryVm == null)
+			//{
+			//	return;
+			//}
 
-		    if (entryVm.JustAdded)
-		    {
-			    var itemView = EntryItemsControl.ContainerFromItem(entryVm) as Control;
+			//if (entryVm.JustAdded)
+			//{
+			//	var itemView = EntryItemsControl.ContainerFromItem(entryVm) as Control;
 
-			    if (itemView != null)
-			    {
-				    itemView.Focus(FocusState.Programmatic);
-			    }
+			//	if (itemView != null)
+			//	{
+			//		itemView.Focus(FocusState.Programmatic);
+			//	}
 
-			    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-			    {
-				    EntryItemsControl.ScrollIntoView(entryVm);
-			    });
+			//	Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+			//	{
+			//		EntryItemsControl.ScrollIntoView(entryVm);
+			//	});
 
-			    entryVm.JustAdded = false;
-		    }
+			//	entryVm.JustAdded = false;
+			//}
 	    }
 
 		private void OnItemClicked(object sender, ItemClickEventArgs e)
@@ -66,5 +72,13 @@ namespace Linqua
 			
 			eventAggregator.Publish(new EntryDetailsRequestedEvent(entryVm.Entry.Id));
 		}
+
+	    private void OnItemFlickedAway(object sender, EventArgs e)
+	    {
+		    if (ViewModel.ShowNextEntriesCommand.CanExecute())
+		    {
+			    ViewModel.ShowNextEntriesCommand.Execute().FireAndForget();
+		    }
+	    }
     }
 }

@@ -5,6 +5,8 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:linqua="using:Linqua"
 			 xmlns:input="using:Windows.UI.Input"
+			 xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+			 xmlns:framework="using:Linqua.Framework"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
@@ -21,7 +23,7 @@
 				   HorizontalAlignment="Center"
 				   Margin="24,0,24,0" />
 
-		<!--<linqua:RandomEntryListItemView x:Name="ItemView"
+		<linqua:RandomEntryListItemView x:Name="ItemView"
 										Grid.Row="0"
 										DataContext="{Binding RandomEntryViewModels[0]}"
 										Margin="24,0,24,0"
@@ -32,9 +34,15 @@
 										VerticalAlignment="Center"
 										HorizontalAlignment="Stretch"
 										HorizontalContentAlignment="Stretch"
-										IsTabStop="False"/>-->
+										IsTabStop="False">
+			<interactivity:Interaction.Behaviors>
+				<framework:FlickBehavior Container="{Binding ElementName=LayoutRoot}"
+										 FlickedAway="OnItemFlickedAway"
+										 IsEnabled="{Binding ElementName=LayoutRoot, Path=DataContext.IsPagingControlsVisible}"/>
+			</interactivity:Interaction.Behaviors>
+		</linqua:RandomEntryListItemView>
 
-		<ListView Grid.Row="0"
+		<!--<ListView Grid.Row="0"
 				  x:Name="EntryItemsControl"
 				  ItemsSource="{Binding RandomEntryViewModels}"
 				  HorizontalContentAlignment="Stretch"
@@ -67,9 +75,13 @@
 													HorizontalAlignment="Stretch"
 													HorizontalContentAlignment="Stretch"
 													IsTabStop="False">
+						<interactivity:Interaction.Behaviors>
+							<framework:FlickBehavior Container="{Binding ElementName=LayoutRoot}"
+													 FlickedOutside="OnItemFlickedOutside"/>
+						</interactivity:Interaction.Behaviors>
 					</linqua:RandomEntryListItemView>
 				</DataTemplate>
 			</ListView.ItemTemplate>
-		</ListView>
+		</ListView>-->
 	</Grid>
 </UserControl>
