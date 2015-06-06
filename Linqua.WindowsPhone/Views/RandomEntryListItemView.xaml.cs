@@ -1,6 +1,7 @@
 ﻿using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Animation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -11,6 +12,8 @@ namespace Linqua
 		public RandomEntryListItemView()
 		{
 			this.InitializeComponent();
+
+			DataContextChanged += OnDataContextChanged;
 		}
 
 		private EntryListItemViewModel ViewModel
@@ -18,19 +21,10 @@ namespace Linqua
 			get { return (EntryListItemViewModel)DataContext; }
 		}
 
-		private void OnFlipBackButtonPressed(object sender, RoutedEventArgs e)
+		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
 		{
-			FlipControl.IsFlipped = true;
-		}
-
-		private void OnFlipFrontButtonPressed(object sender, RoutedEventArgs e)
-		{
-			FlipControl.IsFlipped = false;
-		}
-
-		private void SwipeDetectionBehavior_OnHorizontalSwipe(GestureRecognizer sender, CrossSlidingEventArgs args)
-		{
-			ViewModel.IsLearnt = true;
+			var storyboard = (Storyboard)Resources["DataContextChangedStoryboard"];
+			storyboard.Begin();
 		}
 	}
 }

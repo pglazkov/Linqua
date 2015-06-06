@@ -11,7 +11,7 @@
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
 			 d:DataContext="{d:DesignInstance linqua:EntryListViewModel, IsDesignTimeCreatable=True}">
-
+	
 	<Grid x:Name="LayoutRoot">
 		<TextBlock x:Uid="NoEntriesTextBlock"
 				   Text="RES_MISSING NoEntriesTextBlock"

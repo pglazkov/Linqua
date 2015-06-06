@@ -17,6 +17,21 @@
 			<ResourceDictionary.MergedDictionaries>
 				<ResourceDictionary Source="Resources/CommonResources.xaml" />
 			</ResourceDictionary.MergedDictionaries>
+
+			<!-- ReSharper disable Xaml.RedundantResource -->
+			<Storyboard x:Key="DataContextChangedStoryboard">
+				<DoubleAnimation Storyboard.TargetName="FlipControl"
+								 Storyboard.TargetProperty="Opacity"
+								 From="0"
+								 To="1"
+								 Duration="0:0:1">
+					<DoubleAnimation.EasingFunction>
+						<CubicEase />
+					</DoubleAnimation.EasingFunction>
+				</DoubleAnimation>
+			</Storyboard>
+			<!-- ReSharper restore Xaml.RedundantResource -->
+			
 		</ResourceDictionary>
 
 	</UserControl.Resources>
@@ -34,32 +49,52 @@
 		</MenuFlyout>
 	</FlyoutBase.AttachedFlyout>
 
-	<loc:FlipControl x:Name="FlipControl" 
+	<loc:FlipControl x:Name="FlipControl"
 					 Margin="0,25,0,25"
 					 Height="182"
 					 IsFlipped="{Binding IsTranslationShown, Mode=TwoWay}">
+		<loc:FlipControl.RenderTransform>
+			<CompositeTransform />
+		</loc:FlipControl.RenderTransform>
+
 		<loc:FlipControl.FrontSideContent>
-			<Viewbox Grid.Row="0"
-					 Grid.Column="0"
-					 Stretch="Uniform"
-					 StretchDirection="DownOnly"
-					 VerticalAlignment="Center"
-					 Height="40"
-					 Margin="24,24,24,36">
-				<TextBlock Text="{Binding Text}"
-						   Style="{ThemeResource ListViewItemTextBlockStyle}"
-						   LineHeight="21.5"
-						   TextLineBounds="Tight"
-						   FontSize="72"
-						   Foreground="{StaticResource EntryTextForegroundBrush}"
-						   TextWrapping="Wrap"
-						   VerticalAlignment="Top"
-						   Pivot.SlideInAnimationGroup="1"
-						   CommonNavigationTransitionInfo.IsStaggerElement="True"
-						   HorizontalAlignment="Center" />
-			</Viewbox>
+			<ContentControl Content="{Binding}"
+							HorizontalAlignment="Stretch"
+							VerticalAlignment="Stretch"
+							HorizontalContentAlignment="Stretch"
+							VerticalContentAlignment="Stretch"
+							IsTabStop="False">
+				<ContentControl.ContentTransitions>
+					<TransitionCollection>
+						<EntranceThemeTransition FromHorizontalOffset="150"/>
+					</TransitionCollection>
+				</ContentControl.ContentTransitions>
+
+				<ContentControl.ContentTemplate>
+					<DataTemplate>
+						<Viewbox Stretch="Uniform"
+								 StretchDirection="DownOnly"
+								 VerticalAlignment="Center"
+								 Height="40"
+								 Margin="24,24,24,36">
+							<TextBlock Text="{Binding Text}"
+									   Style="{ThemeResource ListViewItemTextBlockStyle}"
+									   LineHeight="21.5"
+									   TextLineBounds="Tight"
+									   FontSize="72"
+									   Foreground="{StaticResource EntryTextForegroundBrush}"
+									   TextWrapping="Wrap"
+									   VerticalAlignment="Top"
+									   Pivot.SlideInAnimationGroup="1"
+									   CommonNavigationTransitionInfo.IsStaggerElement="True"
+									   HorizontalAlignment="Center" />
+						</Viewbox>
+					</DataTemplate>
+				</ContentControl.ContentTemplate>
+			</ContentControl>
+			
 		</loc:FlipControl.FrontSideContent>
-		
+
 		<loc:FlipControl.BackSideContent>
 			<Grid Margin="24,12,24,12">
 				<Grid.RowDefinitions>
@@ -69,7 +104,7 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
-				<TextBlock x:Uid="TranslationTitleTextBlock" 
+				<TextBlock x:Uid="TranslationTitleTextBlock"
 						   Grid.Row="0"
 						   Text="RES_MISSING translation"
 						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
@@ -112,4 +147,25 @@
 			</Grid>
 		</loc:FlipControl.BackSideContent>
 	</loc:FlipControl>
+	
+	<!--<ContentControl x:Name="RootControl" 
+					Content="{Binding}"
+					HorizontalAlignment="Stretch"
+					VerticalAlignment="Stretch"
+					HorizontalContentAlignment="Stretch"
+					VerticalContentAlignment="Stretch"
+					IsTabStop="False">
+		<ContentControl.ContentTransitions>
+			<TransitionCollection>
+				<EntranceThemeTransition/>
+			</TransitionCollection>
+		</ContentControl.ContentTransitions>
+		
+		<ContentControl.ContentTemplate>
+			<DataTemplate>
+				
+			</DataTemplate>
+		</ContentControl.ContentTemplate>
+	</ContentControl>-->
+	
 </UserControl>
