@@ -212,6 +212,8 @@ namespace Linqua
 
 		private void AddWord()
 		{
+			EventAggregator.Publish(new StopFirstUseTutorialEvent());
+
 			IsEntryCreationViewVisible = true;
 			View.FocusEntryCreationView();
 		}

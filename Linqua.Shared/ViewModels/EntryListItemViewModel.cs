@@ -1,5 +1,6 @@
 ﻿using Framework;
 using Linqua.DataObjects;
+using Linqua.Events;
 
 namespace Linqua
 {
@@ -32,6 +33,8 @@ namespace Linqua
 				if (value == isTranslationShown) return;
 				isTranslationShown = value;
 				RaisePropertyChanged();
+
+				EventAggregator.Publish(new StopFirstUseTutorialEvent());
 			}
 		}
 

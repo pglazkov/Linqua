@@ -48,6 +48,7 @@
     <Compile Include="PlatformServices\DialogService.cs" />
     <Compile Include="PlatformServices\DispatcherService.cs" />
     <Compile Include="PlatformServices\LocalSettingsService.cs" />
+    <Compile Include="PlatformServices\RoamingSettingsService.cs" />
     <Compile Include="PlatformServices\StringResourceManager.cs" />
     <Compile Include="PlatformServices\ViewLocationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

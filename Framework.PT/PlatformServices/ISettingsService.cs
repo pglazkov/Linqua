@@ -2,7 +2,8 @@
 
 namespace Framework.PlatformServices
 {
-	public interface ILocalSettingsService : ISettingsService
+	public interface ISettingsService
 	{
+		IDictionary<string, object> Values { get; }
 	}
 }

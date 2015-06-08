@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bootstrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\StopFirstUseTutorialEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Framework\INavigationView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Framework\NavigationHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Framework\ObservableDictionary.cs" />

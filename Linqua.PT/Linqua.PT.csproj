@@ -54,6 +54,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RoamingStorageKeys.cs" />
     <Compile Include="SecurityManager.cs" />
     <Compile Include="Translation\ITranslationService.cs" />
     <Compile Include="Translation\Microsoft\AdmAccessToken.cs" />
