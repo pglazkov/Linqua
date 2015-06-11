@@ -33,10 +33,11 @@
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryDetailsViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryListItemTimeGroupViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryListItemViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryListViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\FullEntryListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\EntryViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\LoginViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\MainViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ViewModels\RandomEntryListViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\TimeGroupViewModel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IEntryDetailsView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ViewModels\ViewInterface\IEntryListItemView.cs" />

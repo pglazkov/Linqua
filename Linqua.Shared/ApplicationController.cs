@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Threading.Tasks;
 using Framework;
 using Framework.PlatformServices;
+using Linqua.DataObjects;
 using Linqua.Events;
 using Linqua.Persistence;
 using Linqua.Translation;
@@ -45,9 +47,9 @@ namespace Linqua
 			eventAggregator.Publish(new EntryIsLearntChangedEvent(entry));
 		}
 
-		public async Task TranslateEntryItemAsync(EntryViewModel entryItem)
+		public async Task TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
 		{
-			entryItem.IsTranslating = true;
+			viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
 
 			try
 			{
@@ -56,9 +58,9 @@ namespace Linqua
 				try
 				{
 					if (Log.IsDebugEnabled)
-						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entryItem.Text);
+						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entry.Text);
 
-					var existingEntry = await storage.LookupByExample(entryItem.Entry);
+					var existingEntry = await storage.LookupByExample(entry);
 
 					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
 					{
@@ -77,25 +79,29 @@ namespace Linqua
 				if (string.IsNullOrEmpty(translation))
 				{
 					if (Log.IsDebugEnabled)
-						Log.Debug("Detecting language of \"{0}\"", entryItem.Entry.Text);
+						Log.Debug("Detecting language of \"{0}\"", entry.Text);
 
-					var entryLanguage = await translator.Value.DetectLanguageAsync(entryItem.Entry.Text);
+					var entryLanguage = await translator.Value.DetectLanguageAsync(entry.Text);
 
 					if (Log.IsDebugEnabled)
 						Log.Debug("Detected language: " + entryLanguage);
 
 					if (Log.IsDebugEnabled)
-						Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entryItem.Entry.Text, entryLanguage, "en");
+						Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entry.Text, entryLanguage, "en");
 
-					translation = await translator.Value.TranslateAsync(entryItem.Entry.Text, entryLanguage, "en");
+					translation = await translator.Value.TranslateAsync(entry.Text, entryLanguage, "en");
 
 					if (Log.IsDebugEnabled)
 						Log.Debug("Translation: \"{0}\"", translation);
 				}
 
-				entryItem.Definition = translation;
+				entry.Definition = translation;
 
-				await storage.UpdateEntry(entryItem.Entry);
+				viewModelsToUpdate.ForEach(x => x.Definition = translation);
+
+				await storage.UpdateEntry(entry);
+
+				eventAggregator.Publish(new EntryDefinitionChangedEvent(entry));
 			}
 			catch (Exception ex)
 			{
@@ -104,7 +110,7 @@ namespace Linqua
 			}
 			finally
 			{
-				entryItem.IsTranslating = false;
+				viewModelsToUpdate.ForEach(x => x.IsTranslating = false);
 			}
 		}
     }

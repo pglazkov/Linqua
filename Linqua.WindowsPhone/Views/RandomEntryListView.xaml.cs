@@ -8,12 +8,14 @@ using Windows.UI.Xaml.Media.Animation;
 using Framework;
 using Framework.PlatformServices;
 using Linqua.Events;
+using Linqua.ViewModels;
 
 namespace Linqua
 {
-    public partial class RandomEntryListView : UserControl
+    public partial class RandomEntryListView : UserControl, IPivotContentView
     {
 	    private bool isLoaded;
+	    private bool isFirstUseTutorialRunning;
 
 	    public RandomEntryListView()
         {
@@ -30,9 +32,9 @@ namespace Linqua
 		    }
         }
 
-	    private EntryListViewModel ViewModel
+	    private RandomEntryListViewModel ViewModel
 	    {
-		    get { return (EntryListViewModel)DataContext; }
+			get { return (RandomEntryListViewModel)DataContext; }
 	    }
 
 	    private IRoamingSettingsService RoamingSettings
@@ -61,33 +63,53 @@ namespace Linqua
 
 		private void StartTutorialIfNeeded()
 		{
-			if (ViewModel.RandomEntryViewModels.Count > 0)
+			if (isFirstUseTutorialRunning)
+			{
+				return;
+			}
+
+			if (ViewModel != null && ViewModel.RandomEntryViewModels.Count > 0)
 			{
 				var isComplted = RoamingSettings.GetValue<bool>(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey);
 
 				if (!isComplted)
 				{
-					var firstUseStoryboard = (Storyboard)Resources["FirstUseStoryboard"];
+					isFirstUseTutorialRunning = true;
 
-					firstUseStoryboard.BeginTime = TimeSpan.FromMilliseconds(1000);
+					var firstUseStoryboard = (Storyboard)Resources["FirstUseStoryboard"];
+					firstUseStoryboard.Completed += OnFirstUseTutorialStoryboardCompleted;
+					firstUseStoryboard.BeginTime = TimeSpan.FromSeconds(2.5);
 					firstUseStoryboard.Begin();
 				}
 			}
 		}
 
-	    private void OnStopFirstUseTutorialRequested(StopFirstUseTutorialEvent e)
+	    private void OnFirstUseTutorialStoryboardCompleted(object sender, object e)
 	    {
-		    StopFirstUseTutorial();
+		    isFirstUseTutorialRunning = false;
 	    }
 
-		private void StopFirstUseTutorial()
-		{
-			var firstUseStoryboard = (Storyboard)Resources["FirstUseStoryboard"];
+	    private void OnStopFirstUseTutorialRequested(StopFirstUseTutorialEvent e)
+	    {
+		    CompleteFirstUseTutorial();
+	    }
 
-			firstUseStoryboard.Stop();
+		private void CompleteFirstUseTutorial()
+		{
+			StopFirstUseTutorial();
 
 			RoamingSettings.SetValue(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey, true);
 		}
+
+	    private void StopFirstUseTutorial()
+	    {
+		    isFirstUseTutorialRunning = false;
+
+		    var firstUseStoryboard = (Storyboard)Resources["FirstUseStoryboard"];
+
+		    firstUseStoryboard.Stop();
+		    firstUseStoryboard.Completed -= OnFirstUseTutorialStoryboardCompleted;
+	    }
 
 	    private void EntryHolding(object sender, HoldingRoutedEventArgs e)
 	    {
@@ -121,12 +143,22 @@ namespace Linqua
 
 	    private void OnItemFlickedAway(object sender, EventArgs e)
 	    {
-		    StopFirstUseTutorial();
+		    CompleteFirstUseTutorial();
 
 		    if (ViewModel.ShowNextEntriesCommand.CanExecute())
 		    {
 			    ViewModel.ShowNextEntriesCommand.Execute().FireAndForget();
 		    }
+	    }
+
+	    public void OnPivotItemLoaded(IPivotHostView host)
+	    {
+		    StartTutorialIfNeeded();
+	    }
+
+	    public void OnPivotItemUnloaded(IPivotHostView host)
+	    {
+		    StopFirstUseTutorial();
 	    }
     }
 }

@@ -20,7 +20,7 @@
 	</Page.Transitions>
 	
 	<Grid x:Name="LayoutRoot"
-		  Margin="0,27,0,72">
+		  Margin="0,27,0,60">
 
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />

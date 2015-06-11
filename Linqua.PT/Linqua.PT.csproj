@@ -39,6 +39,7 @@
     <Compile Include="ConnectionHelper.cs" />
     <Compile Include="FakeData.cs" />
     <Compile Include="DataObjects\ClientEntry.cs" />
+    <Compile Include="LocalSettingsKeys.cs" />
     <Compile Include="MobileService.cs" />
     <Compile Include="Persistence\EntryQuery.cs" />
     <Compile Include="Persistence\IDataStore.cs" />

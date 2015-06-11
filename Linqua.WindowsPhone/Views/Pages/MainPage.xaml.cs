@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
+using Windows.Foundation.Collections;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -19,7 +20,7 @@ namespace Linqua
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-	public sealed partial class MainPage : Page, IMainView
+	public sealed partial class MainPage : Page, IMainView, IPivotHostView
     {
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
 
@@ -182,23 +183,34 @@ namespace Linqua
 		    }
 	    }
 
-		//private void Pivot_OnPivotItemLoaded(Pivot sender, PivotItemEventArgs args)
-		//{
-		//	if (Equals(args.Item.Tag, "RendomEntryList"))
-		//	{
-		//		if (ViewModel.EntryListViewModel.IsPagingControlsVisible)
-		//		{
-		//			NextRendomItemsButton.Visibility = Visibility.Visible;
-		//		}
-		//	}
-		//}
+		private void Pivot_OnPivotItemLoaded(Pivot sender, PivotItemEventArgs args)
+		{
+			var content = args.Item.Content as IPivotContentView;
 
-		//private void Pivot_OnPivotItemUnloaded(Pivot sender, PivotItemEventArgs args)
-		//{
-		//	if (Equals(args.Item.Tag, "RendomEntryList"))
-		//	{
-		//		NextRendomItemsButton.Visibility = Visibility.Collapsed;
-		//	}
-		//}
+			if (content != null)
+			{
+				content.OnPivotItemLoaded(this);
+			}
+
+			if (Equals(args.Item.Tag, "RendomEntryList"))
+			{
+				ToggleShowHideLearnedEntriesButton.Visibility = Visibility.Collapsed;
+			}
+		}
+
+		private void Pivot_OnPivotItemUnloaded(Pivot sender, PivotItemEventArgs args)
+		{
+			var content = args.Item.Content as IPivotContentView;
+
+			if (content != null)
+			{
+				content.OnPivotItemUnloaded(this);
+			}
+
+			if (Equals(args.Item.Tag, "RendomEntryList"))
+			{
+				ToggleShowHideLearnedEntriesButton.Visibility = Visibility.Visible;
+			}
+		}
     }
 }

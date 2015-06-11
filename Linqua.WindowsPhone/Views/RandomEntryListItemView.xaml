@@ -148,24 +148,4 @@
 		</loc:FlipControl.BackSideContent>
 	</loc:FlipControl>
 	
-	<!--<ContentControl x:Name="RootControl" 
-					Content="{Binding}"
-					HorizontalAlignment="Stretch"
-					VerticalAlignment="Stretch"
-					HorizontalContentAlignment="Stretch"
-					VerticalContentAlignment="Stretch"
-					IsTabStop="False">
-		<ContentControl.ContentTransitions>
-			<TransitionCollection>
-				<EntranceThemeTransition/>
-			</TransitionCollection>
-		</ContentControl.ContentTransitions>
-		
-		<ContentControl.ContentTemplate>
-			<DataTemplate>
-				
-			</DataTemplate>
-		</ContentControl.ContentTemplate>
-	</ContentControl>-->
-	
 </UserControl>

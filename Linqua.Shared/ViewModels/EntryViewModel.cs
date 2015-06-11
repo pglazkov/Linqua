@@ -114,8 +114,6 @@ namespace Linqua
 				Entry.Definition = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => IsDefinitionVisible);
-
-				EventAggregator.Publish(new EntryDefinitionChangedEvent(Entry));
 			}
 		}
 

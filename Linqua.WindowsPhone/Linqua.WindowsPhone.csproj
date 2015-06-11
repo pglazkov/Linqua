@@ -94,6 +94,8 @@
     <Compile Include="Views\EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\IPivotContentView.cs" />
+    <Compile Include="Views\IPivotHostView.cs" />
     <Compile Include="Views\Parts\FlipControl.xaml.cs">
       <DependentUpon>FlipControl.xaml</DependentUpon>
     </Compile>

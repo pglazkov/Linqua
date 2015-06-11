@@ -41,7 +41,7 @@
 
 	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot"
-		  Margin="0,27,0,72">
+		  Margin="0,27,0,61">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
@@ -108,7 +108,7 @@
 							   Text="RES_MISSING PivotRandomItemHeader" />
 				</ListBoxItem>
 				<ListBoxItem>
-					<TextBlock Text="{Binding EntryListViewModel.Header}" />
+					<TextBlock Text="{Binding FullEntryListViewModel.Header}" />
 				</ListBoxItem>
 			</ListBox>
 
@@ -116,22 +116,24 @@
 				   x:Name="Pivot"
 				   x:Uid="Pivot"
 				   CommonNavigationTransitionInfo.IsStaggerElement="True"
-				   Margin="0,0,0,24">
+				   Margin="0,0,0,0"
+				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
+				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded">
 				
-				<interactivity:Interaction.Behaviors>
+				<!--<interactivity:Interaction.Behaviors>
 					<framework:PivotSwipeLockBehavior />
-				</interactivity:Interaction.Behaviors>
+				</interactivity:Interaction.Behaviors>-->
 				
 				<PivotItem Margin="0"
 						   CommonNavigationTransitionInfo.IsStaggerElement="True"
 						   Tag="RendomEntryList">
-					<local:RandomEntryListView DataContext="{Binding EntryListViewModel}"
-											   Margin="0,0,0,0" />
+					<local:RandomEntryListView DataContext="{Binding RandomEntryListViewModel}"
+											   Margin="0,0,0,24" />
 					
 				</PivotItem>
 
 				<PivotItem Margin="0">
-					<local:FullEntryListView DataContext="{Binding EntryListViewModel}"
+					<local:FullEntryListView DataContext="{Binding FullEntryListViewModel}"
 											 Margin="0,0,0,0" />
 				</PivotItem>
 			</Pivot>
@@ -187,6 +189,12 @@
 				<AppBarButton x:Uid="SyncButton"
 							  Label="RES_MISSING sync"
 							  Command="{Binding SyncCommand}" />
+
+				<AppBarButton x:Name="ToggleShowHideLearnedEntriesButton"
+							  Label="{Binding ToggleShowHideLearnedEntriesButtonLabel}"
+							  Command="{Binding ToggleShowHideLearnedEntriesCommand}"
+							  Visibility="Collapsed"/>
+				
 				<AppBarButton x:Uid="SendLogsButton"
 							  Label="RES_MISSING (advanced) share logs"
 							  Command="{Binding SendLogsCommand}" />

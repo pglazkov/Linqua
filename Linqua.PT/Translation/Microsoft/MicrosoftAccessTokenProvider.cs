@@ -15,7 +15,6 @@ namespace Linqua.Translation.Microsoft
 	public class MicrosoftAccessTokenProvider : IMicrosoftAccessTokenProvider
 	{
 		private const string AccessTokenKey = "MicrosoftAccessToken";
-		private const string AccessTokenExpirationTimeKey = "MicrosoftAccessTokenExpirationTime";
 
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MicrosoftAccessTokenProvider).Name);
 
@@ -31,7 +30,7 @@ namespace Linqua.Translation.Microsoft
 
 		public async Task<string> GetAccessTokenAsync()
 		{
-			var tokenExpirationTimeValue = localSettingsService.GetValue(AccessTokenExpirationTimeKey) as string;
+			var tokenExpirationTimeValue = localSettingsService.GetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey) as string;
 
 			var tokenExpirationTime = DateTime.Parse(tokenExpirationTimeValue ?? DateTime.UtcNow.AddMinutes(-1).ToString());
 
@@ -55,7 +54,7 @@ namespace Linqua.Translation.Microsoft
 		{
 			AdmAccessToken newAccessToken = await GetTokenAsync();
 
-			localSettingsService.SetValue(AccessTokenExpirationTimeKey, DateTime.UtcNow.AddSeconds(int.Parse(newAccessToken.expires_in)).ToString());
+			localSettingsService.SetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey, DateTime.UtcNow.AddSeconds(int.Parse(newAccessToken.expires_in)).ToString());
 
 			localSettingsService.SetValue(AccessTokenKey, newAccessToken.access_token);
 

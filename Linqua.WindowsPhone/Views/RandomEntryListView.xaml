@@ -6,10 +6,11 @@
 			 xmlns:linqua="using:Linqua"
              xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
 			 xmlns:framework="using:Linqua.Framework"
+			 xmlns:viewModels="using:Linqua.ViewModels"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
-			 d:DataContext="{d:DesignInstance linqua:EntryListViewModel, IsDesignTimeCreatable=True}">
+			 d:DataContext="{d:DesignInstance viewModels:RandomEntryListViewModel, IsDesignTimeCreatable=True}">
 	
 	<UserControl.Resources>
 		<!-- ReSharper disable Xaml.RedundantResource -->
@@ -115,7 +116,8 @@
 				   HorizontalAlignment="Center"
 				   Margin="24,0,24,0" />
 
-		<Grid x:Name="ItemContainer">
+		<Grid x:Name="ItemContainer"
+			  Visibility="{Binding AnyEntriesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
 			<Grid.RenderTransform>
 				<TranslateTransform/>
 			</Grid.RenderTransform>
@@ -188,47 +190,5 @@
 
 			</Grid>
 		</Grid>
-		
-		<!--<ListView Grid.Row="0"
-				  x:Name="EntryItemsControl"
-				  ItemsSource="{Binding RandomEntryViewModels}"
-				  HorizontalContentAlignment="Stretch"
-				  HorizontalAlignment="Stretch"
-				  VerticalAlignment="Center"
-				  Margin="0,0,0,0"
-				  IsItemClickEnabled="False"
-				  Background="Transparent">
-			<ListView.ItemContainerStyle>
-				<Style TargetType="ListViewItem">
-					<Setter Property="HorizontalContentAlignment"
-							Value="Stretch" />
-					<Setter Property="Template">
-						<Setter.Value>
-							<ControlTemplate TargetType="ListViewItem">
-								<ContentPresenter />
-							</ControlTemplate>
-						</Setter.Value>
-					</Setter>
-				</Style>
-			</ListView.ItemContainerStyle>
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<linqua:RandomEntryListItemView DataContext="{Binding}"
-													Margin="24,0,24,0"
-													Loaded="EntryLoaded"
-													Background="Transparent"
-													Holding="EntryHolding"
-													PointerPressed="EntryPressed"
-													HorizontalAlignment="Stretch"
-													HorizontalContentAlignment="Stretch"
-													IsTabStop="False">
-						<interactivity:Interaction.Behaviors>
-							<framework:FlickBehavior Container="{Binding ElementName=LayoutRoot}"
-													 FlickedOutside="OnItemFlickedOutside"/>
-						</interactivity:Interaction.Behaviors>
-					</linqua:RandomEntryListItemView>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>-->
 	</Grid>
 </UserControl>

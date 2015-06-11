@@ -20,7 +20,7 @@ using Linqua.Events;
 
 namespace Linqua
 {
-	public sealed partial class FullEntryListView : UserControl
+	public sealed partial class FullEntryListView : UserControl, IPivotContentView
 	{
 		public FullEntryListView()
 		{
@@ -76,6 +76,16 @@ namespace Linqua
 			var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
 
 			eventAggregator.Publish(new EntryDetailsRequestedEvent(entryVm.Entry.Id));
+		}
+
+		public void OnPivotItemLoaded(IPivotHostView host)
+		{
+			
+		}
+
+		public void OnPivotItemUnloaded(IPivotHostView host)
+		{
+			
 		}
 	}
 }

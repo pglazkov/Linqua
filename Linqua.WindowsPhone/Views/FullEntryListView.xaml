@@ -7,7 +7,7 @@
 			 mc:Ignorable="d"
 			 d:DesignHeight="300"
 			 d:DesignWidth="400"
-			 d:DataContext="{d:DesignInstance local:EntryListViewModel, IsDesignTimeCreatable=True}">
+			 d:DataContext="{d:DesignInstance local:FullEntryListViewModel, IsDesignTimeCreatable=True}">
 
 	<UserControl.Resources>
 		<CollectionViewSource x:Name="TimeGroupsSource" 

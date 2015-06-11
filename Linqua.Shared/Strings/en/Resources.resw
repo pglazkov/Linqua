@@ -141,8 +141,11 @@
   <data name="EntryListItemView_TranslatingBusyTextBlock.Text" xml:space="preserve">
     <value>translating...</value>
   </data>
-  <data name="EntryListView_Header" xml:space="preserve">
+  <data name="EntryListView_Header_OneNumber" xml:space="preserve">
     <value>ALL ({0})</value>
+  </data>
+  <data name="EntryListView_Header_TwoNumbers" xml:space="preserve">
+    <value>ALL ({0}/{1})</value>
   </data>
   <data name="EntryListView_TotalCountTemplate" xml:space="preserve">
     <value>total {0}</value>
@@ -176,6 +179,12 @@
   </data>
   <data name="MainPageHeader.Text" xml:space="preserve">
     <value>vocabulary</value>
+  </data>
+  <data name="MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_False" xml:space="preserve">
+    <value>show learned words</value>
+  </data>
+  <data name="MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_True" xml:space="preserve">
+    <value>hide learned words</value>
   </data>
   <data name="MarkLearnedButton.Label" xml:space="preserve">
     <value>learned</value>

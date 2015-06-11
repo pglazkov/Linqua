@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Framework;
@@ -11,6 +12,7 @@ using Linqua.DataObjects;
 using Linqua.Events;
 using Linqua.Logging;
 using Linqua.Persistence;
+using Linqua.ViewModels;
 using MetroLog;
 using Nito.AsyncEx;
 
@@ -24,23 +26,33 @@ namespace Linqua
 		private readonly IEventAggregator eventAggregator;
 		private readonly IStatusBusyService statusBusyService;
 		private readonly IApplicationController applicationController;
-		private EntryListViewModel entryListViewModel;
+		private readonly ILocalSettingsService localSettingsService;
+		private readonly IStringResourceManager stringResourceManager;
+		private FullEntryListViewModel fullEntryListViewModel;
 		private bool isLoadingEntries;
 		private bool isEntryCreationViewVisible;
 		private static readonly AsyncLock RefreshLock = new AsyncLock();
 		private bool initialized;
+		private RandomEntryListViewModel randomEntryListViewModel;
 
 		public MainViewModel()
 		{
 			if (DesignTimeDetection.IsInDesignTool)
 			{
-				EntryListViewModel = new EntryListViewModel(FakeData.FakeWords);
+				FullEntryListViewModel = new FullEntryListViewModel(FakeData.FakeWords);
+
+				RandomEntryListViewModel = new RandomEntryListViewModel(new StringResourceManager())
+				{
+					Entries = FakeData.FakeWords
+				};
+
 				EntryCreationViewModel = new EntryCreationViewModel(DesignTimeHelper.EventAggregator);
 			}
 
 			SyncCommand = new DelegateCommand(ForceSync);
 			SendLogsCommand = new DelegateCommand(SendLogs);
 			AddWordCommand = new DelegateCommand(AddWord, CanAddWord);
+			ToggleShowHideLearnedEntriesCommand = new DelegateCommand(ToggleShowHideLearnedEntries);
 		}
 
 		public MainViewModel(
@@ -48,7 +60,9 @@ namespace Linqua
 			IDataStore storage,
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
-			IApplicationController applicationController)
+			IApplicationController applicationController,
+			ILocalSettingsService localSettingsService,
+			IStringResourceManager stringResourceManager)
 			: this()
 		{
 			Guard.NotNull(compositionFactory, () => compositionFactory);
@@ -56,15 +70,20 @@ namespace Linqua
 			Guard.NotNull(eventAggregator, () => eventAggregator);
 			Guard.NotNull(statusBusyService, () => statusBusyService);
 			Guard.NotNull(applicationController, () => applicationController);
+			Guard.NotNull(localSettingsService, () => localSettingsService);
+			Guard.NotNull(stringResourceManager, () => stringResourceManager);
 
 			this.storage = storage;
 			this.eventAggregator = eventAggregator;
 			this.statusBusyService = statusBusyService;
 			this.applicationController = applicationController;
+			this.localSettingsService = localSettingsService;
+			this.stringResourceManager = stringResourceManager;
 
 			CompositionFactory = compositionFactory;
 
-			EntryListViewModel = compositionFactory.Create<EntryListViewModel>();
+			FullEntryListViewModel = compositionFactory.Create<FullEntryListViewModel>();
+			RandomEntryListViewModel = compositionFactory.Create<RandomEntryListViewModel>();
 			EntryCreationViewModel = compositionFactory.Create<EntryCreationViewModel>();
 
 			eventAggregator.GetEvent<EntryCreationRequestedEvent>().Subscribe(OnEntryCreationRequested);
@@ -77,10 +96,27 @@ namespace Linqua
 		public DelegateCommand SendLogsCommand { get; private set; }
 		public DelegateCommand AddWordCommand { get; private set; }
 		public DelegateCommand SyncCommand { get; private set; }
+		public DelegateCommand ToggleShowHideLearnedEntriesCommand { get; private set; }
 
 		public IMainView View { get; set; }
 
 		public EntryCreationViewModel EntryCreationViewModel { get; private set; }
+
+		public bool ShowLearnedEntries
+		{
+			get { return localSettingsService.GetValue(LocalSettingsKeys.ShowLearnedEntries, false); }
+			set
+			{
+				localSettingsService.SetValue(LocalSettingsKeys.ShowLearnedEntries, value);
+				RaisePropertyChanged();
+				RaisePropertyChanged(() => ToggleShowHideLearnedEntriesButtonLabel);
+			}
+		}
+
+		public string ToggleShowHideLearnedEntriesButtonLabel
+		{
+			get { return stringResourceManager.GetString("MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_" + ShowLearnedEntries); }
+		}
 
 		public bool IsEntryCreationViewVisible
 		{
@@ -94,12 +130,23 @@ namespace Linqua
 			}
 		}
 
-		public EntryListViewModel EntryListViewModel
+		public FullEntryListViewModel FullEntryListViewModel
 		{
-			get { return entryListViewModel; }
+			get { return fullEntryListViewModel; }
 			private set
 			{
-				entryListViewModel = value;
+				fullEntryListViewModel = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public RandomEntryListViewModel RandomEntryListViewModel
+		{
+			get { return randomEntryListViewModel; }
+			private set
+			{
+				if (Equals(value, randomEntryListViewModel)) return;
+				randomEntryListViewModel = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -127,12 +174,12 @@ namespace Linqua
 				return;
 			}
 
-			await InitializeWordListAsync(CompositionFactory, storage);
+			await InitializeWordListAsync(storage);
 
 			initialized = true;
 		}
 
-		private async Task InitializeWordListAsync(ICompositionFactory compositionFactory, IDataStore storage)
+		private async Task InitializeWordListAsync(IDataStore storage)
 		{
 			IsLoadingEntries = true;
 
@@ -140,19 +187,21 @@ namespace Linqua
 			{
 				using (await RefreshLock.LockAsync())
 				{
+					IEnumerable<ClientEntry> words = null;
+
 					try
 					{
 						await storage.InitializeAsync();
-						var words = await LoadEntries(storage);
+						words = await LoadEntries(storage);
 
 						if (Log.IsDebugEnabled)
 							Log.Debug("Loaded {0} entries from local storage.", words.Count());
 
-						EntryListViewModel.Entries = words;
+						UpdateUIWithData(words);
 					}
 					finally
 					{
-						if (EntryListViewModel.Entries.Any())
+						if (words.Any())
 						{
 							IsLoadingEntries = false;
 						}
@@ -167,14 +216,30 @@ namespace Linqua
 			finally
 			{
 				IsLoadingEntries = false;
-				EntryListViewModel.IsInitializationComplete = true;
+				FullEntryListViewModel.IsInitializationComplete = true;
+				RandomEntryListViewModel.IsInitializationComplete = true;
 			}
 
 		}
 
-		private static Task<IEnumerable<ClientEntry>> LoadEntries(IDataStore storage)
+		private void UpdateUIWithData(IEnumerable<ClientEntry> words)
 		{
-			return storage.LoadEntries(x => !x.IsLearnt);
+			var allEntries = words.ToList();
+
+			FullEntryListViewModel.Entries = allEntries;
+			RandomEntryListViewModel.Entries = allEntries.Where(x => !x.IsLearnt).ToList();
+		}
+
+		private Task<IEnumerable<ClientEntry>> LoadEntries(IDataStore storage)
+		{
+			if (ShowLearnedEntries)
+			{
+				return storage.LoadEntries();
+			}
+			else
+			{
+				return storage.LoadEntries(x => !x.IsLearnt);
+			}
 		}
 
 		public async Task SyncAsync(bool force = false)
@@ -220,30 +285,37 @@ namespace Linqua
 
 		private async void OnEntryCreationRequested(EntryCreationRequestedEvent e)
 		{
-			EntryListItemViewModel newEntryViewModel = EntryListViewModel.MoveToTopIfExists(e.EntryText);
+			RandomEntryListViewModel.MoveToTopIfExists(e.EntryText);
 
-			if (newEntryViewModel != null)
+			var fullListItem = FullEntryListViewModel.MoveToTopIfExists(e.EntryText);
+
+			if (fullListItem != null)
 			{
-				OnEntryAdded(newEntryViewModel.Entry);
+				OnEntryAdded(fullListItem.Entry);
 			}
 			else
 			{
 				using (await RefreshLock.LockAsync())
 				{
-					var newEntry = new ClientEntry(e.EntryText);
+					var entryToAdd = new ClientEntry(e.EntryText);
+
+					ClientEntry addedEntry = null;
+
+					EntryListItemViewModel randomListItem;
 
 					using (statusBusyService.Busy("Saving..."))
 					{
-						var addedEntry = await storage.AddEntry(newEntry);
+						addedEntry = await storage.AddEntry(entryToAdd);
 
-						newEntryViewModel = EntryListViewModel.AddEntry(addedEntry);
+						fullListItem = FullEntryListViewModel.AddEntry(addedEntry);
+						randomListItem = RandomEntryListViewModel.AddEntry(addedEntry);
 
 						OnEntryAdded(addedEntry);
 					}
-
-					if (newEntryViewModel != null && string.IsNullOrWhiteSpace(newEntryViewModel.Definition))
+					
+					if (string.IsNullOrWhiteSpace(addedEntry.Definition))
 					{
-						await applicationController.TranslateEntryItemAsync(newEntryViewModel);
+						await applicationController.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
 					}
 				}
 			}
@@ -265,7 +337,8 @@ namespace Linqua
 				{
 					await storage.DeleteEntry(e.EntryToDelete);
 
-					EntryListViewModel.DeleteEntryFromUI(e.EntryToDelete);
+					FullEntryListViewModel.DeleteEntryFromUI(e.EntryToDelete);
+					RandomEntryListViewModel.DeleteEntryFromUI(e.EntryToDelete);
 				}
 			}
 		}
@@ -292,7 +365,7 @@ namespace Linqua
 				Log.Debug("Loaded {0} entries from local storage.", words.Count());
 			}
 
-			EntryListViewModel.Entries = words;
+			UpdateUIWithData(words);
 		}
 
 		private void SendLogs()
@@ -364,7 +437,8 @@ namespace Linqua
 
 					Dispatcher.BeginInvoke(new Action(() =>
 					{
-						EntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
+						FullEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
+						RandomEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
 					}));
 				}
 			}
@@ -378,6 +452,21 @@ namespace Linqua
 		private void OnEntryDetailsRequested(EntryDetailsRequestedEvent e)
 		{
 			View.NavigateToEntryDetails(e.EntryId);
+		}
+
+		private void ToggleShowHideLearnedEntries()
+		{
+			ShowLearnedEntries = !ShowLearnedEntries;
+
+			RefreshWithBusyNotificationAsync().FireAndForget();
+		}
+
+		private async Task RefreshWithBusyNotificationAsync()
+		{
+			using (statusBusyService.Busy())
+			{
+				await RefreshAsync();
+			}
 		}
 	}
 }

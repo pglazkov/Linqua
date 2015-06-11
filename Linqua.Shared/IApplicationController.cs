@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using Linqua.DataObjects;
 
 namespace Linqua
 {
@@ -6,6 +8,6 @@ namespace Linqua
     {
 	    void OnIsLearntChanged(EntryViewModel entry);
 
-	    Task TranslateEntryItemAsync(EntryViewModel entryItem);
+		Task TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate);
     }
 }

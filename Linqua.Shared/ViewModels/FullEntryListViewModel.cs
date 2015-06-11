@@ -14,33 +14,27 @@ using MetroLog;
 
 namespace Linqua
 {
-    public class EntryListViewModel : ViewModelBase
+    public class FullEntryListViewModel : ViewModelBase
     {
 	    private const int EntriesToDisplayCount = 1;
 
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<EntryListViewModel>();
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<FullEntryListViewModel>();
 
 	    private bool thereAreNoEntries;
 	    private IEnumerable<ClientEntry> entries;
 	    private bool isInitializationComplete;
-		private readonly List<int> displayedIndexes = new List<int>();
-		private readonly Random displayEntriesIndexGenerator = new Random((int)DateTime.UtcNow.Ticks);
-	    private bool isPagingControlsVisible;
 		private readonly IStringResourceManager resourceManager;
 		private readonly IDictionary<string, EntryListItemTimeGroupViewModel> groupsDictionary = new Dictionary<string, EntryListItemTimeGroupViewModel>();
 		private readonly IDictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel> itemGroupDictionary = new Dictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel>();
 
 	    [ImportingConstructor]
-	    public EntryListViewModel([NotNull] IStringResourceManager resourceManager)
+	    public FullEntryListViewModel([NotNull] IStringResourceManager resourceManager)
 	    {
 			Guard.NotNull(resourceManager, () => resourceManager);
 
 		    this.resourceManager = resourceManager;
 		    EntryViewModels = new ObservableCollection<EntryListItemViewModel>();
 			EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
-
-			RandomEntryViewModels = new ObservableCollection<EntryListItemViewModel>();
-		    RandomEntryViewModels.CollectionChanged += OnDisplayEntriesCollectonChanged;
 
 			TimeGroupViewModels = new ObservableCollection<EntryListItemTimeGroupViewModel>();
 			TimeGroupViewModels.CollectionChanged += OnTimeGroupsCollectionChanged;
@@ -52,11 +46,9 @@ namespace Linqua
 			}
 			
 			DeleteEntryCommand = new DelegateCommand<EntryListItemViewModel>(DeleteEntry, CanDeleteEntry);
-			ShowNextEntriesCommand = new DelegateCommand(ShowNextEntries, CanShowNextEntries);
-			ShowPreviousEntriesCommand = new DelegateCommand(ShowPreviousEntries, CanShowPreviousEntries);
 	    }
 
-	    public EntryListViewModel(IEnumerable<ClientEntry> entries)
+	    public FullEntryListViewModel(IEnumerable<ClientEntry> entries)
 			: this(new StringResourceManager())
 	    {
 			Guard.NotNull(entries, () => entries);
@@ -65,10 +57,8 @@ namespace Linqua
 	    }
 
 	    public DelegateCommand<EntryListItemViewModel> DeleteEntryCommand { get; private set; }
-		public DelegateCommand ShowNextEntriesCommand { get; private set; }
-		public DelegateCommand ShowPreviousEntriesCommand { get; private set; }
 		
-	    public IEnumerable<ClientEntry> Entries
+		public IEnumerable<ClientEntry> Entries
 	    {
 		    get { return entries; }
 		    set
@@ -85,7 +75,6 @@ namespace Linqua
 				EntryViewModels.AddRange(entries.Select(w => CreateListItemViewModel(w)));
 
 			    UpdateTimeGroups();
-			    UpdateRandomEntries();
 
 				OnEntriesCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
@@ -97,7 +86,6 @@ namespace Linqua
 		    }
 	    }
 
-	    public ObservableCollection<EntryListItemViewModel> RandomEntryViewModels { get; private set; }
 	    public ObservableCollection<EntryListItemViewModel> EntryViewModels { get; private set; }
 
 		public ObservableCollection<EntryListItemTimeGroupViewModel> TimeGroupViewModels { get; private set; }
@@ -113,18 +101,6 @@ namespace Linqua
 		    }
 	    }
 
-	    public bool IsPagingControlsVisible
-	    {
-		    get { return isPagingControlsVisible; }
-		    private set
-		    {
-			    if (value.Equals(isPagingControlsVisible)) return;
-			    isPagingControlsVisible = value;
-			    RaisePropertyChanged();
-				ShowNextEntriesCommand.RaiseCanExecuteChanged();
-		    }
-	    }
-
 	    public bool IsInitializationComplete
 	    {
 		    get { return isInitializationComplete; }
@@ -134,7 +110,6 @@ namespace Linqua
 			    isInitializationComplete = value;
 			    RaisePropertyChanged();
 				UpdateThereAreNoEntries();
-				UpdatePagingControlsVisibility();
 		    }
 	    }
 
@@ -150,7 +125,14 @@ namespace Linqua
 	    {
 		    get
 		    {
-				return string.Format(resourceManager.GetString("EntryListView_Header"), EntryViewModels.Count);
+			    if (EntryViewModels.All(x => !x.IsLearnt))
+			    {
+				    return string.Format(resourceManager.GetString("EntryListView_Header_OneNumber"), EntryViewModels.Count);
+			    }
+			    else
+			    {
+					return string.Format(resourceManager.GetString("EntryListView_Header_TwoNumbers"), EntryViewModels.Count(x => !x.IsLearnt), EntryViewModels.Count);
+			    }
 		    }
 	    }
 
@@ -174,16 +156,7 @@ namespace Linqua
 	    {
 		    EntryViewModels.Insert(0, viewModel);
 
-		    if (RandomEntryViewModels.Count == EntriesToDisplayCount)
-		    {
-			    RandomEntryViewModels.RemoveAt(0);
-		    }
-
 		    AddEntryToGroup(viewModel);
-
-		    RandomEntryViewModels.Insert(0, viewModel);
-
-		    UpdateDisplayedIndexes();
 	    }
 
 	    private void AddEntryToGroup(EntryListItemViewModel viewModel)
@@ -205,16 +178,6 @@ namespace Linqua
 			
 			groupViewModel.Items.Insert(0, viewModel);
 			itemGroupDictionary.Add(viewModel, groupViewModel);
-	    }
-
-	    private void UpdateDisplayedIndexes()
-	    {
-			displayedIndexes.Clear();
-
-		    foreach (var vm in RandomEntryViewModels)
-		    {
-			    displayedIndexes.Add(EntryViewModels.IndexOf(vm));
-		    }
 	    }
 
 	    private void DeleteEntry(EntryListItemViewModel obj)
@@ -253,11 +216,7 @@ namespace Linqua
 
 		    EntryViewModels.RemoveAt(entryIndex);
 
-			RandomEntryViewModels.Remove(entryVm);
-
-			UpdateDisplayedIndexes();
-
-		    DeleteEntryFromTimeGroup(entryVm);
+			DeleteEntryFromTimeGroup(entryVm);
 
 			// Move focus to previous or next entry
 			Dispatcher.BeginInvoke(new Action(() =>
@@ -267,11 +226,6 @@ namespace Linqua
 					previousOrNextEntry.Focus();
 				}
 			}));
-
-		    Observable.Timer(TimeSpan.FromMilliseconds(600)).Subscribe(_ =>
-		    {
-			    Dispatcher.BeginInvoke(new Action(UpdateRandomEntries));
-		    });
 	    }
 
 	    private void DeleteEntryFromTimeGroup(EntryListItemViewModel entryVm)
@@ -294,16 +248,10 @@ namespace Linqua
 	    private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			UpdateThereAreNoEntries();
-			UpdatePagingControlsVisibility();
 
 			RaisePropertyChanged(() => TotalCountText);
 			RaisePropertyChanged(() => Header);
 		}
-
-	    private void UpdatePagingControlsVisibility()
-	    {
-		    IsPagingControlsVisible = EntryViewModels.Count > RandomEntryViewModels.Count;
-	    }
 
 	    private void UpdateThereAreNoEntries()
 		{
@@ -322,9 +270,6 @@ namespace Linqua
 		    if (existingEntry != null)
 		    {
 			    EntryViewModels.Remove(existingEntry);
-			    RandomEntryViewModels.Remove(existingEntry);
-			    
-				UpdateDisplayedIndexes();
 
 			    existingEntry.JustAdded = true;
 
@@ -334,94 +279,6 @@ namespace Linqua
 		    }
 
 		    return null;
-	    }
-
-		private void UpdateRandomEntries()
-		{
-			if (EntryViewModels.Count == 0)
-			{
-				ClearRandomItems();
-				UpdateDisplayedIndexes();
-				return;
-			}
-
-			if (RandomEntryViewModels.Count < EntriesToDisplayCount)
-			{
-				var entriesToAdd = EntriesToDisplayCount - RandomEntryViewModels.Count;
-
-				AddRandomDisplayedEntries(entriesToAdd);
-			}
-			else
-			{
-				ClearRandomItems();
-
-				var notDisplayedIndexCount = EntryViewModels.Count - displayedIndexes.Count;
-
-				while (notDisplayedIndexCount < EntriesToDisplayCount && displayedIndexes.Count > 0)
-				{
-					displayedIndexes.RemoveAt(0);
-				}
-
-				AddRandomDisplayedEntries(EntriesToDisplayCount);
-			}
-
-			UpdateDisplayedIndexes();
-		}
-
-	    private void ClearRandomItems()
-	    {
-			// Delete items one by one in order to have the list change animations.
-			var itemsToDelete = new List<EntryListItemViewModel>(RandomEntryViewModels);
-
-			foreach (var item in itemsToDelete)
-			{
-				RandomEntryViewModels.Remove(item);
-			}
-	    }
-
-	    private void AddRandomDisplayedEntries(int entriesToAdd)
-	    {
-		    for (int i = 0; i < entriesToAdd; i++)
-		    {
-			    var index = GenerateNextDisplayIndex();
-
-			    if (index == null) break;
-
-			    var vm = EntryViewModels[index.Value];
-
-			    vm.JustAdded = false;
-
-			    RandomEntryViewModels.Add(vm);
-
-			    displayedIndexes.Add(index.Value);
-		    }
-	    }
-
-	    private int? GenerateNextDisplayIndex()
-	    {
-			Guard.Assert(EntryViewModels.Count > 0, "EntryViewModels.Count > 0");
-
-		    if (EntryViewModels.Count <= displayedIndexes.Count)
-		    {
-			    return null;
-		    }
-
-		    int result;
-
-			var availableIndexes = new List<int>();
-
-			availableIndexes.AddRange(Enumerable.Range(0, EntryViewModels.Count).Except(displayedIndexes));
-
-		    if (availableIndexes.Count == 0)
-		    {
-			    return null;
-		    }
-
-		    var indexOfIndex = displayEntriesIndexGenerator.Next(0, availableIndexes.Count - 1);
-
-		    result = availableIndexes[indexOfIndex];
-
-		    return result;
 	    }
 
 		private void UpdateTimeGroups()
@@ -467,31 +324,6 @@ namespace Linqua
 	    {
 		    return DateTimeGrouping.GetGroup(x.DateAdded, DateTime.Now);
 	    }
-
-	    private bool CanShowNextEntries()
-		{
-			return IsPagingControlsVisible;
-		}
-
-		private void ShowNextEntries()
-		{
-			UpdateRandomEntries();
-		}
-
-		private bool CanShowPreviousEntries()
-		{
-			return true;
-		}
-
-		private void ShowPreviousEntries()
-		{
-			throw new NotImplementedException();
-		}
-
-		private void OnDisplayEntriesCollectonChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			UpdatePagingControlsVisibility();
-		}
 
 		private void OnTimeGroupsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
