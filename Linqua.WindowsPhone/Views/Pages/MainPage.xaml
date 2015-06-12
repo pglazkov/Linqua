@@ -24,47 +24,12 @@
 		</TransitionCollection>
 	</Page.Transitions>
 	
-	<!--<Page.Transitions>
-		<TransitionCollection>
-			<NavigationThemeTransition>
-				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
-					<CommonNavigationTransitionInfo IsStaggeringEnabled="True" />
-				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
-			</NavigationThemeTransition>
-		</TransitionCollection>
-	</Page.Transitions>-->
-
-	<!--<interactivity:Interaction.Behaviors>
-		<framework:StatusBarBehavior BackgroundColor="{StaticResource ApplicationThemeColor}"
-									 ForegroundColor="{StaticResource TextOnThemeBackgroundColor}"/>
-	</interactivity:Interaction.Behaviors>-->
-
-	<!--LayoutRoot is the root grid where all page content is placed-->
 	<Grid x:Name="LayoutRoot"
 		  Margin="0,27,0,61">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="Auto" />
 			<RowDefinition Height="*" />
 		</Grid.RowDefinitions>
-
-		<!-- LOCALIZATION NOTE:
-            To localize the displayed strings copy their values to appropriately named
-            keys in the app's neutral language resource file (AppResources.resx) then
-            replace the hard-coded text value between the attributes' quotation marks
-            with the binding clause whose path points to that string name.
-
-            For example:
-
-                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
-
-            This binding points to the template's string resource named "ApplicationTitle".
-
-            Adding supported languages in the Project Properties tab will create a
-            new resx file per language that can carry the translated values of your
-            UI strings. The binding in these examples will cause the value of the
-            attributes to be drawn from the .resx file that matches the
-            CurrentUICulture of the app at run time.
-         -->
 
 		<!--TitlePanel contains the name of the application and page title-->
 		<local:PageHeader Grid.Row="0"/>
@@ -120,9 +85,9 @@
 				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
 				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded">
 				
-				<!--<interactivity:Interaction.Behaviors>
+				<interactivity:Interaction.Behaviors>
 					<framework:PivotSwipeLockBehavior />
-				</interactivity:Interaction.Behaviors>-->
+				</interactivity:Interaction.Behaviors>
 				
 				<PivotItem Margin="0"
 						   CommonNavigationTransitionInfo.IsStaggerElement="True"
@@ -177,13 +142,6 @@
 							  Icon="Accept"
 							  Command="{Binding EntryCreationViewModel.AddCommand}"
 							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
-				<!--<AppBarButton x:Uid="NextRendomItemsButton"
-							  x:Name="NextRendomItemsButton"
-							  Label="RES_MISSING NextRendomItemsButton"
-							  Icon="Refresh"
-							  Command="{Binding EntryListViewModel.ShowNextEntriesCommand}"
-							  Visibility="Collapsed" />-->
 			</CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>
 				<AppBarButton x:Uid="SyncButton"
