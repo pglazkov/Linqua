@@ -5,6 +5,8 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:loc="using:Linqua"
 			 xmlns:parts="using:Linqua.Views.Parts"
+			 xmlns:converters="using:Framework.Converters"
+			 xmlns:system="using:System"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
@@ -31,6 +33,9 @@
 			</Storyboard>
 			<!-- ReSharper restore Xaml.RedundantResource -->
 			
+			<converters:BooleanToDoubleConverter x:Key="IsLearnedToOpacityConverter"
+												 TrueValue="0.5"
+												 FalseValue="1"/>
 		</ResourceDictionary>
 		
 	</UserControl.Resources>
@@ -73,7 +78,8 @@
 					   Margin="0"
 					   VerticalAlignment="Top"
 					   Pivot.SlideInAnimationGroup="1"
-					   CommonNavigationTransitionInfo.IsStaggerElement="True" />
+					   CommonNavigationTransitionInfo.IsStaggerElement="True"
+					   Opacity="{Binding IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}}"/>
 
 			<parts:TranslationViewControl Grid.Row="1"
 										  Grid.Column="0"
@@ -81,7 +87,8 @@
 										  Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
 										  Pivot.SlideInAnimationGroup="2"
 										  VerticalAlignment="Top"
-										  CommonNavigationTransitionInfo.IsStaggerElement="True" />
+										  CommonNavigationTransitionInfo.IsStaggerElement="True"
+										  Opacity="{Binding IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}}"/>
 
 			<ToggleButton Grid.Row="0"
 						  Grid.RowSpan="2"
