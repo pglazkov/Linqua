@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="Linqua.FlipControl"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+			 x:Name="ThisControl"
+			 Tapped="OnTapped"
+			 PointerPressed="OnPointerPressed"
+			 PointerReleased="OnPointerReleased">
+
+	<UserControl.Resources>
+		<Style x:Key="BorderStyle"
+			   TargetType="Border">
+			<Setter Property="Background"
+					Value="{ThemeResource EntryBoxBackgroundBrush}" />
+			<Setter Property="Margin"
+					Value="1" />
+			<Setter Property="BorderThickness"
+					Value="1" />
+			<Setter Property="BorderBrush"
+					Value="{ThemeResource EntryBoxBorderBrush}" />
+			<Setter Property="CornerRadius"
+					Value="0" />
+		</Style>
+
+	</UserControl.Resources>
+
+	<Grid>
+		<VisualStateManager.VisualStateGroups>
+			<VisualStateGroup x:Name="PointerPressedGroup">
+				<VisualState x:Name="PointerPressed">
+					<!--<Storyboard>
+						<PointerDownThemeAnimation TargetName="ThisControl" />
+					</Storyboard>-->
+				</VisualState>
+
+				<VisualState x:Name="PointerReleased">
+					<!--<Storyboard>
+						<PointerUpThemeAnimation TargetName="ThisControl" />
+					</Storyboard>-->
+				</VisualState>
+			</VisualStateGroup>
+			
+			<VisualStateGroup x:Name="VisualStateGroup">
+
+				<!--This animation will be invoked when you tap on the front rectangle-->
+				<VisualState x:Name="FlipCardFront">
+					<Storyboard>
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationY)"
+													   Storyboard.TargetName="FontSideControl">
+							<!-- Set initial value 0.1. Workaround the the issue described here: https://social.msdn.microsoft.com/Forums/windowsapps/en-US/b15ce67e-952d-4ff0-a5d9-f4e3c36d1422/storyboard-animation-with-planeprojection-does-not-work-on-windows-81?forum=winappswithcsharp -->
+							<LinearDoubleKeyFrame KeyTime="0"
+												  Value="0.1" />
+							<LinearDoubleKeyFrame KeyTime="0:0:0.2"
+							                      Value="90" />
+						</DoubleAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+													   Storyboard.TargetName="BackSideControl">
+							<DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Visible</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationY)"
+													   Storyboard.TargetName="BackSideControl">
+							<LinearDoubleKeyFrame KeyTime="0:0:0.2"
+							                      Value="-90" />
+							<LinearDoubleKeyFrame KeyTime="0:0:0.4"
+							                      Value="0" />
+						</DoubleAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+
+				<!--This animation will be invoked when you tap on the backward rectangle-->
+				<VisualState x:Name="FlipCardBack">
+					<Storyboard>
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationY)"
+													   Storyboard.TargetName="BackSideControl">
+							<!-- Set initial value 0.1. Workaround the the issue described here: https://social.msdn.microsoft.com/Forums/windowsapps/en-US/b15ce67e-952d-4ff0-a5d9-f4e3c36d1422/storyboard-animation-with-planeprojection-does-not-work-on-windows-81?forum=winappswithcsharp -->
+							<LinearDoubleKeyFrame KeyTime="0"
+												  Value="0.1" />
+							<LinearDoubleKeyFrame KeyTime="0:0:0.2"
+							                      Value="-90" />
+						</DoubleAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+													   Storyboard.TargetName="BackSideControl">
+							<DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Visible</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						
+						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationY)"
+													   Storyboard.TargetName="FontSideControl">
+							<LinearDoubleKeyFrame KeyTime="0:0:0.2"
+							                      Value="90" />
+							<LinearDoubleKeyFrame KeyTime="0:0:0.4"
+							                      Value="0" />
+						</DoubleAnimationUsingKeyFrames>
+					</Storyboard>
+				</VisualState>
+
+				<VisualState x:Name="Initial">
+				</VisualState>
+				
+			</VisualStateGroup>
+		</VisualStateManager.VisualStateGroups>
+
+		<Border x:Name="BackSideControl"
+				Visibility="Collapsed"
+				Style="{StaticResource BorderStyle}">
+			<Border.Projection>
+				<PlaneProjection RotationY="90" />
+			</Border.Projection>
+
+			<ContentPresenter x:Name="BackSideContentPresenter" 
+							  HorizontalAlignment="Stretch"
+							  VerticalAlignment="Stretch"
+							  Content="{Binding ElementName=ThisControl, Path=BackSideContent}"
+							  ContentTemplate="{Binding ElementName=ThisControl, Path=BackSideContentTemplate}"/>
+		</Border>
+
+		<Border x:Name="FontSideControl"
+				Style="{StaticResource BorderStyle}">
+			<Border.Projection>
+				<PlaneProjection/>
+			</Border.Projection>
+
+			<ContentPresenter x:Name="FrontSizeContentPresenter" 
+							  HorizontalAlignment="Stretch"
+							  VerticalAlignment="Stretch"
+							  Content="{Binding ElementName=ThisControl, Path=FrontSideContent}"
+							  ContentTemplate="{Binding ElementName=ThisControl, Path=FrontSideContentTemplate}"/>
+		</Border>
+	</Grid>
+</UserControl>
