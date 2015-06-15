@@ -14,7 +14,7 @@ namespace Linqua
 
 		protected EntryViewModel()
 		{
-			DeleteCommand = new DelegateCommand(DeleteSelf);
+			DeleteCommand = new DelegateCommand(() => DeleteSelfAsync().FireAndForget());
 		}
 
 		public EntryViewModel(ClientEntry entry)
@@ -122,11 +122,11 @@ namespace Linqua
 			get { return !string.IsNullOrEmpty(Definition) || IsTranslating; }
 		}
 
-		private void DeleteSelf()
+		private async Task DeleteSelfAsync()
 		{
 			Guard.Assert(Entry != null, "Entry != null");
 
-			EventAggregator.Publish(new EntryDeletionRequestedEvent(Entry));
+			await ApplicationController.DeleteEntryAsync(this);
 
 			OnDeleted();
 		}
@@ -153,7 +153,7 @@ namespace Linqua
 			if (confirmed)
 			{
 				Entry.IsLearnt = value;
-				ApplicationController.OnIsLearntChanged(this);
+				ApplicationController.UpdateEntryIsLearnedAsync(this).FireAndForget();
 			}
 
 			RaisePropertyChanged(() => IsLearnt);

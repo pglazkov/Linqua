@@ -28,15 +28,18 @@ namespace Linqua.ViewModels
 		private readonly Random displayEntriesIndexGenerator = new Random((int)DateTime.UtcNow.Ticks);
 		private bool isPagingControlsVisible;
 		private readonly IStringResourceManager resourceManager;
+		private readonly IApplicationController applicationController;
 
 		[ImportingConstructor]
-		public RandomEntryListViewModel([NotNull] IStringResourceManager resourceManager)
+		public RandomEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IApplicationController applicationController)
 	    {
 			Guard.NotNull(resourceManager, () => resourceManager);
+			Guard.NotNull(applicationController, () => applicationController);
 
 		    this.resourceManager = resourceManager;
+			this.applicationController = applicationController;
 
-		    RandomEntryViewModels = new ObservableCollection<EntryListItemViewModel>();
+			RandomEntryViewModels = new ObservableCollection<EntryListItemViewModel>();
 		    RandomEntryViewModels.CollectionChanged += OnDisplayEntriesCollectonChanged;
 
 			if (DesignTimeDetection.IsInDesignTool)
@@ -288,7 +291,7 @@ namespace Linqua.ViewModels
 
 		private void DeleteEntry(EntryListItemViewModel obj)
 		{
-			EventAggregator.Publish(new EntryDeletionRequestedEvent(obj.Entry));
+			applicationController.DeleteEntryAsync(obj).FireAndForget();
 		}
 
 		private bool CanDeleteEntry(EntryListItemViewModel arg)

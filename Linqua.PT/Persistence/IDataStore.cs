@@ -13,6 +13,9 @@ namespace Linqua.Persistence
 		Task<IEnumerable<ClientEntry>> LoadEntries([CanBeNull] Expression<Func<ClientEntry, bool>> filter = null);
 
 		[NotNull]
+		Task<long> GetCount([CanBeNull] Expression<Func<ClientEntry, bool>> filter = null);
+
+		[NotNull]
 		Task<ClientEntry> LookupById([NotNull] string entryId);
 
 		[NotNull]

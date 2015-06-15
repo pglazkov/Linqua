@@ -34,6 +34,10 @@ namespace Linqua
 		private static readonly AsyncLock RefreshLock = new AsyncLock();
 		private bool initialized;
 		private RandomEntryListViewModel randomEntryListViewModel;
+		private bool isStatisticsAvailable;
+		private long totalEntriesCount;
+		private long notLearnedEntriesCount;
+		private bool isLoadingStatistics;
 
 		public MainViewModel()
 		{
@@ -41,7 +45,7 @@ namespace Linqua
 			{
 				FullEntryListViewModel = new FullEntryListViewModel(FakeData.FakeWords);
 
-				RandomEntryListViewModel = new RandomEntryListViewModel(new StringResourceManager())
+				RandomEntryListViewModel = new RandomEntryListViewModel(new StringResourceManager(), new DesignTimeApplicationContoller())
 				{
 					Entries = FakeData.FakeWords
 				};
@@ -87,7 +91,7 @@ namespace Linqua
 			EntryCreationViewModel = compositionFactory.Create<EntryCreationViewModel>();
 
 			eventAggregator.GetEvent<EntryCreationRequestedEvent>().Subscribe(OnEntryCreationRequested);
-			eventAggregator.GetEvent<EntryDeletionRequestedEvent>().Subscribe(OnEntryDeletionRequested);
+			eventAggregator.GetEvent<EntryDeletedEvent>().Subscribe(OnEntryDeleted);
 			eventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
 			eventAggregator.GetEvent<EntryDefinitionChangedEvent>().SubscribeWithAsync(OnEntryDefinitionChangedAsync);
 			eventAggregator.GetEvent<EntryDetailsRequestedEvent>().Subscribe(OnEntryDetailsRequested);
@@ -162,6 +166,50 @@ namespace Linqua
 			}
 		}
 
+		public bool IsStatisticsAvailable
+		{
+			get { return isStatisticsAvailable; }
+			private set
+			{
+				if (value == isStatisticsAvailable) return;
+				isStatisticsAvailable = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public bool IsLoadingStatistics
+		{
+			get { return isLoadingStatistics; }
+			private set
+			{
+				if (value == isLoadingStatistics) return;
+				isLoadingStatistics = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public long TotalEntriesCount
+		{
+			get { return totalEntriesCount; }
+			private set
+			{
+				if (value == totalEntriesCount) return;
+				totalEntriesCount = value;
+				RaisePropertyChanged();
+			}
+		}
+
+		public long NotLearnedEntriesCount
+		{
+			get { return notLearnedEntriesCount; }
+			private set
+			{
+				if (value == notLearnedEntriesCount) return;
+				notLearnedEntriesCount = value;
+				RaisePropertyChanged();
+			}
+		}
+
 		public void Initialize()
 		{
 			InitializeAsync().FireAndForget();
@@ -198,6 +246,8 @@ namespace Linqua
 							Log.Debug("Loaded {0} entries from local storage.", words.Count());
 
 						UpdateUIWithData(words);
+
+						await UpdateStatistics();
 					}
 					finally
 					{
@@ -238,6 +288,7 @@ namespace Linqua
 			}
 			else
 			{
+				
 				return storage.LoadEntries(x => !x.IsLearnt);
 			}
 		}
@@ -317,6 +368,8 @@ namespace Linqua
 					{
 						await applicationController.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
 					}
+
+					await UpdateStatistics();
 				}
 			}
 		}
@@ -329,16 +382,16 @@ namespace Linqua
 			EventAggregator.Publish(new EntryCreatedEvent(addedEntry));
 		}
 
-		private async void OnEntryDeletionRequested(EntryDeletionRequestedEvent e)
+		private async void OnEntryDeleted(EntryDeletedEvent e)
 		{
 			using (statusBusyService.Busy("Deleting..."))
 			{
 				using (await RefreshLock.LockAsync())
 				{
-					await storage.DeleteEntry(e.EntryToDelete);
+					FullEntryListViewModel.DeleteEntryFromUI(e.DeletedEntry.Entry);
+					RandomEntryListViewModel.DeleteEntryFromUI(e.DeletedEntry.Entry);
 
-					FullEntryListViewModel.DeleteEntryFromUI(e.EntryToDelete);
-					RandomEntryListViewModel.DeleteEntryFromUI(e.EntryToDelete);
+					await UpdateStatistics();
 				}
 			}
 		}
@@ -366,6 +419,25 @@ namespace Linqua
 			}
 
 			UpdateUIWithData(words);
+
+			await UpdateStatistics();
+		}
+
+		private async Task UpdateStatistics()
+		{
+			IsLoadingStatistics = true;
+
+			try
+			{
+				TotalEntriesCount = await storage.GetCount();
+				NotLearnedEntriesCount = await storage.GetCount(x => !x.IsLearnt);
+
+				IsStatisticsAvailable = true;
+			}
+			finally
+			{
+				IsLoadingStatistics = false;
+			}
 		}
 
 		private void SendLogs()
@@ -430,17 +502,23 @@ namespace Linqua
 		private async void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
 		{
 			using (await RefreshLock.LockAsync())
-			{
+			{				
 				if (e.EntryViewModel.IsLearnt)
 				{
 					await Observable.Timer(TimeSpan.FromMilliseconds(300));
 
 					Dispatcher.BeginInvoke(new Action(() =>
 					{
-						FullEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
+						if (!ShowLearnedEntries)
+						{
+							FullEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
+						}
+
 						RandomEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
 					}));
 				}
+
+				await UpdateStatistics();
 			}
 		}
 

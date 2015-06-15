@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Linqua.Persistence
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
 				IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
-
+				
 				if (filter != null)
 				{
 					query = query.Where(filter);
@@ -45,6 +46,23 @@ namespace Linqua.Persistence
 				query = query.OrderByDescending(x => x.CreatedAt);
 
 				return await query.ToListAsync();
+			}
+		}
+
+		public async Task<long> GetCount(Expression<Func<ClientEntry, bool>> filter)
+		{
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
+
+				if (filter != null)
+				{
+					query = query.Where(filter);
+				}
+
+				var result = (await query.ToEnumerableAsync()).Count();
+
+				return result;
 			}
 		}
 
@@ -136,8 +154,11 @@ namespace Linqua.Persistence
 
 		public async Task InitializeAsync()
 		{
-			await OfflineHelper.InitializeAsync(syncHandler);
-			await OfflineHelper.DoInitialPullIfNeededAsync();
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				await OfflineHelper.InitializeAsync(syncHandler);
+				await OfflineHelper.DoInitialPullIfNeededAsync();
+			}
 		}
 
 		public Task EnqueueSync(OfflineSyncArguments args = null)

@@ -11,6 +11,7 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ApplicationController.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Bootstrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)DesignTimeApplicationContoller.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\StopFirstUseTutorialEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Framework\INavigationView.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Framework\NavigationHelper.cs" />
@@ -20,7 +21,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreatedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryCreationRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDefinitionChangedEvent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletionRequestedEvent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDeletedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryDetailsRequestedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Events\EntryIsLearntChangedEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IApplicationController.cs" />

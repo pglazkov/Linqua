@@ -33,6 +33,28 @@
 
 		<!--TitlePanel contains the name of the application and page title-->
 		<local:PageHeader Grid.Row="0"/>
+		
+		<Grid Grid.Row="0"
+			  HorizontalAlignment="Right"
+			  Margin="0,12,24,0"
+			  Visibility="{Binding IsStatisticsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto"/>
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+			
+			<TextBlock Foreground="{ThemeResource ApplicationThemeBrush}"
+					   FontSize="{ThemeResource TextStyleLargeFontSize}"
+					   HorizontalAlignment="Right">
+				<Run Text="{Binding NotLearnedEntriesCount}"/> / <Run Text="{Binding TotalEntriesCount}"/>
+			</TextBlock>
+			
+			<TextBlock x:Uid="MainPageHeaderStatisticsUnderlineTextBlock" 
+					   Grid.Row="1"
+					   Text="RESMISSING MainPageHeaderStatisticsUnderlineTextBlock"
+					   HorizontalAlignment="Right"
+					   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"/>
+		</Grid>
 
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel"
@@ -73,7 +95,8 @@
 							   Text="RES_MISSING PivotRandomItemHeader" />
 				</ListBoxItem>
 				<ListBoxItem>
-					<TextBlock Text="{Binding FullEntryListViewModel.Header}" />
+					<TextBlock x:Uid="PivotFullListItemHeader"
+							   Text="RES_MISSING PivotFullListItemHeader" />
 				</ListBoxItem>
 			</ListBox>
 

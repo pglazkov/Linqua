@@ -1,13 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Linqua.DataObjects;
 
 namespace Linqua
 {
     public interface IApplicationController
     {
-	    void OnIsLearntChanged(EntryViewModel entry);
+	    [NotNull]
+	    Task DeleteEntryAsync([NotNull] EntryViewModel entry);
 
-		Task TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate);
+	    [NotNull]
+	    Task UpdateEntryIsLearnedAsync([NotNull] EntryViewModel entry);
+
+	    [NotNull]
+	    Task TranslateEntryItemAsync([NotNull] ClientEntry entry, [NotNull] IEnumerable<EntryViewModel> viewModelsToUpdate);
     }
 }

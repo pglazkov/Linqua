@@ -38,11 +38,21 @@ namespace Linqua
 			this.translator = translator;
 		}
 
-		public void OnIsLearntChanged(EntryViewModel entry)
+		public async Task DeleteEntryAsync(EntryViewModel entry)
+		{
+			using (statusBusyService.Busy("Deleting..."))
+			{
+				await storage.DeleteEntry(entry.Entry);
+			}
+
+			eventAggregator.Publish(new EntryDeletedEvent(entry));
+		}
+
+		public async Task UpdateEntryIsLearnedAsync(EntryViewModel entry)
 		{
 			Guard.Assert(entry.Entry != null, "e.EntryViewModel.Entry != null");
 
-			storage.UpdateEntry(entry.Entry).FireAndForget();
+			await storage.UpdateEntry(entry.Entry);
 
 			eventAggregator.Publish(new EntryIsLearntChangedEvent(entry));
 		}

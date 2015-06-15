@@ -34,6 +34,8 @@ namespace Linqua
             InitializeComponent();
             Suspending += OnSuspending;
 
+	        UnhandledException += OnUnhandledException;
+
 			var bootstrapper = new Bootstrapper();
 
 			bootstrapper.Run(this);
@@ -167,5 +169,10 @@ namespace Linqua
 
             deferral.Complete();
         }
+
+		private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			log.Fatal(e.Message, e.Exception);
+		}
     }
 }

@@ -24,18 +24,20 @@ namespace Linqua
 	    private IEnumerable<ClientEntry> entries;
 	    private bool isInitializationComplete;
 		private readonly IStringResourceManager resourceManager;
-		private readonly IDictionary<string, EntryListItemTimeGroupViewModel> groupsDictionary = new Dictionary<string, EntryListItemTimeGroupViewModel>();
+	    private readonly IApplicationController applicationController;
+	    private readonly IDictionary<string, EntryListItemTimeGroupViewModel> groupsDictionary = new Dictionary<string, EntryListItemTimeGroupViewModel>();
 		private readonly IDictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel> itemGroupDictionary = new Dictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel>();
 
 	    [ImportingConstructor]
-	    public FullEntryListViewModel([NotNull] IStringResourceManager resourceManager)
+	    public FullEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IApplicationController applicationController)
 	    {
 			Guard.NotNull(resourceManager, () => resourceManager);
+		    Guard.NotNull(applicationController, () => applicationController);
 
 		    this.resourceManager = resourceManager;
+		    this.applicationController = applicationController;
 		    EntryViewModels = new ObservableCollection<EntryListItemViewModel>();
 			EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
-
 			TimeGroupViewModels = new ObservableCollection<EntryListItemTimeGroupViewModel>();
 			TimeGroupViewModels.CollectionChanged += OnTimeGroupsCollectionChanged;
 
@@ -46,10 +48,12 @@ namespace Linqua
 			}
 			
 			DeleteEntryCommand = new DelegateCommand<EntryListItemViewModel>(DeleteEntry, CanDeleteEntry);
+
+			EventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
 	    }
 
 	    public FullEntryListViewModel(IEnumerable<ClientEntry> entries)
-			: this(new StringResourceManager())
+			: this(new StringResourceManager(), new DesignTimeApplicationContoller())
 	    {
 			Guard.NotNull(entries, () => entries);
 
@@ -182,7 +186,7 @@ namespace Linqua
 
 	    private void DeleteEntry(EntryListItemViewModel obj)
 		{
-			EventAggregator.Publish(new EntryDeletionRequestedEvent(obj.Entry));
+			applicationController.DeleteEntryAsync(obj).FireAndForget();
 		}
 
 		private bool CanDeleteEntry(EntryListItemViewModel arg)
@@ -329,5 +333,11 @@ namespace Linqua
 		{
 
 		}
+
+	    private async void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
+	    {
+			RaisePropertyChanged(() => TotalCountText);
+			RaisePropertyChanged(() => Header);
+	    }
     }
 }

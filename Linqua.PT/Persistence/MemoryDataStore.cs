@@ -21,6 +21,16 @@ namespace Linqua.Persistence
 			});
 		}
 
+		public Task<long> GetCount(Expression<Func<ClientEntry, bool>> filter = null)
+		{
+			return Task.Factory.StartNew(() =>
+			{
+				var predicate = (filter ?? (x => true)).Compile();
+
+				return (long)FakeData.FakeWords.Where(predicate).Count();
+			});
+		}
+
 		public Task<ClientEntry> LookupById(string entryId)
 		{
 			return Task.Factory.StartNew(() =>
