@@ -23,6 +23,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.Service", "Linqua.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.BackgroundTasks.WindowsPhone", "Linqua.BackgroundTasks.WindowsPhone\Linqua.BackgroundTasks.WindowsPhone.csproj", "{FBBBF002-C177-42D7-8D15-AE4DE436AC4E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2737D742-6D17-4B1C-8F11-C798B18EA7AB}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Linqua.Shared\Linqua.Shared.projitems*{e2790f89-f7b0-4251-934d-bfce77672bc7}*SharedItemsImports = 13

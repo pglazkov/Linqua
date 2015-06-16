@@ -154,11 +154,8 @@ namespace Linqua.Persistence
 
 		public async Task InitializeAsync()
 		{
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
-			{
-				await OfflineHelper.InitializeAsync(syncHandler);
-				await OfflineHelper.DoInitialPullIfNeededAsync();
-			}
+			await OfflineHelper.InitializeAsync(syncHandler);
+			await OfflineHelper.DoInitialPullIfNeededAsync();
 		}
 
 		public Task EnqueueSync(OfflineSyncArguments args = null)
