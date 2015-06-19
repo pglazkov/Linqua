@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Framework;
 using Framework.PlatformServices;
 using Linqua.Events;
+using Linqua.Framework;
 using Linqua.ViewModels;
 
 namespace Linqua
@@ -141,15 +142,37 @@ namespace Linqua
 			}
 	    }
 
-	    private void OnItemFlickedAway(object sender, EventArgs e)
+	    private void OnItemFlickedAway(object sender, FlickedAwayEventArgs e)
 	    {
 		    CompleteFirstUseTutorial();
 
-		    if (ViewModel.ShowNextEntriesCommand.CanExecute())
+		    if (e.Direction == FlickDirection.Left)
 		    {
-			    ViewModel.ShowNextEntriesCommand.Execute().FireAndForget();
+			    if (ViewModel.ShowNextEntriesCommand.CanExecute())
+			    {
+				    ViewModel.ShowNextEntriesCommand.Execute().FireAndForget();
+			    }
+		    }
+		    else
+		    {
+			    if (ViewModel.ShowPreviousEntriesCommand.CanExecute())
+			    {
+				    ViewModel.ShowPreviousEntriesCommand.Execute().FireAndForget();
+			    }
 		    }
 	    }
+
+		private void OnItemFlicking(object sender, FlickingEventArgs e)
+		{
+			if (e.Direction == FlickDirection.Left)
+			{
+				e.CanContinue = ViewModel.ShowNextEntriesCommand.CanExecute();
+			}
+			else
+			{
+				e.CanContinue = ViewModel.ShowPreviousEntriesCommand.CanExecute();
+			}
+		}
 
 	    public void OnPivotItemLoaded(IPivotHostView host)
 	    {
@@ -160,5 +183,6 @@ namespace Linqua
 	    {
 		    StopFirstUseTutorial();
 	    }
+	    
     }
 }

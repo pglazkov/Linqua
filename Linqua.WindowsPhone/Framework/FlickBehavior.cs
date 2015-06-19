@@ -15,6 +15,7 @@ namespace Linqua.Framework
 		private readonly TranslateTransform translateTransform = new TranslateTransform();
 		private GeneralTransform containerTransform;
 		private bool isFlickedAway;
+		private FlickDirection? lastDirection;
 
 		#region Container DP
 
@@ -56,12 +57,24 @@ namespace Linqua.Framework
 
 		#region FlickedAway
 
-		public event EventHandler FlickedAway;
+		public event EventHandler<FlickedAwayEventArgs> FlickedAway;
 
-		protected virtual void OnFlickedAway()
+		protected virtual void OnFlickedAway(FlickDirection direction)
 		{
 			var handler = FlickedAway;
-			if (handler != null) handler(this, EventArgs.Empty);
+			if (handler != null) handler(this, new FlickedAwayEventArgs(direction));
+		}
+
+		#endregion
+
+		#region Flicking Event
+
+		public event EventHandler<FlickingEventArgs> Flicking;
+
+		protected virtual void OnFlicking(FlickingEventArgs e)
+		{
+			var handler = Flicking;
+			if (handler != null) handler(this, e);
 		}
 
 		#endregion
@@ -137,6 +150,17 @@ namespace Linqua.Framework
 				return;
 			}
 
+			lastDirection = e.Delta.Translation.X > 0 ? FlickDirection.Right : FlickDirection.Left;
+
+			var flickingEventArgs = new FlickingEventArgs(lastDirection.Value, e.Delta);
+
+			OnFlicking(flickingEventArgs);
+
+			if (!flickingEventArgs.CanContinue)
+			{
+				e.Complete();
+			}
+
 			var dx = e.Cumulative.Translation.X;
 
 			var x = startPositionX + dx;
@@ -166,7 +190,7 @@ namespace Linqua.Framework
 		{
 			if (isFlickedAway)
 			{
-				OnFlickedAway();
+				OnFlickedAway(lastDirection ?? FlickDirection.Right);
 			}
 			else
 			{
@@ -192,5 +216,6 @@ namespace Linqua.Framework
 		{
 			isFlickedAway = value;
 		}
+		
 	}
 }

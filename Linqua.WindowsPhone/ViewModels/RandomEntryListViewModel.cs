@@ -42,6 +42,8 @@ namespace Linqua.ViewModels
 			RandomEntryViewModels = new ObservableCollection<EntryListItemViewModel>();
 		    RandomEntryViewModels.CollectionChanged += OnDisplayEntriesCollectonChanged;
 
+			PreviousRandomEntryViewModelsStack = new Stack<List<EntryListItemViewModel>>();
+
 			if (DesignTimeDetection.IsInDesignTool)
 			{
 				EventAggregator = DesignTimeHelper.EventAggregator;
@@ -84,6 +86,7 @@ namespace Linqua.ViewModels
 		}
 
 		public ObservableCollection<EntryListItemViewModel> RandomEntryViewModels { get; private set; }
+		private Stack<List<EntryListItemViewModel>> PreviousRandomEntryViewModelsStack { get; set; }
 
 		public bool IsInitializationComplete
 		{
@@ -183,13 +186,19 @@ namespace Linqua.ViewModels
 
 		private void ClearRandomItems()
 		{
+			var previousRandomEntryViewModels = new List<EntryListItemViewModel>();
+
 			// Delete items one by one in order to have the list change animations.
 			var itemsToDelete = new List<EntryListItemViewModel>(RandomEntryViewModels);
 
 			foreach (var item in itemsToDelete)
 			{
 				RandomEntryViewModels.Remove(item);
+				previousRandomEntryViewModels.Add(item);
 			}
+
+			PreviousRandomEntryViewModelsStack.Push(previousRandomEntryViewModels);
+			ShowPreviousEntriesCommand.RaiseCanExecuteChanged();
 		}
 
 		private void UpdateDisplayedIndexes()
@@ -333,12 +342,23 @@ namespace Linqua.ViewModels
 
 		private bool CanShowPreviousEntries()
 		{
-			return true;
+			return PreviousRandomEntryViewModelsStack.Count > 0;
 		}
 
 		private void ShowPreviousEntries()
 		{
-			throw new NotImplementedException();
+			var entriesToAdd = PreviousRandomEntryViewModelsStack.Pop();
+
+			RandomEntryViewModels.Clear();
+
+			foreach (var item in entriesToAdd)
+			{
+				RandomEntryViewModels.Add(item);
+			}
+
+			UpdateDisplayedIndexes();
+
+			ShowPreviousEntriesCommand.RaiseCanExecuteChanged();
 		}
 
 		private void OnDisplayEntriesCollectonChanged(object sender, NotifyCollectionChangedEventArgs e)

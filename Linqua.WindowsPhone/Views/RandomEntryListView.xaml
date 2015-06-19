@@ -139,6 +139,7 @@
 
 				<interactivity:Interaction.Behaviors>
 					<framework:FlickBehavior Container="{Binding ElementName=LayoutRoot}"
+											 Flicking="OnItemFlicking"
 											 FlickedAway="OnItemFlickedAway"
 											 IsEnabled="{Binding ElementName=LayoutRoot, Path=DataContext.IsPagingControlsVisible}" />
 				</interactivity:Interaction.Behaviors>
