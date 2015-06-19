@@ -45,6 +45,12 @@ namespace Linqua
 			}
 		}
 
+		public void ShowTranslation()
+		{
+			IsTranslationShown = true;
+			RaisePropertyChanged(() => IsTranslationShown);
+		}
+
 		public void Focus()
 		{
 			if (View != null)

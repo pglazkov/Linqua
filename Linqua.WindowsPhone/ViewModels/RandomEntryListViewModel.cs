@@ -257,7 +257,7 @@ namespace Linqua.ViewModels
 			return viewModel;
 		}
 
-		private void AddEntry(EntryListItemViewModel viewModel)
+		public void AddEntry(EntryListItemViewModel viewModel)
 		{
 			if (RandomEntryViewModels.Count == EntriesToDisplayCount)
 			{
@@ -267,6 +267,11 @@ namespace Linqua.ViewModels
 			RandomEntryViewModels.Insert(0, viewModel);
 
 			UpdateDisplayedIndexes();
+
+			Observable.Timer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
+			{
+				viewModel.ShowTranslation();
+			});
 		}
 
 		public EntryListItemViewModel MoveToTopIfExists(string entryText)

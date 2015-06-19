@@ -142,29 +142,38 @@ namespace Linqua
 			OnDeleted();
 		}
 
-		private async Task UpdateIsLearntAsync(bool value)
+		public async Task UnlearnAsync()
 		{
-			bool confirmed;
+			await UpdateIsLearntAsync(false, showConfirmation: false);
+		}
 
-			if (value)
+		private async Task UpdateIsLearntAsync(bool value, bool showConfirmation = true)
+		{
+			bool confirmed = !showConfirmation;
+
+			if (showConfirmation)
 			{
-				confirmed = await DialogService.ShowConfirmation(
-					Resources.GetString("EntryViewModel_MarkLearnedConfirmationTitle"),
-					Resources.GetString("EntryViewModel_MarkLearnedConfirmationText"),
-					okCommandText: Resources.GetString("EntryViewModel_MarkLearnedConfirmationOk"));
-			}
-			else
-			{
-				confirmed = await DialogService.ShowConfirmation(
-					Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationTitle"),
-					Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationText"),
-					okCommandText: Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationOk"));
+				if (value)
+				{
+					confirmed = await DialogService.ShowConfirmation(
+						Resources.GetString("EntryViewModel_MarkLearnedConfirmationTitle"),
+						Resources.GetString("EntryViewModel_MarkLearnedConfirmationText"),
+						okCommandText: Resources.GetString("EntryViewModel_MarkLearnedConfirmationOk"));
+				}
+				else
+				{
+					confirmed = await DialogService.ShowConfirmation(
+						Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationTitle"),
+						Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationText"),
+						okCommandText: Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationOk"));
+				}
 			}
 
 			if (confirmed)
 			{
 				Entry.IsLearnt = value;
-				ApplicationController.UpdateEntryIsLearnedAsync(this).FireAndForget();
+
+				await ApplicationController.UpdateEntryIsLearnedAsync(this);
 			}
 
 			RaisePropertyChanged(() => IsLearnt);

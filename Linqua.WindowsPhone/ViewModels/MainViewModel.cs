@@ -336,13 +336,29 @@ namespace Linqua
 
 		private async void OnEntryCreationRequested(EntryCreationRequestedEvent e)
 		{
-			RandomEntryListViewModel.MoveToTopIfExists(e.EntryText);
-
+			var randomEntryItem = RandomEntryListViewModel.MoveToTopIfExists(e.EntryText);
 			var fullListItem = FullEntryListViewModel.MoveToTopIfExists(e.EntryText);
 
-			if (fullListItem != null)
+			var existingItem = fullListItem ?? randomEntryItem;
+			
+			if (existingItem != null)
 			{
-				OnEntryAdded(fullListItem.Entry);
+				if (randomEntryItem == null)
+				{
+					RandomEntryListViewModel.AddEntry(existingItem);
+				}
+
+				if (fullListItem == null)
+				{
+					FullEntryListViewModel.AddEntry(existingItem);
+				}
+
+				if (existingItem.IsLearnt)
+				{
+					existingItem.UnlearnAsync().FireAndForget();
+				}
+
+				OnEntryAdded(existingItem.Entry);
 			}
 			else
 			{

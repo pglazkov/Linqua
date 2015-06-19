@@ -156,7 +156,7 @@ namespace Linqua
 		    return result;
 	    }
 
-	    private void AddEntry(EntryListItemViewModel viewModel)
+	    public void AddEntry(EntryListItemViewModel viewModel)
 	    {
 		    EntryViewModels.Insert(0, viewModel);
 
