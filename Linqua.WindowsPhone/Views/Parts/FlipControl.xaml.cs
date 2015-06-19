@@ -10,8 +10,6 @@ namespace Linqua
 {
 	public sealed partial class FlipControl : UserControl
 	{
-		private bool isFlippedInternalChange = false;
-
 		public FlipControl()
 		{
 			this.InitializeComponent();
@@ -94,11 +92,11 @@ namespace Linqua
 
 			if (isFlipped)
 			{
-				VisualStateManager.GoToState(this, "FlipCardFront", true);
+				VisualStateManager.GoToState(this, "FlipCardFrontState", true);
 			}
 			else
 			{
-				VisualStateManager.GoToState(this, "FlipCardBack", true);
+				VisualStateManager.GoToState(this, "FlipCardBackState", true);
 			}
 		}
 
@@ -106,7 +104,7 @@ namespace Linqua
 
 		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
 		{
-			VisualStateManager.GoToState(this, "Initial", false);
+			VisualStateManager.GoToState(this, "InitialState", false);
 		}
 
 		private void OnTapped(object sender, TappedRoutedEventArgs e)
@@ -124,12 +122,12 @@ namespace Linqua
 
 		private void OnPointerPressed(object sender, PointerRoutedEventArgs e)
 		{
-			VisualStateManager.GoToState(this, "PointerPressed", true);
+			VisualStateManager.GoToState(this, "PointerPressedState", true);
 		}
 
 		private void OnPointerReleased(object sender, PointerRoutedEventArgs e)
 		{
-			VisualStateManager.GoToState(this, "PointerReleased", true);
+			VisualStateManager.GoToState(this, "PointerReleasedState", true);
 		}
 	}
 }

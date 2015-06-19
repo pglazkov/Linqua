@@ -21,7 +21,7 @@ namespace Linqua.Translation.Microsoft
 					string errorDescription = responseJson.Value<string>("error_description");
 					throw new MicrosoftApiException(string.Format("Azure market place request failed: {0} {1}", errorType, errorDescription));
 				}
-				catch (Exception e)
+				catch (Exception)
 				{
 					// Could not parse the response
 					throw new MicrosoftApiException(string.Format("Azure market place request failed. Response was:\n{0}", responseString));

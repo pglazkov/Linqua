@@ -29,13 +29,13 @@
 	<Grid>
 		<VisualStateManager.VisualStateGroups>
 			<VisualStateGroup x:Name="PointerPressedGroup">
-				<VisualState x:Name="PointerPressed">
+				<VisualState x:Name="PointerPressedState">
 					<!--<Storyboard>
 						<PointerDownThemeAnimation TargetName="ThisControl" />
 					</Storyboard>-->
 				</VisualState>
 
-				<VisualState x:Name="PointerReleased">
+				<VisualState x:Name="PointerReleasedState">
 					<!--<Storyboard>
 						<PointerUpThemeAnimation TargetName="ThisControl" />
 					</Storyboard>-->
@@ -45,7 +45,7 @@
 			<VisualStateGroup x:Name="VisualStateGroup">
 
 				<!--This animation will be invoked when you tap on the front rectangle-->
-				<VisualState x:Name="FlipCardFront">
+				<VisualState x:Name="FlipCardFrontState">
 					<Storyboard>
 						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationY)"
 													   Storyboard.TargetName="FontSideControl">
@@ -75,7 +75,7 @@
 				</VisualState>
 
 				<!--This animation will be invoked when you tap on the backward rectangle-->
-				<VisualState x:Name="FlipCardBack">
+				<VisualState x:Name="FlipCardBackState">
 					<Storyboard>
 						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationY)"
 													   Storyboard.TargetName="BackSideControl">
@@ -104,7 +104,7 @@
 					</Storyboard>
 				</VisualState>
 
-				<VisualState x:Name="Initial">
+				<VisualState x:Name="InitialState">
 				</VisualState>
 				
 			</VisualStateGroup>

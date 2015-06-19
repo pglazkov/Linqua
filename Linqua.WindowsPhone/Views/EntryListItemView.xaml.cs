@@ -83,7 +83,7 @@ namespace Linqua
 				}
 				else if (ownerItemsControl.ItemContainerGenerator != null)
 				{
-					listItemContainer = ownerItemsControl.ItemContainerGenerator.ContainerFromItem(ViewModel) as Control;
+					listItemContainer = ownerItemsControl.ContainerFromItem(ViewModel) as Control;
 				}
 
 				if (listItemContainer != null)

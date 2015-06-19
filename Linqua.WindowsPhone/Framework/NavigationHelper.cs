@@ -111,11 +111,11 @@ namespace Linqua.Framework
 		DelegateCommand _goForwardCommand;
 
 		/// <summary>
-		/// <see cref="RelayCommand"/> used to bind to the back Button's Command property
+		/// <see cref="DelegateCommand"/> used to bind to the back Button's Command property
 		/// for navigating to the most recent item in back navigation history, if a Frame
 		/// manages its own navigation history.
 		/// 
-		/// The <see cref="RelayCommand"/> is set up to use the virtual method <see cref="GoBack"/>
+		/// The <see cref="DelegateCommand"/> is set up to use the virtual method <see cref="GoBack"/>
 		/// as the Execute Action and <see cref="CanGoBack"/> for CanExecute.
 		/// </summary>
 		public DelegateCommand GoBackCommand
@@ -136,10 +136,10 @@ namespace Linqua.Framework
 			}
 		}
 		/// <summary>
-		/// <see cref="RelayCommand"/> used for navigating to the most recent item in 
+		/// <see cref="DelegateCommand"/> used for navigating to the most recent item in 
 		/// the forward navigation history, if a Frame manages its own navigation history.
 		/// 
-		/// The <see cref="RelayCommand"/> is set up to use the virtual method <see cref="GoForward"/>
+		/// The <see cref="DelegateCommand"/> is set up to use the virtual method <see cref="GoForward"/>
 		/// as the Execute Action and <see cref="CanGoForward"/> for CanExecute.
 		/// </summary>
 		public DelegateCommand GoForwardCommand
@@ -209,7 +209,7 @@ namespace Linqua.Framework
             if (this.GoBackCommand.CanExecute())
             {
                 e.Handled = true;
-                this.GoBackCommand.Execute();
+                this.GoBackCommand.Execute().FireAndForget();
             }
         }
 #else

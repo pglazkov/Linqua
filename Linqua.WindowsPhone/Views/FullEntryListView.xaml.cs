@@ -63,7 +63,7 @@ namespace Linqua
 				Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 				{
 					EntryItemsControl.ScrollIntoView(entryVm);
-				});
+				}).FireAndForget();
 
 				entryVm.JustAdded = false;
 			}

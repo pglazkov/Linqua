@@ -334,7 +334,7 @@ namespace Linqua
 
 		}
 
-	    private async void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
+	    private void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
 	    {
 			RaisePropertyChanged(() => TotalCountText);
 			RaisePropertyChanged(() => Header);

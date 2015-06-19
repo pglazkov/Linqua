@@ -111,7 +111,7 @@ namespace Linqua
 				Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 				{
 					ViewModel.RefreshAsync().FireAndForget();
-				});
+				}).FireAndForget();
 		    }
 	    }
 
@@ -130,7 +130,7 @@ namespace Linqua
 		    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 		    {
 			    ViewModel.RefreshAsync().FireAndForget();
-		    });
+		    }).FireAndForget();
 	    }
 
 	    public bool Navigate(Type destination)

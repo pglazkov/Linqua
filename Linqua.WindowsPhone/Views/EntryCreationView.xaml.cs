@@ -3,6 +3,7 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Framework;
 
 namespace Linqua
 {
@@ -41,7 +42,7 @@ namespace Linqua
 			{
 				if (ViewModel.AddCommand.CanExecute())
 				{
-					ViewModel.AddCommand.Execute();
+					ViewModel.AddCommand.Execute().FireAndForget();
 				}
 			}
 		}

@@ -522,9 +522,9 @@ namespace Linqua
 			}
 		}
 
-		private async Task OnEntryDefinitionChangedAsync(EntryDefinitionChangedEvent e)
+		private Task OnEntryDefinitionChangedAsync(EntryDefinitionChangedEvent e)
 		{
-			
+			return Task.FromResult(true);
 		}
 
 		private void OnEntryDetailsRequested(EntryDetailsRequestedEvent e)
