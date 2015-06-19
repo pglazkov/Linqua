@@ -85,12 +85,46 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ApplicationController.cs" />
     <Compile Include="BackgroundTaskHelper.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="DesignTimeApplicationContoller.cs" />
+    <Compile Include="DeviceInfo.cs" />
+    <Compile Include="Events\EntryCreatedEvent.cs" />
+    <Compile Include="Events\EntryCreationRequestedEvent.cs" />
+    <Compile Include="Events\EntryDefinitionChangedEvent.cs" />
+    <Compile Include="Events\EntryDeletedEvent.cs" />
+    <Compile Include="Events\EntryDetailsRequestedEvent.cs" />
+    <Compile Include="Events\EntryIsLearntChangedEvent.cs" />
+    <Compile Include="Events\StopFirstUseTutorialEvent.cs" />
     <Compile Include="Framework\Behavior.cs" />
     <Compile Include="Framework\BusyStatus.cs" />
     <Compile Include="Framework\FlickBehavior.cs" />
+    <Compile Include="Framework\INavigationView.cs" />
+    <Compile Include="Framework\NavigationHelper.cs" />
+    <Compile Include="Framework\ObservableDictionary.cs" />
     <Compile Include="Framework\PivotSwipeLockBehavior.cs" />
+    <Compile Include="Framework\SuspensionManager.cs" />
     <Compile Include="Framework\SwipeDetectionBehavior.cs" />
+    <Compile Include="IApplicationController.cs" />
+    <Compile Include="Logging\FileStreamingTarget.cs" />
+    <Compile Include="Logging\WinRTFileTarget.cs" />
+    <Compile Include="Offline\IOfflineSyncController.cs" />
+    <Compile Include="Offline\OfflineSyncController.cs" />
+    <Compile Include="Persistence\SyncFailedHandler.cs" />
+    <Compile Include="ViewModels\EntryCreationViewModel.cs" />
+    <Compile Include="ViewModels\EntryDetailsViewModel.cs" />
+    <Compile Include="ViewModels\EntryListItemTimeGroupViewModel.cs" />
+    <Compile Include="ViewModels\EntryListItemViewModel.cs" />
+    <Compile Include="ViewModels\EntryViewModel.cs" />
+    <Compile Include="ViewModels\FullEntryListViewModel.cs" />
+    <Compile Include="ViewModels\LoginViewModel.cs" />
+    <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\RandomEntryListViewModel.cs" />
+    <Compile Include="ViewModels\TimeGroupViewModel.cs" />
+    <Compile Include="ViewModels\ViewInterface\IEntryDetailsView.cs" />
+    <Compile Include="ViewModels\ViewInterface\IEntryListItemView.cs" />
+    <Compile Include="ViewModels\ViewInterface\IMainView.cs" />
     <Compile Include="Views\EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
@@ -162,6 +196,7 @@
     <Content Include="Assets\WideLogo.scale-240.png" />
     <Content Include="Fonts\LiveSymbol.ttf" />
     <None Include="Package.StoreAssociation.xml" />
+    <PRIResource Include="Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -363,7 +398,6 @@
   <PropertyGroup Condition=" '$(TargetPlatformIdentifier)' == '' ">
     <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
   </PropertyGroup>
-  <Import Project="..\Linqua.Shared\Linqua.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
