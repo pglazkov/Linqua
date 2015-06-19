@@ -107,8 +107,6 @@ namespace Linqua
 
 				entry.Definition = translation;
 
-				viewModelsToUpdate.ForEach(x => x.Definition = translation);
-
 				await storage.UpdateEntry(entry);
 
 				eventAggregator.Publish(new EntryDefinitionChangedEvent(entry));

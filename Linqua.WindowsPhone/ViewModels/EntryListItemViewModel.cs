@@ -9,6 +9,13 @@ namespace Linqua
 		private bool isTranslationShown;
 
 		public EntryListItemViewModel()
+			: this(new EventManager())
+		{
+			
+		}
+
+		public EntryListItemViewModel(IEventAggregator eventAggregator) 
+			: base(eventAggregator)
 		{
 			if (DesignTimeDetection.IsInDesignTool)
 			{
@@ -16,7 +23,7 @@ namespace Linqua
 			}
 		}
 
-		public EntryListItemViewModel(ClientEntry entry, bool justAdded = false) : base(entry)
+		public EntryListItemViewModel(ClientEntry entry, IEventAggregator eventAggregator, bool justAdded = false) : base(entry, eventAggregator)
 		{
 			JustAdded = justAdded;
 		}

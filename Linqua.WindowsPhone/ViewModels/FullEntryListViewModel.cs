@@ -151,7 +151,7 @@ namespace Linqua
 
 	    private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
 	    {
-		    var result = new EntryListItemViewModel(newEntry, justAdded: justAdded);
+		    var result = new EntryListItemViewModel(newEntry, EventAggregator, justAdded: justAdded);
 
 		    return result;
 	    }
@@ -181,7 +181,11 @@ namespace Linqua
 		    }
 			
 			groupViewModel.Items.Insert(0, viewModel);
-			itemGroupDictionary.Add(viewModel, groupViewModel);
+
+		    if (!itemGroupDictionary.ContainsKey(viewModel))
+		    {
+			    itemGroupDictionary.Add(viewModel, groupViewModel);
+		    }
 	    }
 
 	    private void DeleteEntry(EntryListItemViewModel obj)
@@ -273,9 +277,9 @@ namespace Linqua
 
 		    if (existingEntry != null)
 		    {
-			    EntryViewModels.Remove(existingEntry);
-
-			    existingEntry.JustAdded = true;
+				DeleteEntryFromUI(existingEntry.Entry);
+				
+				existingEntry.JustAdded = true;
 
 			    AddEntry(existingEntry);
 

@@ -144,7 +144,7 @@ namespace Linqua.ViewModels
 
 		private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
 		{
-			var result = new EntryListItemViewModel(newEntry, justAdded: justAdded);
+			var result = new EntryListItemViewModel(newEntry, EventAggregator, justAdded: justAdded);
 
 			return result;
 		}

@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Framework;
-using Framework.PlatformServices;
+using JetBrains.Annotations;
 using Linqua.DataObjects;
 using Linqua.Events;
 
@@ -9,16 +10,26 @@ namespace Linqua
 {
 	public class EntryViewModel : ViewModelBase
 	{
+		private readonly IEventAggregator eventAggregator;
 		private bool isTranslating;
 		private ClientEntry entry;
 
-		protected EntryViewModel()
+		protected EntryViewModel([NotNull] IEventAggregator eventAggregator)
 		{
+			Guard.NotNull(eventAggregator, () => eventAggregator);
+
+			this.eventAggregator = eventAggregator;
+
+			eventAggregator.GetEvent<EntryDefinitionChangedEvent>()
+			               .Where(x => x.Entry.Id == Entry.Id)
+						   .ObserveOnDispatcher()
+			               .SubscribeWeakly(this, (this_, e) => this_.OnEntryDefinitionChangedEvent(e));
+
 			DeleteCommand = new DelegateCommand(() => DeleteSelfAsync().FireAndForget());
 		}
 
-		public EntryViewModel(ClientEntry entry)
-			: this()
+		public EntryViewModel(ClientEntry entry, [NotNull] IEventAggregator eventAggregator)
+			: this(eventAggregator)
 		{
 			Guard.NotNull(entry, () => entry);
 
@@ -167,6 +178,18 @@ namespace Linqua
 		protected virtual void OnEntryChangedOverride()
 		{
 
+		}
+
+		private void OnEntryDefinitionChangedEvent(EntryDefinitionChangedEvent e)
+		{
+			if (!string.Equals(e.Entry.Definition, Definition))
+			{
+				Definition = e.Entry.Definition;
+			}
+			else
+			{
+				RaisePropertyChanged(() => Definition);
+			}
 		}
 	}
 }

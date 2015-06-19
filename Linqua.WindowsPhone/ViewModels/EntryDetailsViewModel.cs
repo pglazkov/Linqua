@@ -15,7 +15,8 @@ namespace Linqua
 		private Lazy<ITranslationService> translator;
 		private bool isLoadingData;
 
-		public EntryDetailsViewModel()
+		public EntryDetailsViewModel(IEventAggregator eventAggregator)
+			: base(eventAggregator)
 		{
 			GoHomeCommand = new DelegateCommand(GoHome);
 			MarkLearnedCommand = new DelegateCommand(() => IsLearnt = true);
@@ -28,7 +29,7 @@ namespace Linqua
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
 			Lazy<ITranslationService> translator)
-			: this()
+			: this(eventAggregator)
 		{
 			Guard.NotNull(compositionFactory, () => compositionFactory);
 			Guard.NotNull(storage, () => storage);
