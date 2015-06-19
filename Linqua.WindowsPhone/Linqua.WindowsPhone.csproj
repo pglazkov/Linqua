@@ -194,7 +194,6 @@
     <Content Include="Assets\Tiles\IconicTileMediumLarge.png" />
     <Content Include="Assets\Tiles\IconicTileSmall.png" />
     <Content Include="Assets\WideLogo.scale-240.png" />
-    <Content Include="Fonts\LiveSymbol.ttf" />
     <None Include="Package.StoreAssociation.xml" />
     <PRIResource Include="Strings\en\Resources.resw" />
   </ItemGroup>
