@@ -92,9 +92,6 @@
       <HintPath>..\packages\MetroLog.0.8.6\lib\wpa81\MetroLog.Platform.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Live">
-      <HintPath>C:\Program Files (x86)\Microsoft SDKs\Live\v5.6\Windows Store app XAML\References\CommonConfiguration\Neutral\Microsoft.Live.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.WindowsAzure.Mobile">
       <HintPath>..\packages\WindowsAzure.MobileServices.1.3.1\lib\wpa81\Microsoft.WindowsAzure.Mobile.dll</HintPath>
     </Reference>
@@ -128,6 +125,11 @@
       <Project>{55ABB5AC-F778-455D-BA56-C5EE5089198C}</Project>
       <Name>Linqua.PT</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="LiveSDKXAML, Version=5.6">
+      <Name>Live SDK</Name>
+    </SDKReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
