@@ -136,12 +136,15 @@
 				<linqua:RandomEntryListItemView.Projection>
 					<PlaneProjection />
 				</linqua:RandomEntryListItemView.Projection>
+				<linqua:RandomEntryListItemView.RenderTransform>
+					<TranslateTransform/>
+				</linqua:RandomEntryListItemView.RenderTransform>
 
 				<interactivity:Interaction.Behaviors>
-					<framework:FlickBehavior Container="{Binding ElementName=LayoutRoot}"
-											 Flicking="OnItemFlicking"
-											 FlickedAway="OnItemFlickedAway"
-											 IsEnabled="{Binding ElementName=LayoutRoot, Path=DataContext.IsPagingControlsVisible}" />
+					<framework:HorizontalFlickBehavior Container="{Binding ElementName=LayoutRoot}"
+													   Flicking="OnItemFlicking"
+													   FlickedAway="OnItemFlickedAway"
+													   IsEnabled="{Binding ElementName=LayoutRoot, Path=DataContext.IsPagingControlsVisible}" />
 				</interactivity:Interaction.Behaviors>
 			</linqua:RandomEntryListItemView>
 		</Grid>

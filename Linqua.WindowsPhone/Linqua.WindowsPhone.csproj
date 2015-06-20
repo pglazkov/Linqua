@@ -101,7 +101,7 @@
     <Compile Include="Events\StopFirstUseTutorialEvent.cs" />
     <Compile Include="Framework\Behavior.cs" />
     <Compile Include="Framework\BusyStatus.cs" />
-    <Compile Include="Framework\FlickBehavior.cs" />
+    <Compile Include="Framework\HorizontalFlickBehavior.cs" />
     <Compile Include="Framework\FlickDirection.cs" />
     <Compile Include="Framework\FlickedAwayEventArgs.cs" />
     <Compile Include="Framework\FlickingEventArgs.cs" />

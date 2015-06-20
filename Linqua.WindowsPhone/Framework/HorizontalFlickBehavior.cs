@@ -9,10 +9,10 @@ using Framework;
 
 namespace Linqua.Framework
 {
-	public class FlickBehavior : Behavior<FrameworkElement>
+	public sealed class HorizontalFlickBehavior : Behavior<FrameworkElement>
 	{
 		private double startPositionX;
-		private readonly TranslateTransform translateTransform = new TranslateTransform();
+		private TranslateTransform translateTransform;
 		private GeneralTransform containerTransform;
 		private bool isFlickedAway;
 		private FlickDirection? lastDirection;
@@ -26,7 +26,7 @@ namespace Linqua.Framework
 		}
 
 		public static readonly DependencyProperty ContainerProperty =
-			DependencyProperty.Register("Container", typeof(FrameworkElement), typeof(FlickBehavior), new PropertyMetadata(null));
+			DependencyProperty.Register("Container", typeof(FrameworkElement), typeof(HorizontalFlickBehavior), new PropertyMetadata(null));
 
 		#endregion
 
@@ -39,11 +39,11 @@ namespace Linqua.Framework
 		}
 
 		public static readonly DependencyProperty IsEnabledProperty =
-			DependencyProperty.Register("IsEnabled", typeof(bool), typeof(FlickBehavior), new PropertyMetadata(true, OnIsEnabledChanged));
+			DependencyProperty.Register("IsEnabled", typeof(bool), typeof(HorizontalFlickBehavior), new PropertyMetadata(true, OnIsEnabledChanged));
 
 		private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
 		{
-			var this_ = (FlickBehavior)d;
+			var this_ = (HorizontalFlickBehavior)d;
 
 			this_.OnIsEnabledChanged(e);
 		}
@@ -55,11 +55,24 @@ namespace Linqua.Framework
 
 		#endregion
 
+		#region OverrideRenderTransform DP
+
+		public bool OverrideRenderTransform
+		{
+			get { return (bool)GetValue(OverrideRenderTransformProperty); }
+			set { SetValue(OverrideRenderTransformProperty, value); }
+		}
+
+		public static readonly DependencyProperty OverrideRenderTransformProperty =
+			DependencyProperty.Register("OverrideRenderTransform", typeof(bool), typeof(HorizontalFlickBehavior), new PropertyMetadata(false));
+
+		#endregion
+
 		#region FlickedAway
 
 		public event EventHandler<FlickedAwayEventArgs> FlickedAway;
 
-		protected virtual void OnFlickedAway(FlickDirection direction)
+		private void OnFlickedAway(FlickDirection direction)
 		{
 			var handler = FlickedAway;
 			if (handler != null) handler(this, new FlickedAwayEventArgs(direction));
@@ -71,7 +84,7 @@ namespace Linqua.Framework
 
 		public event EventHandler<FlickingEventArgs> Flicking;
 
-		protected virtual void OnFlicking(FlickingEventArgs e)
+		private void OnFlicking(FlickingEventArgs e)
 		{
 			var handler = Flicking;
 			if (handler != null) handler(this, e);
@@ -84,6 +97,23 @@ namespace Linqua.Framework
 			AssociatedObject.Loaded += OnLoaded;
 			AssociatedObject.Unloaded += OnUnloaded;
 			AssociatedObject.DataContextChanged += OnDataContextChanged;
+
+			var existingRenderTransform = AssociatedObject.RenderTransform as TranslateTransform;
+
+			if (existingRenderTransform != null)
+			{
+				translateTransform = existingRenderTransform;
+			}
+			else if (!OverrideRenderTransform)
+			{
+				throw new InvalidOperationException("Associated object must have RenderTransform set to TranslateTransform or the " +
+				                                    "OverrideRenderTransform property on this behavior must be set to True. This behavior needs to manipulate the " +
+				                                    "position of the object via a TranslateTransofrm.");
+			}
+			else
+			{
+				translateTransform = new TranslateTransform();
+			}
 
 			AssociatedObject.RenderTransform = translateTransform;
 		}
@@ -99,21 +129,7 @@ namespace Linqua.Framework
 		{
 			translateTransform.X = -translateTransform.X;
 
-			var sb = new Storyboard();
-
-			var doubleAnimation = new DoubleAnimation
-			{
-				To = 0,
-				Duration = new Duration(TimeSpan.FromMilliseconds(400)),
-				EasingFunction = new ExponentialEase()
-			};
-
-			Storyboard.SetTarget(doubleAnimation, translateTransform);
-			Storyboard.SetTargetProperty(doubleAnimation, "X");
-
-			sb.Children.Add(doubleAnimation);
-
-			sb.Begin();
+			AnimateBackToOriginalPosition();
 		}
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
@@ -147,6 +163,7 @@ namespace Linqua.Framework
 		{
 			if (!IsEnabled)
 			{
+				e.Complete();
 				return;
 			}
 
@@ -173,11 +190,11 @@ namespace Linqua.Framework
 
 			if (realPositionX < 0)
 			{
-				SetIsFlickedOutside(realPositionX + AssociatedObject.ActualWidth < 0);
+				isFlickedAway = realPositionX + AssociatedObject.ActualWidth < 0;
 			}
 			else
 			{
-				SetIsFlickedOutside(realPositionX > Container.ActualWidth);
+				isFlickedAway = realPositionX > Container.ActualWidth;
 			}
 
 			if (isFlickedAway)
@@ -194,27 +211,27 @@ namespace Linqua.Framework
 			}
 			else
 			{
-				var sb = new Storyboard();
-
-				var doubleAnimation = new DoubleAnimation
-				{
-					To = 0,
-					Duration = new Duration(TimeSpan.FromMilliseconds(400)),
-					EasingFunction = new ExponentialEase()
-				};
-
-				Storyboard.SetTarget(doubleAnimation, translateTransform);
-				Storyboard.SetTargetProperty(doubleAnimation, "X");
-
-				sb.Children.Add(doubleAnimation);
-
-				sb.Begin();
+				AnimateBackToOriginalPosition();
 			}
 		}
 
-		private void SetIsFlickedOutside(bool value)
+		private void AnimateBackToOriginalPosition()
 		{
-			isFlickedAway = value;
+			var sb = new Storyboard();
+
+			var doubleAnimation = new DoubleAnimation
+			{
+				To = 0,
+				Duration = new Duration(TimeSpan.FromMilliseconds(400)),
+				EasingFunction = new ExponentialEase()
+			};
+
+			Storyboard.SetTarget(doubleAnimation, translateTransform);
+			Storyboard.SetTargetProperty(doubleAnimation, "X");
+
+			sb.Children.Add(doubleAnimation);
+
+			sb.Begin();
 		}
 		
 	}
