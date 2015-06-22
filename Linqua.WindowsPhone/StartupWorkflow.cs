@@ -5,6 +5,7 @@ using Windows.UI.Xaml.Controls;
 using Framework;
 using JetBrains.Annotations;
 using Linqua.Offline;
+using Linqua.UI;
 
 namespace Linqua
 {

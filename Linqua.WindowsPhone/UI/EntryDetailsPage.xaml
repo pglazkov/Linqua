@@ -1,0 +1,164 @@
+﻿<Page x:Class="Linqua.UI.EntryDetailsPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  xmlns:loc="using:Linqua.UI"
+	  mc:Ignorable="d"
+	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+	  d:DataContext="{d:DesignInstance loc:EntryDetailsViewModel, IsDesignTimeCreatable=True}">
+
+	<Page.Transitions>
+		<TransitionCollection>
+			<NavigationThemeTransition>
+				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
+					<ContinuumNavigationTransitionInfo />
+				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
+			</NavigationThemeTransition>
+		</TransitionCollection>
+	</Page.Transitions>
+
+	<Grid x:Name="LayoutRoot"
+		  Margin="0,27,0,60">
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<!-- Title Panel -->
+		<loc:PageHeader Grid.Row="0" />
+
+		<!--TODO: Content should be placed within the following grid-->
+		<Grid Grid.Row="1"
+			  x:Name="ContentRoot"
+			  Margin="24">
+
+			<ProgressRing x:Name="LoadingProgressRing"
+						  IsActive="{Binding IsLoadingData}"
+						  VerticalAlignment="Center"
+						  HorizontalAlignment="Center"
+						  Foreground="{StaticResource ProgressRingBrush}"
+						  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+
+			<Grid Visibility="{Binding IsLoadingData, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+				  HorizontalAlignment="Center">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="*" />
+					<RowDefinition Height="*" />
+				</Grid.RowDefinitions>
+
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="Auto" />
+				</Grid.ColumnDefinitions>
+
+				<Grid.ChildrenTransitions>
+					<TransitionCollection>
+						<EntranceThemeTransition FromHorizontalOffset="200" />
+					</TransitionCollection>
+				</Grid.ChildrenTransitions>
+
+				<Viewbox Grid.Row="0"
+						 Grid.Column="0"
+						 Stretch="Uniform"
+						 Margin="36,0,36,0"
+						 VerticalAlignment="Bottom"
+						 CommonNavigationTransitionInfo.IsStaggerElement="True"
+						 MaxHeight="80">
+					<TextBlock x:Name="EntryTextBox"
+							   Text="{Binding EntryText}"
+							   Style="{ThemeResource ListViewItemTextBlockStyle}"
+							   FontSize="{ThemeResource TextStyleExtraExtraLargeFontSize}"
+							   Foreground="{StaticResource EntryTextForegroundBrush}"
+							   TextWrapping="Wrap"
+							   Margin="0"
+							   HorizontalAlignment="Center" />
+				</Viewbox>
+
+				<Grid Grid.Row="1"
+					  Grid.Column="0"
+					  HorizontalAlignment="Center"
+					  VerticalAlignment="Top">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+
+					<loc:TranslationViewControl Grid.Row="0"
+												Grid.Column="0"
+												Margin="0,12,0,0"
+												Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+												CommonNavigationTransitionInfo.IsStaggerElement="True"
+												HorizontalAlignment="Center"
+												HorizontalContentAlignment="Center"
+												VerticalAlignment="Top" />
+
+					<StackPanel Grid.Row="1"
+								Grid.Column="0"
+								Orientation="Vertical"
+								HorizontalAlignment="Center"
+								Margin="0,54,0,0"
+								Visibility="{Binding IsLearnt, Converter={StaticResource BooleanToVisibilityConverter}}">
+						<!--<ToggleButton Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
+									  Padding="0"
+									  VerticalContentAlignment="Center"
+									  HorizontalAlignment="Center"
+									  Style="{StaticResource IconToggleButtonStyle}"
+									  IsChecked="{Binding IsLearnt, Mode=TwoWay}">
+						</ToggleButton>-->
+
+						<Border Width="36"
+								Height="36"
+								CornerRadius="33"
+								Background="{StaticResource ApplicationThemeBrush}">
+							<Path Stretch="Uniform"
+								  RenderTransformOrigin="0.5,0.5"
+								  Margin="8"
+								  Fill="White"
+								  Data="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z " />
+						</Border>
+
+
+						<TextBlock Text="{Binding IsLearnStatusText}"
+								   FontSize="{ThemeResource TextStyleSmallFontSize}"
+								   HorizontalAlignment="Center"
+								   Margin="0,12,0,0" />
+					</StackPanel>
+
+				</Grid>
+
+			</Grid>
+		</Grid>
+	</Grid>
+
+	<Page.BottomAppBar>
+		<CommandBar ClosedDisplayMode="Compact">
+			<CommandBar.PrimaryCommands>
+				<AppBarButton x:Uid="GoHomeButton"
+							  Label="RES_MISSING GoHomeButton"
+							  Icon="Home"
+							  Command="{Binding GoHomeCommand}" />
+
+				<AppBarButton x:Uid="MarkLearnedButton"
+							  Label="RES_MISSING MarkLearnedButton"
+							  Icon="Accept"
+							  Command="{Binding MarkLearnedCommand}"
+							  Visibility="{Binding IsLearnt, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+
+				<AppBarButton x:Uid="MarkNotLearnedButton"
+							  Label="RES_MISSING MarkNotLearnedButton"
+							  Icon="Undo"
+							  Command="{Binding MarkNotLearnedCommand}"
+							  Visibility="{Binding IsLearnt, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+				<AppBarButton x:Uid="EntryDetailsPage_DeleteButton"
+							  Label="RES_MISSING EntryDetailsPage_DeleteButton"
+							  Icon="Delete"
+							  Command="{Binding DeleteCommand}" />
+			</CommandBar.PrimaryCommands>
+			<CommandBar.SecondaryCommands>
+			</CommandBar.SecondaryCommands>
+		</CommandBar>
+	</Page.BottomAppBar>
+</Page>

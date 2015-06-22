@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Framework.PlatformServices;
 using Linqua.DataObjects;
+using Linqua.UI;
 
 namespace Linqua
 {

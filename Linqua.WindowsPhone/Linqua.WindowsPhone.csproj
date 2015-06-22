@@ -117,59 +117,59 @@
     <Compile Include="Offline\IOfflineSyncController.cs" />
     <Compile Include="Offline\OfflineSyncController.cs" />
     <Compile Include="Persistence\SyncFailedHandler.cs" />
-    <Compile Include="ViewModels\EntryCreationViewModel.cs" />
-    <Compile Include="ViewModels\EntryDetailsViewModel.cs" />
-    <Compile Include="ViewModels\EntryListItemTimeGroupViewModel.cs" />
-    <Compile Include="ViewModels\EntryListItemViewModel.cs" />
-    <Compile Include="ViewModels\EntryViewModel.cs" />
-    <Compile Include="ViewModels\FullEntryListViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\RandomEntryListViewModel.cs" />
-    <Compile Include="ViewModels\TimeGroupViewModel.cs" />
-    <Compile Include="ViewModels\ViewInterface\IEntryDetailsView.cs" />
-    <Compile Include="ViewModels\ViewInterface\IEntryListItemView.cs" />
-    <Compile Include="ViewModels\ViewInterface\IMainView.cs" />
-    <Compile Include="Views\EntryCreationView.xaml.cs">
+    <Compile Include="UI\EntryCreationViewModel.cs" />
+    <Compile Include="UI\EntryDetailsViewModel.cs" />
+    <Compile Include="UI\EntryListItemTimeGroupViewModel.cs" />
+    <Compile Include="UI\EntryListItemViewModel.cs" />
+    <Compile Include="UI\EntryViewModel.cs" />
+    <Compile Include="UI\FullEntryListViewModel.cs" />
+    <Compile Include="UI\LoginViewModel.cs" />
+    <Compile Include="UI\MainViewModel.cs" />
+    <Compile Include="UI\RandomEntryListViewModel.cs" />
+    <Compile Include="UI\TimeGroupViewModel.cs" />
+    <Compile Include="UI\IEntryDetailsView.cs" />
+    <Compile Include="UI\IEntryListItemView.cs" />
+    <Compile Include="UI\IMainView.cs" />
+    <Compile Include="UI\EntryCreationView.xaml.cs">
       <DependentUpon>EntryCreationView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IPivotContentView.cs" />
-    <Compile Include="Views\IPivotHostView.cs" />
-    <Compile Include="Views\Parts\FlipControl.xaml.cs">
+    <Compile Include="UI\IPivotContentView.cs" />
+    <Compile Include="UI\IPivotHostView.cs" />
+    <Compile Include="UI\Parts\FlipControl.xaml.cs">
       <DependentUpon>FlipControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RandomEntryListItemView.xaml.cs">
+    <Compile Include="UI\RandomEntryListItemView.xaml.cs">
       <DependentUpon>RandomEntryListItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Pages\EntryDetailsPage.xaml.cs">
+    <Compile Include="UI\EntryDetailsPage.xaml.cs">
       <DependentUpon>EntryDetailsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Framework\StatusBarBehavior.cs" />
     <Compile Include="Framework\StatusBusyService.cs" />
-    <Compile Include="Views\FullEntryListView.xaml.cs">
+    <Compile Include="UI\FullEntryListView.xaml.cs">
       <DependentUpon>FullEntryListView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Pages\LoginPage.xaml.cs">
+    <Compile Include="UI\LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Pages\MainPage.xaml.cs">
+    <Compile Include="UI\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="NavigationConstants.cs" />
-    <Compile Include="Views\NewEntryPage.xaml.cs">
+    <Compile Include="UI\NewEntryPage.xaml.cs">
       <DependentUpon>NewEntryPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Parts\PageHeader.xaml.cs">
+    <Compile Include="UI\Parts\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\EntryListItemView.xaml.cs">
+    <Compile Include="UI\EntryListItemView.xaml.cs">
       <DependentUpon>EntryListItemView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Parts\TranslationViewControl.xaml.cs">
+    <Compile Include="UI\Parts\TranslationViewControl.xaml.cs">
       <DependentUpon>TranslationViewControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\RandomEntryListView.xaml.cs">
+    <Compile Include="UI\RandomEntryListView.xaml.cs">
       <DependentUpon>RandomEntryListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="StartupWorkflow.cs" />
@@ -206,51 +206,51 @@
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Views\EntryCreationView.xaml">
+    <Page Include="UI\EntryCreationView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Parts\FlipControl.xaml">
+    <Page Include="UI\Parts\FlipControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RandomEntryListItemView.xaml">
+    <Page Include="UI\RandomEntryListItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\EntryDetailsPage.xaml">
+    <Page Include="UI\EntryDetailsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FullEntryListView.xaml">
+    <Page Include="UI\FullEntryListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\LoginPage.xaml">
+    <Page Include="UI\LoginPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Pages\MainPage.xaml">
+    <Page Include="UI\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\NewEntryPage.xaml">
+    <Page Include="UI\NewEntryPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\EntryListItemView.xaml">
+    <Page Include="UI\EntryListItemView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\Parts\PageHeader.xaml">
+    <Page Include="UI\Parts\PageHeader.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Parts\TranslationViewControl.xaml">
+    <Page Include="UI\Parts\TranslationViewControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\RandomEntryListView.xaml">
+    <Page Include="UI\RandomEntryListView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -275,11 +275,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Resources\Theme\Light.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
-    <Page Include="Views\Resources\CommonResources.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -8,6 +8,7 @@ using Linqua.DataObjects;
 using Linqua.Events;
 using Linqua.Persistence;
 using Linqua.Translation;
+using Linqua.UI;
 using MetroLog;
 
 namespace Linqua

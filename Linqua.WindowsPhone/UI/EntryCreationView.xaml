@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="Linqua.UI.EntryCreationView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:loc="using:Linqua.UI"
+			 mc:Ignorable="d"
+			 d:DataContext="{d:DesignInstance loc:EntryCreationViewModel, IsDesignTimeCreatable=True}"
+			 d:DesignWidth="250"
+			 d:DesignHeight="150">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*" />
+			<ColumnDefinition Width="Auto" />
+		</Grid.ColumnDefinitions>
+
+		<TextBox x:Uid="NewEntryTextBox"
+				 x:Name="NewEntryTextBox"
+				 Text="{Binding EntryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+				 KeyDown="EntryTextBox_OnKeyDown"
+				 VerticalAlignment="Bottom"
+				 PlaceholderText="RES_MISSING NewEntryTextBox"
+				 TextWrapping="Wrap"
+				 Margin="0"
+				 IsEnabled="{Binding IsCreatingEntry, Converter={StaticResource InvertedBooleanConverter}}"
+				 LostFocus="EntryTextBox_OnLostFocus" />
+
+		<ProgressBar Grid.Column="0"
+					 IsIndeterminate="True"
+					 VerticalAlignment="Bottom"
+					 Margin="0,0,0,1"
+					 Padding="0"
+					 Visibility="{Binding IsCreatingEntry, Converter={StaticResource BooleanToVisibilityConverter}}" />
+	</Grid>
+</UserControl>
