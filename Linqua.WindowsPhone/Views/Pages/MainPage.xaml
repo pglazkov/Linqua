@@ -106,7 +106,8 @@
 				   CommonNavigationTransitionInfo.IsStaggerElement="True"
 				   Margin="0,0,0,0"
 				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
-				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded">
+				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded"
+				   SelectedIndex="{Binding PivotSelectedIndex, Mode=TwoWay}">
 				
 				<!--<interactivity:Interaction.Behaviors>
 					<framework:PivotSwipeLockBehavior />

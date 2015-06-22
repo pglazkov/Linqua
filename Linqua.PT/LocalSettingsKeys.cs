@@ -4,5 +4,6 @@
 	{
 		public const string AccessTokenExpirationTimeKey = "MicrosoftAccessTokenExpirationTime";
 		public const string ShowLearnedEntries = "ShowLearnedEntries";
+		public const string MainPivotSelectedIndex = "MainPivotSelectedIndex";
 	}
 }

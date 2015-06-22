@@ -211,6 +211,17 @@ namespace Linqua
 			}
 		}
 
+		public int PivotSelectedIndex
+		{
+			get { return localSettingsService.GetValue(LocalSettingsKeys.MainPivotSelectedIndex, 0); }
+			set
+			{
+				if (value == PivotSelectedIndex) return;
+				localSettingsService.SetValue(LocalSettingsKeys.MainPivotSelectedIndex, value);
+				RaisePropertyChanged();
+			}
+		}
+
 		public void Initialize()
 		{
 			InitializeAsync().FireAndForget();
