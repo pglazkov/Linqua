@@ -114,7 +114,7 @@
 				   TextAlignment="Center"
 				   VerticalAlignment="Center"
 				   HorizontalAlignment="Center"
-				   Margin="24,0,24,0" />
+				   Margin="48,0,48,0" />
 
 		<Grid x:Name="ItemContainer"
 			  Visibility="{Binding AnyEntriesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
@@ -143,8 +143,7 @@
 				<interactivity:Interaction.Behaviors>
 					<framework:HorizontalFlickBehavior Container="{Binding ElementName=LayoutRoot}"
 													   Flicking="OnItemFlicking"
-													   FlickedAway="OnItemFlickedAway"
-													   IsEnabled="{Binding ElementName=LayoutRoot, Path=DataContext.IsPagingControlsVisible}" />
+													   FlickedAway="OnItemFlickedAway" />
 				</interactivity:Interaction.Behaviors>
 			</linqua:RandomEntryListItemView>
 		</Grid>

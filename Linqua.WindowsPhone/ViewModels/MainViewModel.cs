@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.DataTransfer;
 using Framework;
 using Framework.PlatformServices;
+using Framework.PlatformServices.DefaultImpl;
 using Linqua.DataObjects;
 using Linqua.Events;
 using Linqua.Logging;
@@ -45,7 +46,7 @@ namespace Linqua
 			{
 				FullEntryListViewModel = new FullEntryListViewModel(FakeData.FakeWords);
 
-				RandomEntryListViewModel = new RandomEntryListViewModel(new StringResourceManager(), new DesignTimeApplicationContoller())
+				RandomEntryListViewModel = new RandomEntryListViewModel(new StringResourceManager(), new DesignTimeApplicationContoller(), new DefaultRoamingSettingsService())
 				{
 					Entries = FakeData.FakeWords
 				};

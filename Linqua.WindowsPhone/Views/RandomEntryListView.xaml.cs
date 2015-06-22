@@ -71,7 +71,7 @@ namespace Linqua
 
 			if (ViewModel != null && ViewModel.RandomEntryViewModels.Count > 0)
 			{
-				var isComplted = RoamingSettings.GetValue<bool>(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey);
+				var isComplted = ViewModel.IsFirstUseTutorialComplete;
 
 				if (!isComplted)
 				{
@@ -92,14 +92,17 @@ namespace Linqua
 
 	    private void OnStopFirstUseTutorialRequested(StopFirstUseTutorialEvent e)
 	    {
-		    CompleteFirstUseTutorial();
+		    if (isFirstUseTutorialRunning)
+		    {
+			    CompleteFirstUseTutorial();
+		    }
 	    }
 
 		private void CompleteFirstUseTutorial()
 		{
 			StopFirstUseTutorial();
 
-			RoamingSettings.SetValue(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey, true);
+			ViewModel.IsFirstUseTutorialComplete = true;
 		}
 
 	    private void StopFirstUseTutorial()

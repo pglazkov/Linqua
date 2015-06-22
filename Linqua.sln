@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.Service", "Linqua.Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.BackgroundTasks.WindowsPhone", "Linqua.BackgroundTasks.WindowsPhone\Linqua.BackgroundTasks.WindowsPhone.csproj", "{FBBBF002-C177-42D7-8D15-AE4DE436AC4E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9A88DBED-C183-4A9A-961F-1CBD9B48A870}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.txt = Readme.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_ARM|Any CPU = Debug_ARM|Any CPU

@@ -47,7 +47,7 @@ namespace Linqua
 
 		public void ShowTranslation()
 		{
-			IsTranslationShown = true;
+			isTranslationShown = true;
 			RaisePropertyChanged(() => IsTranslationShown);
 		}
 

@@ -108,9 +108,9 @@
 				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
 				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded">
 				
-				<interactivity:Interaction.Behaviors>
+				<!--<interactivity:Interaction.Behaviors>
 					<framework:PivotSwipeLockBehavior />
-				</interactivity:Interaction.Behaviors>
+				</interactivity:Interaction.Behaviors>-->
 				
 				<PivotItem Margin="0"
 						   CommonNavigationTransitionInfo.IsStaggerElement="True"

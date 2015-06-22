@@ -51,7 +51,7 @@
 
 	<loc:FlipControl x:Name="FlipControl"
 					 Margin="0,25,0,25"
-					 Height="182"
+					 Height="212"
 					 IsFlipped="{Binding IsTranslationShown, Mode=TwoWay}">
 		<loc:FlipControl.RenderTransform>
 			<CompositeTransform />
@@ -122,12 +122,25 @@
 						 CommonNavigationTransitionInfo.IsStaggerElement="True"
 						 Height="50"
 						 Margin="0,0,0,0">
-					<parts:TranslationViewControl Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-												  Pivot.SlideInAnimationGroup="2"
-												  VerticalAlignment="Center"
-												  HorizontalAlignment="Center"
-												  CommonNavigationTransitionInfo.IsStaggerElement="True"
-												  FontSize="72" />
+					<Grid>
+						<parts:TranslationViewControl Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+													  Pivot.SlideInAnimationGroup="2"
+													  VerticalAlignment="Center"
+													  HorizontalAlignment="Center"
+													  CommonNavigationTransitionInfo.IsStaggerElement="True"
+													  FontSize="72" />
+
+						<TextBlock x:Uid="NoTraslationTextBlock"
+								   Text="RESMISSING NoTraslationTextBlock"
+								   Visibility="{Binding IsDefinitionVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+								   Pivot.SlideInAnimationGroup="2"
+								   VerticalAlignment="Center"
+								   HorizontalAlignment="Center"
+								   CommonNavigationTransitionInfo.IsStaggerElement="True"
+								   FontSize="72" />
+					</Grid>
+					
 				</Viewbox>
 
 				<Border Grid.Row="2"

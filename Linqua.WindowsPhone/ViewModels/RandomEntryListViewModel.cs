@@ -29,15 +29,18 @@ namespace Linqua.ViewModels
 		private bool isPagingControlsVisible;
 		private readonly IStringResourceManager resourceManager;
 		private readonly IApplicationController applicationController;
+		private readonly IRoamingSettingsService roamingSettings;
 
 		[ImportingConstructor]
-		public RandomEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IApplicationController applicationController)
+		public RandomEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IApplicationController applicationController, [NotNull] IRoamingSettingsService roamingSettings)
 	    {
 			Guard.NotNull(resourceManager, () => resourceManager);
 			Guard.NotNull(applicationController, () => applicationController);
+			Guard.NotNull(roamingSettings, () => roamingSettings);
 
 		    this.resourceManager = resourceManager;
 			this.applicationController = applicationController;
+			this.roamingSettings = roamingSettings;
 
 			RandomEntryViewModels = new ObservableCollection<EntryListItemViewModel>();
 		    RandomEntryViewModels.CollectionChanged += OnDisplayEntriesCollectonChanged;
@@ -72,8 +75,6 @@ namespace Linqua.ViewModels
 
 				UpdateRandomEntries();
 
-				OnEntriesCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-
 				UpdateThereAreNoEntries();
 
 				RaisePropertyChanged();
@@ -101,6 +102,12 @@ namespace Linqua.ViewModels
 			}
 		}
 
+		public bool IsFirstUseTutorialComplete
+		{
+			get { return roamingSettings.GetValue<bool>(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey); }
+			set { roamingSettings.SetValue(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey, value); }
+		}
+
 		public bool ThereAreNoEntries
 		{
 			get { return thereAreNoEntries; }
@@ -122,12 +129,6 @@ namespace Linqua.ViewModels
 				RaisePropertyChanged();
 				ShowNextEntriesCommand.RaiseCanExecuteChanged();
 			}
-		}
-
-		private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			UpdateThereAreNoEntries();
-			UpdatePagingControlsVisibility();
 		}
 
 		private void UpdateThereAreNoEntries()
@@ -259,6 +260,8 @@ namespace Linqua.ViewModels
 
 		public EntryListItemViewModel AddEntry(ClientEntry newEntry)
 		{
+			entries.Add(newEntry);
+
 			var viewModel = CreateListItemViewModel(newEntry, justAdded: true);
 
 			AddEntry(viewModel);
@@ -277,10 +280,13 @@ namespace Linqua.ViewModels
 
 			UpdateDisplayedIndexes();
 
-			Observable.Timer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
+			if (IsFirstUseTutorialComplete)
 			{
-				viewModel.ShowTranslation();
-			});
+				Observable.Timer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
+				{
+					viewModel.ShowTranslation();
+				});
+			}
 		}
 
 		public EntryListItemViewModel MoveToTopIfExists(string entryText)
@@ -363,6 +369,9 @@ namespace Linqua.ViewModels
 
 		private void OnDisplayEntriesCollectonChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
+			UpdateThereAreNoEntries();
+			UpdatePagingControlsVisibility();
+
 			UpdatePagingControlsVisibility();
 			RaisePropertyChanged(() => AnyEntriesAvailable);
 		}
