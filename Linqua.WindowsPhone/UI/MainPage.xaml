@@ -124,15 +124,22 @@
 										   Margin="0,0,0,0" />
 				</PivotItem>
 			</Pivot>
+			
+			<Border Grid.Row="0"
+					Grid.RowSpan="3"
+					Grid.Column="0"
+					Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+					Opacity="0.4"
+					Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-			<loc:EntryCreationView x:Name="EntryCreationView"
-								   Grid.Row="2"
-								   DataContext="{Binding EntryCreationViewModel}"
-								   Margin="20,11.5,20,24.5"
-								   IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
-								   Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-								   InputTargetLostFocus="EntryCreationView_OnInputTargetLostFocus"
-								   Grid.ColumnSpan="2" />
+			<loc:EntryEditorView x:Name="EntryEditorView"
+								 Grid.Row="2"
+								 DataContext="{Binding EntryEditorViewModel}"
+								 Margin="20,12,20,22"
+								 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
+								 Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+								 InputTargetLostFocus="EntryEditorView_OnInputTargetLostFocus"
+								 Grid.ColumnSpan="2" />
 		</Grid>
 
 		<!--Uncomment to see an alignment grid to help ensure your controls are
@@ -158,12 +165,12 @@
 							  Label="RES_MISSIN NewWordButton"
 							  Icon="Add"
 							  Command="{Binding AddWordCommand}"
-							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+							  Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
 				<AppBarButton x:Uid="ConfirmNewWordButton"
 							  Label="RES_MISSING ConfirmNewWordButton"
 							  Icon="Accept"
-							  Command="{Binding EntryCreationViewModel.AddCommand}"
-							  Visibility="{Binding IsEntryCreationViewVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+							  Command="{Binding EntryEditorViewModel.FinishCommand}"
+							  Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
 			</CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>
 				<AppBarButton x:Uid="SyncButton"

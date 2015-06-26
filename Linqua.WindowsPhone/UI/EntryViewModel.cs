@@ -20,12 +20,13 @@ namespace Linqua.UI
 
 			this.eventAggregator = eventAggregator;
 
-			eventAggregator.GetEvent<EntryDefinitionChangedEvent>()
+			eventAggregator.GetEvent<EntryUpdatedEvent>()
 			               .Where(x => x.Entry.Id == Entry.Id)
 						   .ObserveOnDispatcher()
-			               .SubscribeWeakly(this, (this_, e) => this_.OnEntryDefinitionChangedEvent(e));
+			               .SubscribeWeakly(this, (this_, e) => this_.OnEntryUpdated(e));
 
 			DeleteCommand = new DelegateCommand(() => DeleteSelfAsync().FireAndForget());
+			EditCommand = new DelegateCommand(() => EditSelfAsync().FireAndForget());
 		}
 
 		public EntryViewModel(ClientEntry entry, [NotNull] IEventAggregator eventAggregator)
@@ -38,6 +39,7 @@ namespace Linqua.UI
 
 
 		public DelegateCommand DeleteCommand { get; private set; }
+		public DelegateCommand EditCommand { get; private set; }
 
 		private IApplicationController ApplicationController
 		{
@@ -189,16 +191,20 @@ namespace Linqua.UI
 
 		}
 
-		private void OnEntryDefinitionChangedEvent(EntryDefinitionChangedEvent e)
+		private void OnEntryUpdated(EntryUpdatedEvent e)
 		{
-			if (!string.Equals(e.Entry.Definition, Definition))
-			{
-				Definition = e.Entry.Definition;
-			}
-			else
-			{
-				RaisePropertyChanged(() => Definition);
-			}
+			Entry = e.Entry;
+
+			RaisePropertyChanged("");
+		}
+
+		private Task EditSelfAsync()
+		{
+			Guard.Assert(Entry != null, "Entry != null");
+
+			EventAggregator.Publish(new EntryEditRequestedEvent(this));
+
+			return Task.FromResult(true);
 		}
 	}
 }

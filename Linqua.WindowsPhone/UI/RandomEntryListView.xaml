@@ -123,15 +123,15 @@
 
 			<loc:RandomEntryListItemView x:Name="ItemView"
 										 DataContext="{Binding RandomEntryViewModels[0]}"
-										 Margin="24,0,24,0"
+										 Margin="24,24,24,24"
 										 Loaded="EntryLoaded"
 										 Background="Transparent"
-										 Holding="EntryHolding"
 										 PointerPressed="EntryPressed"
 										 VerticalAlignment="Center"
 										 HorizontalAlignment="Stretch"
 										 HorizontalContentAlignment="Stretch"
-										 IsTabStop="False">
+										 IsTabStop="False"
+										 Height="192">
 				<loc:RandomEntryListItemView.Projection>
 					<PlaneProjection />
 				</loc:RandomEntryListItemView.Projection>

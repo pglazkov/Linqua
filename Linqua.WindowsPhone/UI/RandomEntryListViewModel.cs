@@ -373,5 +373,15 @@ namespace Linqua.UI
 			UpdatePagingControlsVisibility();
 			RaisePropertyChanged(() => AnyEntriesAvailable);
 		}
+
+		[CanBeNull]
+		public EntryListItemViewModel Find([NotNull] ClientEntry entry)
+		{
+			Guard.NotNull(entry, () => entry);
+
+			var result = RandomEntryViewModels.FirstOrDefault(x => x.Entry.Id == entry.Id);
+
+			return result;
+		}
     }
 }

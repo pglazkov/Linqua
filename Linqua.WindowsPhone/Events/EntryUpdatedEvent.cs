@@ -4,9 +4,9 @@ using Linqua.DataObjects;
 
 namespace Linqua.Events
 {
-	public class EntryDefinitionChangedEvent : EventBase
+	public class EntryUpdatedEvent : EventBase
     {
-		public EntryDefinitionChangedEvent([NotNull] ClientEntry entry)
+		public EntryUpdatedEvent([NotNull] ClientEntry entry)
 		{
 			Guard.NotNull(entry, () => entry);
 

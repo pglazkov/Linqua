@@ -114,14 +114,6 @@ namespace Linqua.UI
 		    firstUseStoryboard.Completed -= OnFirstUseTutorialStoryboardCompleted;
 	    }
 
-	    private void EntryHolding(object sender, HoldingRoutedEventArgs e)
-	    {
-			var senderElement = sender as FrameworkElement;
-			var flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
-			
-			flyoutBase.ShowAt(senderElement);
-	    }
-
 	    private void EntryPressed(object sender, PointerRoutedEventArgs e)
 	    {
 			

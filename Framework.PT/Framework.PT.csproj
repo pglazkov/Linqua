@@ -62,6 +62,7 @@
     <Compile Include="IViewModelWithBehaviors.cs" />
     <Compile Include="ObservableCollectionExtensions.cs" />
     <Compile Include="ObservableExtensions.cs" />
+    <Compile Include="ObservableSyncEvent.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultDialogService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultLocalSettingsService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultRoamingSettingsService.cs" />

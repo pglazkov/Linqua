@@ -7,9 +7,9 @@ using Framework;
 
 namespace Linqua.UI
 {
-	public partial class EntryCreationView : UserControl
+	public partial class EntryEditorView : UserControl
 	{
-		public EntryCreationView()
+		public EntryEditorView()
 		{
 			InitializeComponent();
 		}
@@ -26,9 +26,9 @@ namespace Linqua.UI
 
 		#endregion
 
-		private EntryCreationViewModel ViewModel
+		private EntryEditorViewModel ViewModel
 		{
-			get { return (EntryCreationViewModel)DataContext; }
+			get { return (EntryEditorViewModel)DataContext; }
 		}
 
 		public void FocusInputTarget()
@@ -38,11 +38,11 @@ namespace Linqua.UI
 
 		private void EntryTextBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
 		{
-			if (e.Key == VirtualKey.Enter && !ViewModel.IsCreatingEntry)
+			if (e.Key == VirtualKey.Enter && !ViewModel.IsBusy)
 			{
-				if (ViewModel.AddCommand.CanExecute())
+				if (ViewModel.FinishCommand.CanExecute())
 				{
-					ViewModel.AddCommand.Execute().FireAndForget();
+					ViewModel.FinishCommand.Execute().FireAndForget();
 				}
 			}
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
@@ -38,6 +39,7 @@ namespace Linqua.UI
 				var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
 
 				eventAggregator.GetEvent<EntryCreatedEvent>().Subscribe(OnEntryCreated);
+				eventAggregator.GetEvent<EntryEditingFinishedEvent>().Subscribe(OnEntryEditingFinished);
 
 				Loaded += OnLoaded;
 			}
@@ -157,29 +159,24 @@ namespace Linqua.UI
 	    {
 		    await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 		    {
-				EntryCreationView.FocusInputTarget();
+				EntryEditorView.FocusInputTarget();
 		    });
 	    }
 
 	    private void OnEntryCreated(EntryCreatedEvent e)
 	    {
-		    //Pivot.Focus(FocusState.Programmatic);
-
-		    //var userControl = (UserControl)RandomEntryListView.Content;
-
-		    //if (userControl != null)
-		    //{
-		    //	userControl.Focus(FocusState.Programmatic);
-		    //}
 	    }
 
-	    private void EntryCreationView_OnInputTargetLostFocus(object sender, EventArgs e)
+		private void OnEntryEditingFinished(EntryEditingFinishedEvent e)
+		{
+		}
+
+	    private void EntryEditorView_OnInputTargetLostFocus(object sender, EventArgs e)
 	    {
-		    if (string.IsNullOrEmpty(ViewModel.EntryCreationViewModel.EntryText))
-		    {
-			    ViewModel.IsEntryCreationViewVisible = false;
-		    }
+		    //ViewModel.EntryEditorViewModel.Clear();
+		    ViewModel.IsEntryEditorVisible = false;
 	    }
+		
 
 		private void Pivot_OnPivotItemLoaded(Pivot sender, PivotItemEventArgs args)
 		{

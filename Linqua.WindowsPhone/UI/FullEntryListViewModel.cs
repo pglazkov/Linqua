@@ -342,5 +342,15 @@ namespace Linqua.UI
 			RaisePropertyChanged(() => TotalCountText);
 			RaisePropertyChanged(() => Header);
 	    }
+
+	    [CanBeNull]
+	    public EntryListItemViewModel Find([NotNull] ClientEntry entry)
+	    {
+		    Guard.NotNull(entry, () => entry);
+
+		    var result = EntryViewModels.FirstOrDefault(x => x.Entry.Id == entry.Id);
+
+		    return result;
+	    }
     }
 }

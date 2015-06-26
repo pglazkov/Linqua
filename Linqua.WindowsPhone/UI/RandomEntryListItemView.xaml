@@ -7,7 +7,8 @@
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
-			 d:DataContext="{d:DesignInstance loc:EntryListItemViewModel, IsDesignTimeCreatable=True}">
+			 d:DataContext="{d:DesignInstance loc:EntryListItemViewModel, IsDesignTimeCreatable=True}"
+			 Holding="OnContainerHolding">
 
 	<UserControl.Resources>
 		<ResourceDictionary>
@@ -40,121 +41,126 @@
 	<FlyoutBase.AttachedFlyout>
 		<MenuFlyout MenuFlyoutPresenterStyle="{StaticResource EntryItemMenuFlyoutPresenterStyle}">
 			<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
-							Text="Delete"
+							Text="RESMISSING DeleteFlyoutItem"
 							Command="{Binding DeleteCommand}" />
+
+			<MenuFlyoutItem x:Uid="EditFlyoutItem"
+							Text="RESMISSING EditFlyoutItem"
+							Command="{Binding EditCommand}" />
 
 		</MenuFlyout>
 	</FlyoutBase.AttachedFlyout>
 
-	<loc:FlipControl x:Name="FlipControl"
-					 Margin="0,25,0,25"
-					 Height="212"
-					 IsFlipped="{Binding IsTranslationShown, Mode=TwoWay}">
-		<loc:FlipControl.RenderTransform>
-			<CompositeTransform />
-		</loc:FlipControl.RenderTransform>
+	<Border x:Name="RootBorder">
+		<loc:FlipControl x:Name="FlipControl"
+						 IsFlipped="{Binding IsTranslationShown, Mode=TwoWay}">
+			<loc:FlipControl.RenderTransform>
+				<CompositeTransform />
+			</loc:FlipControl.RenderTransform>
 
-		<loc:FlipControl.FrontSideContent>
-			<ContentControl Content="{Binding}"
-							HorizontalAlignment="Stretch"
-							VerticalAlignment="Stretch"
-							HorizontalContentAlignment="Stretch"
-							VerticalContentAlignment="Stretch"
-							IsTabStop="False">
-				<ContentControl.ContentTransitions>
-					<TransitionCollection>
-						<EntranceThemeTransition FromHorizontalOffset="150" />
-					</TransitionCollection>
-				</ContentControl.ContentTransitions>
+			<loc:FlipControl.FrontSideContent>
+				<ContentControl Content="{Binding}"
+								HorizontalAlignment="Stretch"
+								VerticalAlignment="Stretch"
+								HorizontalContentAlignment="Stretch"
+								VerticalContentAlignment="Stretch"
+								IsTabStop="False">
+					<ContentControl.ContentTransitions>
+						<TransitionCollection>
+							<EntranceThemeTransition FromHorizontalOffset="150" />
+						</TransitionCollection>
+					</ContentControl.ContentTransitions>
 
-				<ContentControl.ContentTemplate>
-					<DataTemplate>
-						<Viewbox Stretch="Uniform"
-								 StretchDirection="DownOnly"
-								 VerticalAlignment="Center"
-								 Height="40"
-								 Margin="24,24,24,36">
-							<TextBlock Text="{Binding Text}"
-									   Style="{ThemeResource ListViewItemTextBlockStyle}"
-									   LineHeight="21.5"
-									   TextLineBounds="Tight"
-									   FontSize="72"
-									   Foreground="{StaticResource EntryTextForegroundBrush}"
-									   TextWrapping="Wrap"
-									   VerticalAlignment="Top"
-									   Pivot.SlideInAnimationGroup="1"
+					<ContentControl.ContentTemplate>
+						<DataTemplate>
+							<Viewbox Stretch="Uniform"
+									 StretchDirection="DownOnly"
+									 VerticalAlignment="Center"
+									 Height="40"
+									 Margin="24,24,24,36">
+								<TextBlock Text="{Binding Text}"
+										   Style="{ThemeResource ListViewItemTextBlockStyle}"
+										   LineHeight="21.5"
+										   TextLineBounds="Tight"
+										   FontSize="72"
+										   Foreground="{StaticResource EntryTextForegroundBrush}"
+										   TextWrapping="Wrap"
+										   VerticalAlignment="Top"
+										   Pivot.SlideInAnimationGroup="1"
+										   CommonNavigationTransitionInfo.IsStaggerElement="True"
+										   HorizontalAlignment="Center" />
+							</Viewbox>
+						</DataTemplate>
+					</ContentControl.ContentTemplate>
+				</ContentControl>
+
+			</loc:FlipControl.FrontSideContent>
+
+			<loc:FlipControl.BackSideContent>
+				<Grid Margin="24,12,24,12">
+					<Grid.RowDefinitions>
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="*" />
+						<RowDefinition Height="Auto" />
+						<RowDefinition Height="Auto" />
+					</Grid.RowDefinitions>
+
+					<TextBlock x:Uid="TranslationTitleTextBlock"
+							   Grid.Row="0"
+							   Text="RES_MISSING translation"
+							   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+							   FontSize="10"
+							   HorizontalAlignment="Center"
+							   VerticalAlignment="Top"
+							   Margin="0,0,0,0">
+					</TextBlock>
+
+					<Viewbox Grid.Row="1"
+							 Grid.Column="0"
+							 Stretch="Uniform"
+							 StretchDirection="DownOnly"
+							 VerticalAlignment="Center"
+							 CommonNavigationTransitionInfo.IsStaggerElement="True"
+							 Height="50"
+							 Margin="0,0,0,0">
+						<Grid>
+							<loc:TranslationViewControl Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+														Pivot.SlideInAnimationGroup="2"
+														VerticalAlignment="Center"
+														HorizontalAlignment="Center"
+														CommonNavigationTransitionInfo.IsStaggerElement="True"
+														FontSize="72" />
+
+							<TextBlock x:Uid="NoTraslationTextBlock"
+									   Text="RESMISSING NoTraslationTextBlock"
+									   Visibility="{Binding IsDefinitionVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
+									   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+									   Pivot.SlideInAnimationGroup="2"
+									   VerticalAlignment="Center"
+									   HorizontalAlignment="Center"
 									   CommonNavigationTransitionInfo.IsStaggerElement="True"
-									   HorizontalAlignment="Center" />
-						</Viewbox>
-					</DataTemplate>
-				</ContentControl.ContentTemplate>
-			</ContentControl>
+									   FontSize="72" />
+						</Grid>
 
-		</loc:FlipControl.FrontSideContent>
+					</Viewbox>
 
-		<loc:FlipControl.BackSideContent>
-			<Grid Margin="24,12,24,12">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="*" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
+					<Border Grid.Row="2"
+							BorderThickness="0,1,0,0"
+							BorderBrush="{ThemeResource EntryBoxBorderBrush}"
+							Margin="0,12,0,12" />
 
-				<TextBlock x:Uid="TranslationTitleTextBlock"
-						   Grid.Row="0"
-						   Text="RES_MISSING translation"
-						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-						   FontSize="10"
-						   HorizontalAlignment="Center"
-						   VerticalAlignment="Top"
-						   Margin="0,0,0,0">
-				</TextBlock>
-
-				<Viewbox Grid.Row="1"
-						 Grid.Column="0"
-						 Stretch="Uniform"
-						 StretchDirection="DownOnly"
-						 VerticalAlignment="Center"
-						 CommonNavigationTransitionInfo.IsStaggerElement="True"
-						 Height="50"
-						 Margin="0,0,0,0">
-					<Grid>
-						<loc:TranslationViewControl Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-													Pivot.SlideInAnimationGroup="2"
-													VerticalAlignment="Center"
-													HorizontalAlignment="Center"
-													CommonNavigationTransitionInfo.IsStaggerElement="True"
-													FontSize="72" />
-
-						<TextBlock x:Uid="NoTraslationTextBlock"
-								   Text="RESMISSING NoTraslationTextBlock"
-								   Visibility="{Binding IsDefinitionVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-								   Pivot.SlideInAnimationGroup="2"
-								   VerticalAlignment="Center"
-								   HorizontalAlignment="Center"
-								   CommonNavigationTransitionInfo.IsStaggerElement="True"
-								   FontSize="72" />
+					<Grid Grid.Row="3"
+						  HorizontalAlignment="Stretch">
+						<StackPanel Orientation="Horizontal"
+									HorizontalAlignment="Center">
+							<ToggleButton Style="{StaticResource MarkLearnedButtonStyle}"
+										  IsChecked="{Binding IsLearnt, Mode=TwoWay}"
+										  VerticalAlignment="Center" />
+						</StackPanel>
 					</Grid>
-
-				</Viewbox>
-
-				<Border Grid.Row="2"
-						BorderThickness="0,1,0,0"
-						BorderBrush="{ThemeResource EntryBoxBorderBrush}"
-						Margin="0,12,0,12" />
-
-				<Grid Grid.Row="3"
-					  HorizontalAlignment="Stretch">
-					<StackPanel Orientation="Horizontal"
-								HorizontalAlignment="Center">
-						<ToggleButton Style="{StaticResource MarkLearnedButtonStyle}"
-									  IsChecked="{Binding IsLearnt, Mode=TwoWay}"
-									  VerticalAlignment="Center" />
-					</StackPanel>
 				</Grid>
-			</Grid>
-		</loc:FlipControl.BackSideContent>
-	</loc:FlipControl>
+			</loc:FlipControl.BackSideContent>
+		</loc:FlipControl>
+	</Border>
+	
 </UserControl>

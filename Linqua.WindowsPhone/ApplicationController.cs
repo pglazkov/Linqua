@@ -51,21 +51,31 @@ namespace Linqua
 
 		public async Task UpdateEntryIsLearnedAsync(EntryViewModel entry)
 		{
-			Guard.Assert(entry.Entry != null, "e.EntryViewModel.Entry != null");
+			Guard.Assert(entry.Entry != null, "entry.Entry != null");
 
 			await storage.UpdateEntry(entry.Entry);
 
+			eventAggregator.Publish(new EntryUpdatedEvent(entry.Entry));
 			eventAggregator.Publish(new EntryIsLearntChangedEvent(entry));
 		}
 
-		public async Task TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
+		public async Task UpdateEntryAsync(ClientEntry entry)
 		{
+			Guard.Assert(entry != null, "entry != null");
+
+			await storage.UpdateEntry(entry);
+
+			eventAggregator.Publish(new EntryUpdatedEvent(entry));
+		}
+
+		public async Task<string> TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
+		{
+			string translation = null;
+
 			viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
 
 			try
 			{
-				string translation = null;
-
 				try
 				{
 					if (Log.IsDebugEnabled)
@@ -108,9 +118,7 @@ namespace Linqua
 
 				entry.Definition = translation;
 
-				await storage.UpdateEntry(entry);
-
-				eventAggregator.Publish(new EntryDefinitionChangedEvent(entry));
+				viewModelsToUpdate.ForEach(x => x.Definition = translation);
 			}
 			catch (Exception ex)
 			{
@@ -121,6 +129,8 @@ namespace Linqua
 			{
 				viewModelsToUpdate.ForEach(x => x.IsTranslating = false);
 			}
+
+			return translation;
 		}
     }
 }

@@ -19,7 +19,7 @@ namespace Linqua.UI
 		{
 			if (DesignTimeDetection.IsInDesignTool)
 			{
-				Entry = new ClientEntry("Aankomst");
+				Entry = ClientEntry.CreateNew("Aankomst");
 			}
 		}
 

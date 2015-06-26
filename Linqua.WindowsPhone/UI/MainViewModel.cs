@@ -29,7 +29,7 @@ namespace Linqua.UI
 		private readonly IStringResourceManager stringResourceManager;
 		private FullEntryListViewModel fullEntryListViewModel;
 		private bool isLoadingEntries;
-		private bool isEntryCreationViewVisible;
+		private bool isEntryEditorVisible;
 		private static readonly AsyncLock RefreshLock = new AsyncLock();
 		private bool initialized;
 		private RandomEntryListViewModel randomEntryListViewModel;
@@ -49,7 +49,7 @@ namespace Linqua.UI
 					Entries = FakeData.FakeWords
 				};
 
-				EntryCreationViewModel = new EntryCreationViewModel(DesignTimeHelper.EventAggregator);
+				EntryEditorViewModel = new EntryEditorViewModel(DesignTimeHelper.EventAggregator);
 			}
 
 			SyncCommand = new DelegateCommand(ForceSync);
@@ -87,13 +87,14 @@ namespace Linqua.UI
 
 			FullEntryListViewModel = compositionFactory.Create<FullEntryListViewModel>();
 			RandomEntryListViewModel = compositionFactory.Create<RandomEntryListViewModel>();
-			EntryCreationViewModel = compositionFactory.Create<EntryCreationViewModel>();
+			EntryEditorViewModel = compositionFactory.Create<EntryEditorViewModel>();
 
-			eventAggregator.GetEvent<EntryCreationRequestedEvent>().Subscribe(OnEntryCreationRequested);
+			eventAggregator.GetEvent<EntryEditingFinishedEvent>().Subscribe(OnEntryEditingFinished);
 			eventAggregator.GetEvent<EntryDeletedEvent>().Subscribe(OnEntryDeleted);
 			eventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
-			eventAggregator.GetEvent<EntryDefinitionChangedEvent>().SubscribeWithAsync(OnEntryDefinitionChangedAsync);
+			eventAggregator.GetEvent<EntryUpdatedEvent>().SubscribeWithAsync(OnEntryDefinitionChangedAsync);
 			eventAggregator.GetEvent<EntryDetailsRequestedEvent>().Subscribe(OnEntryDetailsRequested);
+			eventAggregator.GetEvent<EntryEditRequestedEvent>().Subscribe(OnEntryEditRequested);
 		}
 
 		public DelegateCommand SendLogsCommand { get; private set; }
@@ -103,7 +104,7 @@ namespace Linqua.UI
 
 		public IMainView View { get; set; }
 
-		public EntryCreationViewModel EntryCreationViewModel { get; private set; }
+		public EntryEditorViewModel EntryEditorViewModel { get; private set; }
 
 		public bool ShowLearnedEntries
 		{
@@ -121,13 +122,13 @@ namespace Linqua.UI
 			get { return stringResourceManager.GetString("MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_" + ShowLearnedEntries); }
 		}
 
-		public bool IsEntryCreationViewVisible
+		public bool IsEntryEditorVisible
 		{
-			get { return isEntryCreationViewVisible; }
+			get { return isEntryEditorVisible; }
 			set
 			{
-				if (value.Equals(isEntryCreationViewVisible)) return;
-				isEntryCreationViewVisible = value;
+				if (value.Equals(isEntryEditorVisible)) return;
+				isEntryEditorVisible = value;
 				RaisePropertyChanged();
 				AddWordCommand.RaiseCanExecuteChanged();
 			}
@@ -333,24 +334,83 @@ namespace Linqua.UI
 
 		private bool CanAddWord()
 		{
-			return !IsEntryCreationViewVisible;
+			return !IsEntryEditorVisible;
 		}
 
 		private void AddWord()
 		{
 			EventAggregator.Publish(new StopFirstUseTutorialEvent());
 
-			IsEntryCreationViewVisible = true;
+			EntryEditorViewModel.Clear();
+			IsEntryEditorVisible = true;
+
 			View.FocusEntryCreationView();
 		}
 
-		private async void OnEntryCreationRequested(EntryCreationRequestedEvent e)
+		private async void OnEntryEditingFinished(EntryEditingFinishedEvent e)
 		{
-			var randomEntryItem = RandomEntryListViewModel.MoveToTopIfExists(e.EntryText);
-			var fullListItem = FullEntryListViewModel.MoveToTopIfExists(e.EntryText);
+			var entry = e.Data;
+
+			if (string.IsNullOrEmpty(entry.Id))
+			{
+				await AddNewEntryAsync(entry);
+			}
+			else
+			{
+				await UpdateEntryAsync(entry);
+			}
+
+			EntryEditorViewModel.Clear();
+		}
+
+		private async Task UpdateEntryAsync(ClientEntry entry)
+		{
+			eventAggregator.Publish(new EntryUpdatedEvent(entry));
+
+			using (await RefreshLock.LockAsync())
+			{
+				var vms = FindEntryViewModels(entry);
+
+				var translation = await applicationController.TranslateEntryItemAsync(entry, vms);
+
+				entry.Definition = translation;
+
+				using (statusBusyService.Busy("Saving..."))
+				{
+					await applicationController.UpdateEntryAsync(entry);
+				}
+
+				await UpdateStatistics();
+			}
+		}
+
+		private IEnumerable<EntryViewModel> FindEntryViewModels(ClientEntry entry)
+		{
+			var vm1 = FullEntryListViewModel.Find(entry);
+			var vm2 = RandomEntryListViewModel.Find(entry);
+
+			var vms = new List<EntryViewModel>();
+
+			if (vm1 != null)
+			{
+				vms.Add(vm1);
+			}
+
+			if (vm2 != null)
+			{
+				vms.Add(vm2);
+			}
+
+			return vms;
+		}
+
+		private async Task AddNewEntryAsync(ClientEntry entry)
+		{
+			var randomEntryItem = RandomEntryListViewModel.MoveToTopIfExists(entry.Text);
+			var fullListItem = FullEntryListViewModel.MoveToTopIfExists(entry.Text);
 
 			var existingItem = fullListItem ?? randomEntryItem;
-			
+
 			if (existingItem != null)
 			{
 				if (randomEntryItem == null)
@@ -374,7 +434,7 @@ namespace Linqua.UI
 			{
 				using (await RefreshLock.LockAsync())
 				{
-					var entryToAdd = new ClientEntry(e.EntryText);
+					var entryToAdd = entry;
 
 					ClientEntry addedEntry = null;
 
@@ -389,10 +449,14 @@ namespace Linqua.UI
 
 						OnEntryAdded(addedEntry);
 					}
-					
+
 					if (string.IsNullOrWhiteSpace(addedEntry.Definition))
 					{
-						await applicationController.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
+						var translation = await applicationController.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
+
+						addedEntry.Definition = translation;
+
+						await applicationController.UpdateEntryAsync(addedEntry);
 					}
 
 					await UpdateStatistics();
@@ -402,8 +466,8 @@ namespace Linqua.UI
 
 		private void OnEntryAdded(ClientEntry addedEntry)
 		{
-			EntryCreationViewModel.Clear();
-			IsEntryCreationViewVisible = false;
+			EntryEditorViewModel.Clear();
+			IsEntryEditorVisible = false;
 
 			EventAggregator.Publish(new EntryCreatedEvent(addedEntry));
 		}
@@ -548,7 +612,7 @@ namespace Linqua.UI
 			}
 		}
 
-		private Task OnEntryDefinitionChangedAsync(EntryDefinitionChangedEvent e)
+		private Task OnEntryDefinitionChangedAsync(EntryUpdatedEvent e)
 		{
 			return Task.FromResult(true);
 		}
@@ -572,5 +636,17 @@ namespace Linqua.UI
 				await RefreshAsync();
 			}
 		}
+
+		private void OnEntryEditRequested(EntryEditRequestedEvent e)
+		{
+			EventAggregator.Publish(new StopFirstUseTutorialEvent());
+
+			EntryEditorViewModel.Clear();
+			EntryEditorViewModel.Data = e.EntryViewModel.Entry;
+			IsEntryEditorVisible = true;
+
+			View.FocusEntryCreationView();
+		}
+
 	}
 }

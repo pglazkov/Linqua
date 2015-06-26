@@ -5,16 +5,21 @@ namespace Linqua.DataObjects
 {
 	public class ClientEntry
 	{
-		public ClientEntry()
+		public static ClientEntry CreateNew(string text = null)
 		{
+			var result = new ClientEntry
+			{
+				Id = Guid.NewGuid().ToString(),
+				CreatedAt = DateTimeOffset.Now,
+				Text = text
+			};
+
+			return result;
 		}
 
-		public ClientEntry(string text)
+		public ClientEntry()
 		{
-			Id = Guid.NewGuid().ToString();
-			CreatedAt = DateTimeOffset.Now;
-
-			Text = text;
+			
 		}
 
 		public string Id { get; set; }

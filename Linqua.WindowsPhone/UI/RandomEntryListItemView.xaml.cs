@@ -1,5 +1,7 @@
 ﻿using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Animation;
 
 // The User Control item template is documented at http://go.microsoft.com/fwlink/?LinkId=234236
@@ -24,6 +26,13 @@ namespace Linqua.UI
 		{
 			var storyboard = (Storyboard)Resources["DataContextChangedStoryboard"];
 			storyboard.Begin();
+		}
+
+		private void OnContainerHolding(object sender, HoldingRoutedEventArgs e)
+		{
+			var flyoutBase = FlyoutBase.GetAttachedFlyout(this);
+
+			flyoutBase.ShowAt(RootBorder);
 		}
 	}
 }

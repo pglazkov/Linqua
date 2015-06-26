@@ -93,10 +93,11 @@
     <Compile Include="DesignTimeApplicationContoller.cs" />
     <Compile Include="DeviceInfo.cs" />
     <Compile Include="Events\EntryCreatedEvent.cs" />
-    <Compile Include="Events\EntryCreationRequestedEvent.cs" />
-    <Compile Include="Events\EntryDefinitionChangedEvent.cs" />
+    <Compile Include="Events\EntryEditingFinishedEvent.cs" />
+    <Compile Include="Events\EntryUpdatedEvent.cs" />
     <Compile Include="Events\EntryDeletedEvent.cs" />
     <Compile Include="Events\EntryDetailsRequestedEvent.cs" />
+    <Compile Include="Events\EntryEditRequestedEvent.cs" />
     <Compile Include="Events\EntryIsLearntChangedEvent.cs" />
     <Compile Include="Events\StopFirstUseTutorialEvent.cs" />
     <Compile Include="Framework\Behavior.cs" />
@@ -117,7 +118,7 @@
     <Compile Include="Offline\IOfflineSyncController.cs" />
     <Compile Include="Offline\OfflineSyncController.cs" />
     <Compile Include="Persistence\SyncFailedHandler.cs" />
-    <Compile Include="UI\EntryCreationViewModel.cs" />
+    <Compile Include="UI\EntryEditorViewModel.cs" />
     <Compile Include="UI\EntryDetailsViewModel.cs" />
     <Compile Include="UI\EntryListItemTimeGroupViewModel.cs" />
     <Compile Include="UI\EntryListItemViewModel.cs" />
@@ -130,8 +131,8 @@
     <Compile Include="UI\IEntryDetailsView.cs" />
     <Compile Include="UI\IEntryListItemView.cs" />
     <Compile Include="UI\IMainView.cs" />
-    <Compile Include="UI\EntryCreationView.xaml.cs">
-      <DependentUpon>EntryCreationView.xaml</DependentUpon>
+    <Compile Include="UI\EntryEditorView.xaml.cs">
+      <DependentUpon>EntryEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\IPivotContentView.cs" />
     <Compile Include="UI\IPivotHostView.cs" />
@@ -206,7 +207,7 @@
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="UI\EntryCreationView.xaml">
+    <Page Include="UI\EntryEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

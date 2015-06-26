@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
@@ -80,6 +81,8 @@ namespace Linqua.Persistence
 
 		public async Task<ClientEntry> LookupByExample(ClientEntry example)
 		{
+			Guard.Assert(!string.IsNullOrEmpty(example.Text), "!string.IsNullOrEmpty(example.Text)");
+
 			using (await OfflineHelper.AcquireDataAccessLockAsync())
 			{
 				if (ConnectionHelper.IsConnectedToInternet)

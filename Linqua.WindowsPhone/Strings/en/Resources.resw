@@ -135,6 +135,9 @@
   <data name="DialogService_Confirmation_Ok" xml:space="preserve">
     <value>ok</value>
   </data>
+  <data name="EditFlyoutItem.Text" xml:space="preserve">
+    <value>edit</value>
+  </data>
   <data name="EntryDetailsPage_DeleteButton.Label" xml:space="preserve">
     <value>delete</value>
   </data>

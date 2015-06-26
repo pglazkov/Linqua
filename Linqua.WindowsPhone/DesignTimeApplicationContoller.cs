@@ -15,14 +15,19 @@ namespace Linqua
 		    return Task.FromResult(true);
 	    }
 
+	    public Task UpdateEntryAsync(ClientEntry entry)
+	    {
+		    return Task.FromResult(true);
+	    }
+
 	    public Task UpdateEntryIsLearnedAsync(EntryViewModel entry)
 	    {
 			return Task.FromResult(true);
 	    }
 
-	    public Task TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
+	    public Task<string> TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
 	    {
-			return Task.FromResult(true);
+			return Task.FromResult(string.Empty);
 	    }
     }
 }
