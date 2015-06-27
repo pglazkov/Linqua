@@ -139,9 +139,17 @@ namespace Linqua.UI
 		{
 			Guard.Assert(Entry != null, "Entry != null");
 
-			await ApplicationController.DeleteEntryAsync(this);
+			var confirmed = await DialogService.ShowConfirmation(
+				Resources.GetString("EntryViewModel_DeleteConfirmationTitle"),
+				string.Format(Resources.GetString("EntryViewModel_DeleteConfirmationTextTemplate"), Text),
+				okCommandText: Resources.GetString("EntryViewModel_DeleteConfirmationOkButtonText"));
 
-			OnDeleted();
+			if (confirmed)
+			{
+				await ApplicationController.DeleteEntryAsync(this);
+
+				OnDeleted();
+			}
 		}
 
 		public async Task UnlearnAsync()

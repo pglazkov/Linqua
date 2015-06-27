@@ -45,8 +45,6 @@ namespace Linqua.UI
 				EventAggregator = DesignTimeHelper.EventAggregator;
 				EntryViewModels.AddRange(FakeData.FakeWords.Select(w => CreateListItemViewModel(w)));
 			}
-			
-			DeleteEntryCommand = new DelegateCommand<EntryListItemViewModel>(DeleteEntry, CanDeleteEntry);
 
 			EventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
 	    }
@@ -58,8 +56,6 @@ namespace Linqua.UI
 
 		    Entries = entries;
 	    }
-
-	    public DelegateCommand<EntryListItemViewModel> DeleteEntryCommand { get; private set; }
 		
 		public IEnumerable<ClientEntry> Entries
 	    {
@@ -186,16 +182,6 @@ namespace Linqua.UI
 			    itemGroupDictionary.Add(viewModel, groupViewModel);
 		    }
 	    }
-
-	    private void DeleteEntry(EntryListItemViewModel obj)
-		{
-			applicationController.DeleteEntryAsync(obj).FireAndForget();
-		}
-
-		private bool CanDeleteEntry(EntryListItemViewModel arg)
-		{
-			return true;
-		}
 
 	    public void DeleteEntryFromUI(ClientEntry entryToDelete)
 	    {

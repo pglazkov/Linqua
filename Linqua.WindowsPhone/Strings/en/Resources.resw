@@ -153,6 +153,15 @@
   <data name="EntryListView_TotalCountTemplate" xml:space="preserve">
     <value>total {0}</value>
   </data>
+  <data name="EntryViewModel_DeleteConfirmationOkButtonText" xml:space="preserve">
+    <value>delete</value>
+  </data>
+  <data name="EntryViewModel_DeleteConfirmationTextTemplate" xml:space="preserve">
+    <value>You're about to delete "{0}". Are you sure?</value>
+  </data>
+  <data name="EntryViewModel_DeleteConfirmationTitle" xml:space="preserve">
+    <value>Delete</value>
+  </data>
   <data name="EntryViewModel_LearntStatus" xml:space="preserve">
     <value>learned</value>
   </data>

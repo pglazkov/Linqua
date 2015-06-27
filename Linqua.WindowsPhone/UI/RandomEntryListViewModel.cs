@@ -51,12 +51,10 @@ namespace Linqua.UI
 				RandomEntryViewModels.Add(FakeData.FakeWords.Select(w => CreateListItemViewModel(w)).First());
 			}
 			
-			DeleteEntryCommand = new DelegateCommand<EntryListItemViewModel>(DeleteEntry, CanDeleteEntry);
 			ShowNextEntriesCommand = new DelegateCommand(ShowNextEntries, CanShowNextEntries);
 			ShowPreviousEntriesCommand = new DelegateCommand(ShowPreviousEntries, CanShowPreviousEntries);
 	    }
 
-		public DelegateCommand<EntryListItemViewModel> DeleteEntryCommand { get; private set; }
 		public DelegateCommand ShowNextEntriesCommand { get; private set; }
 		public DelegateCommand ShowPreviousEntriesCommand { get; private set; }
 
@@ -305,16 +303,6 @@ namespace Linqua.UI
 			}
 
 			return null;
-		}
-
-		private void DeleteEntry(EntryListItemViewModel obj)
-		{
-			applicationController.DeleteEntryAsync(obj).FireAndForget();
-		}
-
-		private bool CanDeleteEntry(EntryListItemViewModel arg)
-		{
-			return true;
 		}
 
 		public void DeleteEntryFromUI(ClientEntry entryToDelete)
