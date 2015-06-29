@@ -25,6 +25,7 @@ namespace Linqua
 				Log.Info("Bootstrapper sequence started.");
 			
             ConfigureMef();
+	        InitializeGlobalServices();
 
 	        if (Log.IsInfoEnabled)
 				Log.Info("Bootstrapper sequence completed.");
@@ -68,5 +69,11 @@ namespace Linqua
 
 		    App.CompositionManager = CompositionManager.Current;
 	    }
+
+		private void InitializeGlobalServices()
+		{
+			var appController = CompositionManager.Current.GetInstance<ApplicationController>();
+			appController.Initialize();
+		}
     }
 }

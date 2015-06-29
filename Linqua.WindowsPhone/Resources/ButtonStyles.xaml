@@ -7,12 +7,7 @@
 	
 	<Thickness x:Key="PhoneBorderThickness">2.5</Thickness>
 	<FontFamily x:Key="PhoneFontFamilyNormal">Segoe WP</FontFamily>
-	<FontWeight x:Key="PhoneButtonFontWeight">Semibold</FontWeight>
 	<x:Double x:Key="TextStyleLargeFontSize">18.14</x:Double>
-	<Thickness x:Key="PhoneButtonContentPadding">9.5,0,9.5,3.5</Thickness>
-	<x:Double x:Key="PhoneButtonMinHeight">0</x:Double>
-	<x:Double x:Key="PhoneButtonMinWidth">0</x:Double>
-	<Thickness x:Key="PhoneTouchTargetOverhang">5</Thickness>
 	<SolidColorBrush x:Key="ButtonDisabledBackgroundThemeBrush"
 					 Color="Transparent" />
 	
@@ -25,13 +20,13 @@
 		<Setter Property="FontFamily"
 				Value="{ThemeResource PhoneFontFamilyNormal}" />
 		<Setter Property="FontWeight"
-				Value="{ThemeResource PhoneButtonFontWeight}" />
+				Value="Semibold" />
 		<Setter Property="FontSize"
 				Value="{ThemeResource TextStyleLargeFontSize}" />
 		<Setter Property="MinHeight"
-				Value="{ThemeResource PhoneButtonMinHeight}" />
+				Value="0" />
 		<Setter Property="MinWidth"
-				Value="{ThemeResource PhoneButtonMinWidth}" />
+				Value="0" />
 		<Setter Property="Width"
 				Value="46" />
 		<Setter Property="Height"
@@ -128,7 +123,7 @@
 								BorderBrush="{TemplateBinding BorderBrush}"
 								BorderThickness="{TemplateBinding BorderThickness}"
 								Background="{TemplateBinding Background}"
-								Margin="{ThemeResource PhoneTouchTargetOverhang}"
+								Margin="5"
 								CornerRadius="33">
 							<ContentPresenter x:Name="ContentPresenter"
 											  AutomationProperties.AccessibilityView="Raw"
@@ -377,7 +372,7 @@
 								Background="{TemplateBinding Background}"
 								BorderBrush="{TemplateBinding BorderBrush}"
 								BorderThickness="{TemplateBinding BorderThickness}"
-								Margin="{ThemeResource PhoneTouchTargetOverhang}"
+								Margin="5"
 								CornerRadius="33">
 							<ContentPresenter x:Name="ContentPresenter"
 											  Content="{TemplateBinding Content}"

@@ -1,0 +1,144 @@
+﻿<Page x:Class="Linqua.UI.EntryEditPage"
+	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	  xmlns:local="using:Linqua.UI"
+	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	  mc:Ignorable="d"
+	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+	  d:DataContext="{d:DesignInstance local:EntryEditViewModel, IsDesignTimeCreatable=True}">
+
+	<Page.Transitions>
+		<TransitionCollection>
+			<NavigationThemeTransition>
+				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
+					<ContinuumNavigationTransitionInfo />
+				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
+			</NavigationThemeTransition>
+		</TransitionCollection>
+	</Page.Transitions>
+
+	<Grid x:Name="LayoutRoot"
+		  Margin="0,27,0,60">
+
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto" />
+			<RowDefinition Height="*" />
+		</Grid.RowDefinitions>
+
+		<!-- Title Panel -->
+		<local:PageHeader Grid.Row="0" />
+
+		<!--TODO: Content should be placed within the following grid-->
+		<Grid Grid.Row="1"
+			  x:Name="ContentRoot"
+			  Margin="24,12,24,12">
+
+			<ProgressRing x:Name="LoadingProgressRing"
+						  IsActive="{Binding IsLoadingData}"
+						  VerticalAlignment="Center"
+						  HorizontalAlignment="Center"
+						  Foreground="{StaticResource ProgressRingBrush}"
+						  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+
+			<Grid Visibility="{Binding IsLoadingData, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<Grid.ChildrenTransitions>
+					<TransitionCollection>
+						<EntranceThemeTransition FromHorizontalOffset="200" />
+					</TransitionCollection>
+				</Grid.ChildrenTransitions>
+
+				<TextBox Grid.Row="0"
+						 Grid.Column="0"
+						 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+						 VerticalAlignment="Bottom"
+						 HorizontalAlignment="Stretch"
+						 FontSize="{ThemeResource TextStyleExtraExtraLargeFontSize}"
+						 TextWrapping="Wrap"
+						 IsTextPredictionEnabled="False"
+						 CommonNavigationTransitionInfo.IsStaggerElement="True" />
+
+				<Button Grid.Row="1"
+						x:Uid="EntryEditPage_TranslateButton"
+						Content="RES_MISSING EntryEditPage_TranslateButton"
+						Command="{Binding TranslateCommand}"
+						HorizontalAlignment="Left"
+						Margin="0,0,0,0" />
+				
+				<TextBlock x:Uid="TranslationTitleTextBlock"
+						   Grid.Row="2"
+						   Text="RES_MISSING TranslationTitleTextBlock"
+						   Style="{ThemeResource ControlHeaderTextBlockStyle}"
+						   Margin="0,0,0,0"/>
+				
+				<Grid Grid.Row="3"
+					  Margin="0,0,0,0">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="*" />
+						<ColumnDefinition Width="Auto" />
+					</Grid.ColumnDefinitions>
+
+					<TextBox Grid.Row="0"
+							 Text="{Binding Definition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+							 HorizontalAlignment="Stretch"
+							 TextWrapping="Wrap"
+							 IsTextPredictionEnabled="False"
+							 CommonNavigationTransitionInfo.IsStaggerElement="True"
+							 IsEnabled="{Binding IsTranslating, Converter={StaticResource InvertedBooleanConverter}}"/>
+					
+					<ProgressBar Grid.Column="0"
+								 IsIndeterminate="True"
+								 VerticalAlignment="Bottom"
+								 Margin="0,0,0,1"
+								 Padding="0"
+								 Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}" />
+				</Grid>
+
+				<StackPanel Grid.Row="4"
+							Grid.Column="0"
+							Orientation="Vertical"
+							HorizontalAlignment="Center"
+							Margin="0,54,0,0">
+					<ToggleButton Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
+								  HorizontalAlignment="Center"
+								  Style="{StaticResource IconToggleButtonStyle}"
+								  IsChecked="{Binding IsLearnt, Mode=TwoWay}">
+					</ToggleButton>
+
+
+					<TextBlock Text="{Binding IsLearnStatusText}"
+							   FontSize="{ThemeResource TextStyleSmallFontSize}"
+							   HorizontalAlignment="Center"
+							   Margin="0,12,0,0" />
+				</StackPanel>
+
+			</Grid>
+		</Grid>
+	</Grid>
+
+	<Page.BottomAppBar>
+		<CommandBar ClosedDisplayMode="Compact">
+			<CommandBar.PrimaryCommands>
+				<AppBarButton x:Uid="EntryEditPage_SaveButton"
+							  Label="RES_MISSING EntryEditPage_SaveButton"
+							  Icon="Save"
+							  Command="{Binding SaveCommand}" />
+
+				<AppBarButton x:Uid="EntryEditPage_CancelButton"
+							  Label="RES_MISSING EntryEditPage_CancelButton"
+							  Icon="Cancel"
+							  Command="{Binding CancelCommand}" />
+			</CommandBar.PrimaryCommands>
+			<CommandBar.SecondaryCommands>
+			</CommandBar.SecondaryCommands>
+		</CommandBar>
+	</Page.BottomAppBar>
+</Page>

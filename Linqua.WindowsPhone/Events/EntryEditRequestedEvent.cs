@@ -1,19 +1,19 @@
-﻿using Framework;
+﻿using System;
+using Framework;
 using JetBrains.Annotations;
-using Linqua.UI;
 
 namespace Linqua.Events
 {
 	public class EntryEditRequestedEvent : EventBase
 	{
-		public EntryEditRequestedEvent([NotNull] EntryViewModel entryViewModel)
+		public EntryEditRequestedEvent([NotNull] string entryId)
 		{
-			Guard.NotNull(entryViewModel, () => entryViewModel);
+			Guard.NotNullOrEmpty(entryId, () => entryId);
 
-			EntryViewModel = entryViewModel;
+			EntryId = entryId;
 		}
 
 		[NotNull]
-		public EntryViewModel EntryViewModel { get; private set; }
+		public string EntryId { get; private set; }
 	}
 }

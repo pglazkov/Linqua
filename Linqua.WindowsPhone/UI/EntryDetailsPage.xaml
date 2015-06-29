@@ -67,7 +67,7 @@
 						 CommonNavigationTransitionInfo.IsStaggerElement="True"
 						 MaxHeight="80">
 					<TextBlock x:Name="EntryTextBox"
-							   Text="{Binding EntryText}"
+							   Text="{Binding Text}"
 							   Style="{ThemeResource ListViewItemTextBlockStyle}"
 							   FontSize="{ThemeResource TextStyleExtraExtraLargeFontSize}"
 							   Foreground="{StaticResource EntryTextForegroundBrush}"
@@ -152,6 +152,11 @@
 							  Command="{Binding MarkNotLearnedCommand}"
 							  Visibility="{Binding IsLearnt, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
+				<AppBarButton x:Uid="EntryDetailsPage_EditButton"
+							  Label="RES_MISSING EntryDetailsPage_EditButton"
+							  Icon="Edit"
+							  Command="{Binding EditCommand}" />
+				
 				<AppBarButton x:Uid="EntryDetailsPage_DeleteButton"
 							  Label="RES_MISSING EntryDetailsPage_DeleteButton"
 							  Icon="Delete"

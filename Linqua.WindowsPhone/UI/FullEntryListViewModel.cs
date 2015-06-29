@@ -23,18 +23,18 @@ namespace Linqua.UI
 	    private IEnumerable<ClientEntry> entries;
 	    private bool isInitializationComplete;
 		private readonly IStringResourceManager resourceManager;
-	    private readonly IApplicationController applicationController;
+	    private readonly IEntryOperations entryOperations;
 	    private readonly IDictionary<string, EntryListItemTimeGroupViewModel> groupsDictionary = new Dictionary<string, EntryListItemTimeGroupViewModel>();
 		private readonly IDictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel> itemGroupDictionary = new Dictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel>();
 
 	    [ImportingConstructor]
-	    public FullEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IApplicationController applicationController)
+	    public FullEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IEntryOperations entryOperations)
 	    {
 			Guard.NotNull(resourceManager, () => resourceManager);
-		    Guard.NotNull(applicationController, () => applicationController);
+		    Guard.NotNull(entryOperations, () => entryOperations);
 
 		    this.resourceManager = resourceManager;
-		    this.applicationController = applicationController;
+		    this.entryOperations = entryOperations;
 		    EntryViewModels = new ObservableCollection<EntryListItemViewModel>();
 			EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
 			TimeGroupViewModels = new ObservableCollection<EntryListItemTimeGroupViewModel>();

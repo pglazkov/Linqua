@@ -4,19 +4,19 @@ using Linqua.Events;
 
 namespace Linqua.UI
 {
-	public class EntryEditorViewModel : ViewModelBase
+	public class EntryTextEditorViewModel : ViewModelBase
 	{
 		private readonly IEventAggregator eventAggregator;
 		private string entryText;
 		private bool isBusy;
 		private ClientEntry data;
 
-		public EntryEditorViewModel()
+		public EntryTextEditorViewModel()
 			: this(DesignTimeDetection.IsInDesignTool ? DesignTimeHelper.EventAggregator : null)
 		{
 		}
 
-		public EntryEditorViewModel(IEventAggregator eventAggregator)
+		public EntryTextEditorViewModel(IEventAggregator eventAggregator)
 		{
 			Guard.NotNull(eventAggregator, () => eventAggregator);
 

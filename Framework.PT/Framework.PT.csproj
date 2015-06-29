@@ -52,6 +52,7 @@
     <Compile Include="ExceptionUtils.cs" />
     <Compile Include="FrameworkPortable.cs" />
     <Compile Include="Guard.cs" />
+    <Compile Include="GuardReSharperTemplates.cs" />
     <Compile Include="HttpUtils.cs" />
     <Compile Include="ICompositionFactory.cs" />
     <Compile Include="ICompositionManager.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="ObservableCollectionExtensions.cs" />
     <Compile Include="ObservableExtensions.cs" />
     <Compile Include="ObservableSyncEvent.cs" />
+    <Compile Include="PlatformServices\CommonBusyType.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultDialogService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultLocalSettingsService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultRoamingSettingsService.cs" />

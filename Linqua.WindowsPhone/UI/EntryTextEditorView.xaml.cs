@@ -7,9 +7,9 @@ using Framework;
 
 namespace Linqua.UI
 {
-	public partial class EntryEditorView : UserControl
+	public partial class EntryTextEditorView : UserControl
 	{
-		public EntryEditorView()
+		public EntryTextEditorView()
 		{
 			InitializeComponent();
 		}
@@ -26,9 +26,9 @@ namespace Linqua.UI
 
 		#endregion
 
-		private EntryEditorViewModel ViewModel
+		private EntryTextEditorViewModel ViewModel
 		{
-			get { return (EntryEditorViewModel)DataContext; }
+			get { return (EntryTextEditorViewModel)DataContext; }
 		}
 
 		public void FocusInputTarget()

@@ -1,136 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Composition;
-using System.Threading.Tasks;
+using System.Reactive.Linq;
+using Windows.UI.Xaml.Controls;
 using Framework;
-using Framework.PlatformServices;
-using Linqua.DataObjects;
+using JetBrains.Annotations;
 using Linqua.Events;
-using Linqua.Persistence;
-using Linqua.Translation;
 using Linqua.UI;
-using MetroLog;
 
 namespace Linqua
 {
-	[Export(typeof(IApplicationController))]
-    public class ApplicationController : IApplicationController
-    {
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<ApplicationController>();
-
-		private readonly ICompositionFactory compositionFactory;
-		private readonly IDataStore storage;
+	[Export]
+	[Shared]
+	[UsedImplicitly]
+	public class ApplicationController
+	{
 		private readonly IEventAggregator eventAggregator;
-		private readonly IStatusBusyService statusBusyService;
-		private readonly Lazy<ITranslationService> translator;
+		private Frame navigationFrame;
 
 		[ImportingConstructor]
-		public ApplicationController(
-			ICompositionFactory compositionFactory,
-			IDataStore storage,
-			IEventAggregator eventAggregator,
-			IStatusBusyService statusBusyService,
-			Lazy<ITranslationService> translator)
+		public ApplicationController([NotNull] IEventAggregator eventAggregator)
 		{
-			this.compositionFactory = compositionFactory;
-			this.storage = storage;
+			Guard.NotNull(eventAggregator, () => eventAggregator);
+
 			this.eventAggregator = eventAggregator;
-			this.statusBusyService = statusBusyService;
-			this.translator = translator;
 		}
 
-		public async Task DeleteEntryAsync(EntryViewModel entry)
+		public void Initialize()
 		{
-			using (statusBusyService.Busy("Deleting..."))
-			{
-				await storage.DeleteEntry(entry.Entry);
-			}
-
-			eventAggregator.Publish(new EntryDeletedEvent(entry));
+			eventAggregator.GetEvent<EntryEditRequestedEvent>().Subscribe(OnEntryEditRequested);
 		}
 
-		public async Task UpdateEntryIsLearnedAsync(EntryViewModel entry)
+		public void RegisterFrame([NotNull] Frame frame)
 		{
-			Guard.Assert(entry.Entry != null, "entry.Entry != null");
+			Guard.NotNull(frame, () => frame);
 
-			await storage.UpdateEntry(entry.Entry);
-
-			eventAggregator.Publish(new EntryUpdatedEvent(entry.Entry));
-			eventAggregator.Publish(new EntryIsLearntChangedEvent(entry));
+			navigationFrame = frame;
 		}
 
-		public async Task UpdateEntryAsync(ClientEntry entry)
+		private void OnEntryEditRequested(EntryEditRequestedEvent e)
 		{
-			Guard.Assert(entry != null, "entry != null");
+			Guard.Assert(navigationFrame != null, "Please initialize the main navigation frame first (call the RegisterFrame method)");
 
-			await storage.UpdateEntry(entry);
-
-			eventAggregator.Publish(new EntryUpdatedEvent(entry));
+			navigationFrame.Navigate(typeof(EntryEditPage), e.EntryId);
 		}
-
-		public async Task<string> TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
-		{
-			string translation = null;
-
-			viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
-
-			try
-			{
-				try
-				{
-					if (Log.IsDebugEnabled)
-						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entry.Text);
-
-					var existingEntry = await storage.LookupByExample(entry);
-
-					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
-					{
-						if (Log.IsDebugEnabled)
-							Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
-
-						translation = existingEntry.Definition;
-					}
-				}
-				catch (Exception ex)
-				{
-					if (Log.IsErrorEnabled)
-						Log.Error("An error occured while trying to find an existing entry.", ex);
-				}
-
-				if (string.IsNullOrEmpty(translation))
-				{
-					if (Log.IsDebugEnabled)
-						Log.Debug("Detecting language of \"{0}\"", entry.Text);
-
-					var entryLanguage = await translator.Value.DetectLanguageAsync(entry.Text);
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Detected language: " + entryLanguage);
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entry.Text, entryLanguage, "en");
-
-					translation = await translator.Value.TranslateAsync(entry.Text, entryLanguage, "en");
-
-					if (Log.IsDebugEnabled)
-						Log.Debug("Translation: \"{0}\"", translation);
-				}
-
-				entry.Definition = translation;
-
-				viewModelsToUpdate.ForEach(x => x.Definition = translation);
-			}
-			catch (Exception ex)
-			{
-				if (Log.IsErrorEnabled)
-					Log.Error("An error occured while trying to translate an entry.", ex);
-			}
-			finally
-			{
-				viewModelsToUpdate.ForEach(x => x.IsTranslating = false);
-			}
-
-			return translation;
-		}
-    }
+	}
 }

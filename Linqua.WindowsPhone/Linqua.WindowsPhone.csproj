@@ -87,17 +87,18 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationController.cs" />
+    <Compile Include="EntryOperations.cs" />
     <Compile Include="BackgroundTaskHelper.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="DesignTimeApplicationContoller.cs" />
     <Compile Include="DeviceInfo.cs" />
     <Compile Include="Events\EntryCreatedEvent.cs" />
     <Compile Include="Events\EntryEditingFinishedEvent.cs" />
+    <Compile Include="Events\EntryEditRequestedEvent.cs" />
     <Compile Include="Events\EntryUpdatedEvent.cs" />
     <Compile Include="Events\EntryDeletedEvent.cs" />
     <Compile Include="Events\EntryDetailsRequestedEvent.cs" />
-    <Compile Include="Events\EntryEditRequestedEvent.cs" />
+    <Compile Include="Events\EntryQuickEditRequestedEvent.cs" />
     <Compile Include="Events\EntryIsLearntChangedEvent.cs" />
     <Compile Include="Events\StopFirstUseTutorialEvent.cs" />
     <Compile Include="Framework\Behavior.cs" />
@@ -112,18 +113,24 @@
     <Compile Include="Framework\PivotSwipeLockBehavior.cs" />
     <Compile Include="Framework\SuspensionManager.cs" />
     <Compile Include="Framework\SwipeDetectionBehavior.cs" />
-    <Compile Include="IApplicationController.cs" />
+    <Compile Include="ApplicationController.cs" />
+    <Compile Include="IEntryOperations.cs" />
     <Compile Include="Logging\FileStreamingTarget.cs" />
     <Compile Include="Logging\WinRTFileTarget.cs" />
     <Compile Include="Offline\IOfflineSyncController.cs" />
     <Compile Include="Offline\OfflineSyncController.cs" />
     <Compile Include="Persistence\SyncFailedHandler.cs" />
-    <Compile Include="UI\EntryEditorViewModel.cs" />
+    <Compile Include="UI\EntryTextEditorViewModel.cs" />
     <Compile Include="UI\EntryDetailsViewModel.cs" />
+    <Compile Include="UI\EntryEditPage.xaml.cs">
+      <DependentUpon>EntryEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EntryEditViewModel.cs" />
     <Compile Include="UI\EntryListItemTimeGroupViewModel.cs" />
     <Compile Include="UI\EntryListItemViewModel.cs" />
     <Compile Include="UI\EntryViewModel.cs" />
     <Compile Include="UI\FullEntryListViewModel.cs" />
+    <Compile Include="UI\IEntryEditView.cs" />
     <Compile Include="UI\LoginViewModel.cs" />
     <Compile Include="UI\MainViewModel.cs" />
     <Compile Include="UI\RandomEntryListViewModel.cs" />
@@ -131,8 +138,8 @@
     <Compile Include="UI\IEntryDetailsView.cs" />
     <Compile Include="UI\IEntryListItemView.cs" />
     <Compile Include="UI\IMainView.cs" />
-    <Compile Include="UI\EntryEditorView.xaml.cs">
-      <DependentUpon>EntryEditorView.xaml</DependentUpon>
+    <Compile Include="UI\EntryTextEditorView.xaml.cs">
+      <DependentUpon>EntryTextEditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\IPivotContentView.cs" />
     <Compile Include="UI\IPivotHostView.cs" />
@@ -207,9 +214,13 @@
     <ApplicationDefinition Include="App.xaml">
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="UI\EntryEditorView.xaml">
+    <Page Include="UI\EntryTextEditorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\EntryEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\Parts\FlipControl.xaml">
       <SubType>Designer</SubType>

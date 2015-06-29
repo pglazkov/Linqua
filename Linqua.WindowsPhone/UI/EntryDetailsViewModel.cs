@@ -60,11 +60,6 @@ namespace Linqua.UI
 			}
 		}
 
-		public string EntryText
-		{
-			get { return Entry != null ? Entry.Text : string.Empty; }
-		}
-
 		public IEntryDetailsView View { get; set; }
 
 		public async Task InitializeAsync([NotNull] string entryId)
@@ -100,7 +95,7 @@ namespace Linqua.UI
 
 		protected override void OnEntryChangedOverride()
 		{
-			RaisePropertyChanged(() => EntryText);
+			RaisePropertyChanged(() => Text);
 		}
 	}
 }

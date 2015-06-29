@@ -173,7 +173,7 @@ namespace Linqua.UI
 
 	    private void EntryEditorView_OnInputTargetLostFocus(object sender, EventArgs e)
 	    {
-		    //ViewModel.EntryEditorViewModel.Clear();
+		    //ViewModel.EntryTextEditorViewModel.Clear();
 		    ViewModel.IsEntryEditorVisible = false;
 	    }
 		

@@ -8,7 +8,7 @@ using Linqua.UI;
 
 namespace Linqua
 {
-    public class DesignTimeApplicationContoller : IApplicationController
+    public class DesignTimeApplicationContoller : IEntryOperations
     {
 	    public Task DeleteEntryAsync(EntryViewModel entry)
 	    {

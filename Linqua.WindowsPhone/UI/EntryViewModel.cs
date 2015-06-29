@@ -26,6 +26,7 @@ namespace Linqua.UI
 			               .SubscribeWeakly(this, (this_, e) => this_.OnEntryUpdated(e));
 
 			DeleteCommand = new DelegateCommand(() => DeleteSelfAsync().FireAndForget());
+			QuickEditCommand = new DelegateCommand(() => QuickEditSelfAsync().FireAndForget());
 			EditCommand = new DelegateCommand(() => EditSelfAsync().FireAndForget());
 		}
 
@@ -39,11 +40,12 @@ namespace Linqua.UI
 
 
 		public DelegateCommand DeleteCommand { get; private set; }
+		public DelegateCommand QuickEditCommand { get; private set; }
 		public DelegateCommand EditCommand { get; private set; }
 
-		private IApplicationController ApplicationController
+		private IEntryOperations EntryOperations
 		{
-			get { return CompositionFactory.Create<IApplicationController>(); }
+			get { return CompositionFactory.Create<IEntryOperations>(); }
 		}
 
 		public ClientEntry Entry
@@ -55,11 +57,13 @@ namespace Linqua.UI
 				entry = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => Text);
+				OnTextChangedOverride();
 				RaisePropertyChanged(() => DateAdded);
 				RaisePropertyChanged(() => IsLearnt);
 				RaisePropertyChanged(() => IsLearnStatusText);
 				RaisePropertyChanged(() => Definition);
 				RaisePropertyChanged(() => IsDefinitionVisible);
+				OnIsTranslatingChangedOverride();
 				OnEntryChangedOverride();
 			}
 		}
@@ -67,6 +71,19 @@ namespace Linqua.UI
 		public string Text
 		{
 			get { return Entry != null ? Entry.Text : string.Empty; }
+			set
+			{
+				if (Equals(value, Text))
+				{
+					return;
+				}
+
+				Guard.Assert(Entry != null, "Entry != null");
+
+				Entry.Text = value;
+				RaisePropertyChanged();
+				OnTextChangedOverride();
+			}
 		}
 
 		public DateTime DateAdded
@@ -86,7 +103,7 @@ namespace Linqua.UI
 
 				Guard.Assert(Entry != null, "Entry != null");
 
-				UpdateIsLearntAsync(value).FireAndForget();
+				SetIsLearnt(value);
 			}
 		}
 
@@ -109,6 +126,8 @@ namespace Linqua.UI
 				isTranslating = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => IsDefinitionVisible);
+
+				OnIsTranslatingChangedOverride();
 			}
 		}
 
@@ -146,7 +165,7 @@ namespace Linqua.UI
 
 			if (confirmed)
 			{
-				await ApplicationController.DeleteEntryAsync(this);
+				await EntryOperations.DeleteEntryAsync(this);
 
 				OnDeleted();
 			}
@@ -155,6 +174,11 @@ namespace Linqua.UI
 		public async Task UnlearnAsync()
 		{
 			await UpdateIsLearntAsync(false, showConfirmation: false);
+		}
+
+		protected virtual void SetIsLearnt(bool value)
+		{
+			UpdateIsLearntAsync(value).FireAndForget();
 		}
 
 		private async Task UpdateIsLearntAsync(bool value, bool showConfirmation = true)
@@ -183,7 +207,7 @@ namespace Linqua.UI
 			{
 				Entry.IsLearnt = value;
 
-				await ApplicationController.UpdateEntryIsLearnedAsync(this);
+				await EntryOperations.UpdateEntryIsLearnedAsync(this);
 			}
 
 			RaisePropertyChanged(() => IsLearnt);
@@ -206,13 +230,30 @@ namespace Linqua.UI
 			RaisePropertyChanged("");
 		}
 
+		private Task QuickEditSelfAsync()
+		{
+			Guard.Assert(Entry != null, "Entry != null");
+
+			EventAggregator.Publish(new EntryQuickEditRequestedEvent(this));
+
+			return Task.FromResult(true);
+		}
+
 		private Task EditSelfAsync()
 		{
 			Guard.Assert(Entry != null, "Entry != null");
 
-			EventAggregator.Publish(new EntryEditRequestedEvent(this));
+			EventAggregator.Publish(new EntryEditRequestedEvent(Entry.Id));
 
 			return Task.FromResult(true);
+		}
+
+		protected virtual void OnIsTranslatingChangedOverride()
+		{
+		}
+
+		protected virtual void OnTextChangedOverride()
+		{
 		}
 	}
 }

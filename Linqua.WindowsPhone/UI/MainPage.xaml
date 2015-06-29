@@ -132,9 +132,9 @@
 					Opacity="0.4"
 					Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-			<loc:EntryEditorView x:Name="EntryEditorView"
+			<loc:EntryTextEditorView x:Name="EntryEditorView"
 								 Grid.Row="2"
-								 DataContext="{Binding EntryEditorViewModel}"
+								 DataContext="{Binding EntryTextEditorViewModel}"
 								 Margin="20,12,20,22"
 								 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
 								 Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
@@ -169,7 +169,7 @@
 				<AppBarButton x:Uid="ConfirmNewWordButton"
 							  Label="RES_MISSING ConfirmNewWordButton"
 							  Icon="Accept"
-							  Command="{Binding EntryEditorViewModel.FinishCommand}"
+							  Command="{Binding EntryTextEditorViewModel.FinishCommand}"
 							  Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
 			</CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>

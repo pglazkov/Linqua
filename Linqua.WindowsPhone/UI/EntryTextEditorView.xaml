@@ -1,11 +1,11 @@
-﻿<UserControl x:Class="Linqua.UI.EntryEditorView"
+﻿<UserControl x:Class="Linqua.UI.EntryTextEditorView"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:loc="using:Linqua.UI"
 			 mc:Ignorable="d"
-			 d:DataContext="{d:DesignInstance loc:EntryEditorViewModel, IsDesignTimeCreatable=True}"
+			 d:DataContext="{d:DesignInstance loc:EntryTextEditorViewModel, IsDesignTimeCreatable=True}"
 			 d:DesignWidth="250"
 			 d:DesignHeight="150">
 	<Grid>

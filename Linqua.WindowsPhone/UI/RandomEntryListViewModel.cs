@@ -26,18 +26,18 @@ namespace Linqua.UI
 		private readonly Random displayEntriesIndexGenerator = new Random((int)DateTime.UtcNow.Ticks);
 		private bool isPagingControlsVisible;
 		private readonly IStringResourceManager resourceManager;
-		private readonly IApplicationController applicationController;
+		private readonly IEntryOperations entryOperations;
 		private readonly IRoamingSettingsService roamingSettings;
 
 		[ImportingConstructor]
-		public RandomEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IApplicationController applicationController, [NotNull] IRoamingSettingsService roamingSettings)
+		public RandomEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IEntryOperations entryOperations, [NotNull] IRoamingSettingsService roamingSettings)
 	    {
 			Guard.NotNull(resourceManager, () => resourceManager);
-			Guard.NotNull(applicationController, () => applicationController);
+			Guard.NotNull(entryOperations, () => entryOperations);
 			Guard.NotNull(roamingSettings, () => roamingSettings);
 
 		    this.resourceManager = resourceManager;
-			this.applicationController = applicationController;
+			this.entryOperations = entryOperations;
 			this.roamingSettings = roamingSettings;
 
 			RandomEntryViewModels = new ObservableCollection<EntryListItemViewModel>();

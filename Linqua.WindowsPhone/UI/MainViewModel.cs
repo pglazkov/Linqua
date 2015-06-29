@@ -24,7 +24,7 @@ namespace Linqua.UI
 		private readonly IDataStore storage;
 		private readonly IEventAggregator eventAggregator;
 		private readonly IStatusBusyService statusBusyService;
-		private readonly IApplicationController applicationController;
+		private readonly IEntryOperations entryOperations;
 		private readonly ILocalSettingsService localSettingsService;
 		private readonly IStringResourceManager stringResourceManager;
 		private FullEntryListViewModel fullEntryListViewModel;
@@ -49,7 +49,7 @@ namespace Linqua.UI
 					Entries = FakeData.FakeWords
 				};
 
-				EntryEditorViewModel = new EntryEditorViewModel(DesignTimeHelper.EventAggregator);
+				EntryTextEditorViewModel = new EntryTextEditorViewModel(DesignTimeHelper.EventAggregator);
 			}
 
 			SyncCommand = new DelegateCommand(ForceSync);
@@ -63,7 +63,7 @@ namespace Linqua.UI
 			IDataStore storage,
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
-			IApplicationController applicationController,
+			IEntryOperations entryOperations,
 			ILocalSettingsService localSettingsService,
 			IStringResourceManager stringResourceManager)
 			: this()
@@ -72,14 +72,14 @@ namespace Linqua.UI
 			Guard.NotNull(storage, () => storage);
 			Guard.NotNull(eventAggregator, () => eventAggregator);
 			Guard.NotNull(statusBusyService, () => statusBusyService);
-			Guard.NotNull(applicationController, () => applicationController);
+			Guard.NotNull(entryOperations, () => entryOperations);
 			Guard.NotNull(localSettingsService, () => localSettingsService);
 			Guard.NotNull(stringResourceManager, () => stringResourceManager);
 
 			this.storage = storage;
 			this.eventAggregator = eventAggregator;
 			this.statusBusyService = statusBusyService;
-			this.applicationController = applicationController;
+			this.entryOperations = entryOperations;
 			this.localSettingsService = localSettingsService;
 			this.stringResourceManager = stringResourceManager;
 
@@ -87,14 +87,14 @@ namespace Linqua.UI
 
 			FullEntryListViewModel = compositionFactory.Create<FullEntryListViewModel>();
 			RandomEntryListViewModel = compositionFactory.Create<RandomEntryListViewModel>();
-			EntryEditorViewModel = compositionFactory.Create<EntryEditorViewModel>();
+			EntryTextEditorViewModel = compositionFactory.Create<EntryTextEditorViewModel>();
 
 			eventAggregator.GetEvent<EntryEditingFinishedEvent>().Subscribe(OnEntryEditingFinished);
 			eventAggregator.GetEvent<EntryDeletedEvent>().Subscribe(OnEntryDeleted);
 			eventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
 			eventAggregator.GetEvent<EntryUpdatedEvent>().SubscribeWithAsync(OnEntryDefinitionChangedAsync);
 			eventAggregator.GetEvent<EntryDetailsRequestedEvent>().Subscribe(OnEntryDetailsRequested);
-			eventAggregator.GetEvent<EntryEditRequestedEvent>().Subscribe(OnEntryEditRequested);
+			eventAggregator.GetEvent<EntryQuickEditRequestedEvent>().Subscribe(OnEntryQuickEditRequested);
 		}
 
 		public DelegateCommand SendLogsCommand { get; private set; }
@@ -104,7 +104,7 @@ namespace Linqua.UI
 
 		public IMainView View { get; set; }
 
-		public EntryEditorViewModel EntryEditorViewModel { get; private set; }
+		public EntryTextEditorViewModel EntryTextEditorViewModel { get; private set; }
 
 		public bool ShowLearnedEntries
 		{
@@ -306,7 +306,7 @@ namespace Linqua.UI
 
 		public async Task SyncAsync(bool force = false)
 		{
-			using (statusBusyService.Busy("Syncing..."))
+			using (statusBusyService.Busy(CommonBusyType.Syncing))
 			{
 				using (await RefreshLock.LockAsync())
 				{
@@ -341,7 +341,7 @@ namespace Linqua.UI
 		{
 			EventAggregator.Publish(new StopFirstUseTutorialEvent());
 
-			EntryEditorViewModel.Clear();
+			EntryTextEditorViewModel.Clear();
 			IsEntryEditorVisible = true;
 
 			View.FocusEntryCreationView();
@@ -360,7 +360,7 @@ namespace Linqua.UI
 				await UpdateEntryAsync(entry);
 			}
 
-			EntryEditorViewModel.Clear();
+			EntryTextEditorViewModel.Clear();
 		}
 
 		private async Task UpdateEntryAsync(ClientEntry entry)
@@ -371,13 +371,13 @@ namespace Linqua.UI
 			{
 				var vms = FindEntryViewModels(entry);
 
-				var translation = await applicationController.TranslateEntryItemAsync(entry, vms);
+				var translation = await entryOperations.TranslateEntryItemAsync(entry, vms);
 
 				entry.Definition = translation;
 
-				using (statusBusyService.Busy("Saving..."))
+				using (statusBusyService.Busy(CommonBusyType.Saving))
 				{
-					await applicationController.UpdateEntryAsync(entry);
+					await entryOperations.UpdateEntryAsync(entry);
 				}
 
 				await UpdateStatistics();
@@ -440,7 +440,7 @@ namespace Linqua.UI
 
 					EntryListItemViewModel randomListItem;
 
-					using (statusBusyService.Busy("Saving..."))
+					using (statusBusyService.Busy(CommonBusyType.Saving))
 					{
 						addedEntry = await storage.AddEntry(entryToAdd);
 
@@ -452,11 +452,11 @@ namespace Linqua.UI
 
 					if (string.IsNullOrWhiteSpace(addedEntry.Definition))
 					{
-						var translation = await applicationController.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
+						var translation = await entryOperations.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
 
 						addedEntry.Definition = translation;
 
-						await applicationController.UpdateEntryAsync(addedEntry);
+						await entryOperations.UpdateEntryAsync(addedEntry);
 					}
 
 					await UpdateStatistics();
@@ -466,7 +466,7 @@ namespace Linqua.UI
 
 		private void OnEntryAdded(ClientEntry addedEntry)
 		{
-			EntryEditorViewModel.Clear();
+			EntryTextEditorViewModel.Clear();
 			IsEntryEditorVisible = false;
 
 			EventAggregator.Publish(new EntryCreatedEvent(addedEntry));
@@ -474,7 +474,7 @@ namespace Linqua.UI
 
 		private async void OnEntryDeleted(EntryDeletedEvent e)
 		{
-			using (statusBusyService.Busy("Deleting..."))
+			using (statusBusyService.Busy(CommonBusyType.Deleting))
 			{
 				using (await RefreshLock.LockAsync())
 				{
@@ -637,12 +637,12 @@ namespace Linqua.UI
 			}
 		}
 
-		private void OnEntryEditRequested(EntryEditRequestedEvent e)
+		private void OnEntryQuickEditRequested(EntryQuickEditRequestedEvent e)
 		{
 			EventAggregator.Publish(new StopFirstUseTutorialEvent());
 
-			EntryEditorViewModel.Clear();
-			EntryEditorViewModel.Data = e.EntryViewModel.Entry;
+			EntryTextEditorViewModel.Clear();
+			EntryTextEditorViewModel.Data = e.EntryViewModel.Entry;
 			IsEntryEditorVisible = true;
 
 			View.FocusEntryCreationView();

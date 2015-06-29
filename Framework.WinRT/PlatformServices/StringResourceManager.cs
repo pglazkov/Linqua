@@ -4,6 +4,7 @@ using Windows.ApplicationModel.Resources;
 namespace Framework.PlatformServices
 {
 	[Export(typeof(IStringResourceManager))]
+	[Shared]
 	public class StringResourceManager : IStringResourceManager
 	{
 		public string GetString(string key, string defaultValue)
@@ -12,7 +13,7 @@ namespace Framework.PlatformServices
 
 			if (string.IsNullOrEmpty(result))
 			{
-				result = defaultValue;
+				result = defaultValue ?? key;
 			}
 
 			return result;

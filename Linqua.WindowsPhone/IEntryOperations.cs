@@ -6,7 +6,7 @@ using Linqua.UI;
 
 namespace Linqua
 {
-    public interface IApplicationController
+    public interface IEntryOperations
     {
 	    [NotNull]
 	    Task DeleteEntryAsync([NotNull] EntryViewModel entry);

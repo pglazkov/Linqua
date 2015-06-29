@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 namespace Framework.PlatformServices
 {
 	[Export(typeof(IDialogService))]
+	[Shared]
 	public class DialogService : IDialogService
 	{
 		private const string ConfirmationOkButtonTextKey = "DialogService_Confirmation_Ok";

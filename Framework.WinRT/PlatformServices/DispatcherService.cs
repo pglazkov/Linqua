@@ -9,6 +9,7 @@ using Windows.UI.Xaml;
 namespace Framework.PlatformServices
 {
 	[Export(typeof(IDispatcherService))]
+	[Shared]
 	public class DispatcherService : IDispatcherService
 	{
 		private CoreDispatcher Dispatcher

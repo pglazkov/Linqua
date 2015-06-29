@@ -73,6 +73,10 @@ namespace Linqua
 				// Associate the frame with a SuspensionManager key.
 				SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
 
+				// Register the main navigation frame with the application controller.
+	            var applicationController = CompositionManager.GetInstance<ApplicationController>();
+				applicationController.RegisterFrame(rootFrame);
+				
                 // TODO: change this value to a cache size that is appropriate for your application
                 rootFrame.CacheSize = 1;
 
