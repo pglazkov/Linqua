@@ -150,7 +150,7 @@
   <data name="EntryEditPage_SaveButton.Label" xml:space="preserve">
     <value>save</value>
   </data>
-  <data name="EntryEditPage_TranslateButton.Content" xml:space="preserve">
+  <data name="EntryEditPage_TranslateButtonTextBlock.Text" xml:space="preserve">
     <value>translate</value>
   </data>
   <data name="EntryListItemView_TranslatingBusyTextBlock.Text" xml:space="preserve">

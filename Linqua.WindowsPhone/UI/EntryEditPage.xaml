@@ -59,19 +59,29 @@
 				<TextBox Grid.Row="0"
 						 Grid.Column="0"
 						 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						 VerticalAlignment="Bottom"
-						 HorizontalAlignment="Stretch"
-						 FontSize="{ThemeResource TextStyleExtraExtraLargeFontSize}"
+						 FontSize="{ThemeResource TextStyleExtraLargePlusFontSize}"
 						 TextWrapping="Wrap"
 						 IsTextPredictionEnabled="False"
-						 CommonNavigationTransitionInfo.IsStaggerElement="True" />
+						 CommonNavigationTransitionInfo.IsStaggerElement="True"
+						 Padding="10,3,10,8"/>
 
 				<Button Grid.Row="1"
-						x:Uid="EntryEditPage_TranslateButton"
-						Content="RES_MISSING EntryEditPage_TranslateButton"
 						Command="{Binding TranslateCommand}"
 						HorizontalAlignment="Left"
-						Margin="0,0,0,0" />
+						Margin="0,0,0,0">
+					<StackPanel Orientation="Horizontal">
+						<Path Data="M5,18.07L14.68,12.82L12,11.53L10.37,7.8L19,10.6V14.8L8.97,20.87L5,18.07V3.13L9,4.5V14.5L5,18.07Z"
+							  Stretch="Uniform"
+							  Fill="{ThemeResource ApplicationForegroundThemeBrush}"
+							  VerticalAlignment="Center"/>
+
+						<TextBlock x:Uid="EntryEditPage_TranslateButtonTextBlock"
+								   Text="RES_MISSING EntryEditPage_TranslateButtonTextBlock"
+								   VerticalAlignment="Center"
+								   Margin="6,0,0,3"/>
+					</StackPanel>
+					
+				</Button>
 				
 				<TextBlock x:Uid="TranslationTitleTextBlock"
 						   Grid.Row="2"
@@ -90,6 +100,8 @@
 							 Text="{Binding Definition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 							 HorizontalAlignment="Stretch"
 							 TextWrapping="Wrap"
+							 AcceptsReturn="True"
+							 Height="90"
 							 IsTextPredictionEnabled="False"
 							 CommonNavigationTransitionInfo.IsStaggerElement="True"
 							 IsEnabled="{Binding IsTranslating, Converter={StaticResource InvertedBooleanConverter}}"/>
