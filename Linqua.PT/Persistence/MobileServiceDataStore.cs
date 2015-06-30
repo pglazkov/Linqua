@@ -90,6 +90,7 @@ namespace Linqua.Persistence
 					var parameters = new Dictionary<string, string>();
 
 					parameters.Add("entryText", example.Text);
+					parameters.Add("excludeId", example.Id);
 
 					var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("EntryLookup", HttpMethod.Post, parameters);
 
