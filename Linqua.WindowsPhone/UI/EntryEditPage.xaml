@@ -67,7 +67,7 @@
 
 				<Button Grid.Row="1"
 						Command="{Binding TranslateCommand}"
-						HorizontalAlignment="Left"
+						HorizontalAlignment="Center"
 						Margin="0,0,0,0">
 					<StackPanel Orientation="Horizontal">
 						<Path Data="M5,18.07L14.68,12.82L12,11.53L10.37,7.8L19,10.6V14.8L8.97,20.87L5,18.07V3.13L9,4.5V14.5L5,18.07Z"
@@ -78,16 +78,16 @@
 						<TextBlock x:Uid="EntryEditPage_TranslateButtonTextBlock"
 								   Text="RES_MISSING EntryEditPage_TranslateButtonTextBlock"
 								   VerticalAlignment="Center"
-								   Margin="6,0,0,3"/>
+								   Margin="6,0,0,1"/>
 					</StackPanel>
 					
 				</Button>
 				
-				<TextBlock x:Uid="TranslationTitleTextBlock"
+				<!--<TextBlock x:Uid="TranslationTitleTextBlock"
 						   Grid.Row="2"
 						   Text="RES_MISSING TranslationTitleTextBlock"
 						   Style="{ThemeResource ControlHeaderTextBlockStyle}"
-						   Margin="0,0,0,0"/>
+						   Margin="0,0,0,0"/>-->
 				
 				<Grid Grid.Row="3"
 					  Margin="0,0,0,0">
