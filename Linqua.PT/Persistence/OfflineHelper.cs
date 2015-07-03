@@ -40,9 +40,9 @@ namespace Linqua.Persistence
 			}
 		}
 
-		public static AwaitableDisposable<IDisposable> AcquireDataAccessLockAsync()
+		public static AwaitableDisposable<IDisposable> AcquireDataAccessLockAsync(CancellationToken? cancellationToken = null)
 		{
-			return SyncLock.LockAsync();
+			return SyncLock.LockAsync(cancellationToken ?? CancellationToken.None);
 		}
 
 		public static async Task DoInitialPullIfNeededAsync(OfflineSyncArguments args = null)

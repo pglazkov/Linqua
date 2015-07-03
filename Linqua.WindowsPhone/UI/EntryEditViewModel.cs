@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Framework;
 using Framework.PlatformServices;
@@ -16,6 +17,7 @@ namespace Linqua.UI
 		private readonly IEntryOperations entryOperations;
 		private Lazy<ITranslationService> translator;
 		private bool isLoadingData;
+		private CancellationTokenSource loadDataCts = new CancellationTokenSource();
 
 		public EntryEditViewModel(IEventAggregator eventAggregator)
 			: base(eventAggregator)
@@ -78,9 +80,15 @@ namespace Linqua.UI
 
 				try
 				{
+					var ct = loadDataCts.Token;
+
 					await storage.InitializeAsync();
 
-					Entry = await storage.LookupById(entryId);
+					Entry = await storage.LookupById(entryId, ct);
+				}
+				catch (OperationCanceledException)
+				{
+					
 				}
 				finally
 				{
@@ -109,7 +117,7 @@ namespace Linqua.UI
 
 		private bool CanSave()
 		{
-			return true;
+			return Entry != null;
 		}
 
 		private void Cancel()
@@ -139,6 +147,20 @@ namespace Linqua.UI
 			base.OnIsTranslatingChangedOverride();
 
 			TranslateCommand.RaiseCanExecuteChanged();
+		}
+
+		protected override void OnEntryChangedOverride()
+		{
+			base.OnEntryChangedOverride();
+
+			TranslateCommand.RaiseCanExecuteChanged();
+			SaveCommand.RaiseCanExecuteChanged();
+		}
+
+		protected override void CleanupOverride()
+		{
+			loadDataCts.Cancel();
+			loadDataCts = new CancellationTokenSource();
 		}
 	}
 }

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Framework;
 using JetBrains.Annotations;
@@ -67,11 +68,11 @@ namespace Linqua.Persistence
 			}
 		}
 
-		public async Task<ClientEntry> LookupById(string entryId)
+		public async Task<ClientEntry> LookupById(string entryId, CancellationToken? cancellationToken)
 		{
 			Guard.NotNull(entryId, () => entryId);
 
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			using (await OfflineHelper.AcquireDataAccessLockAsync(cancellationToken))
 			{
 				var result = await entrySyncTable.LookupAsync(entryId);
 

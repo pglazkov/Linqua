@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Framework;
 using Framework.PlatformServices;
@@ -14,13 +15,14 @@ namespace Linqua.UI
 		private readonly IStatusBusyService statusBusyService;
 		private Lazy<ITranslationService> translator;
 		private bool isLoadingData;
+		private CancellationTokenSource loadDataCts = new CancellationTokenSource();
 
 		public EntryDetailsViewModel(IEventAggregator eventAggregator)
 			: base(eventAggregator)
 		{
 			GoHomeCommand = new DelegateCommand(GoHome);
-			MarkLearnedCommand = new DelegateCommand(() => IsLearnt = true);
-			MarkNotLearnedCommand = new DelegateCommand(() => IsLearnt = false);
+			MarkLearnedCommand = new DelegateCommand(() => IsLearnt = true, CanChangeIsLearned);
+			MarkNotLearnedCommand = new DelegateCommand(() => IsLearnt = false, CanChangeIsLearned);
 		}
 
 		public EntryDetailsViewModel(
@@ -72,9 +74,14 @@ namespace Linqua.UI
 
 				try
 				{
+					var ct = loadDataCts.Token;
+
 					await storage.InitializeAsync();
 
-					Entry = await storage.LookupById(entryId);
+					Entry = await storage.LookupById(entryId, ct);
+				}
+				catch (OperationCanceledException)
+				{
 				}
 				finally
 				{
@@ -96,6 +103,20 @@ namespace Linqua.UI
 		protected override void OnEntryChangedOverride()
 		{
 			RaisePropertyChanged(() => Text);
+			MarkLearnedCommand.RaiseCanExecuteChanged();
+			MarkNotLearnedCommand.RaiseCanExecuteChanged();
 		}
+
+		private bool CanChangeIsLearned()
+		{
+			return Entry != null;
+		}
+
+		protected override void CleanupOverride()
+		{
+			loadDataCts.Cancel();
+			loadDataCts = new CancellationTokenSource();
+		}
+
 	}
 }

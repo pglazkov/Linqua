@@ -105,6 +105,8 @@ namespace Linqua.UI
 		protected override void OnNavigatedFrom(NavigationEventArgs e)
 		{
 			navigationHelper.OnNavigatedFrom(e);
+
+			ViewModel.Cleanup();
 		}
 
 		#endregion

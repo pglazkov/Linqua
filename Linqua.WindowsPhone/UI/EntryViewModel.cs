@@ -25,9 +25,9 @@ namespace Linqua.UI
 						   .ObserveOnDispatcher()
 			               .SubscribeWeakly(this, (this_, e) => this_.OnEntryUpdated(e));
 
-			DeleteCommand = new DelegateCommand(() => DeleteSelfAsync().FireAndForget());
-			QuickEditCommand = new DelegateCommand(() => QuickEditSelfAsync().FireAndForget());
-			EditCommand = new DelegateCommand(() => EditSelfAsync().FireAndForget());
+			DeleteCommand = new DelegateCommand(() => DeleteSelfAsync().FireAndForget(), CanDeleteSelf);
+			QuickEditCommand = new DelegateCommand(() => QuickEditSelfAsync().FireAndForget(), CanQuickEditSelf);
+			EditCommand = new DelegateCommand(() => EditSelfAsync().FireAndForget(), CanEditSelf);
 		}
 
 		public EntryViewModel(ClientEntry entry, [NotNull] IEventAggregator eventAggregator)
@@ -63,6 +63,11 @@ namespace Linqua.UI
 				RaisePropertyChanged(() => IsLearnStatusText);
 				RaisePropertyChanged(() => Definition);
 				RaisePropertyChanged(() => IsDefinitionVisible);
+
+				DeleteCommand.RaiseCanExecuteChanged();
+				QuickEditCommand.RaiseCanExecuteChanged();
+				EditCommand.RaiseCanExecuteChanged();
+
 				OnIsTranslatingChangedOverride();
 				OnEntryChangedOverride();
 			}
@@ -154,6 +159,11 @@ namespace Linqua.UI
 			get { return !string.IsNullOrEmpty(Definition) || IsTranslating; }
 		}
 
+		private bool CanDeleteSelf()
+		{
+			return Entry != null;
+		}
+
 		private async Task DeleteSelfAsync()
 		{
 			Guard.Assert(Entry != null, "Entry != null");
@@ -230,6 +240,11 @@ namespace Linqua.UI
 			RaisePropertyChanged("");
 		}
 
+		private bool CanQuickEditSelf()
+		{
+			return Entry != null;
+		}
+
 		private Task QuickEditSelfAsync()
 		{
 			Guard.Assert(Entry != null, "Entry != null");
@@ -237,6 +252,11 @@ namespace Linqua.UI
 			EventAggregator.Publish(new EntryQuickEditRequestedEvent(this));
 
 			return Task.FromResult(true);
+		}
+
+		private bool CanEditSelf()
+		{
+			return Entry != null;
 		}
 
 		private Task EditSelfAsync()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Composition;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Linqua.DataObjects;
 
@@ -31,7 +32,7 @@ namespace Linqua.Persistence
 			});
 		}
 
-		public Task<ClientEntry> LookupById(string entryId)
+		public Task<ClientEntry> LookupById(string entryId, CancellationToken? cancellationToken)
 		{
 			return Task.Factory.StartNew(() =>
 			{
