@@ -48,6 +48,11 @@
     <Compile Include="FrameworkPhone.cs" />
     <Compile Include="Logging\FileTargetBase.cs" />
     <Compile Include="Logging\LoggingLayout.cs" />
+    <Compile Include="NotificationExtensions\BadgeContent.cs" />
+    <Compile Include="NotificationExtensions\Common.cs" />
+    <Compile Include="NotificationExtensions\ContentInterfaces.cs" />
+    <Compile Include="NotificationExtensions\TileContent.cs" />
+    <Compile Include="NotificationExtensions\ToastContent.cs" />
     <Compile Include="PlatformServices\DesignModeDetectionService.cs" />
     <Compile Include="PlatformServices\DialogService.cs" />
     <Compile Include="PlatformServices\DispatcherService.cs" />
