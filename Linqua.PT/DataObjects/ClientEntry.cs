@@ -9,7 +9,6 @@ namespace Linqua.DataObjects
 		{
 			var result = new ClientEntry
 			{
-				Id = Guid.NewGuid().ToString(),
 				CreatedAt = DateTimeOffset.Now,
 				Text = text
 			};

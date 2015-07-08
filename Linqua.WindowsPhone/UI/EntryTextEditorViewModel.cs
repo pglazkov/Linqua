@@ -82,12 +82,14 @@ namespace Linqua.UI
 		{
 			IsBusy = true;
 
-			if (Data == null)
+			if (data == null)
 			{
-				Data = new ClientEntry();
+				data = ClientEntry.CreateNew(EntryText);
 			}
-
-			Data.Text = EntryText;
+			else
+			{
+				Data.Text = EntryText;
+			}
 
 			eventAggregator.Publish(new EntryEditingFinishedEvent(Data));
 		}
