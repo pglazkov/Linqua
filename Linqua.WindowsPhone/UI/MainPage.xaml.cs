@@ -118,6 +118,7 @@ namespace Linqua.UI
 	    private async Task SetUpBackgroundTasksAsync()
 	    {
 		    syncBackgroundTask = await BackgroundTaskHelper.RegisterSyncTask();
+		    await BackgroundTaskHelper.RegisterLiveTileUpdateTask();
 	    }
 
 	    private void OnSyncCompleted(BackgroundTaskRegistration sender, BackgroundTaskCompletedEventArgs args)

@@ -1,11 +1,7 @@
 ﻿using System;
 using Windows.ApplicationModel.Background;
-using Windows.Storage;
-using Framework.Logging;
 using Linqua.Persistence;
 using MetroLog;
-using MetroLog.Targets;
-using FileStreamingTarget = MetroLog.Targets.FileStreamingTarget;
 
 namespace Linqua.BackgroundTasks
 {
@@ -15,7 +11,7 @@ namespace Linqua.BackgroundTasks
 
 		static SynchronizationTask()
 		{
-			SetupLogger();
+			LoggerHelper.SetupLogger();
 			Log = LogManagerFactory.DefaultLogManager.GetLogger<SynchronizationTask>();
 		}
 
@@ -29,7 +25,7 @@ namespace Linqua.BackgroundTasks
 			try
 			{
 				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
-
+				
 				if (authenticatedSilently)
 				{
 					IDataStore storage = new MobileServiceDataStore(new SyncHandler());
@@ -54,20 +50,6 @@ namespace Linqua.BackgroundTasks
 			{
 				deferral.Complete();
 			}
-		}
-
-
-		private static void SetupLogger()
-		{
-			var configuration = new LoggingConfiguration();
-#if DEBUG
-			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new DebugTarget(new LoggingLayout()));
-#endif
-			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new FileStreamingTarget(new LoggingLayout()));
-
-			configuration.IsEnabled = true;
-
-			LogManagerFactory.DefaultConfiguration = configuration;
 		}
     }
 }
