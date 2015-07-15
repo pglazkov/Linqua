@@ -23,6 +23,9 @@ namespace Linqua.Persistence
 		Task<ClientEntry> LookupByExample([NotNull] ClientEntry example);
 
 		[NotNull]
+		Task<ClientEntry> GetRandomEntry(string excludeId = null);
+
+		[NotNull]
 		Task<ClientEntry> AddEntry([NotNull] ClientEntry newEntry);
 
 		[NotNull]
@@ -32,7 +35,7 @@ namespace Linqua.Persistence
 		Task UpdateEntry([NotNull] ClientEntry entry);
 
 		[NotNull]
-		Task InitializeAsync();
+		Task InitializeAsync(bool doInitialPoolIfNeeded = true);
 
 		[NotNull]
 		Task EnqueueSync(OfflineSyncArguments args = null);

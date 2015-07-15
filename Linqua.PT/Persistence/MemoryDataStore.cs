@@ -48,6 +48,17 @@ namespace Linqua.Persistence
 			});
 		}
 
+		public Task<ClientEntry> GetRandomEntry(string excludeId = null)
+		{
+			var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
+
+			var randomIndex = indexGenerator.Next(0, FakeData.FakeWords.Count - 1);
+
+			var randomEntry = FakeData.FakeWords[randomIndex];
+
+			return Task.FromResult(randomEntry);
+		}
+
 		public Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{
 			FakeData.FakeWords.Add(newEntry);
@@ -70,7 +81,7 @@ namespace Linqua.Persistence
 			return Task.FromResult(true);
 		}
 
-		public Task InitializeAsync()
+		public Task InitializeAsync(bool doInitialPoolIfNeeded)
 		{
 			return Task.FromResult(true);
 		}

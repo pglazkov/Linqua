@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
 using Framework.NotificationExtensions;
 using Framework.NotificationExtensions.TileContent;
+using Linqua.Persistence;
 using MetroLog;
 
 namespace Linqua.BackgroundTasks
@@ -10,37 +12,109 @@ namespace Linqua.BackgroundTasks
 	public sealed class LiveTileUpdateTask : IBackgroundTask
 	{
 		private static readonly ILogger Log;
-
+		  
 		static LiveTileUpdateTask()
 		{
 			LoggerHelper.SetupLogger();
 			Log = LogManagerFactory.DefaultLogManager.GetLogger<LiveTileUpdateTask>();
 		}
 
-		public void Run(IBackgroundTaskInstance taskInstance)
+		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			var tileTextContent = "Hello World! Current time is: " + DateTime.Now.ToString("T");
+			if (Log.IsDebugEnabled)
+				Log.Debug("Live tile update background task starting");
 
-			ITileSquare310x310Text09 tileContent = TileContentFactory.CreateTileSquare310x310Text09();
-			tileContent.TextHeadingWrap.Text = tileTextContent;
+			var deferral = taskInstance.GetDeferral();
 
-			// Create a notification for the Wide310x150 tile using one of the available templates for the size.
-			ITileWide310x150Text03 wide310x150Content = TileContentFactory.CreateTileWide310x150Text03();
-			wide310x150Content.TextHeadingWrap.Text = tileTextContent;
+			try
+			{
+				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
-			// Create a notification for the Square150x150 tile using one of the available templates for the size.
-			ITileSquare150x150Text04 square150x150Content = TileContentFactory.CreateTileSquare150x150Text04();
-			square150x150Content.TextBodyWrap.Text = tileTextContent;
+				if (authenticatedSilently)
+				{
+					var dataTile = await CreateDataTileAsync();
 
-			// Attach the Square150x150 template to the Wide310x150 template.
-			wide310x150Content.Square150x150Content = square150x150Content;
+					if (dataTile != null)
+					{
+						var appLogoTile = CreateAppLogoTile();
 
-			// Attach the Wide310x150 template to the Square310x310 template.
-			tileContent.Wide310x150Content = wide310x150Content;
+						TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
+						TileUpdateManager.CreateTileUpdaterForApplication().Clear();
+						TileUpdateManager.CreateTileUpdaterForApplication().Update(appLogoTile);
+						TileUpdateManager.CreateTileUpdaterForApplication().Update(dataTile);
+					}
+					else
+					{
+						if (Log.IsDebugEnabled)
+							Log.Debug("There is no data for the tile update.");
+					}
+				}
+				else
+				{
+					if (Log.IsWarnEnabled)
+						Log.Warn("Authentication failed.");
+				}
 
-			// Send the notification to the application? tile.
-			var tileNotification = tileContent.CreateNotification();
-			TileUpdateManager.CreateTileUpdaterForApplication().Update(tileNotification);
+				if (Log.IsDebugEnabled)
+					Log.Debug("Live tile update background task completed");
+			}
+			catch (Exception ex)
+			{
+				if (Log.IsErrorEnabled)
+					Log.Error("An error occured while trying to update the live tile.", ex);
+
+				throw;
+			}
+			finally
+			{
+				deferral.Complete();
+			}
+		}
+
+		private static async Task<TileNotification> CreateDataTileAsync()
+		{
+			IDataStore storage = new MobileServiceDataStore(new SyncHandler());
+			await storage.InitializeAsync(doInitialPoolIfNeeded: false);
+
+			var randomEntry = await storage.GetRandomEntry();
+
+			if (randomEntry != null)
+			{
+				var tileHeading = randomEntry.Text;
+				var tileText = randomEntry.Definition;
+
+				ITileWide310x150Text01 textWide310X150 = TileContentFactory.CreateTileWide310x150Text01();
+				textWide310X150.TextHeading.Text = tileHeading;
+				textWide310X150.TextBody1.Text = tileText;
+
+				ITileSquare150x150Text01 textSquare150X150 = TileContentFactory.CreateTileSquare150x150Text01();
+				textSquare150X150.TextHeading.Text = tileHeading;
+				textSquare150X150.TextBody1.Text = tileText;
+
+				textWide310X150.Square150x150Content = textSquare150X150;
+
+				var textTileNotification = textWide310X150.CreateNotification();
+
+				return textTileNotification;
+			}
+
+			return null;
+		}
+
+		private static TileNotification CreateAppLogoTile()
+		{
+			var imageSquare150X150 = TileContentFactory.CreateTileSquare150x150Image();
+			imageSquare150X150.Image.Src = "ms-appx:///Assets/Logo.png";
+			imageSquare150X150.Branding = TileBranding.None;
+
+			var imageWide310X150 = TileContentFactory.CreateTileWide310x150Image();
+			imageWide310X150.Image.Src = "ms-appx:///Assets/WideLogo.png";
+			imageWide310X150.Branding = TileBranding.None;
+
+			imageWide310X150.Square150x150Content = imageSquare150X150;
+			
+
+			return imageWide310X150.CreateNotification();
 		}
 	}
 }

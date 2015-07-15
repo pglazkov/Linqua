@@ -109,6 +109,36 @@ namespace Linqua.Persistence
 			return null;
 		}
 
+		public async Task<ClientEntry> GetRandomEntry(string excludeId = null)
+		{
+			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			{
+				if (ConnectionHelper.IsConnectedToInternet)
+				{
+					var parameters = new Dictionary<string, string>();
+
+					parameters.Add("excludeId", excludeId ?? Guid.NewGuid().ToString());
+
+					var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("RandomEntry", HttpMethod.Get, parameters);
+
+					return serviceResult;
+				}
+
+				var existingEntiesInLocalStorage = await entrySyncTable.Where(x => !x.IsLearnt && !Equals(x.Id, excludeId)).ToListAsync();
+
+				if (existingEntiesInLocalStorage.Count > 0)
+				{
+					var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
+					var randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
+					var randomEntry = existingEntiesInLocalStorage[randomIndex];
+
+					return randomEntry;
+				}
+			}
+
+			return null;
+		}
+
 		public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{
 			ClientEntry resultEntry = null;
@@ -157,10 +187,14 @@ namespace Linqua.Persistence
 			OfflineHelper.EnqueueSync().FireAndForget();
 		}
 
-		public async Task InitializeAsync()
+		public async Task InitializeAsync(bool doInitialPoolIfNeeded)
 		{
 			await OfflineHelper.InitializeAsync(syncHandler);
-			await OfflineHelper.DoInitialPullIfNeededAsync();
+
+			if (doInitialPoolIfNeeded)
+			{
+				await OfflineHelper.DoInitialPullIfNeededAsync();
+			}
 		}
 
 		public Task EnqueueSync(OfflineSyncArguments args = null)

@@ -17,8 +17,8 @@ namespace Linqua.BackgroundTasks
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			if (Log.IsInfoEnabled)
-				Log.Info("Synchronization background task starting");
+			if (Log.IsDebugEnabled)
+				Log.Debug("Synchronization background task starting");
 
 			var deferral = taskInstance.GetDeferral();
 
@@ -38,8 +38,8 @@ namespace Linqua.BackgroundTasks
 						Log.Warn("Authentication failed.");
 				}
 
-				if (Log.IsInfoEnabled)
-					Log.Info("Synchronization background task completed");
+				if (Log.IsDebugEnabled)
+					Log.Debug("Synchronization background task completed");
 			}
 			catch (Exception ex)
 			{

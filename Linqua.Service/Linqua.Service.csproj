@@ -196,6 +196,7 @@
     <Compile Include="Controllers\ClientEntryController.cs" />
     <Compile Include="Controllers\EntryDomainManager.cs" />
     <Compile Include="Controllers\EntryLookupController.cs" />
+    <Compile Include="Controllers\RandomEntryController.cs" />
     <Compile Include="DataObjects\ClientEntry.cs" />
     <Compile Include="Migrations\201501251238040_InitialCreate.cs" />
     <Compile Include="Migrations\201501251238040_InitialCreate.Designer.cs">
