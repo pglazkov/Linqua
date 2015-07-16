@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
 using Framework.NotificationExtensions;
-using Framework.NotificationExtensions.TileContent;
 using Linqua.Persistence;
 using MetroLog;
 
@@ -36,11 +35,6 @@ namespace Linqua.BackgroundTasks
 
 					if (dataTile != null)
 					{
-						var appLogoTile = CreateAppLogoTile();
-
-						TileUpdateManager.CreateTileUpdaterForApplication().EnableNotificationQueue(true);
-						TileUpdateManager.CreateTileUpdaterForApplication().Clear();
-						TileUpdateManager.CreateTileUpdaterForApplication().Update(appLogoTile);
 						TileUpdateManager.CreateTileUpdaterForApplication().Update(dataTile);
 					}
 					else
@@ -83,38 +77,22 @@ namespace Linqua.BackgroundTasks
 				var tileHeading = randomEntry.Text;
 				var tileText = randomEntry.Definition;
 
-				ITileWide310x150Text01 textWide310X150 = TileContentFactory.CreateTileWide310x150Text01();
-				textWide310X150.TextHeading.Text = tileHeading;
-				textWide310X150.TextBody1.Text = tileText;
+				var wideTile = TileContentFactory.CreateTileWide310x150Text01();
+				wideTile.TextHeading.Text = tileHeading;
+				wideTile.TextBody1.Text = tileText;
 
-				ITileSquare150x150Text01 textSquare150X150 = TileContentFactory.CreateTileSquare150x150Text01();
-				textSquare150X150.TextHeading.Text = tileHeading;
-				textSquare150X150.TextBody1.Text = tileText;
+				var squareTile = TileContentFactory.CreateTileSquare150x150Text01();
+				squareTile.TextHeading.Text = tileHeading;
+				squareTile.TextBody1.Text = tileText;
 
-				textWide310X150.Square150x150Content = textSquare150X150;
+				wideTile.Square150x150Content = squareTile;
 
-				var textTileNotification = textWide310X150.CreateNotification();
+				var notification = wideTile.CreateNotification();
 
-				return textTileNotification;
+				return notification;
 			}
 
 			return null;
-		}
-
-		private static TileNotification CreateAppLogoTile()
-		{
-			var imageSquare150X150 = TileContentFactory.CreateTileSquare150x150Image();
-			imageSquare150X150.Image.Src = "ms-appx:///Assets/Logo.png";
-			imageSquare150X150.Branding = TileBranding.None;
-
-			var imageWide310X150 = TileContentFactory.CreateTileWide310x150Image();
-			imageWide310X150.Image.Src = "ms-appx:///Assets/WideLogo.png";
-			imageWide310X150.Branding = TileBranding.None;
-
-			imageWide310X150.Square150x150Content = imageSquare150X150;
-			
-
-			return imageWide310X150.CreateNotification();
 		}
 	}
 }
