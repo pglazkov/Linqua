@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Notifications;
-using Framework.NotificationExtensions;
 using Linqua.Persistence;
 using MetroLog;
+using NotificationsExtensions.TileContent;
 
 namespace Linqua.BackgroundTasks
 {
@@ -77,11 +77,13 @@ namespace Linqua.BackgroundTasks
 				var tileHeading = randomEntry.Text;
 				var tileText = randomEntry.Definition;
 
-				var wideTile = TileContentFactory.CreateTileWide310x150Text01();
+				var wideTile = TileContentFactory.CreateTileWide310x150PeekImage01();
+				wideTile.Image.Src = "ms-appx:///Assets/WideLogo.png";
 				wideTile.TextHeading.Text = tileHeading;
-				wideTile.TextBody1.Text = tileText;
+				wideTile.TextBodyWrap.Text = tileText;
 
-				var squareTile = TileContentFactory.CreateTileSquare150x150Text01();
+				var squareTile = TileContentFactory.CreateTileSquare150x150PeekImageAndText01();
+				squareTile.Image.Src = "ms-appx:///Assets/Logo.png";
 				squareTile.TextHeading.Text = tileHeading;
 				squareTile.TextBody1.Text = tileText;
 
