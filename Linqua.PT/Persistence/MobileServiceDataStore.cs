@@ -36,74 +36,62 @@ namespace Linqua.Persistence
 
 		public async Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
 		{
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
+
+			if (filter != null)
 			{
-				IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
-				
-				if (filter != null)
-				{
-					query = query.Where(filter);
-				}
-
-				query = query.OrderByDescending(x => x.CreatedAt);
-
-				return await query.ToListAsync();
+				query = query.Where(filter);
 			}
+
+			query = query.OrderByDescending(x => x.CreatedAt);
+
+			return await query.ToListAsync();
 		}
 
 		public async Task<long> GetCount(Expression<Func<ClientEntry, bool>> filter)
 		{
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
+
+			if (filter != null)
 			{
-				IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
-
-				if (filter != null)
-				{
-					query = query.Where(filter);
-				}
-
-				var result = (await query.ToEnumerableAsync()).Count();
-
-				return result;
+				query = query.Where(filter);
 			}
+
+			var result = (await query.ToEnumerableAsync()).Count();
+
+			return result;
 		}
 
 		public async Task<ClientEntry> LookupById(string entryId, CancellationToken? cancellationToken)
 		{
 			Guard.NotNull(entryId, () => entryId);
 
-			using (await OfflineHelper.AcquireDataAccessLockAsync(cancellationToken))
-			{
-				var result = await entrySyncTable.LookupAsync(entryId);
+			var result = await entrySyncTable.LookupAsync(entryId);
 
-				return result;
-			}
+			return result;
 		}
 
 		public async Task<ClientEntry> LookupByExample(ClientEntry example)
 		{
 			Guard.Assert(!string.IsNullOrEmpty(example.Text), "!string.IsNullOrEmpty(example.Text)");
 
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			if (ConnectionHelper.IsConnectedToInternet)
 			{
-				if (ConnectionHelper.IsConnectedToInternet)
-				{
-					var parameters = new Dictionary<string, string>();
+				var parameters = new Dictionary<string, string>();
 
-					parameters.Add("entryText", example.Text);
-					parameters.Add("excludeId", example.Id);
+				parameters.Add("entryText", example.Text);
+				parameters.Add("excludeId", example.Id);
 
-					var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("EntryLookup", HttpMethod.Post, parameters);
+				var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("EntryLookup", HttpMethod.Post, parameters);
 
-					return serviceResult;
-				}
+				return serviceResult;
+			}
 
-				var existingEntiesInLocalStorage = await entrySyncTable.Where(x => x.Text == example.Text && x.Id != example.Id).ToListAsync();
+			var existingEntiesInLocalStorage = await entrySyncTable.Where(x => x.Text == example.Text && x.Id != example.Id).ToListAsync();
 
-				if (existingEntiesInLocalStorage.Count > 0)
-				{
-					return existingEntiesInLocalStorage[0];
-				}
+			if (existingEntiesInLocalStorage.Count > 0)
+			{
+				return existingEntiesInLocalStorage[0];
 			}
 
 			return null;
@@ -111,29 +99,26 @@ namespace Linqua.Persistence
 
 		public async Task<ClientEntry> GetRandomEntry(string excludeId = null)
 		{
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			if (ConnectionHelper.IsConnectedToInternet)
 			{
-				if (ConnectionHelper.IsConnectedToInternet)
-				{
-					var parameters = new Dictionary<string, string>();
+				var parameters = new Dictionary<string, string>();
 
-					parameters.Add("excludeId", excludeId ?? Guid.NewGuid().ToString());
+				parameters.Add("excludeId", excludeId ?? Guid.NewGuid().ToString());
 
-					var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("RandomEntry", HttpMethod.Get, parameters);
+				var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("RandomEntry", HttpMethod.Get, parameters);
 
-					return serviceResult;
-				}
+				return serviceResult;
+			}
 
-				var existingEntiesInLocalStorage = await entrySyncTable.Where(x => !x.IsLearnt && !Equals(x.Id, excludeId)).ToListAsync();
+			var existingEntiesInLocalStorage = await entrySyncTable.Where(x => !x.IsLearnt && !Equals(x.Id, excludeId)).ToListAsync();
 
-				if (existingEntiesInLocalStorage.Count > 0)
-				{
-					var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
-					var randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
-					var randomEntry = existingEntiesInLocalStorage[randomIndex];
+			if (existingEntiesInLocalStorage.Count > 0)
+			{
+				var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
+				var randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
+				var randomEntry = existingEntiesInLocalStorage[randomIndex];
 
-					return randomEntry;
-				}
+				return randomEntry;
 			}
 
 			return null;
@@ -143,23 +128,20 @@ namespace Linqua.Persistence
 		{
 			ClientEntry resultEntry = null;
 
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
+			var existingEntries = await entrySyncTable.Where(x => x.Text == newEntry.Text).ToListAsync();
+
+			if (existingEntries.Count > 0)
 			{
-				var existingEntries = await entrySyncTable.Where(x => x.Text == newEntry.Text).ToListAsync();
+				resultEntry = existingEntries[0];
+				resultEntry.IsLearnt = false;
 
-				if (existingEntries.Count > 0)
-				{
-					resultEntry = existingEntries[0];
-					resultEntry.IsLearnt = false;
+				await entrySyncTable.UpdateAsync(resultEntry);
+			}
+			else
+			{
+				resultEntry = newEntry;
 
-					await entrySyncTable.UpdateAsync(resultEntry);
-				}
-				else
-				{
-					resultEntry = newEntry;
-
-					await entrySyncTable.InsertAsync(newEntry);
-				}
+				await entrySyncTable.InsertAsync(newEntry);
 			}
 
 			OfflineHelper.EnqueueSync().FireAndForget();
@@ -169,20 +151,14 @@ namespace Linqua.Persistence
 
 		public async Task DeleteEntry(ClientEntry entry)
 		{
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
-			{
-				await entrySyncTable.DeleteAsync(entry);
-			}
+			await entrySyncTable.DeleteAsync(entry);
 
 			OfflineHelper.EnqueueSync().FireAndForget();
 		}
 
 		public async Task UpdateEntry(ClientEntry entry)
 		{
-			using (await OfflineHelper.AcquireDataAccessLockAsync())
-			{
-				await entrySyncTable.UpdateAsync(entry);
-			}
+			await entrySyncTable.UpdateAsync(entry);
 
 			OfflineHelper.EnqueueSync().FireAndForget();
 		}
