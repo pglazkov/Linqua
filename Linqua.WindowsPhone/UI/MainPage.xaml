@@ -184,7 +184,8 @@
 
 				<AppBarButton x:Uid="SendLogsButton"
 							  Label="RES_MISSING (advanced) share logs"
-							  Command="{Binding SendLogsCommand}" />
+							  Command="{Binding SendLogsCommand}"
+							  Visibility="{Binding IsSendLogsOptionAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 			</CommandBar.SecondaryCommands>
 		</CommandBar>
 	</Page.BottomAppBar>

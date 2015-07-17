@@ -221,6 +221,18 @@ namespace Linqua.UI
 			}
 		}
 
+		public bool IsSendLogsOptionAvailable
+		{
+			get
+			{
+#if DEBUG
+				return true;
+#else
+				return false;
+#endif
+			}
+		}
+
 		public void Initialize()
 		{
 			InitializeAsync().FireAndForget();

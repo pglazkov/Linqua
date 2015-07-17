@@ -37,7 +37,12 @@ namespace Linqua
 #if DEBUG
 			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new DebugTarget(new LoggingLayout()));
 #endif
-		    configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, FileStreamingTarget.Instance);
+#if DEBUG
+		    var minLogLevelForFileTarget = LogLevel.Debug;
+#else
+			var minLogLevelForFileTarget = LogLevel.Warn;
+#endif
+			configuration.AddTarget(minLogLevelForFileTarget, LogLevel.Fatal, FileStreamingTarget.Instance);
 
 			configuration.IsEnabled = true;
 			
