@@ -7,8 +7,6 @@ namespace Linqua.UI
 {
 	public partial class EntryListItemView : UserControl, IEntryListItemView
 	{
-		private bool isLoaded;
-
 		public EntryListItemView()
 		{
 			InitializeComponent();
@@ -25,14 +23,12 @@ namespace Linqua.UI
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{
-			isLoaded = true;
-
-			AnimateJustAddedIfNeeded();
+		
 		}
 
 		private void OnUnloaded(object sender, RoutedEventArgs e)
 		{
-			isLoaded = false;
+		
 		}
 
 		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -42,26 +38,6 @@ namespace Linqua.UI
 			if (newVm != null)
 			{
 				newVm.View = this;
-			}
-
-			if (isLoaded)
-			{
-				AnimateJustAddedIfNeeded();
-			}
-		}
-
-		private void AnimateJustAddedIfNeeded()
-		{
-			if (ViewModel == null)
-			{
-				return;
-			}
-
-			if (ViewModel.JustAdded)
-			{
-				var storyboard = (Storyboard)Resources["FlashBackgroundStoryboard"];
-
-				storyboard.Begin();
 			}
 		}
 

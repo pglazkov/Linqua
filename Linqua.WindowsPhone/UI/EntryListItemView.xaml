@@ -16,21 +16,6 @@
 				<ResourceDictionary Source="../Resources/CommonResources.xaml" />
 			</ResourceDictionary.MergedDictionaries>
 
-			<!-- ReSharper disable Xaml.RedundantResource -->
-			<Storyboard x:Key="FlashBackgroundStoryboard">
-				<DoubleAnimation From="1"
-								 To="0.3"
-								 Duration="0:0:0.8"
-								 AutoReverse="True"
-								 Storyboard.TargetName="RootBorder"
-								 Storyboard.TargetProperty="Opacity">
-					<DoubleAnimation.EasingFunction>
-						<CircleEase EasingMode="EaseOut" />
-					</DoubleAnimation.EasingFunction>
-				</DoubleAnimation>
-			</Storyboard>
-			<!-- ReSharper restore Xaml.RedundantResource -->
-
 			<converters:BooleanToDoubleConverter x:Key="IsLearnedToOpacityConverter"
 												 TrueValue="0.5"
 												 FalseValue="1" />
