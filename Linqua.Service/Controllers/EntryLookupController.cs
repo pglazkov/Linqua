@@ -6,9 +6,11 @@ using AutoMapper;
 using Linqua.Service.DataObjects;
 using Linqua.Service.Models;
 using Microsoft.WindowsAzure.Mobile.Service;
+using Microsoft.WindowsAzure.Mobile.Service.Security;
 
 namespace Linqua.Service.Controllers
 {
+	[AuthorizeLevel(AuthorizationLevel.User)]
     public class EntryLookupController : ApiController
     {
         public ApiServices Services { get; set; }

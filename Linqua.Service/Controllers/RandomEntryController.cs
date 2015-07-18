@@ -10,6 +10,7 @@ using Microsoft.WindowsAzure.Mobile.Service.Security;
 
 namespace Linqua.Service.Controllers
 {
+	[AuthorizeLevel(AuthorizationLevel.User)]
 	public class RandomEntryController : ApiController
 	{
 		// GET api/RandomEntry
