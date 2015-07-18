@@ -218,10 +218,16 @@ namespace Linqua.UI
 				if (value == PivotSelectedIndex) return;
 				localSettingsService.SetValue(LocalSettingsKeys.MainPivotSelectedIndex, value);
 				RaisePropertyChanged();
+				RaisePropertyChanged(() => IsInFullListMode);
 			}
 		}
 
-		public bool IsSendLogsOptionAvailable
+		public bool IsInFullListMode
+		{
+			get { return PivotSelectedIndex == 1; }
+		}
+
+		public bool IsDebug
 		{
 			get
 			{

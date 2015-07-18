@@ -25,7 +25,7 @@
 				   TextAlignment="Center"
 				   VerticalAlignment="Center"
 				   HorizontalAlignment="Center"
-				   Margin="48,0,48,0" />
+				   Margin="24,0,24,0" />
 
 		<ListView Grid.Row="0"
 				  x:Name="EntryItemsControl"

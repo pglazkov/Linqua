@@ -187,11 +187,6 @@ namespace Linqua.UI
 			{
 				content.OnPivotItemLoaded(this);
 			}
-
-			if (Equals(args.Item.Tag, "RendomEntryList"))
-			{
-				ToggleShowHideLearnedEntriesButton.Visibility = Visibility.Collapsed;
-			}
 		}
 
 		private void Pivot_OnPivotItemUnloaded(Pivot sender, PivotItemEventArgs args)
@@ -201,11 +196,6 @@ namespace Linqua.UI
 			if (content != null)
 			{
 				content.OnPivotItemUnloaded(this);
-			}
-
-			if (Equals(args.Item.Tag, "RendomEntryList"))
-			{
-				ToggleShowHideLearnedEntriesButton.Visibility = Visibility.Visible;
 			}
 		}
     }

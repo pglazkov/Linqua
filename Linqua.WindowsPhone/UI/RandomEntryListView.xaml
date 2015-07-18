@@ -113,7 +113,7 @@
 				   TextAlignment="Center"
 				   VerticalAlignment="Center"
 				   HorizontalAlignment="Center"
-				   Margin="48,0,48,0" />
+				   Margin="24,0,24,0" />
 
 		<Grid x:Name="ItemContainer"
 			  Visibility="{Binding AnyEntriesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
