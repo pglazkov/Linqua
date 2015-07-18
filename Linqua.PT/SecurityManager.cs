@@ -10,7 +10,7 @@ namespace Linqua
 	public static class SecurityManager
 	{
 		private const string ProviderId = "MicrosoftLive";
-		private const string AuthenticationRedirectUrl = "https://linqua.azure-mobile.net/";
+		private const string AuthenticationRedirectUrl = MobileService.MobileServiceUrl;
 
 		private static readonly string[] AuthenticationScopes = new[] { "wl.basic", "wl.signin", "wl.offline_access" };
 
@@ -20,7 +20,7 @@ namespace Linqua
 
 			var vault = new PasswordVault();
 
-			PasswordCredential savedCredentials = null;
+			PasswordCredential savedCredentials = null; 
 
 			if (useCachedCredentials)
 			{
