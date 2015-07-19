@@ -324,8 +324,10 @@ namespace Linqua.UI
 
 		public async Task SyncAsync(bool force = false)
 		{
+#if DEBUG
 			using (statusBusyService.Busy(CommonBusyType.Syncing))
 			{
+#endif
 				using (await RefreshLock.LockAsync())
 				{
 					if (Log.IsDebugEnabled)
@@ -340,7 +342,9 @@ namespace Linqua.UI
 
 					await RefreshInternalAsync();
 				}
+#if DEBUG
 			}
+#endif
 		}
 
 		private void ForceSync()
