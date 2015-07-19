@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.ApplicationModel.Background;
+using Framework;
 using Linqua.Persistence;
 using MetroLog;
 
@@ -28,7 +29,7 @@ namespace Linqua.BackgroundTasks
 				
 				if (authenticatedSilently)
 				{
-					IDataStore storage = new MobileServiceDataStore(new SyncHandler());
+					IDataStore storage = new MobileServiceDataStore(new SyncHandler(), new EventManager());
 					await storage.InitializeAsync();
 					await storage.EnqueueSync();
 				}

@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Windows.ApplicationModel.Background;
-using Windows.UI.Notifications;
+using Framework;
+using Linqua.Notifications;
 using Linqua.Persistence;
 using MetroLog;
-using NotificationsExtensions.TileContent;
 
 namespace Linqua.BackgroundTasks
 {
@@ -31,17 +30,12 @@ namespace Linqua.BackgroundTasks
 
 				if (authenticatedSilently)
 				{
-					var dataTile = await CreateDataTileAsync();
+					IDataStore storage = new MobileServiceDataStore(new SyncHandler(), new EventManager());
+					await storage.InitializeAsync(doInitialPoolIfNeeded: false);
 
-					if (dataTile != null)
-					{
-						TileUpdateManager.CreateTileUpdaterForApplication().Update(dataTile);
-					}
-					else
-					{
-						if (Log.IsDebugEnabled)
-							Log.Debug("There is no data for the tile update.");
-					}
+					var liveTileManager = new LiveTileManager(storage);
+
+					await liveTileManager.UpdateTileAsync();
 				}
 				else
 				{
@@ -63,38 +57,6 @@ namespace Linqua.BackgroundTasks
 			{
 				deferral.Complete();
 			}
-		}
-
-		private static async Task<TileNotification> CreateDataTileAsync()
-		{
-			IDataStore storage = new MobileServiceDataStore(new SyncHandler());
-			await storage.InitializeAsync(doInitialPoolIfNeeded: false);
-
-			var randomEntry = await storage.GetRandomEntry();
-
-			if (randomEntry != null)
-			{
-				var tileHeading = randomEntry.Text;
-				var tileText = randomEntry.Definition;
-
-				var wideTile = TileContentFactory.CreateTileWide310x150PeekImage01();
-				wideTile.Image.Src = "ms-appx:///Assets/WideLogo.png";
-				wideTile.TextHeading.Text = tileHeading;
-				wideTile.TextBodyWrap.Text = tileText;
-
-				var squareTile = TileContentFactory.CreateTileSquare150x150PeekImageAndText01();
-				squareTile.Image.Src = "ms-appx:///Assets/Logo.png";
-				squareTile.TextHeading.Text = tileHeading;
-				squareTile.TextBody1.Text = tileText;
-
-				wideTile.Square150x150Content = squareTile;
-
-				var notification = wideTile.CreateNotification();
-
-				return notification;
-			}
-
-			return null;
 		}
 	}
 }

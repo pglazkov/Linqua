@@ -44,7 +44,10 @@
     <Compile Include="DataObjects\ClientEntry.cs" />
     <Compile Include="LocalSettingsKeys.cs" />
     <Compile Include="MobileService.cs" />
+    <Compile Include="Notifications\ILiveTileManager.cs" />
+    <Compile Include="Notifications\LiveTileManager.cs" />
     <Compile Include="Persistence\EntryQuery.cs" />
+    <Compile Include="Persistence\Events\StorageInitializedEvent.cs" />
     <Compile Include="Persistence\IDataStore.cs" />
     <Compile Include="Persistence\ISyncFailedHandler.cs" />
     <Compile Include="Persistence\MemoryDataStore.cs" />
@@ -93,6 +96,10 @@
     </Reference>
     <Reference Include="Nito.AsyncEx.Concurrent">
       <HintPath>..\packages\Nito.AsyncEx.3.0.0\lib\portable-net45+netcore45+wpa81+MonoTouch+MonoAndroid\Nito.AsyncEx.Concurrent.dll</HintPath>
+    </Reference>
+    <Reference Include="NotificationsExtensions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NotificationsExtensions.1.0.0\lib\portable-wpa81+win81\NotificationsExtensions.winmd</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SQLitePCL">
       <HintPath>..\packages\SQLitePCL.3.8.7.2\lib\portable-net45+sl50+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\SQLitePCL.dll</HintPath>

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Composition;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Framework;
 using JetBrains.Annotations;
 using Linqua.Events;
+using Linqua.Notifications;
+using Linqua.Persistence.Events;
 using Linqua.UI;
 
 namespace Linqua
@@ -15,19 +18,23 @@ namespace Linqua
 	public class ApplicationController
 	{
 		private readonly IEventAggregator eventAggregator;
+		private readonly ILiveTileManager liveTileManager;
 		private Frame navigationFrame;
 
 		[ImportingConstructor]
-		public ApplicationController([NotNull] IEventAggregator eventAggregator)
+		public ApplicationController([NotNull] IEventAggregator eventAggregator, [NotNull] ILiveTileManager liveTileManager)
 		{
 			Guard.NotNull(eventAggregator, () => eventAggregator);
+			Guard.NotNull(liveTileManager, () => liveTileManager);
 
 			this.eventAggregator = eventAggregator;
+			this.liveTileManager = liveTileManager;
 		}
 
 		public void Initialize()
 		{
 			eventAggregator.GetEvent<EntryEditRequestedEvent>().Subscribe(OnEntryEditRequested);
+			eventAggregator.GetEvent<StorageInitializedEvent>().Subscribe(OnStorageInitialized);
 		}
 
 		public void RegisterFrame([NotNull] Frame frame)
@@ -42,6 +49,11 @@ namespace Linqua
 			Guard.Assert(navigationFrame != null, "Please initialize the main navigation frame first (call the RegisterFrame method)");
 
 			navigationFrame.Navigate(typeof(EntryEditPage), e.EntryId);
+		}
+
+		private void OnStorageInitialized(StorageInitializedEvent e)
+		{
+			Task.Run(() => liveTileManager.UpdateTileAsync()).FireAndForget();
 		}
 	}
 }

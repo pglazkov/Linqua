@@ -318,7 +318,7 @@ namespace Linqua.UI
 			else
 			{
 				
-				return storage.LoadEntries(x => !x.IsLearnt);
+				return storage.LoadEntries(x => !x.IsLearnt); 
 			}
 		}
 

@@ -10,24 +10,29 @@ using System.Threading.Tasks;
 using Framework;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
+using Linqua.Persistence.Events;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 
 namespace Linqua.Persistence
 {
 	[Export(typeof(IDataStore))]
+	[Shared]
 	public class MobileServiceDataStore : IDataStore
 	{
 		//private readonly IMobileServiceTable<ClientEntry> entryTable;
 		private readonly IMobileServiceSyncTable<ClientEntry> entrySyncTable;
 		private readonly IMobileServiceSyncHandler syncHandler;
+		private readonly IEventAggregator eventAggregator;
 
 		[ImportingConstructor]
-		public MobileServiceDataStore([NotNull] IMobileServiceSyncHandler syncHandler)
+		public MobileServiceDataStore([NotNull] IMobileServiceSyncHandler syncHandler, [NotNull] IEventAggregator eventAggregator)
 		{
 			Guard.NotNull(syncHandler, () => syncHandler);
+			Guard.NotNull(eventAggregator, () => eventAggregator);
 
 			this.syncHandler = syncHandler;
+			this.eventAggregator = eventAggregator;
 
 			//entryTable = MobileService.Client.GetTable<ClientEntry>();
 			entrySyncTable = MobileService.Client.GetSyncTable<ClientEntry>();
@@ -171,6 +176,8 @@ namespace Linqua.Persistence
 			{
 				await OfflineHelper.DoInitialPullIfNeededAsync();
 			}
+
+			eventAggregator.Publish(new StorageInitializedEvent());
 		}
 
 		public Task EnqueueSync(OfflineSyncArguments args = null)
