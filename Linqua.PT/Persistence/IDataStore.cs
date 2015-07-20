@@ -23,7 +23,7 @@ namespace Linqua.Persistence
 		Task<ClientEntry> LookupByExample([NotNull] ClientEntry example);
 
 		[NotNull]
-		Task<ClientEntry> GetRandomEntry(string excludeId = null);
+		Task<IEnumerable<ClientEntry>> GetRandomEntries(int count);
 
 		[NotNull]
 		Task<ClientEntry> AddEntry([NotNull] ClientEntry newEntry);

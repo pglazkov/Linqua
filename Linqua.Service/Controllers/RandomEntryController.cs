@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Linqua.Service.Controllers
 	public class RandomEntryController : ApiController
 	{
 		// GET api/RandomEntry
-		public async Task<ClientEntry> Get(string excludeId)
+		public async Task<IEnumerable<ClientEntry>> Get(int number)
 		{
 			var currentUser = (ServiceUser)User;
 
@@ -23,16 +24,35 @@ namespace Linqua.Service.Controllers
 			using (var ctx = new LinquaContext())
 			{
 				var foundEntries = await ctx.Entries
-											.Where(x => x.UserId == currentUser.Id && !x.Deleted && !x.IsLearnt && !Equals(x.Id, excludeId))
+											.Where(x => x.UserId == currentUser.Id && !x.Deleted && !x.IsLearnt)
 											.ToListAsync();
 
 				if (foundEntries != null && foundEntries.Count > 0)
 				{
-					var randomIndex = indexGenerator.Next(0, foundEntries.Count - 1);
+					var randomEntries = new List<Entry>();
+					var excludeIndices = new HashSet<int>();
 
-					var randomEntry = foundEntries[randomIndex];
+					number = Math.Min(number, foundEntries.Count);
 
-					return Mapper.Map<ClientEntry>(randomEntry);
+					for (var i = 0; i < number; i++)
+					{
+						int randomIndex;
+						do
+						{
+							randomIndex = indexGenerator.Next(0, foundEntries.Count - 1);
+						} 
+						while (excludeIndices.Contains(randomIndex));
+
+						excludeIndices.Add(randomIndex);
+
+						var randomEntry = foundEntries[randomIndex];
+
+						randomEntries.Add(randomEntry);
+					}
+
+					var result = randomEntries.Select(Mapper.Map<ClientEntry>).ToArray();
+
+					return result;
 				}
 			}
 

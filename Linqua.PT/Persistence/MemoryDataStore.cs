@@ -48,7 +48,7 @@ namespace Linqua.Persistence
 			});
 		}
 
-		public Task<ClientEntry> GetRandomEntry(string excludeId = null)
+		public Task<IEnumerable<ClientEntry>> GetRandomEntries(int count)
 		{
 			var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
 
@@ -56,7 +56,7 @@ namespace Linqua.Persistence
 
 			var randomEntry = FakeData.FakeWords[randomIndex];
 
-			return Task.FromResult(randomEntry);
+			return Task.FromResult<IEnumerable<ClientEntry>>(new [] { randomEntry });
 		}
 
 		public Task<ClientEntry> AddEntry(ClientEntry newEntry)

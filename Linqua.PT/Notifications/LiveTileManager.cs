@@ -1,4 +1,6 @@
-﻿using System.Composition;
+﻿using System.Collections.Generic;
+using System.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Notifications;
 using Framework;
@@ -25,24 +27,38 @@ namespace Linqua.Notifications
 
 		public async Task UpdateTileAsync()
 		{
-			var dataTile = await CreateDataTileAsync();
+			var dataTiles = await CreateDataTilesAsync();
 
-			if (dataTile != null)
+			var tileUpdater = TileUpdateManager.CreateTileUpdaterForApplication();
+
+			if (dataTiles.Count > 0)
 			{
-				TileUpdateManager.CreateTileUpdaterForApplication().Update(dataTile);
+				tileUpdater.Clear();
+				tileUpdater.EnableNotificationQueue(true);
+
+				foreach (var dataTile in dataTiles)
+				{
+					tileUpdater.Update(dataTile);
+				}
 			}
 			else
 			{
+				tileUpdater.Clear();
+				tileUpdater.EnableNotificationQueue(false);
+
 				if (Log.IsDebugEnabled)
 					Log.Debug("There is no data for the tile update.");
 			}
 		}
 
-		private async Task<TileNotification> CreateDataTileAsync()
+		[NotNull]
+		private async Task<List<TileNotification>> CreateDataTilesAsync()
 		{
-			var randomEntry = await dataStore.GetRandomEntry();
+			var result = new List<TileNotification>();
 
-			if (randomEntry != null)
+			var randomEntries = await dataStore.GetRandomEntries(5);
+
+			foreach (var randomEntry in randomEntries)
 			{
 				var tileHeading = randomEntry.Text;
 				var tileText = randomEntry.Definition;
@@ -59,10 +75,10 @@ namespace Linqua.Notifications
 
 				var notification = wideTile.CreateNotification();
 
-				return notification;
+				result.Add(notification);
 			}
 
-			return null;
+			return result;
 		}
 	}
 }

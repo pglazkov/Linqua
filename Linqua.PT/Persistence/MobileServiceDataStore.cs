@@ -102,28 +102,46 @@ namespace Linqua.Persistence
 			return null;
 		}
 
-		public async Task<ClientEntry> GetRandomEntry(string excludeId = null)
+		public async Task<IEnumerable<ClientEntry>> GetRandomEntries(int count)
 		{
 			if (ConnectionHelper.IsConnectedToInternet)
 			{
 				var parameters = new Dictionary<string, string>();
 
-				parameters.Add("excludeId", excludeId ?? Guid.NewGuid().ToString());
+				parameters.Add("number", count.ToString());
 
-				var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("RandomEntry", HttpMethod.Get, parameters);
+				var serviceResult = await MobileService.Client.InvokeApiAsync<IEnumerable<ClientEntry>>("RandomEntry", HttpMethod.Get, parameters);
 
 				return serviceResult;
 			}
 
-			var existingEntiesInLocalStorage = await entrySyncTable.Where(x => !x.IsLearnt && !Equals(x.Id, excludeId)).ToListAsync();
+			var existingEntiesInLocalStorage = await entrySyncTable.Where(x => !x.IsLearnt).ToListAsync();
 
 			if (existingEntiesInLocalStorage.Count > 0)
 			{
 				var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
-				var randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
-				var randomEntry = existingEntiesInLocalStorage[randomIndex];
+				var randomEntries = new List<ClientEntry>();
+				var excludeIndices = new HashSet<int>();
 
-				return randomEntry;
+				count = Math.Min(count, existingEntiesInLocalStorage.Count);
+
+				for (var i = 0; i < count; i++)
+				{
+					int randomIndex;
+					do
+					{
+						randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
+					}
+					while (excludeIndices.Contains(randomIndex));
+
+					excludeIndices.Add(randomIndex);
+
+					var randomEntry = existingEntiesInLocalStorage[randomIndex];
+
+					randomEntries.Add(randomEntry);
+				}
+
+				return randomEntries;
 			}
 
 			return null;
