@@ -5,6 +5,7 @@ using Framework;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using Linqua.Events;
+using Linqua.Service.Models;
 
 namespace Linqua.UI
 {
@@ -149,6 +150,7 @@ namespace Linqua.UI
 				Guard.Assert(Entry != null, "Entry != null");
 
 				Entry.Definition = value;
+                Entry.TranslationState = TranslationState.Manual;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => IsDefinitionVisible);
 			}
@@ -159,7 +161,15 @@ namespace Linqua.UI
 			get { return !string.IsNullOrEmpty(Definition) || IsTranslating; }
 		}
 
-		private bool CanDeleteSelf()
+	    public string NoDefinitionText
+	    {
+	        get
+	        {
+                return Resources.GetString("NoTraslationText");
+            }
+	    }
+
+        private bool CanDeleteSelf()
 		{
 			return Entry != null;
 		}

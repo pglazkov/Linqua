@@ -37,6 +37,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Linqua.Service\Models\TranslationState.cs">
+      <Link>DataObjects\TranslationState.cs</Link>
+    </Compile>
     <Compile Include="AppPortable.cs" />
     <Compile Include="AuthFailureHandler.cs" />
     <Compile Include="ConnectionHelper.cs" />

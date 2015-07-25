@@ -1,0 +1,5 @@
+﻿From http://blogs.msdn.com/b/writingdata_services/archive/2014/03/28/mobile-services-net-backend-initializers-and-model-updates.aspx:
+
+Make a change to the data model, such as adding a new UserId property to the TodoItem type, rebuild the project, and then in the Package Manager, run the following command:
+
+PM> Add-Migration NewUserId

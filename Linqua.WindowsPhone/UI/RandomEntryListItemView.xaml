@@ -132,7 +132,7 @@
 														FontSize="72" />
 
 							<TextBlock x:Uid="NoTraslationTextBlock"
-									   Text="RESMISSING NoTraslationTextBlock"
+									   Text="{Binding NoDefinitionText}"
 									   Visibility="{Binding IsDefinitionVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
 									   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
 									   Pivot.SlideInAnimationGroup="2"

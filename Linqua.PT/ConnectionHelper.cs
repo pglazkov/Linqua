@@ -23,7 +23,7 @@ namespace Linqua
 			{
 				OnInternetConnectionChanged(new InternetConnectionChangedEventArgs(IsConnectedToInternet));
 			};
-		}
+        }
 
 		public static bool IsConnectedToInternet
 		{

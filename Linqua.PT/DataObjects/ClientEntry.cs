@@ -1,4 +1,5 @@
 ﻿using System;
+using Linqua.Service.Models;
 using Microsoft.WindowsAzure.MobileServices;
 
 namespace Linqua.DataObjects
@@ -10,7 +11,8 @@ namespace Linqua.DataObjects
 			var result = new ClientEntry
 			{
 				CreatedAt = DateTimeOffset.Now,
-				Text = text
+				Text = text,
+                TranslationState = TranslationState.Pending
 			};
 
 			return result;
@@ -27,6 +29,8 @@ namespace Linqua.DataObjects
 
 		public string Definition { get; set; }
 
+        public TranslationState TranslationState { get; set; }
+
 		public bool IsLearnt { get; set; }
 
 		[CreatedAt]
@@ -36,7 +40,7 @@ namespace Linqua.DataObjects
 
 		protected bool Equals(ClientEntry other)
 		{
-			return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(Definition, other.Definition) && IsLearnt.Equals(other.IsLearnt) && CreatedAt.Equals(other.CreatedAt);
+			return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(Definition, other.Definition) && Equals(TranslationState, other.TranslationState) && IsLearnt.Equals(other.IsLearnt) && CreatedAt.Equals(other.CreatedAt);
 		}
 
 		public override bool Equals(object obj)
@@ -54,7 +58,8 @@ namespace Linqua.DataObjects
 				var hashCode = (Id != null ? Id.GetHashCode() : 0);
 				hashCode = (hashCode * 397) ^ (Text != null ? Text.GetHashCode() : 0);
 				hashCode = (hashCode * 397) ^ (Definition != null ? Definition.GetHashCode() : 0);
-				hashCode = (hashCode * 397) ^ IsLearnt.GetHashCode();
+                hashCode = (hashCode * 397) ^ TranslationState.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsLearnt.GetHashCode();
 				hashCode = (hashCode * 397) ^ CreatedAt.GetHashCode();
 				return hashCode;
 			}

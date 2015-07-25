@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Mobile.Service;
+﻿using Linqua.Service.Models;
+using Microsoft.WindowsAzure.Mobile.Service;
 using Microsoft.WindowsAzure.Mobile.Service.Tables;
 
 namespace Linqua.Service.DataObjects
@@ -9,7 +10,9 @@ namespace Linqua.Service.DataObjects
 
 		public string Definition { get; set; }
 
-		public string UserId { get; set; }
+        public TranslationState TranslationState { get; set; }
+
+        public string UserId { get; set; }
 
 		public bool IsLearnt { get; set; }
 	}

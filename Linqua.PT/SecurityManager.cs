@@ -16,7 +16,12 @@ namespace Linqua
 
 		public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
 		{
-			MobileServiceUser user = null;
+            if (MobileService.Client.ApplicationUri.Host == "localhost")
+            {
+                return true;
+            }
+
+            MobileServiceUser user = null;
 
 			var vault = new PasswordVault();
 
@@ -63,7 +68,12 @@ namespace Linqua
 
 		public static async Task<bool> Authenticate(bool useCachedCredentials = true)
 		{
-			var authenticated = await TryAuthenticateSilently(useCachedCredentials);
+            if (MobileService.Client.ApplicationUri.Host == "localhost")
+            {
+                return true;
+            }
+
+            var authenticated = await TryAuthenticateSilently(useCachedCredentials);
 
 			if (authenticated)
 			{

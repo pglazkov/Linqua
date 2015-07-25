@@ -37,7 +37,7 @@ namespace Linqua.Service
 			});
 
 			// Uncomment this in order to debug authentication locally
-			config.SetIsHosted(true);
+			//config.SetIsHosted(true);
         }
     }
 

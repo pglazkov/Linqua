@@ -239,7 +239,7 @@
 
 Start by adding a word or phrase.</value>
   </data>
-  <data name="NoTraslationTextBlock.Text" xml:space="preserve">
+  <data name="NoTraslationText" xml:space="preserve">
     <value>&lt;no translation&gt;</value>
   </data>
   <data name="PivotFullListItemHeader.Text" xml:space="preserve">

@@ -7,6 +7,7 @@ using Framework.PlatformServices;
 using Linqua.DataObjects;
 using Linqua.Events;
 using Linqua.Persistence;
+using Linqua.Service.Models;
 using Linqua.Translation;
 using Linqua.UI;
 using MetroLog;
@@ -119,6 +120,7 @@ namespace Linqua
 				viewModelsToUpdate.ForEach(x => x.Definition = translation);
 
 				entry.Definition = translation;
+                entry.TranslationState = TranslationState.Automatic;
 				
 			}
 			catch (Exception ex)
