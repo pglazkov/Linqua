@@ -94,7 +94,7 @@ namespace Linqua.UI
 
 		public DateTime DateAdded
 		{
-			get { return Entry != null ? Entry.CreatedAt.GetValueOrDefault().DateTime : DateTime.MinValue; }
+			get { return Entry != null ? Entry.ClientCreatedAt.LocalDateTime : DateTime.MinValue; }
 		}
 
 		public bool IsLearnt

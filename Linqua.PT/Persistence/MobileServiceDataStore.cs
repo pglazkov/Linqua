@@ -36,8 +36,8 @@ namespace Linqua.Persistence
 
 			//entryTable = MobileService.Client.GetTable<ClientEntry>();
 			entrySyncTable = MobileService.Client.GetSyncTable<ClientEntry>();
-			//entryTable.SystemProperties = MobileServiceSystemProperties.CreatedAt;
-		}
+            //entryTable.SystemProperties = MobileServiceSystemProperties.CreatedAt;
+        }
 
 		public async Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
 		{
@@ -48,7 +48,7 @@ namespace Linqua.Persistence
 				query = query.Where(filter);
 			}
 
-			query = query.OrderByDescending(x => x.CreatedAt);
+			query = query.OrderByDescending(x => x.ClientCreatedAt);
 
 			return await query.ToListAsync();
 		}

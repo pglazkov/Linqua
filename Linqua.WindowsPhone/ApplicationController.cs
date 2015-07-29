@@ -9,6 +9,7 @@ using Linqua.Events;
 using Linqua.Notifications;
 using Linqua.Persistence.Events;
 using Linqua.UI;
+using MetroLog;
 
 namespace Linqua
 {
@@ -17,7 +18,9 @@ namespace Linqua
 	[UsedImplicitly]
 	public class ApplicationController
 	{
-		private readonly IEventAggregator eventAggregator;
+        private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<ApplicationController>();
+
+        private readonly IEventAggregator eventAggregator;
 		private readonly ILiveTileManager liveTileManager;
 		private Frame navigationFrame;
 
@@ -53,7 +56,19 @@ namespace Linqua
 
 		private void OnStorageInitialized(StorageInitializedEvent e)
 		{
-			Task.Run(() => liveTileManager.UpdateTileAsync()).FireAndForget();
+		    UpdateLiveTileAsync().FireAndForget();
 		}
+
+	    private async Task UpdateLiveTileAsync()
+	    {
+	        try
+	        {
+	            await Task.Run(() => liveTileManager.UpdateTileAsync());
+	        }
+	        catch (Exception e)
+	        {
+	            Log.Warn("Could not update live tile.", e);
+	        }
+	    }
 	}
 }

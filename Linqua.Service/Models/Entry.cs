@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Mobile.Service;
+﻿using System;
+using Microsoft.WindowsAzure.Mobile.Service;
 
 namespace Linqua.Service.Models
 {
@@ -13,5 +14,7 @@ namespace Linqua.Service.Models
 		public string UserId { get; set; }
 
 		public bool IsLearnt { get; set; }
-	}
+
+        public DateTimeOffset ClientCreatedAt { get; set; }
+    }
 }

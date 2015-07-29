@@ -1,4 +1,5 @@
-﻿using Linqua.Service.Models;
+﻿using System;
+using Linqua.Service.Models;
 using Microsoft.WindowsAzure.Mobile.Service;
 using Microsoft.WindowsAzure.Mobile.Service.Tables;
 
@@ -15,5 +16,7 @@ namespace Linqua.Service.DataObjects
         public string UserId { get; set; }
 
 		public bool IsLearnt { get; set; }
+
+        public DateTimeOffset ClientCreatedAt { get; set; }
 	}
 }

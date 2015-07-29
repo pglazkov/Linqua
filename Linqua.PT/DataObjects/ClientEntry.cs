@@ -10,7 +10,7 @@ namespace Linqua.DataObjects
 		{
 			var result = new ClientEntry
 			{
-				CreatedAt = DateTimeOffset.Now,
+                ClientCreatedAt = DateTimeOffset.Now,
 				Text = text,
                 TranslationState = TranslationState.Pending
 			};
@@ -33,14 +33,13 @@ namespace Linqua.DataObjects
 
 		public bool IsLearnt { get; set; }
 
-		[CreatedAt]
-		public DateTimeOffset? CreatedAt { get; set; }
+		public DateTimeOffset ClientCreatedAt { get; set; }
 
 		#region Equality Members
 
 		protected bool Equals(ClientEntry other)
 		{
-			return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(Definition, other.Definition) && Equals(TranslationState, other.TranslationState) && IsLearnt.Equals(other.IsLearnt) && CreatedAt.Equals(other.CreatedAt);
+			return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(Definition, other.Definition) && Equals(TranslationState, other.TranslationState) && IsLearnt.Equals(other.IsLearnt) && ClientCreatedAt.Equals(other.ClientCreatedAt);
 		}
 
 		public override bool Equals(object obj)
@@ -60,7 +59,7 @@ namespace Linqua.DataObjects
 				hashCode = (hashCode * 397) ^ (Definition != null ? Definition.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ TranslationState.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsLearnt.GetHashCode();
-				hashCode = (hashCode * 397) ^ CreatedAt.GetHashCode();
+				hashCode = (hashCode * 397) ^ ClientCreatedAt.GetHashCode();
 				return hashCode;
 			}
 		}
