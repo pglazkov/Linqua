@@ -115,8 +115,6 @@
     <Compile Include="Framework\SwipeDetectionBehavior.cs" />
     <Compile Include="ApplicationController.cs" />
     <Compile Include="IEntryOperations.cs" />
-    <Compile Include="Logging\FileStreamingTarget.cs" />
-    <Compile Include="Logging\WinRTFileTarget.cs" />
     <Compile Include="Offline\IOfflineSyncController.cs" />
     <Compile Include="Offline\OfflineSyncController.cs" />
     <Compile Include="Persistence\SyncFailedHandler.cs" />
@@ -392,7 +390,9 @@
       <Name>Linqua.BackgroundTasks.WindowsPhone</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Logging\" />
+  </ItemGroup>
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>

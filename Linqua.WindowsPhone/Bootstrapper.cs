@@ -4,6 +4,8 @@ using System.Reflection;
 using Framework;
 using Framework.Logging;
 using Framework.MefExtensions;
+using Linqua.BackgroundTasks;
+using Linqua.Logging;
 using MetroLog;
 using MetroLog.Targets;
 using FileStreamingTarget = Linqua.Logging.FileStreamingTarget;
@@ -33,24 +35,11 @@ namespace Linqua
 
 	    private void ConfigureLogger()
 	    {
-			var configuration = new LoggingConfiguration();
-#if DEBUG
-			configuration.AddTarget(LogLevel.Trace, LogLevel.Fatal, new DebugTarget(new LoggingLayout()));
-#endif
-#if DEBUG
-		    var minLogLevelForFileTarget = LogLevel.Debug;
-#else
-			var minLogLevelForFileTarget = LogLevel.Warn;
-#endif
-			configuration.AddTarget(minLogLevelForFileTarget, LogLevel.Fatal, FileStreamingTarget.Instance);
+            LoggerHelper.SetupLogger();
 
-			configuration.IsEnabled = true;
-			
-			LogManagerFactory.DefaultConfiguration = configuration;
-
-			// setup the global crash handler...
-			GlobalCrashHandler.Configure();
-	    }
+            // setup the global crash handler...
+            GlobalCrashHandler.Configure();
+        }
 
 	    private static void ConfigureMef()
 	    {

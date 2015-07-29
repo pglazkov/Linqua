@@ -29,7 +29,7 @@ namespace Linqua.Logging
 			FileNamingParameters.IncludeTimestamp = FileTimestampMode.Date;
 			FileNamingParameters.CreationMode = FileCreationMode.AppendIfExisting;
 
-			RetainDays = 1;
+			RetainDays = 2;
 		}
 
 		protected override Task WriteTextToFileCore(IStorageFile file, string contents)

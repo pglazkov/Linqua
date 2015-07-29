@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.ApplicationModel.Background;
 using Framework;
+using Linqua.Logging;
 using Linqua.Notifications;
 using Linqua.Persistence;
 using MetroLog;
