@@ -14,7 +14,7 @@ using FileTargetBase = Framework.Logging.FileTargetBase;
 
 namespace Linqua.Logging
 {
-	public abstract class WinRTFileTarget : FileTargetBase
+	internal abstract class WinRTFileTarget : FileTargetBase
 	{
 		private static StorageFolder logFolder = null;
 

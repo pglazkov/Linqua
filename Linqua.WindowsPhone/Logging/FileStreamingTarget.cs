@@ -10,9 +10,9 @@ namespace Linqua.Logging
 	/// <summary>
 	/// Defines a target that will append messages to a single file.
 	/// </summary>
-	public class FileStreamingTarget : WinRTFileTarget
+	internal class FileStreamingTarget : WinRTFileTarget
 	{
-		public static readonly FileStreamingTarget Instance = new FileStreamingTarget();
+		internal static readonly FileStreamingTarget Instance = new FileStreamingTarget();
 
 		private FileStreamingTarget()
 			: this(new LoggingLayout())

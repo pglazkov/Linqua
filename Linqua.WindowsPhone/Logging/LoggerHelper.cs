@@ -1,8 +1,10 @@
-﻿using MetroLog;
+﻿using Framework.Logging;
+using MetroLog;
+using MetroLog.Targets;
 
 namespace Linqua.Logging
 {
-    public static class LoggerHelper
+    internal static class LoggerHelper
     {
         public static void SetupLogger()
         {

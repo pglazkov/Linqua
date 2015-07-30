@@ -46,9 +46,6 @@
     <Compile Include="FakeData.cs" />
     <Compile Include="DataObjects\ClientEntry.cs" />
     <Compile Include="LocalSettingsKeys.cs" />
-    <Compile Include="Logging\FileStreamingTarget.cs" />
-    <Compile Include="Logging\LoggerHelper.cs" />
-    <Compile Include="Logging\WinRTFileTarget.cs" />
     <Compile Include="MobileService.cs" />
     <Compile Include="Notifications\ILiveTileManager.cs" />
     <Compile Include="Notifications\LiveTileManager.cs" />
@@ -169,9 +166,7 @@
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <TargetPlatform Include="Windows, Version=8.1" />
     <TargetPlatform Include="WindowsPhoneApp, Version=8.1" />

@@ -82,6 +82,15 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Linqua.WindowsPhone\Logging\FileStreamingTarget.cs">
+      <Link>Logging\FileStreamingTarget.cs</Link>
+    </Compile>
+    <Compile Include="..\Linqua.WindowsPhone\Logging\LoggerHelper.cs">
+      <Link>Logging\LoggerHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Linqua.WindowsPhone\Logging\WinRTFileTarget.cs">
+      <Link>Logging\WinRTFileTarget.cs</Link>
+    </Compile>
     <Compile Include="LiveTileUpdateTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SynchronizationTask.cs" />
@@ -139,6 +148,7 @@
       <Name>Linqua.PT</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
