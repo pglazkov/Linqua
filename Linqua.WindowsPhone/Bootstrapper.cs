@@ -4,7 +4,6 @@ using System.Reflection;
 using Framework;
 using Framework.Logging;
 using Framework.MefExtensions;
-using Linqua.BackgroundTasks;
 using Linqua.Logging;
 using MetroLog;
 using MetroLog.Targets;

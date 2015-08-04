@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
 using Framework;
-using Linqua.BackgroundTasks;
 using MetroLog;
 
 namespace Linqua

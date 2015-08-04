@@ -5,7 +5,7 @@ using Linqua.Logging;
 using Linqua.Persistence;
 using MetroLog;
 
-namespace Linqua.BackgroundTasks
+namespace Linqua
 {
 	public sealed class SynchronizationTask : IBackgroundTask
     {

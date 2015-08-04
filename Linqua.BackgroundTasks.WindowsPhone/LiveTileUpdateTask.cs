@@ -6,7 +6,7 @@ using Linqua.Notifications;
 using Linqua.Persistence;
 using MetroLog;
 
-namespace Linqua.BackgroundTasks
+namespace Linqua
 {
 	public sealed class LiveTileUpdateTask : IBackgroundTask
 	{

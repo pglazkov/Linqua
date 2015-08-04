@@ -9,7 +9,7 @@
     <ProjectGuid>{FBBBF002-C177-42D7-8D15-AE4DE436AC4E}</ProjectGuid>
     <OutputType>winmdobj</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Linqua.BackgroundTasks</RootNamespace>
+    <RootNamespace>Linqua</RootNamespace>
     <AssemblyName>Linqua.BackgroundTasks.WindowsPhone</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
