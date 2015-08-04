@@ -7,7 +7,9 @@ using MetroLog;
 
 namespace Linqua
 {
-	public sealed class SynchronizationTask : IBackgroundTask
+    // IMPORTANT: When renaming or moving the task don't forget to change the task declaration in the app manifest. 
+    // Otherwise an exception will be thrown when registering the task ("Class not registered").
+    public sealed class SynchronizationTask : IBackgroundTask
     {
 		private static readonly ILogger Log;
 

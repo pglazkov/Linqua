@@ -12,6 +12,7 @@ using Linqua.DataObjects;
 using Linqua.Events;
 using Linqua.Logging;
 using Linqua.Persistence;
+using Linqua.Service.Models;
 using MetroLog;
 using Nito.AsyncEx;
 
@@ -258,14 +259,14 @@ namespace Linqua.UI
 
 		private async Task InitializeWordListAsync(IDataStore storage)
 		{
-			IsLoadingEntries = true;
+            IEnumerable<ClientEntry> words = null;
+
+            IsLoadingEntries = true;
 
 			using (statusBusyService.Busy())
 			{
 				using (await RefreshLock.LockAsync())
 				{
-					IEnumerable<ClientEntry> words = null;
-
 					try
 					{
 						await storage.InitializeAsync();
@@ -290,7 +291,7 @@ namespace Linqua.UI
 
 			try
 			{
-				await SyncAsync();
+				words = await SyncAsync();
 			}
 			finally
 			{
@@ -299,9 +300,30 @@ namespace Linqua.UI
 				RandomEntryListViewModel.IsInitializationComplete = true;
 			}
 
+		    if (words != null)
+		    {
+		        await TranslatePendingEntriesAsync(words);
+		    }
 		}
 
-		private void UpdateUIWithData(IEnumerable<ClientEntry> words)
+	    private async Task TranslatePendingEntriesAsync(IEnumerable<ClientEntry> entries)
+	    {
+	        var pedingTranlsationEntries = entries.Where(x => x.TranslationState == TranslationState.Pending).ToList();
+
+	        using (await RefreshLock.LockAsync())
+	        {
+	            foreach (var entry in pedingTranlsationEntries)
+	            {
+	                var vms = FindEntryViewModels(entry);
+
+	                await entryOperations.TranslateEntryItemAsync(entry, vms);
+
+                    await entryOperations.UpdateEntryAsync(entry);
+                }
+	        }
+	    }
+
+	    private void UpdateUIWithData(IEnumerable<ClientEntry> words)
 		{
 			var allEntries = words.ToList();
 
@@ -322,7 +344,7 @@ namespace Linqua.UI
 			}
 		}
 
-		public async Task SyncAsync(bool force = false)
+		public async Task<IEnumerable<ClientEntry>> SyncAsync(bool force = false)
 		{
 #if DEBUG
 			using (statusBusyService.Busy(CommonBusyType.Syncing))
@@ -340,7 +362,7 @@ namespace Linqua.UI
 						PurgeCache = force
 					});
 
-					await RefreshInternalAsync();
+					return await RefreshInternalAsync();
 				}
 #if DEBUG
 			}
@@ -508,15 +530,24 @@ namespace Linqua.UI
 			}
 		}
 
-		public async Task RefreshAsync()
+		public async Task<IEnumerable<ClientEntry>> RefreshAsync()
 		{
-			using (await RefreshLock.LockAsync())
+		    IEnumerable<ClientEntry> entries = null;
+
+		    using (await RefreshLock.LockAsync())
 			{
-				await RefreshInternalAsync();
+			    entries = await RefreshInternalAsync();
 			}
+
+		    if (entries != null)
+		    {
+		        await TranslatePendingEntriesAsync(entries);
+		    }
+
+		    return entries;
 		}
 
-		private async Task RefreshInternalAsync()
+	    private async Task<IEnumerable<ClientEntry>> RefreshInternalAsync()
 		{
 			if (Log.IsDebugEnabled)
 			{
@@ -533,6 +564,8 @@ namespace Linqua.UI
 			UpdateUIWithData(words);
 
 			await UpdateStatistics();
+
+		    return words;
 		}
 
 		private async Task UpdateStatistics()

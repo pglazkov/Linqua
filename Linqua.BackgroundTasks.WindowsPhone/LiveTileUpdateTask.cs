@@ -8,7 +8,9 @@ using MetroLog;
 
 namespace Linqua
 {
-	public sealed class LiveTileUpdateTask : IBackgroundTask
+    // IMPORTANT: When renaming or moving the task don't forget to change the task declaration in the app manifest. 
+    // Otherwise an exception will be thrown when registering the task ("Class not registered").
+    public sealed class LiveTileUpdateTask : IBackgroundTask
 	{
 		private static readonly ILogger Log;
 		  

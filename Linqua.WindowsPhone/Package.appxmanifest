@@ -29,12 +29,12 @@
         <m3:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#1E1E1E" />
       </m3:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.BackgroundTasks.SynchronizationTask">
+        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.SynchronizationTask">
           <BackgroundTasks>
             <Task Type="systemEvent" />
           </BackgroundTasks>
         </Extension>
-        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.BackgroundTasks.LiveTileUpdateTask">
+        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.LiveTileUpdateTask">
           <BackgroundTasks>
             <Task Type="timer" />
           </BackgroundTasks>

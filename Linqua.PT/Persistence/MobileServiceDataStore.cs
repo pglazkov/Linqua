@@ -13,6 +13,7 @@ using Linqua.DataObjects;
 using Linqua.Persistence.Events;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
+using Nito.AsyncEx;
 
 namespace Linqua.Persistence
 {
@@ -24,8 +25,10 @@ namespace Linqua.Persistence
 		private readonly IMobileServiceSyncTable<ClientEntry> entrySyncTable;
 		private readonly IMobileServiceSyncHandler syncHandler;
 		private readonly IEventAggregator eventAggregator;
+	    private bool initialized;
+        private readonly AsyncLock initializationLock = new AsyncLock();
 
-		[ImportingConstructor]
+        [ImportingConstructor]
 		public MobileServiceDataStore([NotNull] IMobileServiceSyncHandler syncHandler, [NotNull] IEventAggregator eventAggregator)
 		{
 			Guard.NotNull(syncHandler, () => syncHandler);
@@ -188,14 +191,24 @@ namespace Linqua.Persistence
 
 		public async Task InitializeAsync(bool doInitialPoolIfNeeded)
 		{
-			await OfflineHelper.InitializeAsync(syncHandler);
+		    using (await initializationLock.LockAsync())
+		    {
+		        if (initialized)
+		        {
+		            return;
+		        }
 
-			if (doInitialPoolIfNeeded)
-			{
-				await OfflineHelper.DoInitialPullIfNeededAsync();
-			}
+		        await OfflineHelper.InitializeAsync(syncHandler);
 
-			eventAggregator.Publish(new StorageInitializedEvent());
+		        if (doInitialPoolIfNeeded)
+		        {
+		            await OfflineHelper.DoInitialPullIfNeededAsync();
+		        }
+
+		        initialized = true;
+
+		        eventAggregator.Publish(new StorageInitializedEvent());
+		    }
 		}
 
 		public Task EnqueueSync(OfflineSyncArguments args = null)
