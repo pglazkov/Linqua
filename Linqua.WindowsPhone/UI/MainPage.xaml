@@ -112,13 +112,15 @@
 				</interactivity:Interaction.Behaviors>-->
 
 				<PivotItem Margin="0"
-						   CommonNavigationTransitionInfo.IsStaggerElement="True">
+						   CommonNavigationTransitionInfo.IsStaggerElement="True"
+                           ManipulationMode="TranslateX">
 					<loc:RandomEntryListView DataContext="{Binding RandomEntryListViewModel}"
 											 Margin="0,0,0,24" />
 
 				</PivotItem>
 
-				<PivotItem Margin="0">
+				<PivotItem Margin="0"
+                           ManipulationMode="TranslateX">
 					<loc:FullEntryListView DataContext="{Binding FullEntryListViewModel}"
 										   Margin="0,0,0,0" />
 				</PivotItem>
