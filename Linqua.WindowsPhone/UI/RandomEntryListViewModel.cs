@@ -318,7 +318,7 @@ namespace Linqua.UI
 
 			Observable.Timer(TimeSpan.FromMilliseconds(600)).Subscribe(_ =>
 			{
-				Dispatcher.BeginInvoke(new Action(UpdateRandomEntries));
+				Dispatcher.InvokeAsync(new Action(UpdateRandomEntries)).FireAndForget();
 			});
 		}
 

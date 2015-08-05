@@ -650,16 +650,17 @@ namespace Linqua.UI
 			{				
 				if (e.EntryViewModel.IsLearnt)
 				{
+                    // Delay the dissapearing of the entry from the UI (for the sake of visual effect)
 					await Observable.Timer(TimeSpan.FromMilliseconds(300));
 
-					Dispatcher.BeginInvoke(new Action(() =>
+					await Dispatcher.InvokeAsync(new Action(() =>
 					{
-						if (!ShowLearnedEntries)
-						{
-							FullEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
-						}
+					    if (!ShowLearnedEntries)
+					    {
+					        FullEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
+					    }
 
-						RandomEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
+					    RandomEntryListViewModel.DeleteEntryFromUI(e.EntryViewModel.Entry);
 					}));
 				}
 

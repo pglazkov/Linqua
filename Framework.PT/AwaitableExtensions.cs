@@ -27,7 +27,7 @@ namespace Framework
 						{
 							var dispatcher = DispatcherProxy.CreateDispatcher();
 
-							dispatcher.BeginInvoke(new Action(() =>
+							dispatcher.InvokeAsync(new Action(() =>
 							{
 								throw new AggregateException(t.Exception);
 							}));

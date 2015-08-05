@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Framework.PlatformServices;
 
 namespace Framework
@@ -22,9 +23,9 @@ namespace Framework
 			return impl.CheckAccess();
 		}
 
-		public void BeginInvoke(Delegate method, params object[] args)
+		public Task InvokeAsync(Delegate method, params object[] args)
 		{
-			impl.BeginInvoke(method, args);
+			return impl.InvokeAsync(method, args);
 		}
 	}
 }

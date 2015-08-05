@@ -212,13 +212,13 @@ namespace Linqua.UI
 			DeleteEntryFromTimeGroup(entryVm);
 
 			// Move focus to previous or next entry
-			Dispatcher.BeginInvoke(new Action(() =>
+			Dispatcher.InvokeAsync(new Action(() =>
 			{
-				if (previousOrNextEntry != null)
-				{
-					previousOrNextEntry.Focus();
-				}
-			}));
+			    if (previousOrNextEntry != null)
+			    {
+			        previousOrNextEntry.Focus();
+			    }
+			})).FireAndForget();
 	    }
 
 	    private void DeleteEntryFromTimeGroup(EntryListItemViewModel entryVm)

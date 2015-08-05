@@ -140,18 +140,6 @@
 							  Icon="Home"
 							  Command="{Binding GoHomeCommand}" />
 
-				<AppBarButton x:Uid="MarkLearnedButton"
-							  Label="RES_MISSING MarkLearnedButton"
-							  Icon="Accept"
-							  Command="{Binding MarkLearnedCommand}"
-							  Visibility="{Binding IsLearnt, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
-
-				<AppBarButton x:Uid="MarkNotLearnedButton"
-							  Label="RES_MISSING MarkNotLearnedButton"
-							  Icon="Undo"
-							  Command="{Binding MarkNotLearnedCommand}"
-							  Visibility="{Binding IsLearnt, Converter={StaticResource BooleanToVisibilityConverter}}" />
-
 				<AppBarButton x:Uid="EntryDetailsPage_EditButton"
 							  Label="RES_MISSING EntryDetailsPage_EditButton"
 							  Icon="Edit"

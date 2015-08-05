@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Framework.MefExtensions;
 
 namespace Framework.PlatformServices.DefaultImpl
@@ -11,9 +12,11 @@ namespace Framework.PlatformServices.DefaultImpl
 			return true;
 		}
 
-		public void BeginInvoke(Delegate method, params object[] args)
+		public Task InvokeAsync(Delegate method, params object[] args)
 		{
 			method.DynamicInvoke(args);
+
+		    return Task.FromResult(true);
 		}
 	}
 }

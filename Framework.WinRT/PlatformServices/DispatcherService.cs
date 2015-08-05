@@ -1,5 +1,6 @@
 using System;
 using System.Composition;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
 using Windows.Foundation;
@@ -22,7 +23,7 @@ namespace Framework.PlatformServices
 			return Dispatcher.HasThreadAccess;
 		}
 
-		public async void BeginInvoke(Delegate method, params Object[] args)
+		public async Task InvokeAsync(Delegate method, params object[] args)
 		{
 			await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => method.DynamicInvoke(args));
 		}

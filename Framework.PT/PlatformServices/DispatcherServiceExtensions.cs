@@ -1,16 +1,17 @@
 ﻿using System;
+using System.Threading.Tasks;
 using JetBrains.Annotations;
 
 namespace Framework.PlatformServices
 {
 	public static class DispatcherServiceExtensions
 	{
-		public static void BeginInvoke([NotNull] this IDispatcherService service, [NotNull] Action action)
+		public static Task InvokeAsync([NotNull] this IDispatcherService service, [NotNull] Action action)
 		{
 			Guard.NotNull(service, () => service);
 			Guard.NotNull(action, () => action);
 
-			service.BeginInvoke(action);
+			return service.InvokeAsync(action);
 		}
 	}
 }

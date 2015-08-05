@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Framework.PlatformServices
 {
@@ -6,6 +7,6 @@ namespace Framework.PlatformServices
 	{
 		bool CheckAccess();
 
-		void BeginInvoke(Delegate method, params Object[] args);
+		Task InvokeAsync(Delegate method, params Object[] args);
 	}
 }

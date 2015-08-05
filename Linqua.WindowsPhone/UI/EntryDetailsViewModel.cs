@@ -21,8 +21,6 @@ namespace Linqua.UI
 			: base(eventAggregator)
 		{
 			GoHomeCommand = new DelegateCommand(GoHome);
-			MarkLearnedCommand = new DelegateCommand(() => IsLearnt = true, CanChangeIsLearned);
-			MarkNotLearnedCommand = new DelegateCommand(() => IsLearnt = false, CanChangeIsLearned);
 		}
 
 		public EntryDetailsViewModel(
@@ -48,8 +46,6 @@ namespace Linqua.UI
 		}
 
 		public DelegateCommand GoHomeCommand { get; private set; }
-		public DelegateCommand MarkLearnedCommand { get; private set; }
-		public DelegateCommand MarkNotLearnedCommand { get; private set; }
 
 		public bool IsLoadingData
 		{
@@ -103,13 +99,6 @@ namespace Linqua.UI
 		protected override void OnEntryChangedOverride()
 		{
 			RaisePropertyChanged(() => Text);
-			MarkLearnedCommand.RaiseCanExecuteChanged();
-			MarkNotLearnedCommand.RaiseCanExecuteChanged();
-		}
-
-		private bool CanChangeIsLearned()
-		{
-			return Entry != null;
 		}
 
 		protected override void CleanupOverride()
