@@ -4,7 +4,7 @@ namespace Linqua.Framework
 {
 	public interface INavigationView
 	{
-		bool Navigate(Type destination);
-		bool Navigate(Type destination, object parameter);
+		void Navigate(Type destination);
+		void Navigate(Type destination, object parameter);
 	}
 }

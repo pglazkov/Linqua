@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.ApplicationModel;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -113,7 +114,11 @@ namespace Linqua.UI
 
 		public void NavigateHome()
 		{
-			Frame.Navigate(typeof(MainPage));
+		    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+		    {
+		        Frame.Navigate(typeof(MainPage));
+		    }).FireAndForget();
+
 		}
 	}
 }

@@ -134,14 +134,20 @@ namespace Linqua.UI
 		    }).FireAndForget();
 	    }
 
-	    public bool Navigate(Type destination)
+	    public void Navigate(Type destination)
 	    {
-		    return Frame.Navigate(destination);
+            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Frame.Navigate(destination);
+            }).FireAndForget();
 	    }
 
-	    public bool Navigate(Type destination, object parameter)
+	    public void Navigate(Type destination, object parameter)
 	    {
-		    return Frame.Navigate(destination, parameter);
+            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                Frame.Navigate(destination, parameter);
+            }).FireAndForget();
 	    }
 
 	    public void NavigateToNewWordPage()

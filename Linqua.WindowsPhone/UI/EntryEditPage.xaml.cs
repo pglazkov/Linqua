@@ -1,5 +1,6 @@
 ﻿using System;
 using Windows.ApplicationModel;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -114,14 +115,18 @@ namespace Linqua.UI
 
 		public void NavigateBack()
 		{
-			if (Frame.CanGoBack)
-			{
-				Frame.GoBack();
-			}
-			else
-			{
-				Frame.Navigate(typeof(MainPage));
-			}
+		    Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+		    {
+		        if (Frame.CanGoBack)
+		        {
+		            Frame.GoBack();
+		        }
+		        else
+		        {
+		            Frame.Navigate(typeof(MainPage));
+		        }
+		    }).FireAndForget();
+
 		}
 	}
 }
