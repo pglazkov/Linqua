@@ -118,251 +118,245 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AddEntryButton.Content" xml:space="preserve">
-    <value>add</value>
+    <value>добавить</value>
   </data>
   <data name="ApplicationHeader.Text" xml:space="preserve">
     <value>LINQUA</value>
   </data>
   <data name="ConfirmNewWordButton.Label" xml:space="preserve">
-    <value>save</value>
+    <value>сохранить</value>
   </data>
   <data name="DeleteFlyoutItem.Text" xml:space="preserve">
-    <value>delete</value>
+    <value>удалить</value>
   </data>
   <data name="DialogService_Confirmation_Cancel" xml:space="preserve">
-    <value>cancel</value>
+    <value>отмена</value>
   </data>
   <data name="DialogService_Confirmation_Ok" xml:space="preserve">
-    <value>ok</value>
+    <value>продолжить</value>
   </data>
   <data name="EditFlyoutItem.Text" xml:space="preserve">
-    <value>edit</value>
+    <value>редактировать</value>
   </data>
   <data name="EntryDetailsPage_DeleteButton.Label" xml:space="preserve">
-    <value>delete</value>
+    <value>удалить</value>
   </data>
   <data name="EntryDetailsPage_EditButton.Label" xml:space="preserve">
-    <value>edit</value>
+    <value>редактировать</value>
   </data>
   <data name="EntryEditPage_CancelButton.Label" xml:space="preserve">
-    <value>cancel</value>
+    <value>отмена</value>
   </data>
   <data name="EntryEditPage_SaveButton.Label" xml:space="preserve">
-    <value>save</value>
+    <value>сохранить</value>
   </data>
   <data name="EntryEditPage_TranslateButtonTextBlock.Text" xml:space="preserve">
-    <value>translate</value>
+    <value>перевести</value>
   </data>
   <data name="EntryListItemView_TranslatingBusyTextBlock.Text" xml:space="preserve">
-    <value>translating...</value>
+    <value>переводим...</value>
   </data>
   <data name="EntryListView_Header_OneNumber" xml:space="preserve">
-    <value>ALL ({0})</value>
+    <value>ВСЕ ({0})</value>
   </data>
   <data name="EntryListView_Header_TwoNumbers" xml:space="preserve">
-    <value>ALL ({0}/{1})</value>
+    <value>ВСЕ ({0}/{1})</value>
   </data>
   <data name="EntryListView_TotalCountTemplate" xml:space="preserve">
-    <value>total {0}</value>
+    <value>всего {0}</value>
   </data>
   <data name="EntryViewModel_DeleteConfirmationOkButtonText" xml:space="preserve">
-    <value>delete</value>
+    <value>удалить</value>
   </data>
   <data name="EntryViewModel_DeleteConfirmationTextTemplate" xml:space="preserve">
-    <value>You're about to delete "{0}". Are you sure?</value>
+    <value>Вы собираетесь удалить "{0}". Продолжить?</value>
   </data>
   <data name="EntryViewModel_DeleteConfirmationTitle" xml:space="preserve">
-    <value>Delete</value>
+    <value>Удаление</value>
   </data>
   <data name="EntryViewModel_LearntStatus" xml:space="preserve">
-    <value>learned</value>
+    <value>выучено</value>
   </data>
   <data name="EntryViewModel_MarkLearnedConfirmationOk" xml:space="preserve">
-    <value>mark learned</value>
+    <value>выучено</value>
   </data>
   <data name="EntryViewModel_MarkLearnedConfirmationText" xml:space="preserve">
-    <value>This entry will be marked as learned and will not show up in the list of your words anymore. </value>
+    <value>Слово будет отмечено как выученое и больше не будет отображаться в списке ваших слов.</value>
   </data>
   <data name="EntryViewModel_MarkLearnedConfirmationTitle" xml:space="preserve">
-    <value>Mark Learned</value>
+    <value>Отметить слово как выученное</value>
   </data>
   <data name="EntryViewModel_NotLearntStatus" xml:space="preserve">
-    <value>not learned</value>
+    <value>не выучено</value>
   </data>
   <data name="EntryViewModel_UnMarkLearnedConfirmationOk" xml:space="preserve">
-    <value>un-mark learned</value>
+    <value>не выучено</value>
   </data>
   <data name="EntryViewModel_UnMarkLearnedConfirmationText" xml:space="preserve">
-    <value>This entry will be marked as not learned and will again be shown in the list of your words to learn.</value>
+    <value>Слово будет отмечено как не выученное и будет опять отображаться в списке ваших не выученых слов. </value>
   </data>
   <data name="EntryViewModel_UnMarkLearnedConfirmationTitle" xml:space="preserve">
-    <value>Mark Not Learned</value>
+    <value>Отметить как не выученное</value>
   </data>
   <data name="FirstUseTutorial_FlickToSeeNextRandom.Text" xml:space="preserve">
-    <value>flick to see next random word</value>
+    <value>пролестните влево чтобы увидеть след. случайное слово</value>
   </data>
   <data name="FirstUseTutorial_TapToSeeTranslation.Text" xml:space="preserve">
-    <value>tap to see translation</value>
+    <value>нажмите чтобы посмотреть перевод</value>
   </data>
   <data name="GoHomeButton.Label" xml:space="preserve">
-    <value>home</value>
-  </data>
-  <data name="MainPageHeader.Text" xml:space="preserve">
-    <value>vocabulary</value>
+    <value>домой</value>
   </data>
   <data name="MainPageHeaderStatisticsUnderlineTextBlock.Text" xml:space="preserve">
-    <value>not learned / total</value>
+    <value>не выучено / всего</value>
   </data>
   <data name="MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_False" xml:space="preserve">
-    <value>show learned words</value>
+    <value>показать выученные слова</value>
   </data>
   <data name="MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_True" xml:space="preserve">
-    <value>hide learned words</value>
+    <value>скрыть выученные слова</value>
   </data>
   <data name="MarkLearnedButton.Label" xml:space="preserve">
-    <value>learned</value>
+    <value>отметить как выученное</value>
   </data>
   <data name="MarkNotLearnedButton.Label" xml:space="preserve">
-    <value>not learned</value>
+    <value>отметить как не выученное</value>
   </data>
   <data name="NewEntryTextBox.PlaceholderText" xml:space="preserve">
-    <value>Add a New Word or Phrase</value>
+    <value>Добавить новое слово или фразу</value>
   </data>
   <data name="NewWordButton.Label" xml:space="preserve">
-    <value>new entry</value>
+    <value>добавить</value>
   </data>
   <data name="NextRendomItemsButton.Label" xml:space="preserve">
-    <value>next</value>
+    <value>следующее</value>
   </data>
   <data name="NextWordsButton.Content" xml:space="preserve">
-    <value>next random</value>
-  </data>
-  <data name="NextWordsButtonHint.Text" xml:space="preserve">
-    <value>tap to see next 1 random word</value>
+    <value>следующее случайное</value>
   </data>
   <data name="NoEntriesTextBlock.Text" xml:space="preserve">
-    <value>Your list is empty.
+    <value>Ваш список слов пуст.
 
-Start by adding a word or phrase.</value>
+Ночните с добавления слова или фразы.</value>
   </data>
   <data name="NoTraslationText" xml:space="preserve">
-    <value>&lt;no translation&gt;</value>
+    <value>&lt;нет перевода&gt;</value>
   </data>
   <data name="PivotFullListItemHeader.Text" xml:space="preserve">
-    <value>ALL</value>
+    <value>ВСЕ</value>
   </data>
   <data name="PivotRandomItemHeader.Text" xml:space="preserve">
-    <value>RANDOM</value>
+    <value>СЛУЧАЙНОЕ</value>
   </data>
   <data name="PreviousWordsButton.Content" xml:space="preserve">
-    <value>previous</value>
+    <value>предыдущее</value>
   </data>
   <data name="SendLogsButton.Label" xml:space="preserve">
-    <value>(advanced) share logs</value>
+    <value>(продв.) лог</value>
   </data>
   <data name="StatusBusyService_StatusText_Deleting" xml:space="preserve">
-    <value>Deleting...</value>
+    <value>Удаление...</value>
   </data>
   <data name="StatusBusyService_StatusText_Loading" xml:space="preserve">
-    <value>Loading...</value>
+    <value>Загрузка...</value>
   </data>
   <data name="StatusBusyService_StatusText_Saving" xml:space="preserve">
-    <value>Saving...</value>
+    <value>Сохранение...</value>
   </data>
   <data name="StatusBusyService_StatusText_Syncing" xml:space="preserve">
-    <value>Syncing...</value>
+    <value>Синхронизация...</value>
   </data>
   <data name="SyncButton.Label" xml:space="preserve">
-    <value>sync</value>
+    <value>синхронизировать</value>
   </data>
   <data name="TimeGroup_2NextWeek" xml:space="preserve">
-    <value>next week</value>
+    <value>след. неделя</value>
   </data>
   <data name="TimeGroup_2WeeksAgo" xml:space="preserve">
-    <value>2 weeks ago</value>
+    <value>2 недели назад</value>
   </data>
   <data name="TimeGroup_3WeeksAgo" xml:space="preserve">
-    <value>3 weeks ago</value>
+    <value>3 недели назад</value>
   </data>
   <data name="TimeGroup_4WeeksAgo" xml:space="preserve">
-    <value>4 weeks ago</value>
+    <value>4 недели назад</value>
   </data>
   <data name="TimeGroup_Friday" xml:space="preserve">
-    <value>friday</value>
+    <value>пятница</value>
   </data>
   <data name="TimeGroup_Friday2" xml:space="preserve">
-    <value>friday</value>
+    <value>пятница</value>
   </data>
   <data name="TimeGroup_In2Weeks" xml:space="preserve">
-    <value>in 2 weeks</value>
+    <value>через 2 недели</value>
   </data>
   <data name="TimeGroup_In3Weeks" xml:space="preserve">
-    <value>in 3 weeks</value>
+    <value>через 3 недели</value>
   </data>
   <data name="TimeGroup_In4Weeks" xml:space="preserve">
-    <value>in 4 weeks</value>
+    <value>через 4 недели</value>
   </data>
   <data name="TimeGroup_LastMonth" xml:space="preserve">
-    <value>last month</value>
+    <value>в пред. месяце</value>
   </data>
   <data name="TimeGroup_LastWeek" xml:space="preserve">
-    <value>last week</value>
+    <value>на прошлой неделе</value>
   </data>
   <data name="TimeGroup_Monday" xml:space="preserve">
-    <value>monday</value>
+    <value>понедельник</value>
   </data>
   <data name="TimeGroup_Monday2" xml:space="preserve">
-    <value>monday</value>
+    <value>понедельник</value>
   </data>
   <data name="TimeGroup_Newer" xml:space="preserve">
-    <value>newer</value>
+    <value>никогда</value>
   </data>
   <data name="TimeGroup_NextMonth" xml:space="preserve">
-    <value>next month</value>
+    <value>в след. месяце</value>
   </data>
   <data name="TimeGroup_Older" xml:space="preserve">
-    <value>older</value>
+    <value>раньше</value>
   </data>
   <data name="TimeGroup_Saturday" xml:space="preserve">
-    <value>saturday</value>
+    <value>суббота</value>
   </data>
   <data name="TimeGroup_Saturday2" xml:space="preserve">
-    <value>saturday</value>
+    <value>суббота</value>
   </data>
   <data name="TimeGroup_Sunday" xml:space="preserve">
-    <value>sunday</value>
+    <value>воскресенье</value>
   </data>
   <data name="TimeGroup_Sunday2" xml:space="preserve">
-    <value>sunday</value>
+    <value>воскресенье</value>
   </data>
   <data name="TimeGroup_Thursday" xml:space="preserve">
-    <value>thursday</value>
+    <value>четверг</value>
   </data>
   <data name="TimeGroup_Thursday2" xml:space="preserve">
-    <value>thursday</value>
+    <value>четверг</value>
   </data>
   <data name="TimeGroup_Today" xml:space="preserve">
-    <value>today</value>
+    <value>сегодня</value>
   </data>
   <data name="TimeGroup_Tomorrow" xml:space="preserve">
-    <value>tomorrow</value>
+    <value>завтра</value>
   </data>
   <data name="TimeGroup_Tuesday" xml:space="preserve">
-    <value>tuesday</value>
+    <value>вторник</value>
   </data>
   <data name="TimeGroup_Tuesday2" xml:space="preserve">
-    <value>tuesday</value>
+    <value>вторник</value>
   </data>
   <data name="TimeGroup_Wednesday" xml:space="preserve">
-    <value>wednesday</value>
+    <value>среда</value>
   </data>
   <data name="TimeGroup_Wednesday2" xml:space="preserve">
-    <value>wednesday</value>
+    <value>среда</value>
   </data>
   <data name="TimeGroup_Yesterday" xml:space="preserve">
-    <value>yesterday</value>
+    <value>вчера</value>
   </data>
   <data name="TranslationTitleTextBlock.Text" xml:space="preserve">
-    <value>translation</value>
+    <value>перевод</value>
   </data>
 </root>

@@ -175,7 +175,8 @@
 				</Grid>
 
 				<TextBlock Grid.Row="1"
-						   Text="flick to see next random word"
+                           x:Uid="FirstUseTutorial_FlickToSeeNextRandom"
+						   Text="RES_MISSING FirstUseTutorial_FlickToSeeNextRandom"
 						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
 						   HorizontalAlignment="Center"
 						   TextWrapping="Wrap"
@@ -185,7 +186,8 @@
 
 			<Grid x:Name="FirstUseTutorial_TapToSeeTranslation"
 				  Opacity="0">
-				<TextBlock Text="tap to see translation"
+                <TextBlock x:Uid="FirstUseTutorial_TapToSeeTranslation" 
+                           Text="RES_MISSING FirstUseTutorial_TapToSeeTranslation"
 						   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
 						   HorizontalAlignment="Center"
 						   TextWrapping="Wrap"
