@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Composition;
 using System.Net.Http;
 using System.Runtime.Serialization;
@@ -14,8 +15,9 @@ namespace Linqua.Translation.Microsoft
 	{
 		private const string DetectLanguageUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Detect?text={0}";
 		private const string TranslateUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text={0}&from={1}&to={2}";
+	    private const string GetLanguagesForTranslateUri = "http://api.microsofttranslator.com/V2/Http.svc/GetLanguagesForTranslate";
 
-		private readonly IMicrosoftAccessTokenProvider accessTokenProvider;
+        private readonly IMicrosoftAccessTokenProvider accessTokenProvider;
 
 		[ImportingConstructor]
 		public MicrosoftTranslationService([NotNull] IMicrosoftAccessTokenProvider accessTokenProvider)
@@ -72,7 +74,28 @@ namespace Linqua.Translation.Microsoft
 			}
 		}
 
-		private async Task ConfigureRequestAuthentication(HttpClient httpClient)
+	    public async Task<IEnumerable<string>> GetSupportedLanguagesAsync()
+	    {
+            string uri = GetLanguagesForTranslateUri;
+
+            using (var httpClient = new HttpClient())
+            {
+                await ConfigureRequestAuthentication(httpClient);
+                var response = await httpClient.GetAsync(uri);
+
+                await MicrosoftApiHelper.ThrowIfErrorResponse(response);
+
+                var responseStream = await response.Content.ReadAsStreamAsync();
+
+                DataContractSerializer dcs = new DataContractSerializer(typeof(List<string>));
+
+                var languagesForTranslate = (List<string>)dcs.ReadObject(responseStream);
+
+                return languagesForTranslate;
+            }
+        }
+
+	    private async Task ConfigureRequestAuthentication(HttpClient httpClient)
 		{
 			var accessToken = await accessTokenProvider.GetAccessTokenAsync();
 			httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);

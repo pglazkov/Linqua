@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Framework;
 using Framework.PlatformServices;
@@ -11,15 +13,21 @@ using Linqua.Service.Models;
 using Linqua.Translation;
 using Linqua.UI;
 using MetroLog;
+using Nito.AsyncEx;
 
 namespace Linqua
 {
 	[Export(typeof(IEntryOperations))]
     public class EntryOperations : IEntryOperations
     {
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<EntryOperations>();
+	    private const string DefaultTranslationLanguage = "en";
 
-		private readonly ICompositionFactory compositionFactory;
+	    private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<EntryOperations>();
+
+        private static HashSet<string> supportedTranslationLanguages;
+        private static readonly AsyncLock supportedTranslationLanguagesCacheLock = new AsyncLock();
+
+        private readonly ICompositionFactory compositionFactory;
 		private readonly IDataStore storage;
 		private readonly IEventAggregator eventAggregator;
 		private readonly IStatusBusyService statusBusyService;
@@ -108,10 +116,12 @@ namespace Linqua
 					if (Log.IsDebugEnabled)
 						Log.Debug("Detected language: " + entryLanguage);
 
-					if (Log.IsDebugEnabled)
-						Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entry.Text, entryLanguage, "en");
+				    var translateToLanguage = await GetTranslateToLanguageAsync();
 
-					translation = await translator.Value.TranslateAsync(entry.Text, entryLanguage, "en");
+				    if (Log.IsDebugEnabled)
+                        Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entry.Text, entryLanguage, translateToLanguage);
+
+                    translation = await translator.Value.TranslateAsync(entry.Text, entryLanguage, translateToLanguage);
 
 					if (Log.IsDebugEnabled)
 						Log.Debug("Translation: \"{0}\"", translation);
@@ -135,5 +145,30 @@ namespace Linqua
 
 			return translation;
 		}
+
+	    private async Task<string> GetTranslateToLanguageAsync()
+	    {
+	        var translateToLanguage = CultureInfo.CurrentUICulture.Name;
+
+	        using (await supportedTranslationLanguagesCacheLock.LockAsync())
+	        {
+	            if (supportedTranslationLanguages == null)
+	            {
+	                supportedTranslationLanguages = (await translator.Value.GetSupportedLanguagesAsync()).ToHashSet();
+
+	                if (Log.IsDebugEnabled)
+	                {
+	                    Log.Debug($"Loaded supported translation languages: {string.Join(", ", supportedTranslationLanguages)}");
+	                }
+	            }
+
+	            if (!supportedTranslationLanguages.Contains(translateToLanguage))
+	            {
+	                translateToLanguage = DefaultTranslationLanguage;
+	            }
+	        }
+
+	        return translateToLanguage;
+	    }
     }
 }
