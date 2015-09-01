@@ -14,10 +14,21 @@ namespace Linqua.UI
 		{
 			this.InitializeComponent();
 
+		    Loaded += OnLoaded;
 			DataContextChanged += OnDataContextChanged;
 		}
 
-		#region FrontSideContent DP
+	    private void OnLoaded(object sender, RoutedEventArgs e)
+	    {
+	        if (IsFlipped)
+	        {
+                // Always show the front side first so that user is not confused by what he/she sees on the back side after some
+                // time has passed since he/she flipped the card.
+	            SetValue(IsFlippedProperty, false);
+	        }
+	    }
+
+	    #region FrontSideContent DP
 
 		public object FrontSideContent
 		{
@@ -88,19 +99,12 @@ namespace Linqua.UI
 
 		private void OnIsFlippedChanged(DependencyPropertyChangedEventArgs e)
 		{
-			bool isFlipped = (bool)e.NewValue;
+		    bool isFlipped = (bool)e.NewValue;
 
-			if (isFlipped)
-			{
-				VisualStateManager.GoToState(this, "FlipCardFrontState", true);
-			}
-			else
-			{
-				VisualStateManager.GoToState(this, "FlipCardBackState", true);
-			}
+		    SetIsFlipped(isFlipped);
 		}
 
-		#endregion
+	    #endregion
 
 		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
 		{
@@ -129,5 +133,16 @@ namespace Linqua.UI
 		{
 			VisualStateManager.GoToState(this, "PointerReleasedState", true);
 		}
-	}
+        private void SetIsFlipped(bool isFlipped)
+        {
+            if (isFlipped)
+            {
+                VisualStateManager.GoToState(this, "FlipCardFrontState", true);
+            }
+            else
+            {
+                VisualStateManager.GoToState(this, "FlipCardBackState", true);
+            }
+        }
+    }
 }
