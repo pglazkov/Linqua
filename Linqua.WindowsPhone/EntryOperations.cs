@@ -80,8 +80,10 @@ namespace Linqua
 		public async Task<string> TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
 		{
 			string translation = null;
+            string entryLanguage = null;
+            string translateToLanguage = null;
 
-			viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
+            viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
 
 			try
 			{
@@ -98,6 +100,8 @@ namespace Linqua
 							Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
 
 						translation = existingEntry.Definition;
+					    entryLanguage = existingEntry.TextLanguageCode;
+					    translateToLanguage = existingEntry.DefinitionLanguageCode;
 					}
 				}
 				catch (Exception ex)
@@ -110,13 +114,13 @@ namespace Linqua
 				{
 					if (Log.IsDebugEnabled)
 						Log.Debug("Detecting language of \"{0}\"", entry.Text);
+					
+				    entryLanguage = await translator.Value.DetectLanguageAsync(entry.Text);
 
-					var entryLanguage = await translator.Value.DetectLanguageAsync(entry.Text);
-
-					if (Log.IsDebugEnabled)
+				    if (Log.IsDebugEnabled)
 						Log.Debug("Detected language: " + entryLanguage);
 
-				    var translateToLanguage = await GetTranslateToLanguageAsync();
+				    translateToLanguage = await GetTranslateToLanguageAsync();
 
 				    if (Log.IsDebugEnabled)
                         Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entry.Text, entryLanguage, translateToLanguage);
@@ -129,6 +133,8 @@ namespace Linqua
 
 				viewModelsToUpdate.ForEach(x => x.Definition = translation);
 
+			    entry.TextLanguageCode = entryLanguage;
+			    entry.DefinitionLanguageCode = translateToLanguage;
 				entry.Definition = translation;
                 entry.TranslationState = TranslationState.Automatic;
 				

@@ -9,7 +9,11 @@ namespace Linqua.Service.DataObjects
 	{
 		public string Text { get; set; }
 
-		public string Definition { get; set; }
+        public string TextLanguageCode { get; set; }
+
+        public string Definition { get; set; }
+
+        public string DefinitionLanguageCode { get; set; }
 
         public TranslationState TranslationState { get; set; }
 

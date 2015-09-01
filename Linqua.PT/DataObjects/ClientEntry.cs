@@ -1,4 +1,5 @@
 ﻿using System;
+using JetBrains.Annotations;
 using Linqua.Service.Models;
 using Microsoft.WindowsAzure.MobileServices;
 
@@ -27,7 +28,13 @@ namespace Linqua.DataObjects
 
 		public string Text { get; set; }
 
-		public string Definition { get; set; }
+	    [CanBeNull]
+	    public string TextLanguageCode { get; set; }
+
+        public string Definition { get; set; }
+
+	    [CanBeNull]
+	    public string DefinitionLanguageCode { get; set; }
 
         public TranslationState TranslationState { get; set; }
 
