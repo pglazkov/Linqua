@@ -12,7 +12,7 @@ namespace Linqua
 		private const string ProviderId = "MicrosoftLive";
 		private const string AuthenticationRedirectUrl = MobileService.MobileServiceUrl;
 
-		private static readonly string[] AuthenticationScopes = new[] { "wl.basic", "wl.signin", "wl.offline_access" };
+		private static readonly string[] AuthenticationScopes = new[] { "wl.signin", "wl.offline_access" };
 
 		public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
 		{
