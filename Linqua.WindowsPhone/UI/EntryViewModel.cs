@@ -92,7 +92,12 @@ namespace Linqua.UI
 			}
 		}
 
-		public DateTime DateAdded
+	    public string LanguageCode
+	    {
+	        get { return Entry != null ? Entry.TextLanguageCode : string.Empty; }
+	    }
+
+        public DateTime DateAdded
 		{
 			get { return Entry != null ? Entry.ClientCreatedAt.LocalDateTime : DateTime.MinValue; }
 		}
@@ -132,6 +137,7 @@ namespace Linqua.UI
 				isTranslating = value;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => IsDefinitionVisible);
+                RaisePropertyChanged(() => LanguageCode);
 
 				OnIsTranslatingChangedOverride();
 			}
@@ -153,6 +159,7 @@ namespace Linqua.UI
                 Entry.TranslationState = TranslationState.Manual;
 				RaisePropertyChanged();
 				RaisePropertyChanged(() => IsDefinitionVisible);
+                RaisePropertyChanged(() => LanguageCode);
 			}
 		}
 

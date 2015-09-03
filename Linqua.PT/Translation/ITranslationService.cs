@@ -13,6 +13,6 @@ namespace Linqua.Translation
 		Task<string> TranslateAsync([NotNull] string text, [NotNull] string fromLanguageCode, string toLanguageCode);
 
 	    [NotNull]
-	    Task<IEnumerable<string>> GetSupportedLanguagesAsync();
-	}
+	    Task<IEnumerable<string>> GetSupportedLanguageCodesAsync();
+    }
 }

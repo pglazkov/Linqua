@@ -251,6 +251,9 @@
   <data name="PreviousWordsButton.Content" xml:space="preserve">
     <value>предыдущее</value>
   </data>
+  <data name="RandomEntryListItemView_EditTextBlock.Text" xml:space="preserve">
+    <value>ред.</value>
+  </data>
   <data name="SendLogsButton.Label" xml:space="preserve">
     <value>(продв.) лог</value>
   </data>

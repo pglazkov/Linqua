@@ -74,7 +74,7 @@ namespace Linqua.Translation.Microsoft
 			}
 		}
 
-	    public async Task<IEnumerable<string>> GetSupportedLanguagesAsync()
+	    public async Task<IEnumerable<string>> GetSupportedLanguageCodesAsync()
 	    {
             string uri = GetLanguagesForTranslateUri;
 

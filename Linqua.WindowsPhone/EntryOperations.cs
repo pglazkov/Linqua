@@ -160,7 +160,7 @@ namespace Linqua
 	        {
 	            if (supportedTranslationLanguages == null)
 	            {
-	                supportedTranslationLanguages = (await translator.Value.GetSupportedLanguagesAsync()).ToHashSet();
+	                supportedTranslationLanguages = (await translator.Value.GetSupportedLanguageCodesAsync()).ToHashSet();
 
 	                if (Log.IsDebugEnabled)
 	                {

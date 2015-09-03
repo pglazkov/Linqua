@@ -115,7 +115,7 @@
 							   Margin="0,0,0,0">
 					</TextBlock>
 
-					<Viewbox Grid.Row="1"
+                    <Viewbox Grid.Row="1"
 							 Grid.Column="0"
 							 Stretch="Uniform"
 							 StretchDirection="DownOnly"
@@ -157,6 +157,18 @@
 										  IsChecked="{Binding IsLearnt, Mode=TwoWay}"
 										  VerticalAlignment="Center" />
 						</StackPanel>
+
+                        <HyperlinkButton HorizontalAlignment="Right"
+                                         VerticalAlignment="Center"
+                                         Command="{Binding EditCommand}">
+                            <TextBlock Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                                       FontSize="14">
+                                <Underline>
+                                    <Run x:Uid="RandomEntryListItemView_EditTextBlock"
+                                         Text="RES_MISSING RandomEntryListItemView_EditTextBlock"/>
+                                </Underline>
+                            </TextBlock>
+                        </HyperlinkButton>
 					</Grid>
 				</Grid>
 			</loc:FlipControl.BackSideContent>
