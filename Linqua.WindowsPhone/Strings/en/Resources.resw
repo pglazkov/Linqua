@@ -207,6 +207,12 @@
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>home</value>
   </data>
+  <data name="LoginRequiredMessageText" xml:space="preserve">
+    <value>Please log in. Login is required for the app to be able to store the data in the cloud so that you don't loose it if something happens to your device. </value>
+  </data>
+  <data name="LoginRequiredMessageTitle" xml:space="preserve">
+    <value>Login Required</value>
+  </data>
   <data name="MainPageHeader.Text" xml:space="preserve">
     <value>vocabulary</value>
   </data>
@@ -240,10 +246,11 @@
   <data name="NextWordsButtonHint.Text" xml:space="preserve">
     <value>tap to see next 1 random word</value>
   </data>
-  <data name="NoEntriesTextBlock.Text" xml:space="preserve">
-    <value>Your list is empty.
-
-Start by adding a word or phrase.</value>
+  <data name="NoEntriesTextBlock_Instructions.Text" xml:space="preserve">
+    <value>Start by adding a word or phrase in a foreign language.</value>
+  </data>
+  <data name="NoEntriesTextBlock_MainMessage.Text" xml:space="preserve">
+    <value>Your list is empty.</value>
   </data>
   <data name="NoTraslationText" xml:space="preserve">
     <value>&lt;no translation&gt;</value>

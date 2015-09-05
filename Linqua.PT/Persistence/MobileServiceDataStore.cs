@@ -107,48 +107,51 @@ namespace Linqua.Persistence
 
 		public async Task<IEnumerable<ClientEntry>> GetRandomEntries(int count)
 		{
+		    IEnumerable<ClientEntry> result = null;
+
 			if (ConnectionHelper.IsConnectedToInternet)
 			{
-				var parameters = new Dictionary<string, string>();
+			    var parameters = new Dictionary<string, string>
+			    {
+			        {"number", count.ToString()}
+			    };
 
-				parameters.Add("number", count.ToString());
-
-				var serviceResult = await MobileService.Client.InvokeApiAsync<IEnumerable<ClientEntry>>("RandomEntry", HttpMethod.Get, parameters);
-
-				return serviceResult;
+			    result = await MobileService.Client.InvokeApiAsync<IEnumerable<ClientEntry>>("RandomEntry", HttpMethod.Get, parameters);
 			}
-
-			var existingEntiesInLocalStorage = await entrySyncTable.Where(x => !x.IsLearnt).ToListAsync();
-
-			if (existingEntiesInLocalStorage.Count > 0)
+			else
 			{
-				var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
-				var randomEntries = new List<ClientEntry>();
-				var excludeIndices = new HashSet<int>();
+                var existingEntiesInLocalStorage = await entrySyncTable.Where(x => !x.IsLearnt).ToListAsync();
 
-				count = Math.Min(count, existingEntiesInLocalStorage.Count);
+                if (existingEntiesInLocalStorage.Count > 0)
+                {
+                    var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
+                    var randomEntries = new List<ClientEntry>();
+                    var excludeIndices = new HashSet<int>();
 
-				for (var i = 0; i < count; i++)
-				{
-					int randomIndex;
-					do
-					{
-						randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
-					}
-					while (excludeIndices.Contains(randomIndex));
+                    count = Math.Min(count, existingEntiesInLocalStorage.Count);
 
-					excludeIndices.Add(randomIndex);
+                    for (var i = 0; i < count; i++)
+                    {
+                        int randomIndex;
+                        do
+                        {
+                            randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
+                        }
+                        while (excludeIndices.Contains(randomIndex));
 
-					var randomEntry = existingEntiesInLocalStorage[randomIndex];
+                        excludeIndices.Add(randomIndex);
 
-					randomEntries.Add(randomEntry);
-				}
+                        var randomEntry = existingEntiesInLocalStorage[randomIndex];
 
-				return randomEntries;
-			}
+                        randomEntries.Add(randomEntry);
+                    }
 
-			return null;
-		}
+                    result = randomEntries;
+                }
+            }
+
+            return result ?? Enumerable.Empty<ClientEntry>();
+        }
 
 		public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
 		{

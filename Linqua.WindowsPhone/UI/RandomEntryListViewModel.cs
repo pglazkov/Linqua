@@ -100,7 +100,7 @@ namespace Linqua.UI
 
 		public bool IsFirstUseTutorialComplete
 		{
-			get { return roamingSettings.GetValue<bool>(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey); }
+		    get { return false; } // roamingSettings.GetValue<bool>(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey); }
 			set { roamingSettings.SetValue(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey, value); }
 		}
 

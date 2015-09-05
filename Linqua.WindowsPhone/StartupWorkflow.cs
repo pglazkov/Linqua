@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Framework;
+using Framework.PlatformServices;
 using JetBrains.Annotations;
 using Linqua.Offline;
 using Linqua.UI;
@@ -41,7 +42,12 @@ namespace Linqua
 
 					if (!authenticated)
 					{
-						var dialog = new MessageDialog("You must log in.", "Login Required");
+					    var resourceManager = CompositionManager.Current.GetInstance<IStringResourceManager>();
+
+					    var messageTitle = resourceManager.GetString("LoginRequiredMessageTitle");
+					    var messageText = resourceManager.GetString("LoginRequiredMessageText");
+
+						var dialog = new MessageDialog(messageText, messageTitle);
 						dialog.Commands.Add(new UICommand("OK"));
 						await dialog.ShowAsync();
 					}

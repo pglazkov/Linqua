@@ -6,6 +6,7 @@
 			 xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
 			 xmlns:framework="using:Linqua.Framework"
 			 xmlns:loc="using:Linqua.UI"
+			 xmlns:parts="using:Linqua.UI.Parts"
 			 mc:Ignorable="d"
 			 d:DesignHeight="480"
 			 d:DesignWidth="480"
@@ -105,17 +106,12 @@
 
 	<Grid x:Name="LayoutRoot">
 
-		<TextBlock x:Uid="NoEntriesTextBlock"
-				   Text="RES_MISSING NoEntriesTextBlock"
-				   Style="{ThemeResource ListViewEmptyStaticTextBlockStyle}"
-				   Visibility="{Binding ThereAreNoEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
-				   TextWrapping="Wrap"
-				   TextAlignment="Center"
-				   VerticalAlignment="Center"
-				   HorizontalAlignment="Center"
-				   Margin="24,0,24,0" />
+        <parts:EmptyListContent Visibility="{Binding ThereAreNoEntries, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Center"
+                                Margin="24,0,24,48" />
 
-		<Grid x:Name="ItemContainer"
+        <Grid x:Name="ItemContainer"
 			  Visibility="{Binding AnyEntriesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
 			  Margin="0,0,0,48">
 			<Grid.RenderTransform>

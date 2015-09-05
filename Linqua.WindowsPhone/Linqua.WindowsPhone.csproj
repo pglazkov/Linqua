@@ -134,6 +134,9 @@
     <Compile Include="UI\IEntryEditView.cs" />
     <Compile Include="UI\LoginViewModel.cs" />
     <Compile Include="UI\MainViewModel.cs" />
+    <Compile Include="UI\Parts\EmptyListContent.xaml.cs">
+      <DependentUpon>EmptyListContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\RandomEntryListViewModel.cs" />
     <Compile Include="UI\TimeGroupViewModel.cs" />
     <Compile Include="UI\IEntryDetailsView.cs" />
@@ -216,6 +219,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\EntryEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\Parts\EmptyListContent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

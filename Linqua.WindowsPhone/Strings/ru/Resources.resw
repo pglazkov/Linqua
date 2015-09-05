@@ -207,6 +207,12 @@
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>домой</value>
   </data>
+  <data name="LoginRequiredMessageText" xml:space="preserve">
+    <value>Приложению требуется авторизация с вашим Майкрософт аккаунтом. Это нужно для того, чтобы приложение могло сохранять данные в облаке. </value>
+  </data>
+  <data name="LoginRequiredMessageTitle" xml:space="preserve">
+    <value>Авторизация</value>
+  </data>
   <data name="MainPageHeaderStatisticsUnderlineTextBlock.Text" xml:space="preserve">
     <value>не выучено / всего</value>
   </data>
@@ -234,10 +240,11 @@
   <data name="NextWordsButton.Content" xml:space="preserve">
     <value>следующее случайное</value>
   </data>
-  <data name="NoEntriesTextBlock.Text" xml:space="preserve">
-    <value>Ваш список слов пуст.
-
-Ночните с добавления слова или фразы.</value>
+  <data name="NoEntriesTextBlock_Instructions.Text" xml:space="preserve">
+    <value>Ночните с добавления слова или фразы на иностранном языке.</value>
+  </data>
+  <data name="NoEntriesTextBlock_MainMessage.Text" xml:space="preserve">
+    <value>Ваш список слов пуст.</value>
   </data>
   <data name="NoTraslationText" xml:space="preserve">
     <value>&lt;нет перевода&gt;</value>
