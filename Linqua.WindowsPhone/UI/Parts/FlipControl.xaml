@@ -104,9 +104,8 @@
 					</Storyboard>
 				</VisualState>
 
-				<VisualState x:Name="InitialState">
-				</VisualState>
-				
+				<VisualState x:Name="InitialState" />
+
 			</VisualStateGroup>
 		</VisualStateManager.VisualStateGroups>
 

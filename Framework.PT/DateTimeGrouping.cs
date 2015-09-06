@@ -18,8 +18,8 @@ namespace Framework
 				EnglishName = englishName;
 			}
 
-			public string Key { get; set; }
-			public string EnglishName { get; set; }
+			public string Key { get; }
+			public string EnglishName { get; }
 		}
 
 		private static readonly List<GroupInfo> GroupInfos = new List<GroupInfo>

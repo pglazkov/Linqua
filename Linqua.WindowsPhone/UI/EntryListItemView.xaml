@@ -82,8 +82,7 @@
 						  Grid.Column="1"
 						  Margin="10,6,0,0"
 						  Style="{StaticResource MarkLearnedButtonStyle}"
-						  IsChecked="{Binding IsLearnt, Mode=TwoWay}">
-			</ToggleButton>
+						  IsChecked="{Binding IsLearnt, Mode=TwoWay}" />
 		</Grid>
 	</Border>
 </UserControl>

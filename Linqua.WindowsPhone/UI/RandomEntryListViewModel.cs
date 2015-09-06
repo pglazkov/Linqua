@@ -55,8 +55,8 @@ namespace Linqua.UI
 			ShowPreviousEntriesCommand = new DelegateCommand(ShowPreviousEntries, CanShowPreviousEntries);
 	    }
 
-		public DelegateCommand ShowNextEntriesCommand { get; private set; }
-		public DelegateCommand ShowPreviousEntriesCommand { get; private set; }
+		public DelegateCommand ShowNextEntriesCommand { get; }
+		public DelegateCommand ShowPreviousEntriesCommand { get; }
 
 		public IEnumerable<ClientEntry> Entries
 		{
@@ -82,8 +82,8 @@ namespace Linqua.UI
 			get { return RandomEntryViewModels.Count > 0; }
 		}
 
-		public ObservableCollection<EntryListItemViewModel> RandomEntryViewModels { get; private set; }
-		private Stack<List<EntryListItemViewModel>> PreviousRandomEntryViewModelsStack { get; set; }
+		public ObservableCollection<EntryListItemViewModel> RandomEntryViewModels { get; }
+		private Stack<List<EntryListItemViewModel>> PreviousRandomEntryViewModelsStack { get; }
 
 		public bool IsInitializationComplete
 		{

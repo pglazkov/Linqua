@@ -40,9 +40,9 @@ namespace Linqua.UI
 		}
 
 
-		public DelegateCommand DeleteCommand { get; private set; }
-		public DelegateCommand QuickEditCommand { get; private set; }
-		public DelegateCommand EditCommand { get; private set; }
+		public DelegateCommand DeleteCommand { get; }
+		public DelegateCommand QuickEditCommand { get; }
+		public DelegateCommand EditCommand { get; }
 
 		private IEntryOperations EntryOperations
 		{

@@ -85,9 +85,9 @@ namespace Linqua.UI
 		    }
 	    }
 
-	    public ObservableCollection<EntryListItemViewModel> EntryViewModels { get; private set; }
+	    public ObservableCollection<EntryListItemViewModel> EntryViewModels { get; }
 
-		public ObservableCollection<EntryListItemTimeGroupViewModel> TimeGroupViewModels { get; private set; }
+		public ObservableCollection<EntryListItemTimeGroupViewModel> TimeGroupViewModels { get; }
 
 	    public bool ThereAreNoEntries
 	    {

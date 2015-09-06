@@ -99,13 +99,13 @@ namespace Linqua.UI
 		}
 
 		public DelegateCommand SendLogsCommand { get; private set; }
-		public DelegateCommand AddWordCommand { get; private set; }
+		public DelegateCommand AddWordCommand { get; }
 		public DelegateCommand SyncCommand { get; private set; }
 		public DelegateCommand ToggleShowHideLearnedEntriesCommand { get; private set; }
 
 		public IMainView View { get; set; }
 
-		public EntryTextEditorViewModel EntryTextEditorViewModel { get; private set; }
+		public EntryTextEditorViewModel EntryTextEditorViewModel { get; }
 
 		public bool ShowLearnedEntries
 		{

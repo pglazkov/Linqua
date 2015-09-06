@@ -95,7 +95,6 @@ namespace Linqua
 
 			if (condition != null)
 			{
-
 				builder.AddCondition(condition);
 			}
 

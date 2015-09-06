@@ -53,9 +53,9 @@ namespace Linqua.UI
 			CompositionFactory = compositionFactory;
 		}
 
-		public DelegateCommand TranslateCommand { get; private set; }
-		public DelegateCommand SaveCommand { get; private set; }
-		public DelegateCommand CancelCommand { get; private set; }
+		public DelegateCommand TranslateCommand { get; }
+		public DelegateCommand SaveCommand { get; }
+		public DelegateCommand CancelCommand { get; }
 
 		public IEntryEditView View { get; set; }
 

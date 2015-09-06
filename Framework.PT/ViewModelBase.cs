@@ -54,8 +54,8 @@ namespace Framework
 		    set { resources = value; }
 	    }
 
-	    public IDictionary<string, IViewModelBahavior> Behaviors { get; private set; }
-		public IDictionary<string, ICommand> AttachedCommands { get; private set; }
+	    public IDictionary<string, IViewModelBahavior> Behaviors { get; }
+		public IDictionary<string, ICommand> AttachedCommands { get; }
 
 	    public void RegisterAttachedCommand([NotNull] string commandKey, [NotNull] ICommand command)
 	    {

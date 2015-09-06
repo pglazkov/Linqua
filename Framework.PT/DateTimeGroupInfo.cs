@@ -13,8 +13,8 @@ namespace Framework
 			GroupName = groupName;
 		}
 
-		public int OrderIndex { get; private set; }
-		public string GroupName { get; private set; }
+		public int OrderIndex { get; }
+		public string GroupName { get; }
 
 		public override string ToString()
 		{

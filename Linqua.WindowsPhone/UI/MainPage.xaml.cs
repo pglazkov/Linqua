@@ -45,7 +45,7 @@ namespace Linqua.UI
 			}
         }
 
-	    private MainViewModel ViewModel { get; set; }
+	    private MainViewModel ViewModel { get; }
 
 		private void OnLoaded(object sender, RoutedEventArgs e)
 		{

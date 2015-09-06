@@ -142,10 +142,9 @@
 
 	<Style x:Key="IconButtonStyle"
 		   TargetType="Button"
-		   BasedOn="{StaticResource BaseIconButtonStyle}">
-	</Style>
+		   BasedOn="{StaticResource BaseIconButtonStyle}" />
 
-	<SolidColorBrush x:Key="ToggleButtonBackgroundThemeBrush"
+    <SolidColorBrush x:Key="ToggleButtonBackgroundThemeBrush"
 					 Color="Transparent" />
 	<SolidColorBrush x:Key="ToggleButtonBorderThemeBrush"
 					 Color="{StaticResource ApplicationThemeColor}" />

@@ -19,7 +19,7 @@ namespace Framework.Logging
 		/// <summary>
 		/// Gets an object that defines the file naming parameters.
 		/// </summary>
-		public FileNamingParameters FileNamingParameters { get; private set; }
+		public FileNamingParameters FileNamingParameters { get; }
 
 		/// <summary>
 		/// Gets or sets the number of days to retain log files for.

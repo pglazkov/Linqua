@@ -57,7 +57,7 @@ namespace Linqua.Framework
 	[WebHostHidden]
 	public class NavigationHelper : DependencyObject
 	{
-		private Page Page { get; set; }
+		private Page Page { get; }
 		private Frame Frame { get { return this.Page.Frame; } }
 
 		/// <summary>

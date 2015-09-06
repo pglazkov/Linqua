@@ -78,8 +78,7 @@
 											  PointerPressed="EntryPressed"
 											  HorizontalAlignment="Stretch"
 											  HorizontalContentAlignment="Stretch"
-											  IsTabStop="False">
-					</loc:EntryListItemView>
+											  IsTabStop="False" />
 				</DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>

@@ -24,7 +24,7 @@ namespace Linqua.UI
 			FinishCommand = new DelegateCommand(Finish, CanFinish);
 		}
 
-		public DelegateCommand FinishCommand { get; private set; }
+		public DelegateCommand FinishCommand { get; }
 
 		public ClientEntry Data
 		{

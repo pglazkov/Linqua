@@ -29,21 +29,13 @@
 					</ResourceDictionary.MergedDictionaries>
 				</ResourceDictionary>
 
-				<ResourceDictionary x:Key="HighContrast">
+				<ResourceDictionary x:Key="HighContrast" />
 
-				</ResourceDictionary>
+			    <ResourceDictionary x:Key="HighContrastBlack" />
 
-				<ResourceDictionary x:Key="HighContrastBlack">
+			    <ResourceDictionary x:Key="HighContrastWhite" />
 
-				</ResourceDictionary>
-
-				<ResourceDictionary x:Key="HighContrastWhite">
-
-				</ResourceDictionary>
-
-				<ResourceDictionary x:Key="HighContrastCustom">
-
-				</ResourceDictionary>
+			    <ResourceDictionary x:Key="HighContrastCustom" />
 			</ResourceDictionary.ThemeDictionaries>
 		</ResourceDictionary>
 		
