@@ -112,15 +112,9 @@ namespace Linqua.UI
 		    }
 	    }
 
-	    public string TotalCountText
-	    {
-		    get
-		    {
-				return string.Format(resourceManager.GetString("EntryListView_TotalCountTemplate"), EntryViewModels.Count);
-		    }
-	    }
+	    public string TotalCountText => string.Format(resourceManager.GetString("EntryListView_TotalCountTemplate"), EntryViewModels.Count);
 
-	    public string Header
+        public string Header
 	    {
 		    get
 		    {

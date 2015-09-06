@@ -44,12 +44,9 @@ namespace Linqua.UI
 		public DelegateCommand QuickEditCommand { get; }
 		public DelegateCommand EditCommand { get; }
 
-		private IEntryOperations EntryOperations
-		{
-			get { return CompositionFactory.Create<IEntryOperations>(); }
-		}
+		private IEntryOperations EntryOperations => CompositionFactory.Create<IEntryOperations>();
 
-		public ClientEntry Entry
+	    public ClientEntry Entry
 		{
 			get { return entry; }
 			protected set
@@ -76,7 +73,7 @@ namespace Linqua.UI
 
 		public string Text
 		{
-			get { return Entry != null ? Entry.Text : string.Empty; }
+			get { return Entry?.Text; }
 			set
 			{
 				if (Equals(value, Text))
@@ -92,17 +89,11 @@ namespace Linqua.UI
 			}
 		}
 
-	    public string LanguageCode
-	    {
-	        get { return Entry != null ? Entry.TextLanguageCode : string.Empty; }
-	    }
+	    public string LanguageCode => Entry?.TextLanguageCode;
 
-        public DateTime DateAdded
-		{
-			get { return Entry != null ? Entry.ClientCreatedAt.LocalDateTime : DateTime.MinValue; }
-		}
+	    public DateTime DateAdded => Entry?.ClientCreatedAt.LocalDateTime ?? DateTime.MinValue;
 
-		public bool IsLearnt
+	    public bool IsLearnt
 		{
 			get { return Entry != null && Entry.IsLearnt; }
 			set
@@ -145,7 +136,7 @@ namespace Linqua.UI
 
 		public string Definition
 		{
-			get { return Entry != null ? Entry.Definition : string.Empty; }
+			get { return Entry?.Definition; }
 			set
 			{
 				if (Equals(Definition, value))
@@ -163,20 +154,11 @@ namespace Linqua.UI
 			}
 		}
 
-		public bool IsDefinitionVisible
-		{
-			get { return !string.IsNullOrEmpty(Definition) || IsTranslating; }
-		}
+		public bool IsDefinitionVisible => !string.IsNullOrEmpty(Definition) || IsTranslating;
 
-	    public string NoDefinitionText
-	    {
-	        get
-	        {
-                return Resources.GetString("NoTraslationText");
-            }
-	    }
+	    public string NoDefinitionText => Resources.GetString("NoTraslationText");
 
-        private bool CanDeleteSelf()
+	    private bool CanDeleteSelf()
 		{
 			return Entry != null;
 		}

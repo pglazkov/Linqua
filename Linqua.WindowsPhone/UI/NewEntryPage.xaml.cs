@@ -27,21 +27,15 @@ namespace Linqua.UI
 		/// <summary>
 		/// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
 		/// </summary>
-		public NavigationHelper NavigationHelper
-		{
-			get { return this.navigationHelper; }
-		}
+		public NavigationHelper NavigationHelper => this.navigationHelper;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the view model for this <see cref="Page"/>.
 		/// This can be changed to a strongly typed view model.
 		/// </summary>
-		public ObservableDictionary DefaultViewModel
-		{
-			get { return this.defaultViewModel; }
-		}
+		public ObservableDictionary DefaultViewModel => this.defaultViewModel;
 
-		/// <summary>
+	    /// <summary>
 		/// Populates the page with content passed during navigation.  Any saved state is also
 		/// provided when recreating a page from a prior session.
 		/// </summary>

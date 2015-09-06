@@ -16,12 +16,9 @@ namespace Linqua.UI
 			Unloaded += OnUnloaded;
 		}
 
-		private EntryListItemViewModel ViewModel
-		{
-			get { return (EntryListItemViewModel)DataContext; }
-		}
+		private EntryListItemViewModel ViewModel => (EntryListItemViewModel)DataContext;
 
-		private void OnLoaded(object sender, RoutedEventArgs e)
+	    private void OnLoaded(object sender, RoutedEventArgs e)
 		{
 		
 		}

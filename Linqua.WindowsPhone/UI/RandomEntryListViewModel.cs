@@ -77,12 +77,9 @@ namespace Linqua.UI
 			}
 		}
 
-		public bool AnyEntriesAvailable
-		{
-			get { return RandomEntryViewModels.Count > 0; }
-		}
+		public bool AnyEntriesAvailable => RandomEntryViewModels.Count > 0;
 
-		public ObservableCollection<EntryListItemViewModel> RandomEntryViewModels { get; }
+	    public ObservableCollection<EntryListItemViewModel> RandomEntryViewModels { get; }
 		private Stack<List<EntryListItemViewModel>> PreviousRandomEntryViewModelsStack { get; }
 
 		public bool IsInitializationComplete

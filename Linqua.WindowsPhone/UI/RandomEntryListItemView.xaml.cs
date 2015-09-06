@@ -17,12 +17,9 @@ namespace Linqua.UI
 			DataContextChanged += OnDataContextChanged;
 		}
 
-		private EntryListItemViewModel ViewModel
-		{
-			get { return (EntryListItemViewModel)DataContext; }
-		}
+		private EntryListItemViewModel ViewModel => (EntryListItemViewModel)DataContext;
 
-		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+	    private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
 		{
 			var storyboard = (Storyboard)Resources["DataContextChangedStoryboard"];
 			storyboard.Begin();

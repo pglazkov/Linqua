@@ -36,12 +36,9 @@ namespace Linqua.UI
 		/// <summary>
 		/// Gets the <see cref="NavigationHelper"/> associated with this <see cref="Page"/>.
 		/// </summary>
-		public NavigationHelper NavigationHelper
-		{
-			get { return navigationHelper; }
-		}
+		public NavigationHelper NavigationHelper => navigationHelper;
 
-		/// <summary>
+	    /// <summary>
 		/// Gets the view model for this <see cref="Page"/>.
 		/// This can be changed to a strongly typed view model.
 		/// </summary>

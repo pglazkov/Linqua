@@ -118,12 +118,9 @@ namespace Linqua.UI
 			}
 		}
 
-		public string ToggleShowHideLearnedEntriesButtonLabel
-		{
-			get { return stringResourceManager.GetString("MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_" + ShowLearnedEntries); }
-		}
+		public string ToggleShowHideLearnedEntriesButtonLabel => stringResourceManager.GetString("MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_" + ShowLearnedEntries);
 
-		public bool IsEntryEditorVisible
+	    public bool IsEntryEditorVisible
 		{
 			get { return isEntryEditorVisible; }
 			set
@@ -223,10 +220,7 @@ namespace Linqua.UI
 			}
 		}
 
-		public bool IsInFullListMode
-		{
-			get { return PivotSelectedIndex == 1; }
-		}
+		public bool IsInFullListMode => PivotSelectedIndex == 1;
 
 		public bool IsDebug
 		{
@@ -240,7 +234,7 @@ namespace Linqua.UI
 			}
 		}
 
-		public void Initialize()
+	    public void Initialize()
 		{
 			InitializeAsync().FireAndForget();
 		}

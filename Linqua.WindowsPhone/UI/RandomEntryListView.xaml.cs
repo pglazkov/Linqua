@@ -32,17 +32,11 @@ namespace Linqua.UI
 		    }
         }
 
-	    private RandomEntryListViewModel ViewModel
-	    {
-			get { return (RandomEntryListViewModel)DataContext; }
-	    }
+	    private RandomEntryListViewModel ViewModel => (RandomEntryListViewModel)DataContext;
 
-	    private IRoamingSettingsService RoamingSettings
-	    {
-		    get { return CompositionManager.Current.GetInstance<IRoamingSettingsService>(); }
-	    }
+        private IRoamingSettingsService RoamingSettings => CompositionManager.Current.GetInstance<IRoamingSettingsService>();
 
-		private void OnLoaded(object sender, RoutedEventArgs e)
+        private void OnLoaded(object sender, RoutedEventArgs e)
 		{
 			isLoaded = true;
 			StartTutorialIfNeeded();

@@ -26,12 +26,9 @@ namespace Linqua.UI
 
 		#endregion
 
-		private EntryTextEditorViewModel ViewModel
-		{
-			get { return (EntryTextEditorViewModel)DataContext; }
-		}
+		private EntryTextEditorViewModel ViewModel => (EntryTextEditorViewModel)DataContext;
 
-		public void FocusInputTarget()
+	    public void FocusInputTarget()
 		{
 			NewEntryTextBox.Focus(FocusState.Programmatic);
 		}
