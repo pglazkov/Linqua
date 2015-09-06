@@ -53,7 +53,7 @@ namespace Linqua.Logging
 			{
 				// create a temp file
 				var file = await ApplicationData.Current.TemporaryFolder.CreateFileAsync(
-					string.Format("Log - {0}.zip", DateTime.UtcNow.ToString("yyyy-MM-dd HHmmss", CultureInfo.InvariantCulture)), CreationCollisionOption.ReplaceExisting);
+				    $"Log - {DateTime.UtcNow.ToString("yyyy-MM-dd HHmmss", CultureInfo.InvariantCulture)}.zip", CreationCollisionOption.ReplaceExisting);
 
 				using (var ras = (await file.OpenAsync(FileAccessMode.ReadWrite)).AsStreamForWrite())
 				{
@@ -112,7 +112,7 @@ namespace Linqua.Logging
 				}
 				catch (Exception ex)
 				{
-					InternalLogger.Current.Warn(string.Format("Failed to delete '{0}'.", file.Path), ex);
+					InternalLogger.Current.Warn($"Failed to delete '{file.Path}'.", ex);
 				}
 			}
 		}

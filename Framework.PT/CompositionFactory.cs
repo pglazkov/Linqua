@@ -57,10 +57,7 @@ namespace Framework
             catch (Exception ex)
             {
                 throw new CompositionFailedException(
-                    string.Format(
-                        "Unable to create and configure an instance of type {0}." +
-                        " An error occured. See inner exception for details.",
-                        typeof (T)), ex);
+                    $"Unable to create and configure an instance of type {typeof(T)}." + " An error occured. See inner exception for details.", ex);
             }
 
             return result;

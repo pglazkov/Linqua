@@ -30,7 +30,7 @@ namespace Framework
 		{
 			if (ReferenceEquals(value, null))
 			{
-				string argumentNullMessage = string.Format("Value of argument \"{0}\" cannot be null.", paramName);
+				string argumentNullMessage = $"Value of argument \"{paramName}\" cannot be null.";
 				string message = FormatMessageWithCollerInfo(argumentNullMessage, callerMemberName, callerFilePath, callerLineNumber);
 
 				BreakInDebuggerIfAttached();
@@ -65,7 +65,7 @@ namespace Framework
 
 			if (value.Length == 0)
 			{
-				string argumentNullMessage = string.Format("Value of argument \"{0}\" cannot be null or an empty string.", argumentName);
+				string argumentNullMessage = $"Value of argument \"{argumentName}\" cannot be null or an empty string.";
 				string message = FormatMessageWithCollerInfo(argumentNullMessage, callerMemberName, callerFilePath, callerLineNumber);
 
 				BreakInDebuggerIfAttached();

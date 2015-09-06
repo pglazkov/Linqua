@@ -52,7 +52,7 @@ namespace Linqua.Framework
 				case CommonBusyType.Syncing:
 					return stringResourceManager.GetString("StatusBusyService_StatusText_Syncing");
 				default:
-					throw new NotImplementedException(string.Format("Handling of \"{0}\" is not implemented.", type));
+					throw new NotImplementedException($"Handling of \"{type}\" is not implemented.");
 			}
 		}
 

@@ -42,7 +42,7 @@ namespace Framework
 				{
 					if (unaryExpression.NodeType != ExpressionType.Convert)
 					{
-						throw new InvalidOperationException(string.Format("Cannot interpret member from {0}", unaryExpression));
+						throw new InvalidOperationException($"Cannot interpret member from {unaryExpression}");
 					}
 
 					memberExpression = unaryExpression.Operand as MemberExpression;

@@ -108,11 +108,7 @@ namespace Linqua
 		{
 			if (AccessStatus == null)
 			{
-				String appVersion = String.Format("{0}.{1}.{2}.{3}",
-				                                  Package.Current.Id.Version.Build,
-				                                  Package.Current.Id.Version.Major,
-				                                  Package.Current.Id.Version.Minor,
-				                                  Package.Current.Id.Version.Revision);
+				string appVersion = $"{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Revision}";
 
 				if (!Equals(Windows.Storage.ApplicationData.Current.LocalSettings.Values["AppVersion"], appVersion))
 				{

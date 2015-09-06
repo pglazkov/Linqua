@@ -618,7 +618,7 @@ namespace Linqua.UI
 
 			try
 			{
-				args.Request.Data.Properties.Title = string.Format("Linqua Logs - {0:s} | {1}", DateTime.UtcNow, DeviceInfo.DeviceId);
+				args.Request.Data.Properties.Title = $"Linqua Logs - {DateTime.UtcNow:s} | {DeviceInfo.DeviceId}";
 				args.Request.Data.Properties.Description = "Linqua compressed log files.";
 
 				var file = await FileStreamingTarget.Instance.GetCompressedLogFile();

@@ -74,7 +74,7 @@ namespace Framework
 			{
 				if (isInProgress)
 				{
-					currentSubject.OnError(new OperationCanceledException(string.Format("Current \"{0}\" event has been cancelled. Subscribe again to receive further notifications.", name)));
+					currentSubject.OnError(new OperationCanceledException($"Current \"{name}\" event has been cancelled. Subscribe again to receive further notifications."));
 
 					OnCompleted();
 				}
