@@ -32,9 +32,9 @@ namespace Linqua.UI
 		[ImportingConstructor]
 		public RandomEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IEntryOperations entryOperations, [NotNull] IRoamingSettingsService roamingSettings)
 	    {
-			Guard.NotNull(resourceManager, () => resourceManager);
-			Guard.NotNull(entryOperations, () => entryOperations);
-			Guard.NotNull(roamingSettings, () => roamingSettings);
+			Guard.NotNull(resourceManager, nameof(resourceManager));
+			Guard.NotNull(entryOperations, nameof(entryOperations));
+			Guard.NotNull(roamingSettings, nameof(roamingSettings));
 
 		    this.resourceManager = resourceManager;
 			this.entryOperations = entryOperations;
@@ -359,13 +359,13 @@ namespace Linqua.UI
 			UpdatePagingControlsVisibility();
 
 			UpdatePagingControlsVisibility();
-			RaisePropertyChanged(() => AnyEntriesAvailable);
+			RaisePropertyChanged(nameof(AnyEntriesAvailable));
 		}
 
 		[CanBeNull]
 		public EntryListItemViewModel Find([NotNull] ClientEntry entry)
 		{
-			Guard.NotNull(entry, () => entry);
+			Guard.NotNull(entry, nameof(entry));
 
 			var result = RandomEntryViewModels.FirstOrDefault(x => x.Entry.Id == entry.Id);
 

@@ -8,7 +8,7 @@ namespace Linqua.Events
     {
 	    public EntryIsLearntChangedEvent([NotNull] EntryViewModel entryViewModel)
 	    {
-		    Guard.NotNull(entryViewModel, () => entryViewModel);
+		    Guard.NotNull(entryViewModel, nameof(entryViewModel));
 
 		    EntryViewModel = entryViewModel;
 	    }

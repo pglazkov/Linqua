@@ -59,8 +59,8 @@ namespace Framework
 
 	    public void RegisterAttachedCommand([NotNull] string commandKey, [NotNull] ICommand command)
 	    {
-		    Guard.NotNullOrEmpty(commandKey, () => commandKey);
-		    Guard.NotNull(command, () => command);
+		    Guard.NotNullOrEmpty(commandKey, nameof(commandKey));
+		    Guard.NotNull(command, nameof(command));
 
 		    if (!AttachedCommands.ContainsKey(commandKey))
 		    {
@@ -70,8 +70,8 @@ namespace Framework
 
 	    public void AddBehavior(string key, IViewModelBahavior behavior)
 	    {
-		    Guard.NotNullOrEmpty(key, () => key);
-		    Guard.NotNull(behavior, () => behavior);
+		    Guard.NotNullOrEmpty(key, nameof(key));
+		    Guard.NotNull(behavior, nameof(behavior));
 
 		    if (Behaviors.ContainsKey(key))
 		    {

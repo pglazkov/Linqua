@@ -17,7 +17,7 @@ namespace Linqua
 
 		public StartupWorkflow([NotNull] Frame frame, string arguments)
 		{
-			Guard.NotNull(frame, () => frame);
+			Guard.NotNull(frame, nameof(frame));
 
 			this.frame = frame;
 			this.arguments = arguments;

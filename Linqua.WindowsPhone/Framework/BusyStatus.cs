@@ -7,7 +7,7 @@ namespace Linqua.Framework
 	{
 		public BusyStatus([NotNull] string statusText)
 		{
-			Guard.NotNullOrEmpty(statusText, () => statusText);
+			Guard.NotNullOrEmpty(statusText, nameof(statusText));
 
 			StatusText = statusText;
 		}

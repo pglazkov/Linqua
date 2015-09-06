@@ -31,10 +31,7 @@ namespace Framework
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
+            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         /// <summary>
@@ -44,30 +41,14 @@ namespace Framework
         [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification = "Method used to raise an event")]
         protected void RaisePropertyChanged(params string[] propertyNames)
         {
-            if (propertyNames == null) throw new ArgumentNullException("propertyNames");
+            if (propertyNames == null) throw new ArgumentNullException(nameof(propertyNames));
 
-            foreach (string name in propertyNames)
+            foreach (var name in propertyNames)
             {
 // ReSharper disable ExplicitCallerInfoArgument
                 RaisePropertyChanged(name);
 // ReSharper restore ExplicitCallerInfoArgument
             }
-        }
-
-        /// <summary>
-        ///     Raises this object's PropertyChanged event.
-        /// </summary>
-        /// <typeparam name="T">The type of the property that has a new value</typeparam>
-        /// <param name="propertyExpression">A Lambda expression representing the property that has a new value.</param>
-        [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate", Justification = "Method used to raise an event")]
-        [SuppressMessage("Microsoft.Design", "CA1006:DoNotNestGenericTypesInMemberSignatures", Justification = "Cannot change the signature")]
-		[NotifyPropertyChangedInvocator]
-        protected void RaisePropertyChanged<T>(Expression<Func<T>> propertyExpression)
-        {
-            string propertyName = PropertySupport.ExtractPropertyName(propertyExpression);
-// ReSharper disable ExplicitCallerInfoArgument
-            RaisePropertyChanged(propertyName);
-// ReSharper restore ExplicitCallerInfoArgument
         }
     }
 }

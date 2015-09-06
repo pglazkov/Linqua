@@ -30,8 +30,8 @@ namespace Linqua.UI
 	    [ImportingConstructor]
 	    public FullEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IEntryOperations entryOperations)
 	    {
-			Guard.NotNull(resourceManager, () => resourceManager);
-		    Guard.NotNull(entryOperations, () => entryOperations);
+			Guard.NotNull(resourceManager, nameof(resourceManager));
+		    Guard.NotNull(entryOperations, nameof(entryOperations));
 
 		    this.resourceManager = resourceManager;
 		    this.entryOperations = entryOperations;
@@ -52,7 +52,7 @@ namespace Linqua.UI
 	    public FullEntryListViewModel(IEnumerable<ClientEntry> entries)
 			: this(new StringResourceManager(), new DesignTimeApplicationContoller())
 	    {
-			Guard.NotNull(entries, () => entries);
+			Guard.NotNull(entries, nameof(entries));
 
 		    Entries = entries;
 	    }
@@ -242,8 +242,8 @@ namespace Linqua.UI
 		{
 			UpdateThereAreNoEntries();
 
-			RaisePropertyChanged(() => TotalCountText);
-			RaisePropertyChanged(() => Header);
+			RaisePropertyChanged(nameof(TotalCountText));
+			RaisePropertyChanged(nameof(Header));
 		}
 
 	    private void UpdateThereAreNoEntries()
@@ -325,14 +325,14 @@ namespace Linqua.UI
 
 	    private void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
 	    {
-			RaisePropertyChanged(() => TotalCountText);
-			RaisePropertyChanged(() => Header);
+			RaisePropertyChanged(nameof(TotalCountText));
+			RaisePropertyChanged(nameof(Header));
 	    }
 
 	    [CanBeNull]
 	    public EntryListItemViewModel Find([NotNull] ClientEntry entry)
 	    {
-		    Guard.NotNull(entry, () => entry);
+		    Guard.NotNull(entry, nameof(entry));
 
 		    var result = EntryViewModels.FirstOrDefault(x => x.Entry.Id == entry.Id);
 

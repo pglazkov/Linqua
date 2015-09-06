@@ -23,7 +23,7 @@ namespace Framework
 
 		public ObservableSyncEvent([NotNull] string name)
 		{
-			Guard.NotNullOrEmpty(name, () => name);
+			Guard.NotNullOrEmpty(name, nameof(name));
 
 			this.name = name;
 		}
@@ -83,7 +83,7 @@ namespace Framework
 
 		public void Exception(Exception exception)
 		{
-			Guard.NotNull(exception, () => exception);
+			Guard.NotNull(exception, nameof(exception));
 
 			lock (syncRoot)
 			{

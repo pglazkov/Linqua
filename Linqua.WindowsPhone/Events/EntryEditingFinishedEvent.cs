@@ -8,7 +8,7 @@ namespace Linqua.Events
 	{
 		public EntryEditingFinishedEvent([NotNull] ClientEntry data)
 		{
-			Guard.NotNull(data, () => data);
+			Guard.NotNull(data, nameof(data));
 
 			Data = data;
 		}

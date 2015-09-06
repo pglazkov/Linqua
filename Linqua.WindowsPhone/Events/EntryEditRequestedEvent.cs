@@ -8,7 +8,7 @@ namespace Linqua.Events
 	{
 		public EntryEditRequestedEvent([NotNull] string entryId)
 		{
-			Guard.NotNullOrEmpty(entryId, () => entryId);
+			Guard.NotNullOrEmpty(entryId, nameof(entryId));
 
 			EntryId = entryId;
 		}

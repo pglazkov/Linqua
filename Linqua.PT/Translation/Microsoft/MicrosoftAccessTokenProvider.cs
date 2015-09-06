@@ -23,7 +23,7 @@ namespace Linqua.Translation.Microsoft
 		[ImportingConstructor]
 		public MicrosoftAccessTokenProvider([NotNull] ILocalSettingsService localSettingsService)
 		{
-			Guard.NotNull(localSettingsService, () => localSettingsService);
+			Guard.NotNull(localSettingsService, nameof(localSettingsService));
 
 			this.localSettingsService = localSettingsService;
 		}

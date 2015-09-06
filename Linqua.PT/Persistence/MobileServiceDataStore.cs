@@ -31,8 +31,8 @@ namespace Linqua.Persistence
         [ImportingConstructor]
 		public MobileServiceDataStore([NotNull] IMobileServiceSyncHandler syncHandler, [NotNull] IEventAggregator eventAggregator)
 		{
-			Guard.NotNull(syncHandler, () => syncHandler);
-			Guard.NotNull(eventAggregator, () => eventAggregator);
+			Guard.NotNull(syncHandler, nameof(syncHandler));
+			Guard.NotNull(eventAggregator, nameof(eventAggregator));
 
 			this.syncHandler = syncHandler;
 			this.eventAggregator = eventAggregator;
@@ -72,7 +72,7 @@ namespace Linqua.Persistence
 
 		public async Task<ClientEntry> LookupById(string entryId, CancellationToken? cancellationToken)
 		{
-			Guard.NotNull(entryId, () => entryId);
+			Guard.NotNull(entryId, nameof(entryId));
 
 			var result = await entrySyncTable.LookupAsync(entryId);
 

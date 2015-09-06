@@ -37,12 +37,12 @@ namespace Linqua.UI
 			Lazy<ITranslationService> translator)
 			: this(eventAggregator)
 		{
-			Guard.NotNull(compositionFactory, () => compositionFactory);
-			Guard.NotNull(storage, () => storage);
-			Guard.NotNull(eventAggregator, () => eventAggregator);
-			Guard.NotNull(statusBusyService, () => statusBusyService);
-			Guard.NotNull(translator, () => translator);
-			Guard.NotNull(entryOperations, () => entryOperations);
+			Guard.NotNull(compositionFactory, nameof(compositionFactory));
+			Guard.NotNull(storage, nameof(storage));
+			Guard.NotNull(eventAggregator, nameof(eventAggregator));
+			Guard.NotNull(statusBusyService, nameof(statusBusyService));
+			Guard.NotNull(translator, nameof(translator));
+			Guard.NotNull(entryOperations, nameof(entryOperations));
 
 			this.storage = storage;
 			this.statusBusyService = statusBusyService;
@@ -72,7 +72,7 @@ namespace Linqua.UI
 
 		public async Task InitializeAsync([NotNull] string entryId)
 		{
-			Guard.NotNullOrEmpty(entryId, () => entryId);
+			Guard.NotNullOrEmpty(entryId, nameof(entryId));
 
 			using (statusBusyService.Busy())
 			{
@@ -101,8 +101,8 @@ namespace Linqua.UI
 		{
 			Entry.IsLearnt = value;
 
-			RaisePropertyChanged(() => IsLearnt);
-			RaisePropertyChanged(() => IsLearnStatusText);
+			RaisePropertyChanged(nameof(IsLearnt));
+			RaisePropertyChanged(nameof(IsLearnStatusText));
 		}
 
 		private async Task SaveAsync()

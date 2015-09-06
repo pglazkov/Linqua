@@ -18,7 +18,7 @@ namespace Linqua.UI
 
 		public EntryTextEditorViewModel(IEventAggregator eventAggregator)
 		{
-			Guard.NotNull(eventAggregator, () => eventAggregator);
+			Guard.NotNull(eventAggregator, nameof(eventAggregator));
 
 			this.eventAggregator = eventAggregator;
 			FinishCommand = new DelegateCommand(Finish, CanFinish);

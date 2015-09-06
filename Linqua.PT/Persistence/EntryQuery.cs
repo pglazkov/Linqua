@@ -10,8 +10,8 @@ namespace Linqua.Persistence
 	{
 		public EntryQuery([NotNull] string id, [NotNull] Expression<Func<ClientEntry, bool>> expression)
 		{
-			Guard.NotNullOrEmpty(id, () => id);
-			Guard.NotNull(expression, () => expression);
+			Guard.NotNullOrEmpty(id, nameof(id));
+			Guard.NotNull(expression, nameof(expression));
 
 			Id = id;
 			Expression = expression;

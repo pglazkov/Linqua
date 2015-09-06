@@ -8,7 +8,7 @@ namespace Framework
 	{
 		public static void AddRange<T>(this ObservableCollection<T> collection, [NotNull] IEnumerable<T> itemsToAdd)
 		{
-			Guard.NotNull(itemsToAdd, () => itemsToAdd);
+			Guard.NotNull(itemsToAdd, nameof(itemsToAdd));
 
 			if (collection == null)
 			{

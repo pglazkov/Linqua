@@ -7,7 +7,7 @@ namespace Framework
 	{
 		public DateTimeGroupInfo(int orderIndex, [NotNull] string groupName)
 		{
-			Guard.NotNull(groupName, () => groupName);
+			Guard.NotNull(groupName, nameof(groupName));
 
 			OrderIndex = orderIndex;
 			GroupName = groupName;

@@ -48,7 +48,7 @@ namespace Linqua.UI
 		public void ShowTranslation()
 		{
 			isTranslationShown = true;
-			RaisePropertyChanged(() => IsTranslationShown);
+			RaisePropertyChanged(nameof(IsTranslationShown));
 		}
 
 		public void Focus()

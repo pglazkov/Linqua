@@ -157,7 +157,7 @@ namespace Linqua.UI
 
 	    public void NavigateToEntryDetails(string entryId)
 	    {
-		    Guard.NotNullOrEmpty(entryId, () => entryId);
+		    Guard.NotNullOrEmpty(entryId, nameof(entryId));
 
 		    Navigate(typeof(EntryDetailsPage), entryId);
 	    }

@@ -69,13 +69,13 @@ namespace Linqua.UI
 			IStringResourceManager stringResourceManager)
 			: this()
 		{
-			Guard.NotNull(compositionFactory, () => compositionFactory);
-			Guard.NotNull(storage, () => storage);
-			Guard.NotNull(eventAggregator, () => eventAggregator);
-			Guard.NotNull(statusBusyService, () => statusBusyService);
-			Guard.NotNull(entryOperations, () => entryOperations);
-			Guard.NotNull(localSettingsService, () => localSettingsService);
-			Guard.NotNull(stringResourceManager, () => stringResourceManager);
+			Guard.NotNull(compositionFactory, nameof(compositionFactory));
+			Guard.NotNull(storage, nameof(storage));
+			Guard.NotNull(eventAggregator, nameof(eventAggregator));
+			Guard.NotNull(statusBusyService, nameof(statusBusyService));
+			Guard.NotNull(entryOperations, nameof(entryOperations));
+			Guard.NotNull(localSettingsService, nameof(localSettingsService));
+			Guard.NotNull(stringResourceManager, nameof(stringResourceManager));
 
 			this.storage = storage;
 			this.eventAggregator = eventAggregator;
@@ -114,7 +114,7 @@ namespace Linqua.UI
 			{
 				localSettingsService.SetValue(LocalSettingsKeys.ShowLearnedEntries, value);
 				RaisePropertyChanged();
-				RaisePropertyChanged(() => ToggleShowHideLearnedEntriesButtonLabel);
+				RaisePropertyChanged(nameof(ToggleShowHideLearnedEntriesButtonLabel));
 			}
 		}
 
@@ -219,7 +219,7 @@ namespace Linqua.UI
 				if (value == PivotSelectedIndex) return;
 				localSettingsService.SetValue(LocalSettingsKeys.MainPivotSelectedIndex, value);
 				RaisePropertyChanged();
-				RaisePropertyChanged(() => IsInFullListMode);
+				RaisePropertyChanged(nameof(IsInFullListMode));
 			}
 		}
 

@@ -17,7 +17,7 @@ namespace Linqua.UI
 
 		protected EntryViewModel([NotNull] IEventAggregator eventAggregator)
 		{
-			Guard.NotNull(eventAggregator, () => eventAggregator);
+			Guard.NotNull(eventAggregator, nameof(eventAggregator));
 
 			this.eventAggregator = eventAggregator;
 
@@ -34,7 +34,7 @@ namespace Linqua.UI
 		public EntryViewModel(ClientEntry entry, [NotNull] IEventAggregator eventAggregator)
 			: this(eventAggregator)
 		{
-			Guard.NotNull(entry, () => entry);
+			Guard.NotNull(entry, nameof(entry));
 
 			Entry = entry;
 		}
@@ -57,13 +57,13 @@ namespace Linqua.UI
 				if (Equals(value, entry)) return;
 				entry = value;
 				RaisePropertyChanged();
-				RaisePropertyChanged(() => Text);
+				RaisePropertyChanged(nameof(Text));
 				OnTextChangedOverride();
-				RaisePropertyChanged(() => DateAdded);
-				RaisePropertyChanged(() => IsLearnt);
-				RaisePropertyChanged(() => IsLearnStatusText);
-				RaisePropertyChanged(() => Definition);
-				RaisePropertyChanged(() => IsDefinitionVisible);
+				RaisePropertyChanged(nameof(DateAdded));
+				RaisePropertyChanged(nameof(IsLearnt));
+				RaisePropertyChanged(nameof(IsLearnStatusText));
+				RaisePropertyChanged(nameof(Definition));
+				RaisePropertyChanged(nameof(IsDefinitionVisible));
 
 				DeleteCommand.RaiseCanExecuteChanged();
 				QuickEditCommand.RaiseCanExecuteChanged();
@@ -136,8 +136,8 @@ namespace Linqua.UI
 				if (value.Equals(isTranslating)) return;
 				isTranslating = value;
 				RaisePropertyChanged();
-				RaisePropertyChanged(() => IsDefinitionVisible);
-                RaisePropertyChanged(() => LanguageCode);
+				RaisePropertyChanged(nameof(IsDefinitionVisible));
+                RaisePropertyChanged(nameof(LanguageCode));
 
 				OnIsTranslatingChangedOverride();
 			}
@@ -158,8 +158,8 @@ namespace Linqua.UI
 				Entry.Definition = value;
                 Entry.TranslationState = TranslationState.Manual;
 				RaisePropertyChanged();
-				RaisePropertyChanged(() => IsDefinitionVisible);
-                RaisePropertyChanged(() => LanguageCode);
+				RaisePropertyChanged(nameof(IsDefinitionVisible));
+                RaisePropertyChanged(nameof(LanguageCode));
 			}
 		}
 
@@ -237,8 +237,8 @@ namespace Linqua.UI
 				await EntryOperations.UpdateEntryIsLearnedAsync(this);
 			}
 
-			RaisePropertyChanged(() => IsLearnt);
-			RaisePropertyChanged(() => IsLearnStatusText);
+			RaisePropertyChanged(nameof(IsLearnt));
+			RaisePropertyChanged(nameof(IsLearnStatusText));
 		}
 
 		protected virtual void OnDeleted()

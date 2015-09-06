@@ -9,7 +9,7 @@ namespace Framework
 
 		public void Attach([NotNull] IViewModelWithBehaviors viewModel)
 		{
-			Guard.NotNull(viewModel, () => viewModel);
+			Guard.NotNull(viewModel, nameof(viewModel));
 
 			AssociatedViewModel = (TViewModel)viewModel;
 		}

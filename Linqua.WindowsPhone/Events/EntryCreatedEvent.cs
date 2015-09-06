@@ -8,7 +8,7 @@ namespace Linqua.Events
 	{
 		public EntryCreatedEvent([NotNull] ClientEntry entry)
 		{
-			Guard.NotNull(entry, () => entry);
+			Guard.NotNull(entry, nameof(entry));
 
 			Entry = entry;
 		}

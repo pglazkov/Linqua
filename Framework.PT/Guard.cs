@@ -11,53 +11,6 @@ namespace Framework
 	public static class Guard
 	{
 		/// <summary>
-		///     Ensures that the given expression results in a non-null value.
-		/// </summary>
-		/// <typeparam name="TResult">
-		///     Type of the result, typically omitted as it can
-		///     be inferred by the compiler from the lambda expression.
-		/// </typeparam>
-		/// <param name="value">Value to check.</param>
-		/// <param name="argumentNameExpression">The expression for getting the argument name.</param>
-		/// <param name="callerMemberName">To be populated by the compiler.</param>
-		/// <param name="callerFilePath">To be populated by the compiler.</param>
-		/// <param name="callerLineNumber">To be populated by the compiler.</param>
-		/// <exception cref="ArgumentNullException">Expression resulted in a null value.</exception>
-		/// <example>
-		///     The following example shows how to validate that a
-		///     constructor argument is not null:
-		///     <code>
-		/// public Presenter(IRepository repository, IMailSender mailer)
-		/// {
-		///   Guard.NotNull(repository, () => repository);
-		///   Guard.NotNull(mailer, () => mailer);
-		///   
-		///     this.repository = repository;
-		///     this.mailer = mailer;
-		/// }
-		/// </code>
-		/// </example>
-		[ContractArgumentValidator]
-		[ContractAnnotation("value:null => halt")]
-		public static void NotNull<TResult>(TResult value, Expression<Func<TResult>> argumentNameExpression,
-											[CallerMemberName] string callerMemberName = null,
-											[CallerFilePath] string callerFilePath = null,
-											[CallerLineNumber] int callerLineNumber = 0)
-		{
-			if (ReferenceEquals(value, null))
-			{
-				string argName = GetArgName(argumentNameExpression);
-				string argumentNullMessage = string.Format("Value of argument \"{0}\" cannot be null.", argName);
-				string message = FormatMessageWithCollerInfo(argumentNullMessage, callerMemberName, callerFilePath, callerLineNumber);
-
-				BreakInDebuggerIfAttached();
-
-				throw new ArgumentNullException(argName, message);
-			}
-			Contract.EndContractBlock();
-		}
-
-		/// <summary>
 		///     Ensures that the given value is a non-null value.
 		/// </summary>
 		/// <param name="value">Value to check.</param>
@@ -83,55 +36,6 @@ namespace Framework
 				BreakInDebuggerIfAttached();
 
 				throw new ArgumentNullException(paramName, message);
-			}
-
-			Contract.EndContractBlock();
-		}
-
-		/// <summary>
-		///     Ensures that the given expression results in not null
-		///     or an empty string.
-		/// </summary>
-		/// <param name="value">Value to check.</param>
-		/// <param name="argumentNameExpression">The expression for getting the argument name.</param>
-		/// <param name="callerMemberName">To be populated by the compiler.</param>
-		/// <param name="callerFilePath">To be populated by the compiler.</param>
-		/// <param name="callerLineNumber">To be populated by the compiler.</param>
-		/// <exception cref="ArgumentNullException">Expression resulted in a null value.</exception>
-		/// <exception cref="ArgumentException">Expression resulted in an empty string value.</exception>
-		/// <example>
-		///     The following example shows how to validate that a
-		///     constructor argument is not a null or empty string:
-		///     <code>
-		/// public Presenter(string senderAddress)
-		/// {
-		///   Guard.NotNullOrEmpty(senderAddress, () => senderAddress);
-		///   
-		///     this.sender = senderAddress;
-		/// }
-		/// </code>
-		/// </example>
-		[ContractArgumentValidator]
-		[ContractAnnotation("value:null => halt")]
-		public static void NotNullOrEmpty(string value, Expression<Func<string>> argumentNameExpression,
-										  [CallerMemberName] string callerMemberName = null,
-										  [CallerFilePath] string callerFilePath = null,
-										  [CallerLineNumber] int callerLineNumber = 0)
-		{
-			// ReSharper disable ExplicitCallerInfoArgument
-			NotNull(value, argumentNameExpression, callerMemberName, callerFilePath, callerLineNumber);
-			// ReSharper restore ExplicitCallerInfoArgument
-
-			if (value.Length == 0)
-			{
-				string argName = GetArgName(argumentNameExpression);
-
-				string argumentNullMessage = string.Format("Value of argument \"{0}\" cannot be null or an empty string.", argName);
-				string message = FormatMessageWithCollerInfo(argumentNullMessage, callerMemberName, callerFilePath, callerLineNumber);
-
-				BreakInDebuggerIfAttached();
-
-				throw new ArgumentException(message, argName);
 			}
 
 			Contract.EndContractBlock();
@@ -170,90 +74,6 @@ namespace Framework
 			}
 
 			Contract.EndContractBlock();
-		}
-
-		/// <summary>
-		///     Ensures that the given condition is <c>true</c>.
-		/// </summary>
-		/// <param name="condition">Condition to check.</param>
-		/// <param name="argumentNameExpression">The expression for getting the argument name.</param>
-		/// <param name="message">
-		///     Message to include in the exception of the condition is <c>false</c>.
-		/// </param>
-		/// <param name="callerMemberName">To be populated by the compiler.</param>
-		/// <param name="callerFilePath">To be populated by the compiler.</param>
-		/// <param name="callerLineNumber">To be populated by the compiler.</param>
-		/// <exception cref="ArgumentNullException">Expression resulted in a null value.</exception>
-		[ContractArgumentValidator]
-		public static void Requires<TResult>(bool condition, Expression<Func<TResult>> argumentNameExpression, string message,
-											 [CallerMemberName] string callerMemberName = null,
-											 [CallerFilePath] string callerFilePath = null,
-											 [CallerLineNumber] int callerLineNumber = 0)
-		{
-			if (!condition)
-			{
-				string argName = GetArgName(argumentNameExpression);
-
-				string messageWithCallerInfo = FormatMessageWithCollerInfo(message, callerMemberName, callerFilePath,
-																		   callerLineNumber);
-
-				BreakInDebuggerIfAttached();
-
-				throw new ArgumentException(messageWithCallerInfo, argName);
-			}
-
-			Contract.EndContractBlock();
-		}
-
-		/// <summary>
-		///     Checks the given condition and if it is <c>False</c>, throws <see cref="ArgumentOutOfRangeException" />.
-		/// </summary>
-		/// <param name="condition">Condition to check.</param>
-		/// <param name="argumentNameExpression">The expression for getting the argument name.</param>
-		/// <param name="message">
-		///     Message to include in the exception of the condition is <c>false</c>.
-		/// </param>
-		/// <param name="callerMemberName">To be populated by the compiler.</param>
-		/// <param name="callerFilePath">To be populated by the compiler.</param>
-		/// <param name="callerLineNumber">To be populated by the compiler.</param>
-		/// <exception cref="ArgumentOutOfRangeException">
-		///     <paramref name="condition" /> is <c>false</c>.
-		/// </exception>
-		[ContractArgumentValidator]
-		public static void NotOutOfRange<TResult>(bool condition, Expression<Func<TResult>> argumentNameExpression,
-												  string message = null,
-												  [CallerMemberName] string callerMemberName = null,
-												  [CallerFilePath] string callerFilePath = null,
-												  [CallerLineNumber] int callerLineNumber = 0)
-		{
-			if (!condition)
-			{
-				string argName = GetArgName(argumentNameExpression);
-
-				if (string.IsNullOrEmpty(message))
-				{
-					message = string.Format("Value of the \"{0}\" argument is out of range.", argName);
-				}
-
-				string messageWithCallerInfo = FormatMessageWithCollerInfo(message, callerMemberName, callerFilePath,
-																		   callerLineNumber);
-
-				BreakInDebuggerIfAttached();
-
-				throw new ArgumentOutOfRangeException(argName, messageWithCallerInfo);
-			}
-
-			Contract.EndContractBlock();
-		}
-
-		private static string GetArgName<TResult>(Expression<Func<TResult>> argumentNameExpression)
-		{
-			//var printer = new PrettyPrinter();
-			//var argName = printer.Print(argumentNameExpression.Body);
-			//return argName;
-
-			string argName = ((MemberExpression)argumentNameExpression.Body).Member.Name;
-			return argName;
 		}
 
 		//#endregion

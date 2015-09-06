@@ -29,9 +29,9 @@ namespace Linqua
 		[ImportingConstructor]
 		public ApplicationController([NotNull] IEventAggregator eventAggregator, [NotNull] ILiveTileManager liveTileManager, [NotNull] IDispatcherService dispatcherService)
 		{
-			Guard.NotNull(eventAggregator, () => eventAggregator);
-			Guard.NotNull(liveTileManager, () => liveTileManager);
-		    Guard.NotNull(dispatcherService, () => dispatcherService);
+			Guard.NotNull(eventAggregator, nameof(eventAggregator));
+			Guard.NotNull(liveTileManager, nameof(liveTileManager));
+		    Guard.NotNull(dispatcherService, nameof(dispatcherService));
 
 			this.eventAggregator = eventAggregator;
 			this.liveTileManager = liveTileManager;
@@ -46,7 +46,7 @@ namespace Linqua
 
 		public void RegisterFrame([NotNull] Frame frame)
 		{
-			Guard.NotNull(frame, () => frame);
+			Guard.NotNull(frame, nameof(frame));
 
 			navigationFrame = frame;
 		}

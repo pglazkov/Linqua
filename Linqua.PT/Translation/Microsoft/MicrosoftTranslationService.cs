@@ -22,14 +22,14 @@ namespace Linqua.Translation.Microsoft
 		[ImportingConstructor]
 		public MicrosoftTranslationService([NotNull] IMicrosoftAccessTokenProvider accessTokenProvider)
 		{
-			Guard.NotNull(accessTokenProvider, () => accessTokenProvider);
+			Guard.NotNull(accessTokenProvider, nameof(accessTokenProvider));
 
 			this.accessTokenProvider = accessTokenProvider;
 		}
 
 		public async Task<string> DetectLanguageAsync(string text)
 		{
-			Guard.NotNullOrEmpty(text, () => text);
+			Guard.NotNullOrEmpty(text, nameof(text));
 
 			var uri = string.Format(DetectLanguageUriTemplate, text);
 
@@ -52,10 +52,10 @@ namespace Linqua.Translation.Microsoft
 
 		public async Task<string> TranslateAsync(string text, string fromLanguageCode, string toLanguageCode)
 		{
-			Guard.NotNullOrEmpty(text, () => text);
-			Guard.NotNullOrEmpty(fromLanguageCode, () => fromLanguageCode);
-			Guard.NotNullOrEmpty(toLanguageCode, () => toLanguageCode);
-
+			Guard.NotNullOrEmpty(text, nameof(text));
+			Guard.NotNullOrEmpty(fromLanguageCode, nameof(fromLanguageCode));
+			Guard.NotNullOrEmpty(toLanguageCode, nameof(toLanguageCode));
+		    
 			string uri = string.Format(TranslateUriTemplate, Uri.EscapeUriString(text), fromLanguageCode, toLanguageCode);
 
 			using (var httpClient = new HttpClient())

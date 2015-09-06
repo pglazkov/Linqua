@@ -20,7 +20,7 @@ namespace Linqua.Notifications
 		[ImportingConstructor]
 		public LiveTileManager([NotNull] IDataStore dataStore)
 		{
-			Guard.NotNull(dataStore, () => dataStore);
+			Guard.NotNull(dataStore, nameof(dataStore));
 
 			this.dataStore = dataStore;
 		}

@@ -13,8 +13,8 @@ namespace Framework
 
 		public WeakSubscription(TTarget target, [NotNull] Action<TTarget, TValue> onNext, Action<TTarget, Exception> onError = null, Action<TTarget> onFinally = null)
 		{
-			Guard.NotNull(target, () => target);
-			Guard.NotNull(onNext, () => onNext);
+			Guard.NotNull(target, nameof(target));
+			Guard.NotNull(onNext, nameof(onNext));
 
 			if (ReferenceEquals(onNext.Target, target))
 			{

@@ -24,7 +24,7 @@ namespace Linqua.Framework
 		[ImportingConstructor]
 		public StatusBusyService([NotNull] IStringResourceManager stringResourceManager)
 		{
-			Guard.NotNull(stringResourceManager, () => stringResourceManager);
+			Guard.NotNull(stringResourceManager, nameof(stringResourceManager));
 
 			this.stringResourceManager = stringResourceManager;
 

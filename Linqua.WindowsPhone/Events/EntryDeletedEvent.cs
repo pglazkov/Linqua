@@ -9,7 +9,7 @@ namespace Linqua.Events
 	{
 		public EntryDeletedEvent([NotNull] EntryViewModel deletedEntry)
 		{
-			Guard.NotNull(deletedEntry, () => deletedEntry);
+			Guard.NotNull(deletedEntry, nameof(deletedEntry));
 
 			DeletedEntry = deletedEntry;
 		}

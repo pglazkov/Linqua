@@ -14,7 +14,7 @@ namespace Linqua.UI
 
 		public TimeGroupViewModel([NotNull] string groupName)
 		{
-			Guard.NotNullOrEmpty(groupName, () => groupName);
+			Guard.NotNullOrEmpty(groupName, nameof(groupName));
 
 			GroupName = groupName;
 		}
@@ -42,7 +42,7 @@ namespace Linqua.UI
 		{
 			itemIsMatchFilterStatuses[item] = isMatch;
 
-			RaisePropertyChanged(() => IsFilterNoMatch);
+			RaisePropertyChanged(nameof(IsFilterNoMatch));
 		}
 
 		public bool IsFilterNoMatch

@@ -10,14 +10,14 @@ namespace Framework
 		[UsedImplicitly]
 		public static void guardNotNull(this object x)
 		{
-			Guard.NotNull(x, () => x);
+			Guard.NotNull(x, nameof(x));
 		}
 
 		[SourceTemplate]
 		[UsedImplicitly]
 		public static void guardNotNullOrEmpty(this string x)
 		{
-			Guard.NotNullOrEmpty(x, () => x);
+			Guard.NotNullOrEmpty(x, nameof(x));
 		}
 
 		[SourceTemplate]

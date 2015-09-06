@@ -18,15 +18,15 @@ namespace Framework.PlatformServices
 		[ImportingConstructor]
 		public DialogService([NotNull] IStringResourceManager resourceManager)
 		{
-			Guard.NotNull(resourceManager, () => resourceManager);
+			Guard.NotNull(resourceManager, nameof(resourceManager));
 
 			this.resourceManager = resourceManager;
 		}
 
 		public async Task<bool> ShowConfirmation(string title, string message, string okCommandText = null, string cancelCommandText = null)
 		{
-			Guard.NotNullOrEmpty(title, () => title);
-			Guard.NotNullOrEmpty(message, () => message);
+			Guard.NotNullOrEmpty(title, nameof(title));
+			Guard.NotNullOrEmpty(message, nameof(message));
 
 			var dialog = new MessageDialog(message, title);
 
