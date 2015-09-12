@@ -5,6 +5,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:loc="using:Linqua.UI"
 			 xmlns:parts="using:Linqua.UI.Parts"
+			 xmlns:xaml="using:Windows.UI.Xaml"
 			 mc:Ignorable="d"
 			 d:DesignHeight="300"
 			 d:DesignWidth="400"
@@ -15,6 +16,8 @@
 							  Source="{Binding TimeGroupViewModels}"
 							  IsSourceGrouped="True"
 							  ItemsPath="Items"/>
+        
+	    <xaml:Thickness x:Key="ItemMargin">24,2,24,10</xaml:Thickness>
 	</UserControl.Resources>
 	
 	<Grid x:Name="LayoutRoot">
@@ -23,6 +26,11 @@
                                 HorizontalAlignment="Center"
                                 Margin="24,0,24,48" />
 
+        <!-- A workaround for the list wobbling issue when scrolling. The issue is described here:
+             http://stackoverflow.com/questions/24361850/listview-in-windows-phone-8-1-wobbles-while-scrolling-though-long-list-xaml -->
+        <Grid x:Name="ActualItemWidthHolder"
+              Margin="{StaticResource ItemMargin}"/>
+              
         <ListView Grid.Row="0"
 				  x:Name="EntryItemsControl"
 				  HorizontalContentAlignment="Stretch"
@@ -70,16 +78,17 @@
 
 			<ListView.ItemTemplate>
 				<DataTemplate>
-					<loc:EntryListItemView DataContext="{Binding}"
-											  Margin="24,2,24,10"
-											  Loaded="EntryLoaded"
-											  Background="Transparent"
-											  Holding="EntryHolding"
-											  PointerPressed="EntryPressed"
-											  HorizontalAlignment="Stretch"
-											  HorizontalContentAlignment="Stretch"
-											  IsTabStop="False" />
-				</DataTemplate>
+                    <loc:EntryListItemView DataContext="{Binding}"
+                                           Margin="{StaticResource ItemMargin}"
+                                           Loaded="EntryLoaded"
+                                           Background="Transparent"
+                                           Holding="EntryHolding"
+                                           PointerPressed="EntryPressed"
+                                           HorizontalAlignment="Stretch"
+                                           HorizontalContentAlignment="Stretch"
+                                           IsTabStop="False"
+                                           Width="{Binding ActualWidth, ElementName=ActualItemWidthHolder}"/>
+                </DataTemplate>
 			</ListView.ItemTemplate>
 		</ListView>
 	</Grid>
