@@ -158,10 +158,14 @@
 						</StackPanel>
 
                         <HyperlinkButton HorizontalAlignment="Right"
-                                         VerticalAlignment="Center"
-                                         Command="{Binding EditCommand}">
+                                         VerticalAlignment="Stretch"
+                                         Command="{Binding EditCommand}"
+                                         VerticalContentAlignment="Center"
+                                         Padding="25,0,0,0">
                             <TextBlock Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-                                       FontSize="14">
+                                       FontSize="14"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center">
                                 <Underline>
                                     <Run x:Uid="RandomEntryListItemView_EditTextBlock"
                                          Text="RES_MISSING RandomEntryListItemView_EditTextBlock"/>
