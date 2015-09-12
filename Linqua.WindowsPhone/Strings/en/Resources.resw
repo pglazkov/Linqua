@@ -274,6 +274,12 @@
   <data name="RandomEntryListItemView_EditTextBlock.Text" xml:space="preserve">
     <value>edit</value>
   </data>
+  <data name="RandomEntryView_SlideLeftForNextEntryHintTextBlock.Text" xml:space="preserve">
+    <value>next</value>
+  </data>
+  <data name="RandomEntryView_SlideRightForPreviousEntryHintTextBlock.Text" xml:space="preserve">
+    <value>previous</value>
+  </data>
   <data name="SendLogsButton.Label" xml:space="preserve">
     <value>(advanced) share logs</value>
   </data>

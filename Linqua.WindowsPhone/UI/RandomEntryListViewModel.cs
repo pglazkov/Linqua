@@ -24,7 +24,7 @@ namespace Linqua.UI
 		private bool isInitializationComplete;
 		private readonly List<int> displayedIndexes = new List<int>();
 		private readonly Random displayEntriesIndexGenerator = new Random((int)DateTime.UtcNow.Ticks);
-		private bool isPagingControlsVisible;
+		private bool canShowNextEntries;
 		private readonly IStringResourceManager resourceManager;
 		private readonly IEntryOperations entryOperations;
 		private readonly IRoamingSettingsService roamingSettings;
@@ -51,8 +51,8 @@ namespace Linqua.UI
 				RandomEntryViewModels.Add(FakeData.FakeWords.Select(w => CreateListItemViewModel(w)).First());
 			}
 			
-			ShowNextEntriesCommand = new DelegateCommand(ShowNextEntries, CanShowNextEntries);
-			ShowPreviousEntriesCommand = new DelegateCommand(ShowPreviousEntries, CanShowPreviousEntries);
+			ShowNextEntriesCommand = new DelegateCommand(ShowNextEntries, () => CanShowNextEntries);
+			ShowPreviousEntriesCommand = new DelegateCommand(ShowPreviousEntries, () => CanShowPreviousEntries);
 	    }
 
 		public DelegateCommand ShowNextEntriesCommand { get; }
@@ -91,7 +91,7 @@ namespace Linqua.UI
 				isInitializationComplete = value;
 				RaisePropertyChanged();
 				UpdateThereAreNoEntries();
-				UpdatePagingControlsVisibility();
+				UpdateCanShowNextEntries();
 			}
 		}
 
@@ -112,13 +112,13 @@ namespace Linqua.UI
 			}
 		}
 
-		public bool IsPagingControlsVisible
+		public bool CanShowNextEntries
 		{
-			get { return isPagingControlsVisible; }
+			get { return canShowNextEntries; }
 			private set
 			{
-				if (value.Equals(isPagingControlsVisible)) return;
-				isPagingControlsVisible = value;
+				if (value.Equals(canShowNextEntries)) return;
+				canShowNextEntries = value;
 				RaisePropertyChanged();
 				ShowNextEntriesCommand.RaiseCanExecuteChanged();
 			}
@@ -134,9 +134,9 @@ namespace Linqua.UI
 			ThereAreNoEntries = entries.Count == 0;
 		}
 
-		private void UpdatePagingControlsVisibility()
+		private void UpdateCanShowNextEntries()
 		{
-			IsPagingControlsVisible = entries.Count > RandomEntryViewModels.Count;
+			CanShowNextEntries = entries.Count > RandomEntryViewModels.Count;
 		}
 
 		private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
@@ -192,10 +192,17 @@ namespace Linqua.UI
 			}
 
 			PreviousRandomEntryViewModelsStack.Push(previousRandomEntryViewModels);
-			ShowPreviousEntriesCommand.RaiseCanExecuteChanged();
+
+            UpdateCanShowPreviousEntries();
 		}
 
-		private void UpdateDisplayedIndexes()
+	    private void UpdateCanShowPreviousEntries()
+	    {
+	        RaisePropertyChanged(nameof(CanShowPreviousEntries));
+	        ShowPreviousEntriesCommand.RaiseCanExecuteChanged();
+	    }
+
+	    private void UpdateDisplayedIndexes()
 		{
 			displayedIndexes.Clear();
 
@@ -319,22 +326,14 @@ namespace Linqua.UI
 			});
 		}
 
-		private bool CanShowNextEntries()
-		{
-			return IsPagingControlsVisible;
-		}
-
 		private void ShowNextEntries()
 		{
 			UpdateRandomEntries();
 		}
 
-		private bool CanShowPreviousEntries()
-		{
-			return PreviousRandomEntryViewModelsStack.Count > 0;
-		}
+	    public bool CanShowPreviousEntries => PreviousRandomEntryViewModelsStack.Count > 0;
 
-		private void ShowPreviousEntries()
+	    private void ShowPreviousEntries()
 		{
 			var entriesToAdd = PreviousRandomEntryViewModelsStack.Pop();
 
@@ -347,15 +346,13 @@ namespace Linqua.UI
 
 			UpdateDisplayedIndexes();
 
-			ShowPreviousEntriesCommand.RaiseCanExecuteChanged();
+			UpdateCanShowPreviousEntries();
 		}
 
 		private void OnDisplayEntriesCollectonChanged(object sender, NotifyCollectionChangedEventArgs e)
 		{
 			UpdateThereAreNoEntries();
-			UpdatePagingControlsVisibility();
-
-			UpdatePagingControlsVisibility();
+			UpdateCanShowNextEntries();
 			RaisePropertyChanged(nameof(AnyEntriesAvailable));
 		}
 

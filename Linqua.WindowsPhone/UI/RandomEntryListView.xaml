@@ -102,46 +102,102 @@
 		</Storyboard>
 		<!-- ReSharper restore Xaml.RedundantResource -->
 
-	</UserControl.Resources>
+        <Style x:Key="ArrowStyle"
+               TargetType="Path">
+            <Setter Property="Height"
+                    Value="10" />
+            <Setter Property="VerticalAlignment"
+                    Value="Center" />
+            <Setter Property="Stretch"
+                    Value="Uniform" />
+            <Setter Property="Fill"
+                    Value="{StaticResource ApplicationThemeBrush}" />
+            <Setter Property="Opacity"
+                    Value="0.4" />
+        </Style>
+    </UserControl.Resources>
 
 	<Grid x:Name="LayoutRoot">
-
         <parts:EmptyListContent Visibility="{Binding ThereAreNoEntries, Converter={StaticResource BooleanToVisibilityConverter}}" 
                                 VerticalAlignment="Center"
                                 HorizontalAlignment="Center"
                                 Margin="24,0,24,48" />
 
-        <Grid x:Name="ItemContainer"
-			  Visibility="{Binding AnyEntriesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
-			  Margin="0,0,0,48">
-			<Grid.RenderTransform>
-				<TranslateTransform />
-			</Grid.RenderTransform>
+        <Grid Visibility="{Binding AnyEntriesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
+              Margin="0,0,0,62">
 
-			<loc:RandomEntryListItemView x:Name="ItemView"
-										 DataContext="{Binding RandomEntryViewModels[0]}"
-										 Margin="24,24,24,24"
-										 Loaded="EntryLoaded"
-										 Background="Transparent"
-										 PointerPressed="EntryPressed"
-										 VerticalAlignment="Center"
-										 HorizontalAlignment="Stretch"
-										 HorizontalContentAlignment="Stretch"
-										 IsTabStop="False"
-										 Height="192">
-				<loc:RandomEntryListItemView.Projection>
-					<PlaneProjection />
-				</loc:RandomEntryListItemView.Projection>
-				<loc:RandomEntryListItemView.RenderTransform>
-					<TranslateTransform />
-				</loc:RandomEntryListItemView.RenderTransform>
+            <Grid VerticalAlignment="Center"
+                  HorizontalAlignment="Stretch"
+                  Margin="24,24,24,24">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Grid Grid.Row="0"
+                      Margin="0,0,0,24">
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Right"
+                                Visibility="{Binding CanShowNextEntries, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock x:Uid="RandomEntryView_SlideLeftForNextEntryHintTextBlock"
+                                   Text="RES_MISSING RandomEntryView_SlideLeftForNextEntryHintTextBlock"
+                                   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                                   FontSize="12"
+                                   VerticalAlignment="Center" />
 
-				<interactivity:Interaction.Behaviors>
-					<framework:HorizontalFlickBehavior Container="{Binding ElementName=LayoutRoot}"
-													   Flicking="OnItemFlicking"
-													   FlickedAway="OnItemFlickedAway" />
-				</interactivity:Interaction.Behaviors>
-			</loc:RandomEntryListItemView>
+                        <Path Data="F1 M 268.584,710.966L 256.02,723.529L 268.583,736.092L 276.868,736.092L 267.314,726.537L 295.556,726.537L 295.556,720.456L 267.38,720.456L 276.884,710.95L 268.584,710.966 Z "
+                              Style="{StaticResource ArrowStyle}"
+                              Margin="5,0,0,0" />
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal"
+                                VerticalAlignment="Center"
+                                HorizontalAlignment="Left"
+                                Visibility="{Binding CanShowPreviousEntries, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <Path Data="F1 M 286.11,706.857L 298.673,694.294L 286.11,681.732L 277.825,681.732L 287.38,691.286L 259.137,691.286L 259.137,697.368L 287.313,697.368L 277.809,706.873L 286.11,706.857 Z"
+                              Style="{StaticResource ArrowStyle}"
+                              Margin="0,0,5,0" />
+
+                        <TextBlock x:Uid="RandomEntryView_SlideRightForPreviousEntryHintTextBlock"
+                                   Text="RES_MISSING RandomEntryView_SlideRightForPreviousEntryHintTextBlock"
+                                   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                                   FontSize="12"
+                                   VerticalAlignment="Center" />
+                    </StackPanel>
+                </Grid>
+                
+                <Grid x:Name="ItemContainer" 
+                      Grid.Row="1">
+                    <Grid.RenderTransform>
+                        <TranslateTransform />
+                    </Grid.RenderTransform>
+
+                    <loc:RandomEntryListItemView x:Name="ItemView"
+                                                 DataContext="{Binding RandomEntryViewModels[0]}"
+                                                 Loaded="EntryLoaded"
+                                                 Background="Transparent"
+                                                 PointerPressed="EntryPressed"
+                                                 HorizontalContentAlignment="Stretch"
+                                                 IsTabStop="False"
+                                                 Height="192">
+                        <loc:RandomEntryListItemView.Projection>
+                            <PlaneProjection />
+                        </loc:RandomEntryListItemView.Projection>
+                        <loc:RandomEntryListItemView.RenderTransform>
+                            <TranslateTransform />
+                        </loc:RandomEntryListItemView.RenderTransform>
+
+                        <interactivity:Interaction.Behaviors>
+                            <framework:HorizontalFlickBehavior Container="{Binding ElementName=LayoutRoot}"
+                                                               Flicking="OnItemFlicking"
+                                                               FlickedAway="OnItemFlickedAway" />
+                        </interactivity:Interaction.Behaviors>
+                    </loc:RandomEntryListItemView>
+                </Grid>
+                
+            </Grid>
+			
 		</Grid>
 
 

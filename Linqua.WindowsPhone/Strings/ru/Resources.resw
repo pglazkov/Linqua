@@ -268,6 +268,12 @@
   <data name="RandomEntryListItemView_EditTextBlock.Text" xml:space="preserve">
     <value>ред.</value>
   </data>
+  <data name="RandomEntryView_SlideLeftForNextEntryHintTextBlock.Text" xml:space="preserve">
+    <value>след.</value>
+  </data>
+  <data name="RandomEntryView_SlideRightForPreviousEntryHintTextBlock.Text" xml:space="preserve">
+    <value>пред.</value>
+  </data>
   <data name="SendLogsButton.Label" xml:space="preserve">
     <value>(продв.) лог</value>
   </data>
