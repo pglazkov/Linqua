@@ -129,6 +129,7 @@ namespace Linqua.UI
 				RaisePropertyChanged();
 				RaisePropertyChanged(nameof(IsDefinitionVisible));
                 RaisePropertyChanged(nameof(LanguageCode));
+                RaisePropertyChanged(nameof(Definition));
 
 				OnIsTranslatingChangedOverride();
 			}
