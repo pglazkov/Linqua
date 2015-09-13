@@ -167,6 +167,11 @@ namespace Linqua.Framework
 				return;
 			}
 
+		    if (Math.Abs(e.Delta.Translation.X) < double.Epsilon)
+		    {
+		        return;
+		    }
+
 			lastDirection = e.Delta.Translation.X > 0 ? FlickDirection.Right : FlickDirection.Left;
 
 			var flickingEventArgs = new FlickingEventArgs(lastDirection.Value, e.Delta);
@@ -176,6 +181,7 @@ namespace Linqua.Framework
 			if (!flickingEventArgs.CanContinue)
 			{
 				e.Complete();
+                //return;
 			}
 
 			var dx = e.Cumulative.Translation.X;

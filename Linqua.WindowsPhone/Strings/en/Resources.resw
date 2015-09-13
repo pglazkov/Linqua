@@ -271,7 +271,7 @@
     <value>edit</value>
   </data>
   <data name="RandomEntryView_SlideLeftForNextEntryHintTextBlock.Text" xml:space="preserve">
-    <value>next</value>
+    <value>next random</value>
   </data>
   <data name="RandomEntryView_SlideRightForPreviousEntryHintTextBlock.Text" xml:space="preserve">
     <value>previous</value>

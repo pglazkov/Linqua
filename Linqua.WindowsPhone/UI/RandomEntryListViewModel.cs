@@ -21,6 +21,7 @@ namespace Linqua.UI
 
 		private bool thereAreNoEntries;
 		private IList<ClientEntry> entries;
+	    private IDictionary<string, ClientEntry> entriesIdDict;
 		private bool isInitializationComplete;
 		private readonly List<int> displayedIndexes = new List<int>();
 		private readonly Random displayEntriesIndexGenerator = new Random((int)DateTime.UtcNow.Ticks);
@@ -65,6 +66,7 @@ namespace Linqua.UI
 			{
 				if (value.ItemsEqual(entries)) return;
 				entries = value.ToList();
+			    entriesIdDict = entries.ToDictionary(x => x.Id);
 
 				if (Log.IsDebugEnabled)
 					Log.Debug("Updateting entries on UI. Entries count: {0}", entries.Count());
@@ -188,12 +190,19 @@ namespace Linqua.UI
 			foreach (var item in itemsToDelete)
 			{
 				RandomEntryViewModels.Remove(item);
-				previousRandomEntryViewModels.Add(item);
+
+			    if (entriesIdDict.ContainsKey(item.Entry.Id))
+			    {
+			        previousRandomEntryViewModels.Add(item);
+			    }
 			}
 
-			PreviousRandomEntryViewModelsStack.Push(previousRandomEntryViewModels);
+		    if (previousRandomEntryViewModels.Count > 0)
+		    {
+		        PreviousRandomEntryViewModelsStack.Push(previousRandomEntryViewModels);
+		    }
 
-            UpdateCanShowPreviousEntries();
+		    UpdateCanShowPreviousEntries();
 		}
 
 	    private void UpdateCanShowPreviousEntries()
@@ -261,6 +270,7 @@ namespace Linqua.UI
 		public EntryListItemViewModel AddEntry(ClientEntry newEntry)
 		{
 			entries.Add(newEntry);
+            entriesIdDict.Add(newEntry.Id, newEntry);
 
 			var viewModel = CreateListItemViewModel(newEntry, justAdded: true);
 
@@ -311,14 +321,17 @@ namespace Linqua.UI
 
 		public void DeleteEntryFromUI(ClientEntry entryToDelete)
 		{
-			var entry = entries.SingleOrDefault(w => w.Id == entryToDelete.Id);
+			ClientEntry entry;
 
-			if (entry == null)
-			{
-				return;
-			}
+		    if (!entriesIdDict.TryGetValue(entryToDelete.Id, out entry))
+		    {
+		        return;
+		    }
 
 			entries.Remove(entry);
+		    entriesIdDict.Remove(entry.Id);
+
+		    UpdatePreviousRandomEntryViewModelsStack();
 
 			Observable.Timer(TimeSpan.FromMilliseconds(600)).Subscribe(_ =>
 			{
@@ -326,7 +339,37 @@ namespace Linqua.UI
 			});
 		}
 
-		private void ShowNextEntries()
+	    private void UpdatePreviousRandomEntryViewModelsStack()
+	    {
+            var intermidiateStack = new Stack<List<EntryListItemViewModel>>();
+
+	        while (PreviousRandomEntryViewModelsStack.Count > 0)
+	        {
+	            var stackEntry = PreviousRandomEntryViewModelsStack.Pop();
+
+	            foreach (var entryVm in new List<EntryListItemViewModel>(stackEntry))
+	            {
+	                if (!entriesIdDict.ContainsKey(entryVm.Entry.Id))
+	                {
+	                    stackEntry.Remove(entryVm);
+	                }
+	            }
+
+	            if (stackEntry.Count > 0)
+	            {
+	                intermidiateStack.Push(stackEntry);
+	            }
+	        }
+
+            while (intermidiateStack.Count > 0)
+	        {
+	            var stackEntry = intermidiateStack.Pop();
+
+	            PreviousRandomEntryViewModelsStack.Push(stackEntry);
+	        }
+        }
+
+	    private void ShowNextEntries()
 		{
 			UpdateRandomEntries();
 		}

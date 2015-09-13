@@ -265,7 +265,7 @@
     <value>ред.</value>
   </data>
   <data name="RandomEntryView_SlideLeftForNextEntryHintTextBlock.Text" xml:space="preserve">
-    <value>след.</value>
+    <value>след. случайное</value>
   </data>
   <data name="RandomEntryView_SlideRightForPreviousEntryHintTextBlock.Text" xml:space="preserve">
     <value>пред.</value>
