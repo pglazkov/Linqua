@@ -199,7 +199,9 @@
 
 
 		<Grid Margin="24,0,24,12"
-			  VerticalAlignment="Bottom">
+			  VerticalAlignment="Bottom"
+              Background="Transparent"
+              Tapped="OnFirstUseTutorialAreaTapped">
 			<Grid x:Name="FirstUseTutorial_FlickToSeeNext"
 				  Opacity="0">
 				<Grid.RowDefinitions>

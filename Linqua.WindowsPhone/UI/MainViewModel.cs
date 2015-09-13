@@ -38,8 +38,9 @@ namespace Linqua.UI
 		private long totalEntriesCount;
 		private long notLearnedEntriesCount;
 		private bool isLoadingStatistics;
+	    private bool isAddingWord;
 
-		public MainViewModel()
+	    public MainViewModel()
 		{
 			if (DesignTimeDetection.IsInDesignTool)
 			{
@@ -161,6 +162,8 @@ namespace Linqua.UI
 				if (value.Equals(isLoadingEntries)) return;
 				isLoadingEntries = value;
 				RaisePropertyChanged();
+
+                AddWordCommand.RaiseCanExecuteChanged();
 			}
 		}
 
@@ -222,7 +225,21 @@ namespace Linqua.UI
 
 		public bool IsInFullListMode => PivotSelectedIndex == 1;
 
-		public bool IsDebug
+	    private bool IsAddingWord
+	    {
+	        get { return isAddingWord; }
+	        set
+	        {
+	            isAddingWord = value;
+
+	            Dispatcher.InvokeAsync(() =>
+	            {
+	                AddWordCommand.RaiseCanExecuteChanged();
+	            }).FireAndForget();
+	        }
+	    }
+
+	    public bool IsDebug
 		{
 			get
 			{
@@ -372,7 +389,7 @@ namespace Linqua.UI
 
 		private bool CanAddWord()
 		{
-			return !IsEntryEditorVisible;
+			return !IsEntryEditorVisible && !IsAddingWord && !IsLoadingEntries;
 		}
 
 		private void AddWord()
@@ -387,18 +404,27 @@ namespace Linqua.UI
 
 		private async void OnEntryEditingFinished(EntryEditingFinishedEvent e)
 		{
-			var entry = e.Data;
+		    IsAddingWord = true;
 
-			if (string.IsNullOrEmpty(entry.Id))
-			{
-				await AddNewEntryAsync(entry);
-			}
-			else
-			{
-				await UpdateEntryAsync(entry);
-			}
+		    try
+		    {
+		        var entry = e.Data;
 
-			EntryTextEditorViewModel.Clear();
+		        if (string.IsNullOrEmpty(entry.Id))
+		        {
+		            await AddNewEntryAsync(entry);
+		        }
+		        else
+		        {
+		            await UpdateEntryAsync(entry);
+		        }
+
+		        EntryTextEditorViewModel.Clear();
+		    }
+		    finally
+		    {
+		        IsAddingWord = false;
+		    }
 		}
 
 		private async Task UpdateEntryAsync(ClientEntry entry)

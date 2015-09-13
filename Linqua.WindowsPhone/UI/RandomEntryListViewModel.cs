@@ -285,7 +285,7 @@ namespace Linqua.UI
 
 			UpdateDisplayedIndexes();
 
-			if (GetIsFirstUseTutorialComplete(FirstUseTutorialType.TapToSeeTranslation))
+			if (GetIsFirstUseTutorialComplete(FirstUseTutorialType.TapToSeeTranslation) && GetIsFirstUseTutorialComplete(FirstUseTutorialType.FlickToSeeNextRandomWord))
 			{
 				Observable.Timer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
 				{

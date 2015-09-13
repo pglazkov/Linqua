@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Framework;
+using Framework.PlatformServices;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using Linqua.Events;
@@ -14,8 +15,9 @@ namespace Linqua.UI
 		private readonly IEventAggregator eventAggregator;
 		private bool isTranslating;
 		private ClientEntry entry;
+	    private bool isDeletingSelf;
 
-		protected EntryViewModel([NotNull] IEventAggregator eventAggregator)
+	    protected EntryViewModel([NotNull] IEventAggregator eventAggregator)
 		{
 			Guard.NotNull(eventAggregator, nameof(eventAggregator));
 
@@ -159,9 +161,25 @@ namespace Linqua.UI
 
 	    public string NoDefinitionText => Resources.GetString("NoTraslationText");
 
+	    private bool IsDeletingSelf
+	    {
+	        get { return isDeletingSelf; }
+	        set
+	        {
+	            isDeletingSelf = value;
+
+                Dispatcher.InvokeAsync(() =>
+                {
+                    DeleteCommand.RaiseCanExecuteChanged();
+                    EditCommand.RaiseCanExecuteChanged();
+
+                }).FireAndForget();
+	        }
+	    }
+
 	    private bool CanDeleteSelf()
 		{
-			return Entry != null;
+			return Entry != null && !IsDeletingSelf;
 		}
 
 		private async Task DeleteSelfAsync()
@@ -175,9 +193,18 @@ namespace Linqua.UI
 
 			if (confirmed)
 			{
-				await EntryOperations.DeleteEntryAsync(this);
+			    IsDeletingSelf = true;
 
-				OnDeleted();
+			    try
+			    {
+			        await EntryOperations.DeleteEntryAsync(this);
+
+			        OnDeleted();
+			    }
+			    finally
+			    {
+			        IsDeletingSelf = false;
+			    }
 			}
 		}
 
@@ -193,6 +220,11 @@ namespace Linqua.UI
 
 		private async Task UpdateIsLearntAsync(bool value, bool showConfirmation = true)
 		{
+		    if (IsDeletingSelf)
+		    {
+		        return;
+		    }
+
 			bool confirmed = !showConfirmation;
 
 			if (showConfirmation)
@@ -256,7 +288,7 @@ namespace Linqua.UI
 
 		private bool CanEditSelf()
 		{
-			return Entry != null;
+			return Entry != null && !IsDeletingSelf;
 		}
 
 		private Task EditSelfAsync()

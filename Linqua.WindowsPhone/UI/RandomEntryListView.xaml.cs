@@ -43,6 +43,9 @@ namespace Linqua.UI
 
         private void OnLoaded(object sender, RoutedEventArgs e)
 		{
+            //ViewModel.SetIsFirstUseTutorialComplete(FirstUseTutorialType.TapToSeeTranslation, false);
+            //ViewModel.SetIsFirstUseTutorialComplete(FirstUseTutorialType.FlickToSeeNextRandomWord, false);
+
             isLoaded = true;
 			StartTutorialsIfNeeded();
 		}
@@ -198,6 +201,18 @@ namespace Linqua.UI
         private void OnItemIsTranslationShownChanged(IsTranslationShownChangedEvent e)
         {
             StartTutorialsIfNeeded();
+        }
+
+        private void OnFirstUseTutorialAreaTapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (isFirstUseTutorialRunning[FirstUseTutorialType.TapToSeeTranslation])
+            {
+                CompleteFirstUseTutorial(FirstUseTutorialType.TapToSeeTranslation);
+            }
+            else if (isFirstUseTutorialRunning[FirstUseTutorialType.FlickToSeeNextRandomWord])
+            {
+                CompleteFirstUseTutorial(FirstUseTutorialType.FlickToSeeNextRandomWord);
+            }
         }
     }
 }
