@@ -41,7 +41,8 @@ namespace Linqua.UI
 				isTranslationShown = value;
 				RaisePropertyChanged();
 
-				EventAggregator.Publish(new StopFirstUseTutorialEvent());
+				EventAggregator.Publish(new StopFirstUseTutorialEvent(FirstUseTutorialType.TapToSeeTranslation));
+                EventAggregator.Publish(new IsTranslationShownChangedEvent(this));
 			}
 		}
 

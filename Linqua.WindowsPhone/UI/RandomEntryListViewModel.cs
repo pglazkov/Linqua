@@ -9,6 +9,7 @@ using Framework;
 using Framework.PlatformServices;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
+using Linqua.Events;
 using MetroLog;
 
 namespace Linqua.UI
@@ -17,7 +18,7 @@ namespace Linqua.UI
     {
 		private const int EntriesToDisplayCount = 1;
 
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<FullEntryListViewModel>();
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<RandomEntryListViewModel>();
 
 		private bool thereAreNoEntries;
 		private IList<ClientEntry> entries;
@@ -97,13 +98,7 @@ namespace Linqua.UI
 			}
 		}
 
-		public bool IsFirstUseTutorialComplete
-		{
-		    get { return roamingSettings.GetValue<bool>(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey); }
-			set { roamingSettings.SetValue(RoamingStorageKeys.IsRandomEntryUITutorialCompletedKey, value); }
-		}
-
-		public bool ThereAreNoEntries
+	    public bool ThereAreNoEntries
 		{
 			get { return thereAreNoEntries; }
 			private set
@@ -290,7 +285,7 @@ namespace Linqua.UI
 
 			UpdateDisplayedIndexes();
 
-			if (IsFirstUseTutorialComplete)
+			if (GetIsFirstUseTutorialComplete(FirstUseTutorialType.TapToSeeTranslation))
 			{
 				Observable.Timer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
 				{
@@ -408,5 +403,15 @@ namespace Linqua.UI
 
 			return result;
 		}
+
+        public void SetIsFirstUseTutorialComplete(FirstUseTutorialType tutorialType, bool value)
+        {
+            roamingSettings.SetValue(string.Format(RoamingStorageKeys.IsFirstUseTutorialCompletedKeyTemplate, tutorialType), value);
+        }
+
+        public bool GetIsFirstUseTutorialComplete(FirstUseTutorialType tutorialType)
+        {
+            return roamingSettings.GetValue<bool>(string.Format(RoamingStorageKeys.IsFirstUseTutorialCompletedKeyTemplate, tutorialType));
+        }
     }
 }

@@ -2,6 +2,6 @@
 {
 	public static class RoamingStorageKeys
 	{
-		public const string IsRandomEntryUITutorialCompletedKey = "IsRanmdomEntryUITutorialCompleted";
+		public const string IsFirstUseTutorialCompletedKeyTemplate = "IsFirstUseTutorialCompleted_{0}";
 	}
 }

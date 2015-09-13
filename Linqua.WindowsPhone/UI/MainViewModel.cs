@@ -377,7 +377,7 @@ namespace Linqua.UI
 
 		private void AddWord()
 		{
-			EventAggregator.Publish(new StopFirstUseTutorialEvent());
+			EventAggregator.Publish(new StopFirstUseTutorialEvent(FirstUseTutorialType.TapToSeeTranslation));
 
 			EntryTextEditorViewModel.Clear();
 			IsEntryEditorVisible = true;
@@ -689,7 +689,7 @@ namespace Linqua.UI
 
 		private void OnEntryQuickEditRequested(EntryQuickEditRequestedEvent e)
 		{
-			EventAggregator.Publish(new StopFirstUseTutorialEvent());
+			EventAggregator.Publish(new StopFirstUseTutorialEvent(FirstUseTutorialType.TapToSeeTranslation));
 
 			EntryTextEditorViewModel.Clear();
 			EntryTextEditorViewModel.Data = e.EntryViewModel.Entry;

@@ -14,7 +14,7 @@
 
 	<UserControl.Resources>
 		<!-- ReSharper disable Xaml.RedundantResource -->
-		<Storyboard x:Key="FirstUseStoryboard"
+        <Storyboard x:Key="FirstUseStoryboard_TapToSeeTranslation"
 					RepeatBehavior="Forever">
 			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationY)"
 										   Storyboard.TargetName="ItemView"
@@ -43,64 +43,61 @@
 				<LinearDoubleKeyFrame KeyTime="0:0:4"
 									  Value="0" />
 			</DoubleAnimationUsingKeyFrames>
-
-			<!-- ======================= -->
-
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
-										   Storyboard.TargetName="ItemContainer"
-										   AutoReverse="True"
-										   BeginTime="0:0:4"
-										   Duration="0:0:0.8">
-				<!-- Set initial value 0.1. Workaround the issue described here: https://social.msdn.microsoft.com/Forums/windowsapps/en-US/b15ce67e-952d-4ff0-a5d9-f4e3c36d1422/storyboard-animation-with-planeprojection-does-not-work-on-windows-81?forum=winappswithcsharp -->
-				<LinearDoubleKeyFrame KeyTime="0"
-									  Value="0.1" />
-				<EasingDoubleKeyFrame KeyTime="0:0:0.8"
-									  Value="-30">
-					<EasingDoubleKeyFrame.EasingFunction>
-						<CubicEase />
-					</EasingDoubleKeyFrame.EasingFunction>
-				</EasingDoubleKeyFrame>
-			</DoubleAnimationUsingKeyFrames>
-
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="FirstUseTutorial_FlickToSeeNext"
-										   Storyboard.TargetProperty="Opacity"
-										   BeginTime="0:0:4"
-										   Duration="0:0:4">
-				<LinearDoubleKeyFrame KeyTime="0"
-									  Value="1" />
-				<LinearDoubleKeyFrame KeyTime="0:0:0.5"
-									  Value="1" />
-				<LinearDoubleKeyFrame KeyTime="0:0:3.5"
-									  Value="1" />
-				<LinearDoubleKeyFrame KeyTime="0:0:4"
-									  Value="0" />
-			</DoubleAnimationUsingKeyFrames>
-
-			<DoubleAnimation Storyboard.TargetName="HandImage"
-							 Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)"
-							 From="0"
-							 To="-230"
-							 BeginTime="0:0:4"
-							 Duration="0:0:1.3">
-				<DoubleAnimation.EasingFunction>
-					<CubicEase />
-				</DoubleAnimation.EasingFunction>
-			</DoubleAnimation>
-
-			<DoubleAnimationUsingKeyFrames Storyboard.TargetName="HandImage"
-										   Storyboard.TargetProperty="Opacity"
-										   BeginTime="0:0:4">
-				<LinearDoubleKeyFrame KeyTime="0"
-									  Value="0" />
-				<LinearDoubleKeyFrame KeyTime="0:0:0.5"
-									  Value="1" />
-				<LinearDoubleKeyFrame KeyTime="0:0:1.5"
-									  Value="1" />
-				<LinearDoubleKeyFrame KeyTime="0:0:2"
-									  Value="0" />
-			</DoubleAnimationUsingKeyFrames>
 		</Storyboard>
-		<!-- ReSharper restore Xaml.RedundantResource -->
+
+        <Storyboard x:Key="FirstUseStoryboard_FlickToSeeNextRandomWord"
+                    RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                           Storyboard.TargetName="ItemContainer"
+                                           AutoReverse="True"
+                                           Duration="0:0:0.8">
+                <!-- Set initial value 0.1. Workaround the issue described here: https://social.msdn.microsoft.com/Forums/windowsapps/en-US/b15ce67e-952d-4ff0-a5d9-f4e3c36d1422/storyboard-animation-with-planeprojection-does-not-work-on-windows-81?forum=winappswithcsharp -->
+                <LinearDoubleKeyFrame KeyTime="0"
+                                      Value="0.1" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.8"
+                                      Value="-30">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="FirstUseTutorial_FlickToSeeNext"
+                                           Storyboard.TargetProperty="Opacity"
+                                           Duration="0:0:4">
+                <LinearDoubleKeyFrame KeyTime="0"
+                                      Value="1" />
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="1" />
+                <LinearDoubleKeyFrame KeyTime="0:0:3.5"
+                                      Value="1" />
+                <LinearDoubleKeyFrame KeyTime="0:0:4"
+                                      Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+
+            <DoubleAnimation Storyboard.TargetName="HandImage"
+                             Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)"
+                             From="0"
+                             To="-230"
+                             Duration="0:0:1.3">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase />
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="HandImage"
+                                           Storyboard.TargetProperty="Opacity">
+                <LinearDoubleKeyFrame KeyTime="0"
+                                      Value="0" />
+                <LinearDoubleKeyFrame KeyTime="0:0:0.5"
+                                      Value="1" />
+                <LinearDoubleKeyFrame KeyTime="0:0:1.5"
+                                      Value="1" />
+                <LinearDoubleKeyFrame KeyTime="0:0:2"
+                                      Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <!-- ReSharper restore Xaml.RedundantResource -->
 
         <Style x:Key="ArrowStyle"
                TargetType="Path">

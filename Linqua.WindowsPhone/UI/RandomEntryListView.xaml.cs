@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -15,9 +17,11 @@ namespace Linqua.UI
     public partial class RandomEntryListView : UserControl, IPivotContentView
     {
 	    private bool isLoaded;
-	    private bool isFirstUseTutorialRunning;
 
-	    public RandomEntryListView()
+        private IDictionary<FirstUseTutorialType, bool> isFirstUseTutorialRunning =
+            Enum.GetValues(typeof(FirstUseTutorialType)).Cast<FirstUseTutorialType>().ToDictionary(x => x, _ => false);
+
+        public RandomEntryListView()
         {
             InitializeComponent();
 
@@ -29,17 +33,18 @@ namespace Linqua.UI
 		    {
 			    var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
 			    eventAggregator.GetEvent<StopFirstUseTutorialEvent>().Subscribe(OnStopFirstUseTutorialRequested);
-		    }
+                eventAggregator.GetEvent<IsTranslationShownChangedEvent>().Subscribe(OnItemIsTranslationShownChanged);
+            }
         }
 
-	    private RandomEntryListViewModel ViewModel => (RandomEntryListViewModel)DataContext;
+        private RandomEntryListViewModel ViewModel => (RandomEntryListViewModel)DataContext;
 
         private IRoamingSettingsService RoamingSettings => CompositionManager.Current.GetInstance<IRoamingSettingsService>();
 
         private void OnLoaded(object sender, RoutedEventArgs e)
 		{
-			isLoaded = true;
-			StartTutorialIfNeeded();
+            isLoaded = true;
+			StartTutorialsIfNeeded();
 		}
 
 	    private void OnUnloaded(object sender, RoutedEventArgs e)
@@ -51,61 +56,78 @@ namespace Linqua.UI
 		{
 			if (isLoaded)
 			{
-				StartTutorialIfNeeded();
+				StartTutorialsIfNeeded();
 			}
 		}
 
-		private void StartTutorialIfNeeded()
+        private void StartTutorialsIfNeeded()
+        {
+            StartTutorialIfNeeded(FirstUseTutorialType.TapToSeeTranslation, () =>
+            {
+                return ViewModel != null && ViewModel.RandomEntryViewModels.Count == 1;
+            });
+
+            StartTutorialIfNeeded(FirstUseTutorialType.FlickToSeeNextRandomWord, () =>
+            {
+                return ViewModel != null &&
+                       ViewModel.ShowNextEntriesCommand.CanExecute() &&
+                       ViewModel.RandomEntryViewModels.Count > 0 &&
+                       !ViewModel.RandomEntryViewModels[0].IsTranslationShown;
+            });
+        }
+
+		private void StartTutorialIfNeeded(FirstUseTutorialType tutorialType, Func<bool> startCondition)
 		{
-			if (isFirstUseTutorialRunning)
+			if (isFirstUseTutorialRunning.Values.Any(isRunning => isRunning))
 			{
 				return;
 			}
 
-			if (ViewModel != null && ViewModel.RandomEntryViewModels.Count > 0)
+			if (startCondition())
 			{
-				var isComplted = ViewModel.IsFirstUseTutorialComplete;
+				var isComplted = ViewModel.GetIsFirstUseTutorialComplete(tutorialType);
 
 				if (!isComplted)
 				{
-					isFirstUseTutorialRunning = true;
+					isFirstUseTutorialRunning[tutorialType] = true;
 
-					var firstUseStoryboard = (Storyboard)Resources["FirstUseStoryboard"];
-					firstUseStoryboard.Completed += OnFirstUseTutorialStoryboardCompleted;
+					var firstUseStoryboard = (Storyboard)Resources["FirstUseStoryboard_" + tutorialType];
+                    firstUseStoryboard.Completed += (o, e) => OnFirstUseTutorialStoryboardCompleted(this, tutorialType);
 					firstUseStoryboard.BeginTime = TimeSpan.FromSeconds(2.5);
 					firstUseStoryboard.Begin();
 				}
 			}
 		}
 
-	    private void OnFirstUseTutorialStoryboardCompleted(object sender, object e)
+	    private static void OnFirstUseTutorialStoryboardCompleted(RandomEntryListView this_, FirstUseTutorialType tutorialType)
 	    {
-		    isFirstUseTutorialRunning = false;
+            this_.isFirstUseTutorialRunning[tutorialType] = false;
 	    }
 
 	    private void OnStopFirstUseTutorialRequested(StopFirstUseTutorialEvent e)
 	    {
-		    if (isFirstUseTutorialRunning)
+		    if (isFirstUseTutorialRunning[e.TutorialType])
 		    {
-			    CompleteFirstUseTutorial();
+			    CompleteFirstUseTutorial(e.TutorialType);
 		    }
 	    }
 
-		private void CompleteFirstUseTutorial()
+		private void CompleteFirstUseTutorial(FirstUseTutorialType tutorialType)
 		{
-			StopFirstUseTutorial();
+			StopFirstUseTutorial(tutorialType);
 
-			ViewModel.IsFirstUseTutorialComplete = true;
+			ViewModel.SetIsFirstUseTutorialComplete(tutorialType, true);
+
+            StartTutorialsIfNeeded();
 		}
 
-	    private void StopFirstUseTutorial()
+	    private void StopFirstUseTutorial(FirstUseTutorialType tutorialType)
 	    {
-		    isFirstUseTutorialRunning = false;
+		    isFirstUseTutorialRunning[tutorialType] = false;
 
-		    var firstUseStoryboard = (Storyboard)Resources["FirstUseStoryboard"];
+		    var firstUseStoryboard = (Storyboard)Resources["FirstUseStoryboard_" + tutorialType];
 
 		    firstUseStoryboard.Stop();
-		    firstUseStoryboard.Completed -= OnFirstUseTutorialStoryboardCompleted;
 	    }
 
 	    private void EntryPressed(object sender, PointerRoutedEventArgs e)
@@ -132,7 +154,7 @@ namespace Linqua.UI
 
 	    private void OnItemFlickedAway(object sender, FlickedAwayEventArgs e)
 	    {
-		    CompleteFirstUseTutorial();
+		    CompleteFirstUseTutorial(FirstUseTutorialType.FlickToSeeNextRandomWord);
 
 		    if (e.Direction == FlickDirection.Left)
 		    {
@@ -164,13 +186,18 @@ namespace Linqua.UI
 
 	    public void OnPivotItemLoaded(IPivotHostView host)
 	    {
-		    StartTutorialIfNeeded();
+		    StartTutorialsIfNeeded();
 	    }
 
 	    public void OnPivotItemUnloaded(IPivotHostView host)
 	    {
-		    StopFirstUseTutorial();
-	    }
-	    
+		    StopFirstUseTutorial(FirstUseTutorialType.TapToSeeTranslation);
+            StopFirstUseTutorial(FirstUseTutorialType.FlickToSeeNextRandomWord);
+        }
+
+        private void OnItemIsTranslationShownChanged(IsTranslationShownChangedEvent e)
+        {
+            StartTutorialsIfNeeded();
+        }
     }
 }
