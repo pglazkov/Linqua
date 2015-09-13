@@ -121,7 +121,7 @@
                                 Margin="24,0,24,48" />
 
         <Grid Visibility="{Binding AnyEntriesAvailable, Converter={StaticResource BooleanToVisibilityConverter}}"
-              Margin="0,0,0,62">
+              Margin="0,0,0,74">
 
             <Grid VerticalAlignment="Center"
                   HorizontalAlignment="Stretch"
@@ -179,7 +179,8 @@
                                                  IsTabStop="False"
                                                  Height="192">
                         <loc:RandomEntryListItemView.Projection>
-                            <PlaneProjection />
+                            <!-- Workaroung for this bug: https://social.msdn.microsoft.com/Forums/windowsapps/en-US/b15ce67e-952d-4ff0-a5d9-f4e3c36d1422/storyboard-animation-with-planeprojection-does-not-work-on-windows-81?forum=winappswithcsharp -->
+                            <PlaneProjection RotationY="0.00000001" />
                         </loc:RandomEntryListItemView.Projection>
                         <loc:RandomEntryListItemView.RenderTransform>
                             <TranslateTransform />
