@@ -157,6 +157,11 @@
 			   Grid.Row="0"
 			   Grid.RowSpan="2"
 			   IsHitTestVisible="False" />-->
+        
+        <Border Grid.Row="0"
+                Grid.RowSpan="2"
+                Visibility="{Binding IsAddingWord, Converter={StaticResource BooleanToVisibilityConverter}}"
+                Background="Transparent"/>
 	</Grid>
 
 	<Page.BottomAppBar>

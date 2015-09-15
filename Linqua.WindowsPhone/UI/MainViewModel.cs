@@ -225,12 +225,14 @@ namespace Linqua.UI
 
 		public bool IsInFullListMode => PivotSelectedIndex == 1;
 
-	    private bool IsAddingWord
+	    public bool IsAddingWord
 	    {
 	        get { return isAddingWord; }
-	        set
+	        private set
 	        {
 	            isAddingWord = value;
+
+                RaisePropertyChanged();
 
 	            Dispatcher.InvokeAsync(() =>
 	            {
@@ -404,28 +406,28 @@ namespace Linqua.UI
 
 		private async void OnEntryEditingFinished(EntryEditingFinishedEvent e)
 		{
-		    IsAddingWord = true;
+            IsAddingWord = true;
 
-		    try
-		    {
-		        var entry = e.Data;
+            try
+            {
+                var entry = e.Data;
 
-		        if (string.IsNullOrEmpty(entry.Id))
-		        {
-		            await AddNewEntryAsync(entry);
-		        }
-		        else
-		        {
-		            await UpdateEntryAsync(entry);
-		        }
+                if (string.IsNullOrEmpty(entry.Id))
+                {
+                    await AddNewEntryAsync(entry);
+                }
+                else
+                {
+                    await UpdateEntryAsync(entry);
+                }
 
-		        EntryTextEditorViewModel.Clear();
-		    }
-		    finally
-		    {
-		        IsAddingWord = false;
-		    }
-		}
+                EntryTextEditorViewModel.Clear();
+            }
+            finally
+            {
+                IsAddingWord = false;
+            }
+        }
 
 		private async Task UpdateEntryAsync(ClientEntry entry)
 		{
@@ -496,35 +498,32 @@ namespace Linqua.UI
 			}
 			else
 			{
-				using (await RefreshLock.LockAsync())
-				{
-					var entryToAdd = entry;
+                var entryToAdd = entry;
 
-					ClientEntry addedEntry = null;
+                ClientEntry addedEntry = null;
 
-					EntryListItemViewModel randomListItem;
+                EntryListItemViewModel randomListItem;
 
-					using (statusBusyService.Busy(CommonBusyType.Saving))
-					{
-						addedEntry = await storage.AddEntry(entryToAdd);
+                using (statusBusyService.Busy(CommonBusyType.Saving))
+                {
+                    addedEntry = await storage.AddEntry(entryToAdd);
 
-						fullListItem = FullEntryListViewModel.AddEntry(addedEntry);
-						randomListItem = RandomEntryListViewModel.AddEntry(addedEntry);
+                    fullListItem = FullEntryListViewModel.AddEntry(addedEntry);
+                    randomListItem = RandomEntryListViewModel.AddEntry(addedEntry);
 
-						OnEntryAdded(addedEntry);
-					}
+                    OnEntryAdded(addedEntry);
+                }
 
-					if (string.IsNullOrWhiteSpace(addedEntry.Definition))
-					{
-						var translation = await entryOperations.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
+                if (string.IsNullOrWhiteSpace(addedEntry.Definition))
+                {
+                    var translation = await entryOperations.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
 
-						addedEntry.Definition = translation;
+                    addedEntry.Definition = translation;
 
-						await entryOperations.UpdateEntryAsync(addedEntry);
-					}
+                    await entryOperations.UpdateEntryAsync(addedEntry);
+                }
 
-					await UpdateStatistics();
-				}
+                await UpdateStatistics();
 			}
 		}
 
