@@ -214,7 +214,7 @@
     <value>Авторизация</value>
   </data>
   <data name="MainPageHeaderStatisticsUnderlineTextBlock.Text" xml:space="preserve">
-    <value>не выучено / всего</value>
+    <value>выучить / всего</value>
   </data>
   <data name="MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_False" xml:space="preserve">
     <value>показать выученные слова</value>

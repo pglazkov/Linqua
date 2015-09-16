@@ -217,7 +217,7 @@
     <value>vocabulary</value>
   </data>
   <data name="MainPageHeaderStatisticsUnderlineTextBlock.Text" xml:space="preserve">
-    <value>not learned / total</value>
+    <value>to learn / total</value>
   </data>
   <data name="MainViewModel_ToggleShowHideLearnedEntriesButtonLabel_False" xml:space="preserve">
     <value>show learned words</value>
