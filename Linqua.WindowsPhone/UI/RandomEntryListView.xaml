@@ -142,20 +142,20 @@
 
                         <Path Data="F1 M 268.584,710.966L 256.02,723.529L 268.583,736.092L 276.868,736.092L 267.314,726.537L 295.556,726.537L 295.556,720.456L 267.38,720.456L 276.884,710.95L 268.584,710.966 Z "
                               Style="{StaticResource ArrowStyle}"
-                              Margin="0,0,5,0" />
+                              Margin="0,0,8,0" />
 
                         <TextBlock x:Uid="RandomEntryView_SlideLeftForNextEntryHintTextBlock"
                                    Text="RES_MISSING RandomEntryView_SlideLeftForNextEntryHintTextBlock"
                                    Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
                                    FontSize="12"
                                    VerticalAlignment="Center"
-                                   Margin="0,0,0,2" />
+                                   Margin="0,0,0,1" />
                     </StackPanel>
                     
                     <Border BorderThickness="0,0,0,0"
                             BorderBrush="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
                             Visibility="{Binding ElementName=PreviousEntriesHintContainer, Path=Visibility}"
-                            Margin="12,2,12,2"
+                            Margin="16,2,16,2"
                             Opacity="0.5"/>
 
                     <StackPanel x:Name="PreviousEntriesHintContainer" 
@@ -169,11 +169,11 @@
                                    Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
                                    FontSize="12"
                                    VerticalAlignment="Center"
-                                   Margin="0,0,0,2"/>
+                                   Margin="0,0,0,1"/>
                         
                         <Path Data="F1 M 286.11,706.857L 298.673,694.294L 286.11,681.732L 277.825,681.732L 287.38,691.286L 259.137,691.286L 259.137,697.368L 287.313,697.368L 277.809,706.873L 286.11,706.857 Z"
                               Style="{StaticResource ArrowStyle}"
-                              Margin="5,0,0,0" />
+                              Margin="8,0,0,0" />
                     </StackPanel>
                 </StackPanel>
                 
