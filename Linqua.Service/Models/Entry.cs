@@ -1,11 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.WindowsAzure.Mobile.Service;
 
 namespace Linqua.Service.Models
 {
 	public class Entry : EntityData
 	{
-		public string Text { get; set; }
+        [Index]
+        [MaxLength(256)]
+        public string Text { get; set; }
 
         public string TextLanguageCode { get; set; }
 

@@ -91,6 +91,7 @@
       <HintPath>..\packages\WindowsAzure.MobileServices.Backend.Tables.1.0.450\lib\net45\Microsoft.WindowsAzure.Mobile.Service.Tables.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Http">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
@@ -224,6 +225,14 @@
     <Compile Include="Migrations\201509010637499_AddLanguageCodes.Designer.cs">
       <DependentUpon>201509010637499_AddLanguageCodes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201509170641578_AddMaxLengthToTextColumn.cs" />
+    <Compile Include="Migrations\201509170641578_AddMaxLengthToTextColumn.Designer.cs">
+      <DependentUpon>201509170641578_AddMaxLengthToTextColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201509170643097_AddIndexOnTextColumn.cs" />
+    <Compile Include="Migrations\201509170643097_AddIndexOnTextColumn.Designer.cs">
+      <DependentUpon>201509170643097_AddIndexOnTextColumn.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Entry.cs" />
     <Compile Include="Models\LinquaContext.cs" />
@@ -270,6 +279,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201509010637499_AddLanguageCodes.resx">
       <DependentUpon>201509010637499_AddLanguageCodes.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509170641578_AddMaxLengthToTextColumn.resx">
+      <DependentUpon>201509170641578_AddMaxLengthToTextColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201509170643097_AddIndexOnTextColumn.resx">
+      <DependentUpon>201509170643097_AddIndexOnTextColumn.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

@@ -5,4 +5,4 @@
 3. Rebuild the project.
 4. In the Package Manager, run the following command:
 
-   PM> Add-Migration NewUserId
+   PM> Add-Migration <MigrationName>
