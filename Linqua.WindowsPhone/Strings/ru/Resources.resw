@@ -147,6 +147,12 @@
   <data name="EntryEditPage_CancelButton.Label" xml:space="preserve">
     <value>отмена</value>
   </data>
+  <data name="EntryEditPage_MarkLearnedButtonHint" xml:space="preserve">
+    <value>(коснитесь чтобы отметить слово как выученное)</value>
+  </data>
+  <data name="EntryEditPage_MarkNotLearnedButtonHint" xml:space="preserve">
+    <value>(коснитесь чтобы отметить слово как невыученное)</value>
+  </data>
   <data name="EntryEditPage_SaveButton.Label" xml:space="preserve">
     <value>сохранить</value>
   </data>

@@ -128,8 +128,14 @@
 				    <TextBlock Text="{Binding IsLearnStatusText}"
 							   FontSize="{ThemeResource TextStyleSmallFontSize}"
 							   HorizontalAlignment="Center"
-							   Margin="0,12,0,0" />
-				</StackPanel>
+							   Margin="0,8,0,0" />
+
+                    <TextBlock Text="{Binding ToggleLearnedButtonHint}"
+                               FontSize="{ThemeResource TextStyleSmallFontSize}"
+                               HorizontalAlignment="Center"
+                               Margin="0,16,0,0"
+                               Opacity="0.8"/>
+                </StackPanel>
 
 			</Grid>
 		</Grid>

@@ -61,6 +61,7 @@ namespace Linqua.UI
 				RaisePropertyChanged(nameof(DateAdded));
 				RaisePropertyChanged(nameof(IsLearnt));
 				RaisePropertyChanged(nameof(IsLearnStatusText));
+                RaisePropertyChanged(nameof(ToggleLearnedButtonHint));
 				RaisePropertyChanged(nameof(Definition));
 				RaisePropertyChanged(nameof(IsDefinitionVisible));
 
@@ -121,7 +122,17 @@ namespace Linqua.UI
 			}
 		}
 
-		public bool IsTranslating
+        public string ToggleLearnedButtonHint
+        {
+            get
+            {
+                var result = IsLearnt ? Resources.GetString("EntryEditPage_MarkNotLearnedButtonHint") : Resources.GetString("EntryEditPage_MarkLearnedButtonHint");
+
+                return result;
+            }
+        }
+
+        public bool IsTranslating
 		{
 			get { return isTranslating; }
 			set
@@ -254,7 +265,8 @@ namespace Linqua.UI
 
 			RaisePropertyChanged(nameof(IsLearnt));
 			RaisePropertyChanged(nameof(IsLearnStatusText));
-		}
+            RaisePropertyChanged(nameof(ToggleLearnedButtonHint));
+        }
 
 		protected virtual void OnDeleted()
 		{

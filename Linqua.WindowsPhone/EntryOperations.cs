@@ -81,27 +81,30 @@ namespace Linqua
 		{
 			string translation = null;
             string entryLanguage = null;
-            string translateToLanguage = null;
 
-            viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
+		    viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
 
 			try
 			{
-				try
+                var translateToLanguage = await GetTranslateToLanguageAsync();
+
+                if (Log.IsDebugEnabled)
+                    Log.Debug("Translation language: " + translateToLanguage);
+
+                try
 				{
 					if (Log.IsDebugEnabled)
 						Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entry.Text);
 
 					var existingEntry = await storage.LookupByExample(entry);
 
-					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition))
+					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition) && Equals(existingEntry.DefinitionLanguageCode, translateToLanguage))
 					{
 						if (Log.IsDebugEnabled)
 							Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
 
 						translation = existingEntry.Definition;
 					    entryLanguage = existingEntry.TextLanguageCode;
-					    translateToLanguage = existingEntry.DefinitionLanguageCode;
 					}
 				}
 				catch (Exception ex)
@@ -119,8 +122,6 @@ namespace Linqua
 
 				    if (Log.IsDebugEnabled)
 						Log.Debug("Detected language: " + entryLanguage);
-
-				    translateToLanguage = await GetTranslateToLanguageAsync();
 
 				    if (Log.IsDebugEnabled)
                         Log.Debug("Translating \"{0}\" from \"{1}\" to \"{2}\"", entry.Text, entryLanguage, translateToLanguage);

@@ -103,7 +103,8 @@ namespace Linqua.UI
 
 			RaisePropertyChanged(nameof(IsLearnt));
 			RaisePropertyChanged(nameof(IsLearnStatusText));
-		}
+            RaisePropertyChanged(nameof(ToggleLearnedButtonHint));
+        }
 
 		private async Task SaveAsync()
 		{
