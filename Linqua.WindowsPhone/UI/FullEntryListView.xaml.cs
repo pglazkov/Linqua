@@ -65,7 +65,7 @@ namespace Linqua.UI
 
 			var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
 
-			eventAggregator.Publish(new EntryDetailsRequestedEvent(entryVm.Entry.Id));
+			eventAggregator.Publish(new EntryEditRequestedEvent(entryVm.Entry.Id));
 		}
 
 		public void OnPivotItemLoaded(IPivotHostView host)
