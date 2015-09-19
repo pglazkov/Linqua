@@ -213,6 +213,9 @@
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>домой</value>
   </data>
+  <data name="InitialLoadingProgressLabel.Text" xml:space="preserve">
+    <value>проверяем есть ли у вас данные сохраненные в облаке...</value>
+  </data>
   <data name="LoggingInProgressLabel.Text" xml:space="preserve">
     <value>авторизация...</value>
   </data>

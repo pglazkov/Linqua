@@ -276,33 +276,30 @@ namespace Linqua.UI
 
             IsLoadingEntries = true;
 
-			using (statusBusyService.Busy())
-			{
-				using (await RefreshLock.LockAsync())
-				{
-					try
-					{
-						await storage.InitializeAsync();
-						words = await LoadEntries(storage);
+            using (await RefreshLock.LockAsync())
+            {
+                try
+                {
+                    await storage.InitializeAsync();
+                    words = await LoadEntries(storage);
 
-						if (Log.IsDebugEnabled)
-							Log.Debug("Loaded {0} entries from local storage.", words.Count());
+                    if (Log.IsDebugEnabled)
+                        Log.Debug("Loaded {0} entries from local storage.", words.Count());
 
-						UpdateUIWithData(words);
+                    UpdateUIWithData(words);
 
-						await UpdateStatistics();
-					}
-					finally
-					{
-						if (words.Any())
-						{
-							IsLoadingEntries = false;
-						}
-					}
-				}
-			}
+                    await UpdateStatistics();
+                }
+                finally
+                {
+                    if (words.Any())
+                    {
+                        IsLoadingEntries = false;
+                    }
+                }
+            }
 
-			try
+            try
 			{
 				words = await SyncAsync();
 			}

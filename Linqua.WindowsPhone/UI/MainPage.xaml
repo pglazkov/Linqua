@@ -49,7 +49,8 @@
             <TextBlock Grid.Row="1"
                        Foreground="{ThemeResource ApplicationThemeBrush}"
 					   FontSize="{ThemeResource TextStyleLargeFontSize}"
-					   HorizontalAlignment="Right">
+					   HorizontalAlignment="Right"
+                       Margin="0,2,0,0">
 				<Run Text="{Binding NotLearnedEntriesCount}" /> / <Run Text="{Binding TotalEntriesCount}" />
 			</TextBlock>
 		</Grid>
@@ -64,13 +65,35 @@
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 
-			<ProgressRing Grid.Row="1"
-						  x:Name="LoadingProgressRing"
-						  IsActive="{Binding IsLoadingEntries}"
-						  VerticalAlignment="Center"
-						  HorizontalAlignment="Center"
-						  Foreground="{StaticResource ProgressRingBrush}"
-						  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+            <Grid VerticalAlignment="Center"
+                  Grid.Row="1"
+                  Visibility="{Binding IsLoadingEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Margin="24,0,24,74">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <ProgressRing Grid.Row="0"
+                              IsActive="{Binding IsLoadingEntries}"
+                              VerticalAlignment="Center"
+                              HorizontalAlignment="Center"
+                              Foreground="{StaticResource ProgressRingBrush}"
+                              Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+
+                <TextBlock Grid.Row="1"
+                           x:Uid="InitialLoadingProgressLabel"
+                           Text="RES_MISSING InitialLoadingProgressLabel"
+                           Style="{ThemeResource ListViewEmptyStaticTextBlockStyle}"
+                           LineHeight="20"
+                           FontSize="14"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Margin="50,36,50,0" />
+
+            </Grid>
 
 			<ListBox x:Name="ImageBar"
 					 Grid.Row="0"

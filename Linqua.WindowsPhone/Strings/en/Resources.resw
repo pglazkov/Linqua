@@ -213,6 +213,9 @@
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>home</value>
   </data>
+  <data name="InitialLoadingProgressLabel.Text" xml:space="preserve">
+    <value>hang on, checking if there is data stored in the cloud...</value>
+  </data>
   <data name="LoggingInProgressLabel.Text" xml:space="preserve">
     <value>logging in...</value>
   </data>
