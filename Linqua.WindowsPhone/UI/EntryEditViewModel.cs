@@ -18,8 +18,9 @@ namespace Linqua.UI
 		private Lazy<ITranslationService> translator;
 		private bool isLoadingData;
 		private CancellationTokenSource loadDataCts = new CancellationTokenSource();
+	    private bool isSaving;
 
-		public EntryEditViewModel(IEventAggregator eventAggregator)
+	    public EntryEditViewModel(IEventAggregator eventAggregator)
 			: base(eventAggregator)
 		{
 			TranslateCommand = new DelegateCommand(() => TranslateAsync().FireAndForget(), CanTranslate);
@@ -70,7 +71,17 @@ namespace Linqua.UI
 			}
 		}
 
-		public async Task InitializeAsync([NotNull] string entryId)
+	    private bool IsSaving
+	    {
+	        get { return isSaving; }
+	        set
+	        {
+	            isSaving = value;
+	            SaveCommand.RaiseCanExecuteChanged();
+	        }
+	    }
+
+	    public async Task InitializeAsync([NotNull] string entryId)
 		{
 			Guard.NotNullOrEmpty(entryId, nameof(entryId));
 
@@ -108,20 +119,29 @@ namespace Linqua.UI
 
 		private async Task SaveAsync()
 		{
-			using (statusBusyService.Busy(CommonBusyType.Saving))
-			{
-				await entryOperations.UpdateEntryAsync(Entry);
+		    IsSaving = true;
 
-				View.NavigateBack();
-			}
+		    try
+		    {
+		        using (statusBusyService.Busy(CommonBusyType.Saving))
+		        {
+		            await entryOperations.UpdateEntryAsync(Entry);
+
+		            View.NavigateBack();
+		        }
+		    }
+		    finally
+		    {
+		        IsSaving = false;
+		    }
 		}
 
-		private bool CanSave()
-		{
-			return Entry != null;
-		}
+	    private bool CanSave()
+	    {
+	        return Entry != null && !IsSaving;
+	    }
 
-		private void Cancel()
+	    private void Cancel()
 		{
 			View.NavigateBack();
 		}
@@ -155,10 +175,10 @@ namespace Linqua.UI
 			base.OnEntryChangedOverride();
 
 			TranslateCommand.RaiseCanExecuteChanged();
-			SaveCommand.RaiseCanExecuteChanged();
+		    SaveCommand.RaiseCanExecuteChanged();
 		}
 
-		protected override void CleanupOverride()
+	    protected override void CleanupOverride()
 		{
 			loadDataCts.Cancel();
 			loadDataCts = new CancellationTokenSource();

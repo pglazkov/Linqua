@@ -265,9 +265,9 @@ namespace Linqua.UI
 				return;
 			}
 
-			await InitializeWordListAsync(storage);
+            initialized = true;
 
-			initialized = true;
+            await InitializeWordListAsync(storage);
 		}
 
 		private async Task InitializeWordListAsync(IDataStore storage)
