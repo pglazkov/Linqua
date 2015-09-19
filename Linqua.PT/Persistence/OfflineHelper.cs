@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Framework;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using MetroLog;
@@ -11,6 +17,7 @@ using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Nito.AsyncEx;
+using AsyncLock = Nito.AsyncEx.AsyncLock;
 
 namespace Linqua.Persistence
 {
@@ -21,6 +28,36 @@ namespace Linqua.Persistence
 		private const string SqLiteDatabaseFileName = "localstore.db";
 
 		private static readonly AsyncLock SyncLock = new AsyncLock();
+        private static readonly Subject<SyncAction> SyncQueue = new Subject<SyncAction>();
+
+	    #region Nested Types
+
+	    private class SyncAction
+	    {
+	        public SyncAction([NotNull] OfflineSyncArguments arguments, [NotNull] TaskCompletionSource completionSource)
+	        {
+	            Guard.NotNull(arguments, nameof(arguments));
+	            Guard.NotNull(completionSource, nameof(completionSource));
+
+	            CompletionSource = completionSource;
+	            Arguments = arguments;
+	        }
+
+            public OfflineSyncArguments Arguments { get; }
+
+            public TaskCompletionSource CompletionSource { get; }
+	    }
+
+	    #endregion
+
+	    static OfflineHelper()
+	    {
+	        SyncQueue
+	            .Buffer(TimeSpan.FromMilliseconds(1000))
+	            .Where(x => x.Count > 0)
+                .ObserveOn(TaskPoolScheduler.Default)
+	            .Subscribe(b => ProcessSyncBatchAsync(b).FireAndForget());
+	    }
 
 		public static async Task InitializeAsync([NotNull] IMobileServiceSyncHandler syncHandler)
 		{
@@ -57,7 +94,7 @@ namespace Linqua.Persistence
 			}
 		}
 
-		public static async Task EnqueueSync(OfflineSyncArguments args = null)
+		public static Task EnqueueSync(OfflineSyncArguments args = null)
 		{
 			CheckInitialized();
 
@@ -68,16 +105,50 @@ namespace Linqua.Persistence
 					Log.Debug("EnqueueSync. Not connected to the internet. Do nothing.");
 				}
 
-				return;
+				return Task.FromResult(true);
 			}
 
-			await Task.Run(async () =>
-			{
-				await TrySyncAsync(args);
-			});
+            var tcs = new TaskCompletionSource();
+
+            var action = new SyncAction(args ?? OfflineSyncArguments.Default, tcs);
+
+		    SyncQueue.OnNext(action);
+
+		    return tcs.Task;
 		}
 
-		public static async Task<bool> TrySyncAsync(OfflineSyncArguments args = null)
+        private static async Task ProcessSyncBatchAsync(IEnumerable<SyncAction> actions)
+        {
+            var groupsByArguments = actions.GroupBy(x => x.Arguments).ToList();
+
+            foreach (var actionsGroup in groupsByArguments)
+            {
+                Exception exception = null;
+
+                try
+                {
+                    await TrySyncAsync(actionsGroup.Key);
+                }
+                catch (Exception ex)
+                {
+                    exception = ex;
+                }
+
+                foreach (var syncAction in actionsGroup)
+                {
+                    if (exception == null)
+                    {
+                        syncAction.CompletionSource.TrySetResult();
+                    }
+                    else
+                    {
+                        syncAction.CompletionSource.TrySetException(exception);
+                    }
+                }
+            }
+        }
+
+        public static async Task<bool> TrySyncAsync(OfflineSyncArguments args = null)
 		{
 			CheckInitialized();
 

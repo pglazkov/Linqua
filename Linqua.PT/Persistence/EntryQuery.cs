@@ -21,6 +21,31 @@ namespace Linqua.Persistence
 		public string Id { get; private set; }
 
 		[NotNull]
-		public Expression<Func<ClientEntry, bool>> Expression { get; private set; } 
+		public Expression<Func<ClientEntry, bool>> Expression { get; private set; }
+
+	    #region Equality Members
+
+	    protected bool Equals(EntryQuery other)
+	    {
+	        return string.Equals(Id, other.Id) && Expression.Equals(other.Expression);
+	    }
+
+	    public override bool Equals(object obj)
+	    {
+	        if (ReferenceEquals(null, obj)) return false;
+	        if (ReferenceEquals(this, obj)) return true;
+	        if (obj.GetType() != this.GetType()) return false;
+	        return Equals((EntryQuery)obj);
+	    }
+
+	    public override int GetHashCode()
+	    {
+	        unchecked
+	        {
+	            return (Id.GetHashCode() * 397) ^ Expression.GetHashCode();
+	        }
+	    }
+
+	    #endregion
 	}
 }
