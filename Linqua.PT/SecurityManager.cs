@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Security.Credentials;
@@ -12,7 +13,7 @@ namespace Linqua
 		private const string ProviderId = "MicrosoftLive";
 		private const string AuthenticationRedirectUrl = MobileService.MobileServiceUrl;
 
-		private static readonly string[] AuthenticationScopes = new[] { "wl.signin", "wl.offline_access" };
+		private static readonly string[] AuthenticationScopes = { "wl.signin" };
 
 		public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
 		{
@@ -25,21 +26,21 @@ namespace Linqua
 
 			var vault = new PasswordVault();
 
-			PasswordCredential savedCredentials = null; 
+			PasswordCredential savedCredentials = null;
 
-			if (useCachedCredentials)
-			{
-				try
-				{
-					savedCredentials = vault.FindAllByResource(ProviderId).FirstOrDefault();
-				}
-				catch (Exception)
-				{
-					// No credentials found.
-				}
-			}
+            if (useCachedCredentials)
+            {
+                try
+                {
+                    savedCredentials = vault.FindAllByResource(ProviderId).FirstOrDefault();
+                }
+                catch (Exception)
+                {
+                    // No credentials found.
+                }
+            }
 
-			if (savedCredentials != null)
+            if (savedCredentials != null)
 			{
 				user = new MobileServiceUser(savedCredentials.UserName)
 				{
@@ -82,9 +83,25 @@ namespace Linqua
 
 			LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
 
-			var result = await liveIdClient.LoginAsync(AuthenticationScopes);
+			LiveLoginResult result = null;
 
-			if (result.Status == LiveConnectSessionStatus.Connected)
+		    try
+		    {
+		        result = await liveIdClient.LoginAsync(AuthenticationScopes);
+		    }
+		    catch (NullReferenceException)
+		    {
+		        // We have to handle this because this exception occurs if user declines to login with Microsoft account. 
+                // However this error can occur for many other reasons, including bugs in out code.
+#if DEBUG
+                if (Debugger.IsAttached)
+		        {
+		            Debugger.Break();
+		        }
+#endif
+		    }
+
+		    if (result != null && result.Status == LiveConnectSessionStatus.Connected)
 			{
 				var user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
 

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
@@ -23,7 +24,7 @@ namespace Linqua
 			this.arguments = arguments;
 		}
 
-		public async Task RunAsync()
+		public async Task<bool> RunAsync()
 		{
 			var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
@@ -38,9 +39,9 @@ namespace Linqua
 
 				while (!authenticated)
 				{
-					authenticated = await SecurityManager.Authenticate();
+                    authenticated = await SecurityManager.Authenticate();
 
-					if (!authenticated)
+                    if (!authenticated)
 					{
 					    var resourceManager = CompositionManager.Current.GetInstance<IStringResourceManager>();
 
@@ -48,8 +49,19 @@ namespace Linqua
 					    var messageText = resourceManager.GetString("LoginRequiredMessageText");
 
 						var dialog = new MessageDialog(messageText, messageTitle);
-						dialog.Commands.Add(new UICommand("OK"));
-						await dialog.ShowAsync();
+
+					    var okCommand = new UICommand(resourceManager.GetString("LoginFailedRetry"));
+                        var cancelCommand = new UICommand(resourceManager.GetString("LoginFailedCancelAndExit"));
+
+					    dialog.Commands.Add(okCommand);
+                        dialog.Commands.Add(cancelCommand);
+
+						var dialogResult = await dialog.ShowAsync();
+
+					    if (dialogResult == cancelCommand)
+					    {
+					        return false;
+					    }
 					}
 				}
 			}
@@ -58,6 +70,8 @@ namespace Linqua
 			{
 				throw new Exception("Failed to create initial page");
 			}
+
+		    return true;
 		}
 	}
 }

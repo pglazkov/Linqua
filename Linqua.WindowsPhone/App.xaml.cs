@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Phone.UI.Input;
@@ -115,13 +116,23 @@ namespace Linqua
                 rootFrame.Navigated += RootFrame_FirstNavigated;
 #endif
 
-	            var startupWorkflow = new StartupWorkflow(rootFrame, e.Arguments);
-
-				startupWorkflow.RunAsync().FireAndForget();
+	            StartupAsync(rootFrame, e).FireAndForget();
             }
 
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+        private static async Task StartupAsync(Frame rootFrame, LaunchActivatedEventArgs e)
+        {
+            var startupWorkflow = new StartupWorkflow(rootFrame, e.Arguments);
+
+            var success = await startupWorkflow.RunAsync();
+
+            if (!success)
+            {
+                Current.Exit();
+            }
         }
 
 #if WINDOWS_PHONE_APP

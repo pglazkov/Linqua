@@ -213,6 +213,15 @@
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>домой</value>
   </data>
+  <data name="LoggingInProgressLabel.Text" xml:space="preserve">
+    <value>авторизация...</value>
+  </data>
+  <data name="LoginFailedCancelAndExit" xml:space="preserve">
+    <value>выход</value>
+  </data>
+  <data name="LoginFailedRetry" xml:space="preserve">
+    <value>ok</value>
+  </data>
   <data name="LoginRequiredMessageText" xml:space="preserve">
     <value>Приложению требуется авторизация с вашим Майкрософт аккаунтом. Это нужно для того, чтобы приложение могло сохранять данные в облаке. </value>
   </data>

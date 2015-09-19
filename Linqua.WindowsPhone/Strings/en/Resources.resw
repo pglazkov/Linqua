@@ -213,6 +213,15 @@
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>home</value>
   </data>
+  <data name="LoggingInProgressLabel.Text" xml:space="preserve">
+    <value>logging in...</value>
+  </data>
+  <data name="LoginFailedCancelAndExit" xml:space="preserve">
+    <value>exit</value>
+  </data>
+  <data name="LoginFailedRetry" xml:space="preserve">
+    <value>ok</value>
+  </data>
   <data name="LoginRequiredMessageText" xml:space="preserve">
     <value>Please log in. Login is required for the app to be able to store the data in the cloud so that you don't loose it if something happens to your device. </value>
   </data>
