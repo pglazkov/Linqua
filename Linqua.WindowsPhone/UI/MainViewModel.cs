@@ -292,7 +292,7 @@ namespace Linqua.UI
                 }
                 finally
                 {
-                    if (words.Any())
+                    if (words != null && words.Any())
                     {
                         IsLoadingEntries = false;
                     }
