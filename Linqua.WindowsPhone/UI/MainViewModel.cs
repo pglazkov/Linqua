@@ -367,10 +367,10 @@ namespace Linqua.UI
 
 					// Now when the data from cache is loaded and shown to the user sync with 
 					// the cloud and refresh the data.
-					await storage.EnqueueSync(new OfflineSyncArguments
-					{
-						PurgeCache = force
-					});
+				    await storage.TrySyncAsync(new OfflineSyncArguments
+				    {
+				        PurgeCache = force
+				    });
 
 					return await RefreshInternalAsync();
 				}

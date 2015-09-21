@@ -53,8 +53,11 @@
     <Compile Include="Persistence\Events\StorageInitializedEvent.cs" />
     <Compile Include="Persistence\IDataStore.cs" />
     <Compile Include="Persistence\ISyncFailedHandler.cs" />
+    <Compile Include="Persistence\ISyncHandle.cs" />
     <Compile Include="Persistence\MemoryDataStore.cs" />
     <Compile Include="Persistence\MobileServiceDataStore.cs" />
+    <Compile Include="Persistence\NullSyncHandle.cs" />
+    <Compile Include="Persistence\SyncAction.cs" />
     <Compile Include="Persistence\SyncHandler.cs" />
     <Compile Include="Persistence\OfflineHelper.cs" />
     <Compile Include="Persistence\OfflineSyncArguments.cs" />

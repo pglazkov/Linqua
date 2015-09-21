@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
+using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Framework;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
@@ -27,37 +24,16 @@ namespace Linqua.Persistence
 
 		private const string SqLiteDatabaseFileName = "localstore.db";
 
+	    private const int MaxSyncRetryCount = 3;
+
 		private static readonly AsyncLock SyncLock = new AsyncLock();
-        private static readonly Subject<SyncAction> SyncQueue = new Subject<SyncAction>();
+        private static readonly Queue<SyncAction> SyncQueue = new Queue<SyncAction>();
+        private static readonly TimeSpan SyncQueueProcessInterval = TimeSpan.FromSeconds(30);
+        private static readonly ObservableSyncEvent SyncCompletedEvent = new ObservableSyncEvent("Sync Completed Evet");
 
 	    #region Nested Types
 
-	    private class SyncAction
-	    {
-	        public SyncAction([NotNull] OfflineSyncArguments arguments, [NotNull] TaskCompletionSource completionSource)
-	        {
-	            Guard.NotNull(arguments, nameof(arguments));
-	            Guard.NotNull(completionSource, nameof(completionSource));
-
-	            CompletionSource = completionSource;
-	            Arguments = arguments;
-	        }
-
-            public OfflineSyncArguments Arguments { get; }
-
-            public TaskCompletionSource CompletionSource { get; }
-	    }
-
 	    #endregion
-
-	    static OfflineHelper()
-	    {
-	        SyncQueue
-	            .Buffer(TimeSpan.FromMilliseconds(1000))
-	            .Where(x => x.Count > 0)
-                .ObserveOn(TaskPoolScheduler.Default)
-	            .Subscribe(b => ProcessSyncBatchAsync(b).FireAndForget());
-	    }
 
 		public static async Task InitializeAsync([NotNull] IMobileServiceSyncHandler syncHandler)
 		{
@@ -66,10 +42,19 @@ namespace Linqua.Persistence
 				var store = new MobileServiceSQLiteStore(SqLiteDatabaseFileName);
 				store.DefineTable<ClientEntry>();
 				await MobileService.Client.SyncContext.InitializeAsync(store, syncHandler);
+
+			    SetupSyncQueueMonitoring();
 			}
 		}
 
-		private static void CheckInitialized()
+	    private static void SetupSyncQueueMonitoring()
+	    {
+	        Observable.Timer(SyncQueueProcessInterval, SyncQueueProcessInterval)
+	            .ObserveOn(TaskPoolScheduler.Default)
+	            .Subscribe(b => ProcessSyncQueueAsync().FireAndForget());
+	    }
+
+	    private static void CheckInitialized()
 		{
 			if (!MobileService.Client.SyncContext.IsInitialized)
 			{
@@ -77,7 +62,7 @@ namespace Linqua.Persistence
 			}
 		}
 
-		public static AwaitableDisposable<IDisposable> AcquireSyncLock(CancellationToken? cancellationToken = null)
+	    private static AwaitableDisposable<IDisposable> AcquireSyncLock(CancellationToken? cancellationToken = null)
 		{
 			return SyncLock.LockAsync(cancellationToken ?? CancellationToken.None);
 		}
@@ -94,7 +79,7 @@ namespace Linqua.Persistence
 			}
 		}
 
-		public static Task EnqueueSync(OfflineSyncArguments args = null)
+		public static ISyncHandle EnqueueSync(OfflineSyncArguments args = null)
 		{
 			CheckInitialized();
 
@@ -105,29 +90,49 @@ namespace Linqua.Persistence
 					Log.Debug("EnqueueSync. Not connected to the internet. Do nothing.");
 				}
 
-				return Task.FromResult(true);
+				return new NullSyncHandle();
 			}
 
             var tcs = new TaskCompletionSource();
 
             var action = new SyncAction(args ?? OfflineSyncArguments.Default, tcs);
 
-		    SyncQueue.OnNext(action);
+		    lock (SyncQueue)
+		    {
+		        SyncQueue.Enqueue(action);
+		    }
 
-		    return tcs.Task;
+		    return action;
 		}
 
-        private static async Task ProcessSyncBatchAsync(IEnumerable<SyncAction> actions)
+        private static async Task ProcessSyncQueueAsync()
         {
+            var actions = new List<SyncAction>();
+
+            lock (SyncQueue)
+            {
+                while (SyncQueue.Count > 0)
+                {
+                    actions.Add(SyncQueue.Dequeue());
+                }
+            }
+
+            if (actions.Count == 0)
+            {
+                return;
+            }
+
             var groupsByArguments = actions.GroupBy(x => x.Arguments).ToList();
 
             foreach (var actionsGroup in groupsByArguments)
             {
                 Exception exception = null;
 
+                var success = false;
+
                 try
                 {
-                    await TrySyncAsync(actionsGroup.Key);
+                    success = await TrySyncAsync(actionsGroup.Key);
                 }
                 catch (Exception ex)
                 {
@@ -136,13 +141,33 @@ namespace Linqua.Persistence
 
                 foreach (var syncAction in actionsGroup)
                 {
-                    if (exception == null)
+                    syncAction.CurrentTryCount += 1;
+
+                    if (success)
                     {
                         syncAction.CompletionSource.TrySetResult();
                     }
                     else
                     {
-                        syncAction.CompletionSource.TrySetException(exception);
+                        if (syncAction.CurrentTryCount < MaxSyncRetryCount)
+                        {
+                            // Put the action back into the queue to be retried later.
+                            lock (SyncQueue)
+                            {
+                                SyncQueue.Enqueue(syncAction);
+                            }
+                        }
+                        else
+                        {
+                            if (exception != null)
+                            {
+                                syncAction.CompletionSource.TrySetException(exception);
+                            }
+                            else
+                            {
+                                syncAction.CompletionSource.TrySetCanceled();
+                            }
+                        }
                     }
                 }
             }
@@ -152,61 +177,87 @@ namespace Linqua.Persistence
 		{
 			CheckInitialized();
 
-			using (await AcquireSyncLock())
+            if (!ConnectionHelper.IsConnectedToInternet)
+            {
+                if (Log.IsDebugEnabled)
+                {
+                    Log.Debug("EnqueueSync. Not connected to the internet. Do nothing.");
+                }
+
+                return false;
+            }
+
+            using (await AcquireSyncLock())
 			{
+			    if (!SyncCompletedEvent.CanPublish)
+			    {
+			        SyncCompletedEvent.Reset();
+			    }
+
 				args = args ?? OfflineSyncArguments.Default;
 
-				try
-				{
-					if (Log.IsDebugEnabled)
-						Log.Debug("Sync Started.");
+			    try
+			    {
+			        if (Log.IsDebugEnabled)
+			            Log.Debug("Sync Started.");
 
-					await MobileService.Client.SyncContext.PushAsync();
+			        await MobileService.Client.SyncContext.PushAsync();
 
-					IMobileServiceSyncTable<ClientEntry> entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
+			        var entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
 
-					IMobileServiceTableQuery<ClientEntry> mobileServiceTableQuery = entryTable.CreateQuery();
+			        var mobileServiceTableQuery = entryTable.CreateQuery();
 
-					if (args.Query != null)
-					{
-						mobileServiceTableQuery = mobileServiceTableQuery.Where(args.Query.Expression);
-					}
+			        if (args.Query != null)
+			        {
+			            mobileServiceTableQuery = mobileServiceTableQuery.Where(args.Query.Expression);
+			        }
 
-					string queryId = "entryItems" + (args.Query != null ? args.Query.Id : string.Empty);
+			        var queryId = "entryItems" + (args.Query?.Id ?? string.Empty);
 
-					if (args.PurgeCache)
-					{
-						Log.Debug("Purging local store.");
+			        if (args.PurgeCache)
+			        {
+			            Log.Debug("Purging local store.");
 
-						await entryTable.PurgeAsync(queryId, mobileServiceTableQuery, CancellationToken.None);
-					}
+			            await entryTable.PurgeAsync(queryId, mobileServiceTableQuery, CancellationToken.None);
+			        }
 
-					await entryTable.PullAsync(queryId, mobileServiceTableQuery);
+			        await entryTable.PullAsync(queryId, mobileServiceTableQuery);
 
-					if (Log.IsDebugEnabled)
-						Log.Debug("Sync completed.");
+			        if (Log.IsDebugEnabled)
+			            Log.Debug("Sync completed.");
 
-					return true;
-				}
-				catch (MobileServicePushFailedException ex)
-				{
-					if (Log.IsErrorEnabled)
-					{
-						Log.Error("Push Failed. Status: {0}. Errors: {1}", ex.PushResult.Status, ex.PushResult.Errors.Count > 0 ? string.Join("; ", ex.PushResult.Errors) : "<none>");
-					}
+			        return true;
+			    }
+			    catch (MobileServicePushFailedException ex)
+			    {
+			        if (Log.IsErrorEnabled)
+			        {
+			            Log.Error("Push Failed. Status: {0}. Errors: {1}", ex.PushResult.Status, ex.PushResult.Errors.Count > 0 ? string.Join("; ", ex.PushResult.Errors) : "<none>");
+			        }
 
-					return false;
-				}
-				catch (Exception ex)
-				{
-					if (Log.IsErrorEnabled)
-					{
-						Log.Error("Synchronization failed.", ex);
-					}
+			        return false;
+			    }
+			    catch (Exception ex)
+			    {
+			        if (Log.IsErrorEnabled)
+			        {
+			            Log.Error("Synchronization failed.", ex);
+			        }
 
-					return false;
-				}
+			        return false;
+			    }
+			    finally
+			    {
+                    SyncCompletedEvent.Publish();
+                }
 			}
 		}
+
+	    public static async Task AwaitPendingSync()
+	    {
+            await SyncCompletedEvent;
+
+            await ProcessSyncQueueAsync();
+        }
 	}
 }

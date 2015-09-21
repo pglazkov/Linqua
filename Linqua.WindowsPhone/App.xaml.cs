@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.ApplicationModel.Core;
 using Windows.Phone.UI.Input;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -10,6 +11,7 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 using Framework;
 using Linqua.Framework;
+using Linqua.Persistence;
 using MetroLog;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
@@ -36,6 +38,7 @@ namespace Linqua
             InitializeComponent();
             Suspending += OnSuspending;
 
+            //CoreApplication.UnhandledErrorDetected += // TODO
 	        UnhandledException += OnUnhandledException;
 
 			var bootstrapper = new Bootstrapper();
@@ -182,6 +185,7 @@ namespace Linqua
 				await ((ILoggerAsync)log).InfoAsync("Application is suspending.");
 
 			await SuspensionManager.SaveAsync();
+            await OfflineHelper.AwaitPendingSync();
 
             deferral.Complete();
         }

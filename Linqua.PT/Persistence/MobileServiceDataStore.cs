@@ -173,7 +173,7 @@ namespace Linqua.Persistence
 				await entrySyncTable.InsertAsync(newEntry);
 			}
 
-			OfflineHelper.EnqueueSync().FireAndForget();
+			OfflineHelper.EnqueueSync();
 
 			return resultEntry;
 		}
@@ -182,14 +182,14 @@ namespace Linqua.Persistence
 		{
 			await entrySyncTable.DeleteAsync(entry);
 
-			OfflineHelper.EnqueueSync().FireAndForget();
+			OfflineHelper.EnqueueSync();
 		}
 
 		public async Task UpdateEntry(ClientEntry entry)
 		{
 			await entrySyncTable.UpdateAsync(entry);
 
-			OfflineHelper.EnqueueSync().FireAndForget();
+			OfflineHelper.EnqueueSync();
 		}
 
 		public async Task InitializeAsync(bool doInitialPoolIfNeeded)
@@ -214,9 +214,9 @@ namespace Linqua.Persistence
 		    }
 		}
 
-		public Task EnqueueSync(OfflineSyncArguments args = null)
-		{
-			return OfflineHelper.EnqueueSync(args);
-		}
-	}
+	    public Task<bool> TrySyncAsync(OfflineSyncArguments args = null)
+	    {
+	        return OfflineHelper.TrySyncAsync(args);
+	    }
+    }
 }

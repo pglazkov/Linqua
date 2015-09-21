@@ -37,7 +37,7 @@ namespace Linqua.Persistence
 		[NotNull]
 		Task InitializeAsync(bool doInitialPoolIfNeeded = true);
 
-		[NotNull]
-		Task EnqueueSync(OfflineSyncArguments args = null);
+	    [NotNull]
+	    Task<bool> TrySyncAsync(OfflineSyncArguments args = null);
 	}
 }

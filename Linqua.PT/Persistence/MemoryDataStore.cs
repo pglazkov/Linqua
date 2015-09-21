@@ -86,9 +86,9 @@ namespace Linqua.Persistence
 			return Task.FromResult(true);
 		}
 
-		public Task EnqueueSync(OfflineSyncArguments args)
-		{
-			return Task.FromResult(true);
-		}
+	    public Task<bool> TrySyncAsync(OfflineSyncArguments args = null)
+	    {
+	        return Task.FromResult(true);
+	    }
 	}
 }

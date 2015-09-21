@@ -34,7 +34,7 @@ namespace Linqua
 				{
 					IDataStore storage = new MobileServiceDataStore(new SyncHandler(), new EventManager());
 					await storage.InitializeAsync();
-					await storage.EnqueueSync();
+					await storage.TrySyncAsync();
 				}
 				else
 				{
