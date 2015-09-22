@@ -11,7 +11,7 @@ namespace Linqua.UI
 {
 	public class EntryDetailsViewModel : EntryViewModel
 	{
-		private readonly IDataStore storage;
+		private readonly IBackendServiceClient storage;
 		private readonly IStatusBusyService statusBusyService;
 		private Lazy<ITranslationService> translator;
 		private bool isLoadingData;
@@ -25,7 +25,7 @@ namespace Linqua.UI
 
 		public EntryDetailsViewModel(
 			ICompositionFactory compositionFactory,
-			IDataStore storage,
+			IBackendServiceClient storage,
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
 			Lazy<ITranslationService> translator)

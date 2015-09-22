@@ -47,6 +47,8 @@ namespace Linqua.Logging
 
 		public override async Task<IStorageFile> GetCompressedLogFile()
 		{
+			await EnsureInitialized();
+
 			var stream = await GetCompressedLogs();
 
 			if (stream != null)

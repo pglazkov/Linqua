@@ -28,7 +28,7 @@ namespace Linqua
         private static readonly AsyncLock supportedTranslationLanguagesCacheLock = new AsyncLock();
 
         private readonly ICompositionFactory compositionFactory;
-		private readonly IDataStore storage;
+		private readonly IBackendServiceClient storage;
 		private readonly IEventAggregator eventAggregator;
 		private readonly IStatusBusyService statusBusyService;
 		private readonly Lazy<ITranslationService> translator;
@@ -36,7 +36,7 @@ namespace Linqua
 		[ImportingConstructor]
 		public EntryOperations(
 			ICompositionFactory compositionFactory,
-			IDataStore storage,
+			IBackendServiceClient storage,
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
 			Lazy<ITranslationService> translator)

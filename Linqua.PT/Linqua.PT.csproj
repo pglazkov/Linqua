@@ -37,6 +37,9 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Linqua.Service\DataObjects\LogUploadInfo.cs">
+      <Link>DataObjects\LogUploadInfo.cs</Link>
+    </Compile>
     <Compile Include="..\Linqua.Service\Models\TranslationState.cs">
       <Link>DataObjects\TranslationState.cs</Link>
     </Compile>
@@ -51,22 +54,18 @@
     <Compile Include="Notifications\LiveTileManager.cs" />
     <Compile Include="Persistence\EntryQuery.cs" />
     <Compile Include="Persistence\Events\StorageInitializedEvent.cs" />
-    <Compile Include="Persistence\IDataStore.cs" />
+    <Compile Include="Persistence\Exceptions\NoInternetConnectionException.cs" />
+    <Compile Include="Persistence\IBackendServiceClient.cs" />
     <Compile Include="Persistence\ISyncFailedHandler.cs" />
     <Compile Include="Persistence\ISyncHandle.cs" />
-    <Compile Include="Persistence\MemoryDataStore.cs" />
-    <Compile Include="Persistence\MobileServiceDataStore.cs" />
+    <Compile Include="Persistence\MemoryBackendServiceClient.cs" />
+    <Compile Include="Persistence\MobileServiceBackendServiceClient.cs" />
     <Compile Include="Persistence\NullSyncHandle.cs" />
     <Compile Include="Persistence\SyncAction.cs" />
     <Compile Include="Persistence\SyncHandler.cs" />
     <Compile Include="Persistence\OfflineHelper.cs" />
     <Compile Include="Persistence\OfflineSyncArguments.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Resources\AppResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>AppResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="RoamingStorageKeys.cs" />
     <Compile Include="SecurityManager.cs" />
     <Compile Include="Translation\ITranslationService.cs" />
@@ -162,12 +161,6 @@
       <Project>{a32c1cb5-905d-43fb-a1c2-a98a0147f837}</Project>
       <Name>Framework.WinRT</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\AppResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

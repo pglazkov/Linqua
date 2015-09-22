@@ -14,15 +14,15 @@ namespace Linqua.Notifications
 	[Export(typeof(ILiveTileManager))]
 	public class LiveTileManager : ILiveTileManager
 	{
-		private readonly IDataStore dataStore;
+		private readonly IBackendServiceClient backendServiceClient;
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<LiveTileManager>();
 
 		[ImportingConstructor]
-		public LiveTileManager([NotNull] IDataStore dataStore)
+		public LiveTileManager([NotNull] IBackendServiceClient backendServiceClient)
 		{
-			Guard.NotNull(dataStore, nameof(dataStore));
+			Guard.NotNull(backendServiceClient, nameof(backendServiceClient));
 
-			this.dataStore = dataStore;
+			this.backendServiceClient = backendServiceClient;
 		}
 
 		public async Task UpdateTileAsync()
@@ -56,7 +56,7 @@ namespace Linqua.Notifications
 		{
 			var result = new List<TileNotification>();
 
-			var randomEntries = await dataStore.GetRandomEntries(5);
+			var randomEntries = await backendServiceClient.GetRandomEntries(5);
 
 			foreach (var randomEntry in randomEntries)
 			{

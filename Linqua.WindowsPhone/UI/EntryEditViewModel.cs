@@ -12,7 +12,7 @@ namespace Linqua.UI
 {
 	public class EntryEditViewModel : EntryViewModel
 	{
-		private readonly IDataStore storage;
+		private readonly IBackendServiceClient storage;
 		private readonly IStatusBusyService statusBusyService;
 		private readonly IEntryOperations entryOperations;
 		private Lazy<ITranslationService> translator;
@@ -31,7 +31,7 @@ namespace Linqua.UI
 		[ImportingConstructor]
 		public EntryEditViewModel(
 			ICompositionFactory compositionFactory,
-			IDataStore storage,
+			IBackendServiceClient storage,
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
 			IEntryOperations entryOperations,

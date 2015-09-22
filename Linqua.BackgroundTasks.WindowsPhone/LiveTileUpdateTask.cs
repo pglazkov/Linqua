@@ -33,7 +33,7 @@ namespace Linqua
 
 				if (authenticatedSilently)
 				{
-					IDataStore storage = new MobileServiceDataStore(new SyncHandler(), new EventManager());
+					IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
 					await storage.InitializeAsync(doInitialPoolIfNeeded: false);
 
 					var liveTileManager = new LiveTileManager(storage);

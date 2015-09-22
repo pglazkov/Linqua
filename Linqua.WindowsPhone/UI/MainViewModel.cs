@@ -22,12 +22,13 @@ namespace Linqua.UI
 	{
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainViewModel>();
 
-		private readonly IDataStore storage;
+		private readonly IBackendServiceClient storage;
 		private readonly IEventAggregator eventAggregator;
 		private readonly IStatusBusyService statusBusyService;
 		private readonly IEntryOperations entryOperations;
 		private readonly ILocalSettingsService localSettingsService;
 		private readonly IStringResourceManager stringResourceManager;
+		private readonly ILogSharingService logSharingService;
 		private FullEntryListViewModel fullEntryListViewModel;
 		private bool isLoadingEntries;
 		private bool isEntryEditorVisible;
@@ -62,12 +63,13 @@ namespace Linqua.UI
 
 		public MainViewModel(
 			ICompositionFactory compositionFactory,
-			IDataStore storage,
+			IBackendServiceClient storage,
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
 			IEntryOperations entryOperations,
 			ILocalSettingsService localSettingsService,
-			IStringResourceManager stringResourceManager)
+			IStringResourceManager stringResourceManager,
+			ILogSharingService logSharingService)
 			: this()
 		{
 			Guard.NotNull(compositionFactory, nameof(compositionFactory));
@@ -77,6 +79,7 @@ namespace Linqua.UI
 			Guard.NotNull(entryOperations, nameof(entryOperations));
 			Guard.NotNull(localSettingsService, nameof(localSettingsService));
 			Guard.NotNull(stringResourceManager, nameof(stringResourceManager));
+			Guard.NotNull(logSharingService, nameof(logSharingService));
 
 			this.storage = storage;
 			this.eventAggregator = eventAggregator;
@@ -84,6 +87,7 @@ namespace Linqua.UI
 			this.entryOperations = entryOperations;
 			this.localSettingsService = localSettingsService;
 			this.stringResourceManager = stringResourceManager;
+			this.logSharingService = logSharingService;
 
 			CompositionFactory = compositionFactory;
 
@@ -270,7 +274,7 @@ namespace Linqua.UI
             await InitializeWordListAsync(storage);
 		}
 
-		private async Task InitializeWordListAsync(IDataStore storage)
+		private async Task InitializeWordListAsync(IBackendServiceClient storage)
 		{
             IEnumerable<ClientEntry> words = null;
 
@@ -341,7 +345,7 @@ namespace Linqua.UI
 			RandomEntryListViewModel.Entries = allEntries.Where(x => !x.IsLearnt).ToList();
 		}
 
-		private Task<IEnumerable<ClientEntry>> LoadEntries(IDataStore storage)
+		private Task<IEnumerable<ClientEntry>> LoadEntries(IBackendServiceClient storage)
 		{
 			if (ShowLearnedEntries)
 			{
@@ -618,7 +622,7 @@ namespace Linqua.UI
 			}
 		}
 
-		private static async void OnLogFilesShareDataRequested(object sender, DataRequestedEventArgs args)
+		private async void OnLogFilesShareDataRequested(object sender, DataRequestedEventArgs args)
 		{
 			if (Log.IsDebugEnabled)
 				Log.Debug("Prepearing compressed logs to share.");
@@ -637,9 +641,9 @@ namespace Linqua.UI
 				args.Request.Data.Properties.Title = $"Linqua Logs - {DateTime.UtcNow:s} | {DeviceInfo.DeviceId}";
 				args.Request.Data.Properties.Description = "Linqua compressed log files.";
 
-				var file = await FileStreamingTarget.Instance.GetCompressedLogFile();
+				var logUri = await logSharingService.ShareCurrentLogAsync();
 
-				args.Request.Data.SetStorageItems(new[] { file });
+				args.Request.Data.SetWebLink(logUri);
 			}
 			catch (Exception ex)
 			{
