@@ -102,9 +102,7 @@
     <Compile Include="Events\EntryDetailsRequestedEvent.cs" />
     <Compile Include="Events\EntryQuickEditRequestedEvent.cs" />
     <Compile Include="Events\EntryIsLearntChangedEvent.cs" />
-    <Compile Include="Events\FirstUseTutorialType.cs" />
     <Compile Include="Events\IsTranslationShownChangedEvent.cs" />
-    <Compile Include="Events\StopFirstUseTutorialEvent.cs" />
     <Compile Include="Framework\Behavior.cs" />
     <Compile Include="Framework\BusyStatus.cs" />
     <Compile Include="Framework\HorizontalFlickBehavior.cs" />

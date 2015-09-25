@@ -285,13 +285,10 @@ namespace Linqua.UI
 
 			UpdateDisplayedIndexes();
 
-			if (GetIsFirstUseTutorialComplete(FirstUseTutorialType.TapToSeeTranslation) && GetIsFirstUseTutorialComplete(FirstUseTutorialType.FlickToSeeNextRandomWord))
+			Observable.Timer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
 			{
-				Observable.Timer(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
-				{
-					viewModel.ShowTranslation();
-				});
-			}
+				viewModel.ShowTranslation();
+			});
 		}
 
 		public EntryListItemViewModel MoveToTopIfExists(string entryText)
@@ -403,15 +400,5 @@ namespace Linqua.UI
 
 			return result;
 		}
-
-        public void SetIsFirstUseTutorialComplete(FirstUseTutorialType tutorialType, bool value)
-        {
-            roamingSettings.SetValue(string.Format(RoamingStorageKeys.IsFirstUseTutorialCompletedKeyTemplate, tutorialType), value);
-        }
-
-        public bool GetIsFirstUseTutorialComplete(FirstUseTutorialType tutorialType)
-        {
-	        return roamingSettings.GetValue<bool>(string.Format(RoamingStorageKeys.IsFirstUseTutorialCompletedKeyTemplate, tutorialType));
-        }
     }
 }
