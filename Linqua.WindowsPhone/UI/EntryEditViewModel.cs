@@ -25,7 +25,7 @@ namespace Linqua.UI
 		{
 			TranslateCommand = new DelegateCommand(() => TranslateAsync().FireAndForget(), CanTranslate);
 			SaveCommand = new DelegateCommand(() => SaveAsync().FireAndForget(), CanSave);
-			CancelCommand = new DelegateCommand(Cancel);
+			CancelCommand = new DelegateCommand(Cancel, CanCancel);
 		}
 
 		[ImportingConstructor]
@@ -81,7 +81,7 @@ namespace Linqua.UI
 	        }
 	    }
 
-	    public async Task InitializeAsync([NotNull] string entryId)
+		public async Task InitializeAsync([NotNull] string entryId)
 		{
 			Guard.NotNullOrEmpty(entryId, nameof(entryId));
 
@@ -106,6 +106,14 @@ namespace Linqua.UI
 					IsLoadingData = false;
 				}
 			}
+		}
+
+		protected override void OnIsDeletingSelfChanged()
+		{
+			base.OnIsDeletingSelfChanged();
+
+			CancelCommand.RaiseCanExecuteChanged();
+			SaveCommand.RaiseCanExecuteChanged();
 		}
 
 		protected override void SetIsLearnt(bool value)
@@ -138,10 +146,15 @@ namespace Linqua.UI
 
 	    private bool CanSave()
 	    {
-	        return Entry != null && !IsSaving;
+	        return Entry != null && !IsSaving && !IsDeletingSelf;
 	    }
 
-	    private void Cancel()
+		private bool CanCancel()
+		{
+			return !IsDeletingSelf;
+		}
+
+		private void Cancel()
 		{
 			View.NavigateBack();
 		}
@@ -168,6 +181,11 @@ namespace Linqua.UI
 			base.OnIsTranslatingChangedOverride();
 
 			TranslateCommand.RaiseCanExecuteChanged();
+		}
+
+		protected override void OnDeleted()
+		{
+			View.NavigateBack();
 		}
 
 		protected override void OnEntryChangedOverride()

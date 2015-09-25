@@ -29,5 +29,10 @@ namespace Linqua
 	    {
 			return Task.FromResult(string.Empty);
 	    }
+
+	    public Task<string> GetEntryLanguageNameAsync(string languageCode, string locale)
+	    {
+		    return Task.FromResult(string.Empty);
+	    }
     }
 }

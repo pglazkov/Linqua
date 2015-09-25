@@ -296,25 +296,16 @@ namespace Linqua.UI
                 }
                 finally
                 {
-                    if (words != null && words.Any())
-                    {
-                        IsLoadingEntries = false;
-                    }
-                }
+					IsLoadingEntries = false;
+
+					FullEntryListViewModel.IsInitializationComplete = true;
+					RandomEntryListViewModel.IsInitializationComplete = true;
+				}
             }
 
-            try
-			{
-				words = await SyncAsync();
-			}
-			finally
-			{
-				IsLoadingEntries = false;
-				FullEntryListViewModel.IsInitializationComplete = true;
-				RandomEntryListViewModel.IsInitializationComplete = true;
-			}
+			words = await SyncAsync();
 
-		    if (words != null)
+			if (words != null)
 		    {
 		        await TranslatePendingEntriesAsync(words);
 		    }

@@ -147,6 +147,12 @@
   <data name="EntryEditPage_CancelButton.Label" xml:space="preserve">
     <value>отмена</value>
   </data>
+  <data name="EntryEditPage_DefinitionTextBox.PlaceholderText" xml:space="preserve">
+    <value>перевод</value>
+  </data>
+  <data name="EntryEditPage_DetectedLanguageLabel.Text" xml:space="preserve">
+    <value>язык:</value>
+  </data>
   <data name="EntryEditPage_MarkLearnedButtonHint" xml:space="preserve">
     <value>(коснитесь чтобы отметить слово как выученное)</value>
   </data>

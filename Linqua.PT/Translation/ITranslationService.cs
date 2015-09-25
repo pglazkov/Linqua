@@ -14,5 +14,8 @@ namespace Linqua.Translation
 
 	    [NotNull]
 	    Task<IEnumerable<string>> GetSupportedLanguageCodesAsync();
-    }
+
+		[NotNull]
+		Task<IDictionary<string, string>> GetLanguageNamesAsync([NotNull] IEnumerable<string> languageCodes, [NotNull] string locale);
+	}
 }

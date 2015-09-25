@@ -147,6 +147,12 @@
   <data name="EntryEditPage_CancelButton.Label" xml:space="preserve">
     <value>cancel</value>
   </data>
+  <data name="EntryEditPage_DefinitionTextBox.PlaceholderText" xml:space="preserve">
+    <value>translation</value>
+  </data>
+  <data name="EntryEditPage_DetectedLanguageLabel.Text" xml:space="preserve">
+    <value>language:</value>
+  </data>
   <data name="EntryEditPage_MarkLearnedButtonHint" xml:space="preserve">
     <value>(tap to mark as learned)</value>
   </data>

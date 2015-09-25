@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Framework;
@@ -16,8 +17,9 @@ namespace Linqua.UI
 		private bool isTranslating;
 		private ClientEntry entry;
 	    private bool isDeletingSelf;
+		private string detectedLanguage;
 
-	    protected EntryViewModel([NotNull] IEventAggregator eventAggregator)
+		protected EntryViewModel([NotNull] IEventAggregator eventAggregator)
 		{
 			Guard.NotNull(eventAggregator, nameof(eventAggregator));
 
@@ -71,6 +73,8 @@ namespace Linqua.UI
 
 				OnIsTranslatingChangedOverride();
 				OnEntryChangedOverride();
+
+				UpdateDetectedLanguageInfoAsync().FireAndForget();
 			}
 		}
 
@@ -87,6 +91,8 @@ namespace Linqua.UI
 				Guard.Assert(Entry != null, "Entry != null");
 
 				Entry.Text = value;
+				DetectedLanguage = "-";
+
 				RaisePropertyChanged();
 				OnTextChangedOverride();
 			}
@@ -94,7 +100,21 @@ namespace Linqua.UI
 
 	    public string LanguageCode => Entry?.TextLanguageCode;
 
-	    public DateTime DateAdded => Entry?.ClientCreatedAt.LocalDateTime ?? DateTime.MinValue;
+		public string DetectedLanguage
+		{
+			get { return detectedLanguage; }
+			set
+			{
+				if (value == detectedLanguage) return;
+				detectedLanguage = value;
+				RaisePropertyChanged();
+				RaisePropertyChanged(nameof(HasDetectedLanguage));
+			}
+		}
+
+		public bool HasDetectedLanguage => !string.IsNullOrEmpty(DetectedLanguage);
+
+		public DateTime DateAdded => Entry?.ClientCreatedAt.LocalDateTime ?? DateTime.MinValue;
 
 	    public bool IsLearnt
 		{
@@ -143,6 +163,12 @@ namespace Linqua.UI
 				RaisePropertyChanged(nameof(IsDefinitionVisible));
                 RaisePropertyChanged(nameof(LanguageCode));
                 RaisePropertyChanged(nameof(Definition));
+				RaisePropertyChanged(nameof(DetectedLanguage));
+
+				if (!IsTranslating)
+				{
+					UpdateDetectedLanguageInfoAsync().FireAndForget();
+				}
 
 				OnIsTranslatingChangedOverride();
 			}
@@ -172,7 +198,7 @@ namespace Linqua.UI
 
 	    public string NoDefinitionText => Resources.GetString("NoTraslationText");
 
-	    private bool IsDeletingSelf
+	    protected bool IsDeletingSelf
 	    {
 	        get { return isDeletingSelf; }
 	        set
@@ -184,11 +210,18 @@ namespace Linqua.UI
                     DeleteCommand.RaiseCanExecuteChanged();
                     EditCommand.RaiseCanExecuteChanged();
 
+	                OnIsDeletingSelfChanged();
+
                 }).FireAndForget();
 	        }
 	    }
 
-	    private bool CanDeleteSelf()
+		protected virtual void OnIsDeletingSelfChanged()
+		{
+			
+		}
+
+		private bool CanDeleteSelf()
 		{
 			return Entry != null && !IsDeletingSelf;
 		}
@@ -318,6 +351,14 @@ namespace Linqua.UI
 
 		protected virtual void OnTextChangedOverride()
 		{
+		}
+
+		private async Task UpdateDetectedLanguageInfoAsync()
+		{
+			if (!string.IsNullOrEmpty(Entry.TextLanguageCode))
+			{
+				DetectedLanguage = await EntryOperations.GetEntryLanguageNameAsync(Entry.TextLanguageCode, Entry.DefinitionLanguageCode ?? CultureInfo.CurrentUICulture.Name);
+			}
 		}
 	}
 }

@@ -25,13 +25,15 @@ namespace Linqua
 	    private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<EntryOperations>();
 
         private static HashSet<string> supportedTranslationLanguages;
-        private static readonly AsyncLock supportedTranslationLanguagesCacheLock = new AsyncLock();
+        private static readonly AsyncLock SupportedTranslationLanguagesCacheLock = new AsyncLock();
+		private static readonly AsyncLock LanguageNamesCacheLock = new AsyncLock();
 
-        private readonly ICompositionFactory compositionFactory;
+		private readonly ICompositionFactory compositionFactory;
 		private readonly IBackendServiceClient storage;
 		private readonly IEventAggregator eventAggregator;
 		private readonly IStatusBusyService statusBusyService;
 		private readonly Lazy<ITranslationService> translator;
+		private readonly ILocalSettingsService settingsService;
 
 		[ImportingConstructor]
 		public EntryOperations(
@@ -39,13 +41,15 @@ namespace Linqua
 			IBackendServiceClient storage,
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
-			Lazy<ITranslationService> translator)
+			Lazy<ITranslationService> translator,
+			ILocalSettingsService settingsService)
 		{
 			this.compositionFactory = compositionFactory;
 			this.storage = storage;
 			this.eventAggregator = eventAggregator;
 			this.statusBusyService = statusBusyService;
 			this.translator = translator;
+			this.settingsService = settingsService;
 		}
 
 		public async Task DeleteEntryAsync(EntryViewModel entry)
@@ -81,8 +85,9 @@ namespace Linqua
 		{
 			string translation = null;
             string entryLanguage = null;
+			string entryLanguageName = null;
 
-		    viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
+			viewModelsToUpdate.ForEach(x => x.IsTranslating = true);
 
 			try
 			{
@@ -134,7 +139,14 @@ namespace Linqua
 
 				viewModelsToUpdate.ForEach(x => x.Definition = translation);
 
-			    entry.TextLanguageCode = entryLanguage;
+				if (!string.IsNullOrEmpty(entryLanguage))
+				{
+					entryLanguageName = await GetEntryLanguageNameAsync(entryLanguage, translateToLanguage);
+				}
+
+				viewModelsToUpdate.ForEach(x => x.DetectedLanguage = entryLanguageName);
+
+				entry.TextLanguageCode = entryLanguage;
 			    entry.DefinitionLanguageCode = translateToLanguage;
 				entry.Definition = translation;
                 entry.TranslationState = TranslationState.Automatic;
@@ -153,11 +165,42 @@ namespace Linqua
 			return translation;
 		}
 
-	    private async Task<string> GetTranslateToLanguageAsync()
+		public async Task<string> GetEntryLanguageNameAsync(string languageCode, string locale)
+		{
+			using (await LanguageNamesCacheLock.LockAsync())
+			{
+				try
+				{
+					string cacheKey = string.Format(LocalSettingsKeys.SourceLanguageName, languageCode, locale);
+
+					var result = (string)settingsService.Values[cacheKey];
+
+					if (string.IsNullOrEmpty(result))
+					{
+						result = (await translator.Value.GetLanguageNamesAsync(new[] {languageCode}, locale))[languageCode];
+
+						settingsService.Values[cacheKey] = result;
+					}
+
+					return result;
+				}
+				catch (Exception ex)
+				{
+					if (Log.IsErrorEnabled)
+					{
+						Log.Error($"An error occured while trying to get language name for {languageCode}", ex);
+					}
+
+					return languageCode;
+				}
+			}
+		}
+
+		private async Task<string> GetTranslateToLanguageAsync()
 	    {
 	        var translateToLanguage = CultureInfo.CurrentUICulture.Name;
 
-	        using (await supportedTranslationLanguagesCacheLock.LockAsync())
+	        using (await SupportedTranslationLanguagesCacheLock.LockAsync())
 	        {
 	            if (supportedTranslationLanguages == null)
 	            {

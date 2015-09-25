@@ -56,14 +56,34 @@
 					</TransitionCollection>
 				</Grid.ChildrenTransitions>
 
-				<TextBox Grid.Row="0"
-						 Grid.Column="0"
-						 Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-						 FontSize="{ThemeResource TextStyleExtraLargePlusFontSize}"
-						 TextWrapping="Wrap"
-						 IsTextPredictionEnabled="False"
-						 CommonNavigationTransitionInfo.IsStaggerElement="True"
-						 Padding="10,3,10,8"/>
+                <StackPanel Grid.Row="0"
+                            Grid.Column="0"
+                            Orientation="Vertical">
+                    <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             FontSize="{ThemeResource TextStyleExtraLargePlusFontSize}"
+                             TextWrapping="Wrap"
+                             IsTextPredictionEnabled="False"
+                             CommonNavigationTransitionInfo.IsStaggerElement="True"
+                             Padding="10,3,10,8" />
+					
+					<StackPanel Orientation="Horizontal"
+								HorizontalAlignment="Right"
+								Margin="0,-4,0,0"
+								Visibility="{Binding HasDetectedLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
+						<!--<TextBlock x:Uid="EntryEditPage_DetectedLanguageLabel"
+                                   Text="RES_MISSING EntryEditPage_DetectedLanguageLabel"
+								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                                   FontSize="12"
+								   VerticalAlignment="Center"/>-->
+
+                        <TextBlock Text="{Binding DetectedLanguage}"
+                                   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                                   FontSize="12"
+								   VerticalAlignment="Center"
+								   Margin="4,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+				
 
 				<Button Grid.Row="1"
 						Command="{Binding TranslateCommand}"
@@ -96,13 +116,15 @@
 						<ColumnDefinition Width="Auto" />
 					</Grid.ColumnDefinitions>
 
-					<TextBox Grid.Row="0"
+					<TextBox x:Uid="EntryEditPage_DefinitionTextBox" 
+							 Grid.Row="0"
 							 Text="{Binding Definition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
 							 HorizontalAlignment="Stretch"
 							 TextWrapping="Wrap"
 							 AcceptsReturn="True"
 							 Height="90"
 							 IsTextPredictionEnabled="False"
+                             PlaceholderText="RES_MISSING EntryEditPage_DefinitionTextBox"
 							 CommonNavigationTransitionInfo.IsStaggerElement="True"
 							 IsEnabled="{Binding IsTranslating, Converter={StaticResource InvertedBooleanConverter}}"/>
 					
@@ -149,11 +171,11 @@
 							  Icon="Save"
 							  Command="{Binding SaveCommand}" />
 
-				<AppBarButton x:Uid="EntryEditPage_CancelButton"
-							  Label="RES_MISSING EntryEditPage_CancelButton"
-							  Icon="Cancel"
-							  Command="{Binding CancelCommand}" />
-			</CommandBar.PrimaryCommands>
+                <AppBarButton x:Uid="EntryDetailsPage_DeleteButton"
+                              Label="RES_MISSING EntryDetailsPage_DeleteButton"
+                              Icon="Delete"
+                              Command="{Binding DeleteCommand}" />
+            </CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>
 			</CommandBar.SecondaryCommands>
 		</CommandBar>

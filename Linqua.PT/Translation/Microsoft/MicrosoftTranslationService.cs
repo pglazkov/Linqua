@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using Framework;
@@ -16,6 +19,7 @@ namespace Linqua.Translation.Microsoft
 		private const string DetectLanguageUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Detect?text={0}";
 		private const string TranslateUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text={0}&from={1}&to={2}";
 	    private const string GetLanguagesForTranslateUri = "http://api.microsofttranslator.com/V2/Http.svc/GetLanguagesForTranslate";
+		private const string GetLanguageNamesUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/GetLanguageNames?locale={0}";
 
         private readonly IMicrosoftAccessTokenProvider accessTokenProvider;
 
@@ -95,7 +99,52 @@ namespace Linqua.Translation.Microsoft
             }
         }
 
-	    private async Task ConfigureRequestAuthentication(HttpClient httpClient)
+		public async Task<IDictionary<string, string>> GetLanguageNamesAsync(IEnumerable<string> languageCodes, string locale)
+		{
+			Guard.NotNull(languageCodes, nameof(languageCodes));
+			Guard.NotNullOrEmpty(locale, nameof(locale));
+
+			var languageCodesArray = languageCodes.ToArray();
+
+			string uri = string.Format(GetLanguageNamesUriTemplate, locale);
+
+			using (var contentStream = new MemoryStream())
+			{
+				DataContractSerializer dcs = new DataContractSerializer(Type.GetType("System.String[]"));
+				dcs.WriteObject(contentStream, languageCodesArray);
+
+				contentStream.Position = 0;
+
+				HttpContent postContent = new StreamContent(contentStream);
+				postContent.Headers.ContentType = new MediaTypeHeaderValue("text/xml");
+
+				using (var httpClient = new HttpClient())
+				{
+					await ConfigureRequestAuthentication(httpClient);
+					var response = await httpClient.PostAsync(uri, postContent);
+
+					await MicrosoftApiHelper.ThrowIfErrorResponse(response);
+
+					var responseStream = await response.Content.ReadAsStreamAsync();
+
+					var languageNames = (string[])dcs.ReadObject(responseStream);
+
+					var result = new Dictionary<string, string>();
+
+					for (var i = 0; i < languageNames.Length; i++)
+					{
+						var code = languageCodesArray[i];
+						var name = languageNames[i];
+
+						result.Add(code, name);
+					}
+
+					return result;
+				}
+			}
+		}
+
+		private async Task ConfigureRequestAuthentication(HttpClient httpClient)
 		{
 			var accessToken = await accessTokenProvider.GetAccessTokenAsync();
 			httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);

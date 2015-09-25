@@ -19,5 +19,8 @@ namespace Linqua
 
 	    [NotNull]
 	    Task<string> TranslateEntryItemAsync([NotNull] ClientEntry entry, [NotNull] IEnumerable<EntryViewModel> viewModelsToUpdate);
+
+	    [NotNull]
+	    Task<string> GetEntryLanguageNameAsync([NotNull] string languageCode, [NotNull] string locale);
     }
 }
