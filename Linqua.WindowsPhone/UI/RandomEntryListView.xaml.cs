@@ -214,5 +214,19 @@ namespace Linqua.UI
                 CompleteFirstUseTutorial(FirstUseTutorialType.FlickToSeeNextRandomWord);
             }
         }
+
+	    private void OnShowNextHintTapped(object sender, TappedRoutedEventArgs e)
+	    {
+		    var hintStoryboard = (Storyboard)Resources["NextRandomWordAnimatedHintStoryboard"];
+
+			hintStoryboard.Begin();
+	    }
+
+	    private void OnShowPreviousHintTapped(object sender, TappedRoutedEventArgs e)
+	    {
+			var hintStoryboard = (Storyboard)Resources["PreviousWordAnimatedHintStoryboard"];
+
+			hintStoryboard.Begin();
+		}
     }
 }

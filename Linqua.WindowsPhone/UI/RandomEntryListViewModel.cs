@@ -411,7 +411,7 @@ namespace Linqua.UI
 
         public bool GetIsFirstUseTutorialComplete(FirstUseTutorialType tutorialType)
         {
-            return roamingSettings.GetValue<bool>(string.Format(RoamingStorageKeys.IsFirstUseTutorialCompletedKeyTemplate, tutorialType));
+	        return roamingSettings.GetValue<bool>(string.Format(RoamingStorageKeys.IsFirstUseTutorialCompletedKeyTemplate, tutorialType));
         }
     }
 }

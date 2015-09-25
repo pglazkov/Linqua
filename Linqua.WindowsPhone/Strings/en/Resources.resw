@@ -208,7 +208,7 @@
     <value>flick to see next random word</value>
   </data>
   <data name="FirstUseTutorial_TapToSeeTranslation.Text" xml:space="preserve">
-    <value>tap to see translation</value>
+    <value>tap to see the translation &amp; more</value>
   </data>
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>home</value>

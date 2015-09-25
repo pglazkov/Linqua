@@ -208,7 +208,7 @@
     <value>пролестните влево чтобы увидеть след. случайное слово</value>
   </data>
   <data name="FirstUseTutorial_TapToSeeTranslation.Text" xml:space="preserve">
-    <value>нажмите чтобы посмотреть перевод</value>
+    <value>нажмите чтобы посмотреть перевод и другое</value>
   </data>
   <data name="GoHomeButton.Label" xml:space="preserve">
     <value>домой</value>

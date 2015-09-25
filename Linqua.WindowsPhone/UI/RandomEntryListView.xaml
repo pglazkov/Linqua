@@ -97,6 +97,40 @@
                                       Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+
+        <Storyboard x:Key="NextRandomWordAnimatedHintStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                           Storyboard.TargetName="ItemContainer"
+                                           AutoReverse="True"
+                                           Duration="0:0:0.4">
+                <!-- Set initial value 0.1. Workaround the issue described here: https://social.msdn.microsoft.com/Forums/windowsapps/en-US/b15ce67e-952d-4ff0-a5d9-f4e3c36d1422/storyboard-animation-with-planeprojection-does-not-work-on-windows-81?forum=winappswithcsharp -->
+                <LinearDoubleKeyFrame KeyTime="0"
+                                      Value="0.1" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4"
+                                      Value="-30">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+
+        <Storyboard x:Key="PreviousWordAnimatedHintStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.X)"
+                                           Storyboard.TargetName="ItemContainer"
+                                           AutoReverse="True"
+                                           Duration="0:0:0.4">
+                <!-- Set initial value 0.1. Workaround the issue described here: https://social.msdn.microsoft.com/Forums/windowsapps/en-US/b15ce67e-952d-4ff0-a5d9-f4e3c36d1422/storyboard-animation-with-planeprojection-does-not-work-on-windows-81?forum=winappswithcsharp -->
+                <LinearDoubleKeyFrame KeyTime="0"
+                                      Value="0.1" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4"
+                                      Value="30">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <ExponentialEase />
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
         <!-- ReSharper restore Xaml.RedundantResource -->
 
         <Style x:Key="ArrowStyle"
@@ -131,51 +165,58 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 
-                <StackPanel Orientation="Horizontal" 
-                            Grid.Row="0"
-                            Margin="0,0,0,24"
-                            HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Left"
-                                Visibility="{Binding CanShowNextEntries, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <Grid Grid.Row="0"
+                            Margin="0,0,0,0"
+                            HorizontalAlignment="Stretch">
 
-                        <Path Data="F1 M 268.584,710.966L 256.02,723.529L 268.583,736.092L 276.868,736.092L 267.314,726.537L 295.556,726.537L 295.556,720.456L 267.38,720.456L 276.884,710.95L 268.584,710.966 Z "
-                              Style="{StaticResource ArrowStyle}"
-                              Margin="0,0,8,0" />
+                    <Border Background="Transparent"
+                            Tapped="OnShowNextHintTapped"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Left"
+                            Visibility="{Binding CanShowNextEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
+							Padding="0,12,12,24">
+                        <StackPanel Orientation="Horizontal">
+                            <Path Data="F1 M 268.584,710.966L 256.02,723.529L 268.583,736.092L 276.868,736.092L 267.314,726.537L 295.556,726.537L 295.556,720.456L 267.38,720.456L 276.884,710.95L 268.584,710.966 Z "
+                                  Style="{StaticResource ArrowStyle}"
+                                  Margin="0,0,8,0" />
 
-                        <TextBlock x:Uid="RandomEntryView_SlideLeftForNextEntryHintTextBlock"
-                                   Text="RES_MISSING RandomEntryView_SlideLeftForNextEntryHintTextBlock"
-                                   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-                                   FontSize="12"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,0,1" />
-                    </StackPanel>
-                    
+                            <TextBlock x:Uid="RandomEntryView_SlideLeftForNextEntryHintTextBlock"
+                                       Text="RES_MISSING RandomEntryView_SlideLeftForNextEntryHintTextBlock"
+                                       Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                                       FontSize="12"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,1" />
+
+                        </StackPanel>
+                    </Border>
+					
                     <Border BorderThickness="0,0,0,0"
                             BorderBrush="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
                             Visibility="{Binding ElementName=PreviousEntriesHintContainer, Path=Visibility}"
                             Margin="16,2,16,2"
                             Opacity="0.5"/>
 
-                    <StackPanel x:Name="PreviousEntriesHintContainer" 
-                                Orientation="Horizontal"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Right"
-                                Visibility="{Binding CanShowPreviousEntries, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <Border x:Name="PreviousEntriesHintContainer"
+                            VerticalAlignment="Center"
+                            HorizontalAlignment="Right"
+                            Visibility="{Binding CanShowPreviousEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
+                            Background="Transparent"
+                            Tapped="OnShowPreviousHintTapped"
+							Padding="12,12,0,24">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Uid="RandomEntryView_SlideRightForPreviousEntryHintTextBlock"
+                                       Text="RES_MISSING RandomEntryView_SlideRightForPreviousEntryHintTextBlock"
+                                       Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                                       FontSize="12"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,0,1" />
 
-                        <TextBlock x:Uid="RandomEntryView_SlideRightForPreviousEntryHintTextBlock"
-                                   Text="RES_MISSING RandomEntryView_SlideRightForPreviousEntryHintTextBlock"
-                                   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-                                   FontSize="12"
-                                   VerticalAlignment="Center"
-                                   Margin="0,0,0,1"/>
-                        
-                        <Path Data="F1 M 286.11,706.857L 298.673,694.294L 286.11,681.732L 277.825,681.732L 287.38,691.286L 259.137,691.286L 259.137,697.368L 287.313,697.368L 277.809,706.873L 286.11,706.857 Z"
-                              Style="{StaticResource ArrowStyle}"
-                              Margin="8,0,0,0" />
-                    </StackPanel>
-                </StackPanel>
+                            <Path Data="F1 M 286.11,706.857L 298.673,694.294L 286.11,681.732L 277.825,681.732L 287.38,691.286L 259.137,691.286L 259.137,697.368L 287.313,697.368L 277.809,706.873L 286.11,706.857 Z"
+                                  Style="{StaticResource ArrowStyle}"
+                                  Margin="8,0,0,0" />
+                        </StackPanel>
+                    </Border>
+                </Grid>
                 
                 <Grid x:Name="ItemContainer" 
                       Grid.Row="1">
