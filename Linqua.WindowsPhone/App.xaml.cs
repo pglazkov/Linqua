@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
@@ -57,8 +59,7 @@ namespace Linqua
                 DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-			if (log.IsInfoEnabled)
-				log.Info("OnLaunched");
+			log.Info("Launched. DeviceId: " + DeviceInfo.DeviceId);
 
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -149,8 +150,7 @@ namespace Linqua
 
 		protected override void OnActivated(IActivatedEventArgs args)
 		{
-			if (log.IsInfoEnabled)
-				log.Info("Application Activated.");
+			log.Debug("Application Activated.");
 
 			// Windows Phone 8.1 requires you to handle the respose from the WebAuthenticationBroker.
 #if WINDOWS_PHONE_APP
@@ -176,8 +176,8 @@ namespace Linqua
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
-			if (log.IsInfoEnabled)
-				await ((ILoggerAsync)log).InfoAsync("Application is suspending.");
+			if (log.IsDebugEnabled)
+				await ((ILoggerAsync)log).DebugAsync("Application is suspending.");
 
 			await SuspensionManager.SaveAsync();
             await OfflineHelper.AwaitPendingSync();
@@ -188,6 +188,8 @@ namespace Linqua
 		private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
 			log.Fatal(e.Message, e.Exception);
+
+			ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = true;
 		}
     }
 }

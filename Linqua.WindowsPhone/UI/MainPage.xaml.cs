@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
 using Windows.UI.Core;
+using Windows.UI.Input;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -94,7 +95,7 @@ namespace Linqua.UI
 	    private void SubscribeToEvents()
 	    {
 		    ConnectionHelper.InternetConnectionChanged += OnInternetConnectionChanged;
-
+			
 			if (syncBackgroundTask != null)
 			{
 				syncBackgroundTask.Completed += OnSyncCompleted;
@@ -103,8 +104,8 @@ namespace Linqua.UI
 
 	    private void OnInternetConnectionChanged(object sender, InternetConnectionChangedEventArgs e)
 	    {
-		    if (Log.IsInfoEnabled)
-				Log.Info("Internet connection changed. IsConnected={0}.", e.IsConnected);
+		    if (Log.IsDebugEnabled)
+				Log.Debug("Internet connection changed. IsConnected={0}.", e.IsConnected);
 
 		    if (e.IsConnected)
 		    {
@@ -118,6 +119,7 @@ namespace Linqua.UI
 	    private async Task SetUpBackgroundTasksAsync()
 	    {
 		    syncBackgroundTask = await BackgroundTaskHelper.RegisterSyncTask();
+		    await BackgroundTaskHelper.RegisterLogsUploadTask();
 		    await BackgroundTaskHelper.RegisterLiveTileUpdateTask();
 	    }
 

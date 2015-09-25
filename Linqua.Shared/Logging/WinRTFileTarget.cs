@@ -86,25 +86,13 @@ namespace Linqua.Logging
 			}
 
 			//Queries are still not supported in Windows Phone 8.1. Ensure temp cleanup
-#if WINDOWS_PHONE_APP
             var zipPattern = new Regex(@"^Log(.*).zip$");
             foreach (var file in await ApplicationData.Current.TemporaryFolder.GetFilesAsync())
             {
                 if (zipPattern.Match(file.Name).Success)
                     toDelete.Add(file);
             }
-#else
-			var qo = new QueryOptions(CommonFileQuery.DefaultQuery, new[] { ".zip" })
-			{
-				FolderDepth = FolderDepth.Shallow,
-				UserSearchFilter = "System.FileName:~<\"Log -\""
-			};
 
-			var query = ApplicationData.Current.TemporaryFolder.CreateFileQueryWithOptions(qo);
-
-			var oldLogs = await query.GetFilesAsync();
-			toDelete.AddRange(oldLogs);
-#endif
 			// walk...
 			foreach (var file in toDelete)
 			{

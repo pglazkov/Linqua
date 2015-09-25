@@ -18,7 +18,7 @@ using Nito.AsyncEx;
 
 namespace Linqua.UI
 {
-	public class MainViewModel : ViewModelBase
+	internal class MainViewModel : ViewModelBase
 	{
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainViewModel>();
 
@@ -607,60 +607,15 @@ namespace Linqua.UI
 
 		private void SendLogs()
 		{
-			try
-			{
-				var dtm = DataTransferManager.GetForCurrentView();
-
-				dtm.DataRequested += OnLogFilesShareDataRequested;
-
-				DataTransferManager.ShowShareUI();
-			}
-			catch (Exception ex)
-			{
-				if (Log.IsErrorEnabled)
-					Log.Error("Unexpected exception occured while trying to share the log files.", ex);
-			}
+			SendLogsAsync().FireAndForget();
 		}
 
-		private async void OnLogFilesShareDataRequested(object sender, DataRequestedEventArgs args)
+		private async Task SendLogsAsync()
 		{
-			if (Log.IsDebugEnabled)
-				Log.Debug("Prepearing compressed logs to share.");
-
-			if (Log.IsDebugEnabled)
-				Log.Debug("Deferral deadline is: {0}", args.Request.Deadline);
-
-			Stopwatch sw = new Stopwatch();
-			
-			var deferral = args.Request.GetDeferral();
-
-			sw.Start();
-
-			try
+			using (statusBusyService.Busy(CommonBusyType.GenericLongRunningTask))
+			using (var action = new LogSharingAction(logSharingService))
 			{
-				args.Request.Data.Properties.Title = $"Linqua Logs - {DateTime.UtcNow:s} | {DeviceInfo.DeviceId}";
-				args.Request.Data.Properties.Description = "Linqua compressed log files.";
-
-				var logUri = await logSharingService.ShareCurrentLogAsync();
-
-				args.Request.Data.SetWebLink(logUri);
-			}
-			catch (Exception ex)
-			{
-				if (Log.IsErrorEnabled)
-					Log.Error("Unexpected exception occured while trying to share the log files.", ex);
-			}
-			finally
-			{
-				sw.Stop();
-
-				if (Log.IsDebugEnabled)
-					Log.Debug("Compressed log file obtained at {0}", DateTime.Now);
-
-				deferral.Complete();
-
-				var dtm = DataTransferManager.GetForCurrentView();
-				dtm.DataRequested -= OnLogFilesShareDataRequested;
+				await action.ExecuteAsync();
 			}
 		}
 

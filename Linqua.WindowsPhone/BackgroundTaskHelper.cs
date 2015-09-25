@@ -11,14 +11,12 @@ namespace Linqua
 {
 	public static class BackgroundTaskHelper
 	{
-		private const string SyncTaskName = "LinquaOfflineSync";
-		private const string LiveTileUpdateTaskName = "LinquaLiveTileUpdate";
-
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(BackgroundTaskHelper));
 
 		private static BackgroundAccessStatus? AccessStatus { get; set; }
 		private static BackgroundTaskRegistration SyncTask { get; set; }
 		private static BackgroundTaskRegistration LiveTileUpdateTask { get; set; }
+		private static BackgroundTaskRegistration LogsUploadTask { get; set; }
 
 		public static async Task<BackgroundTaskRegistration> RegisterSyncTask()
 		{
@@ -34,10 +32,35 @@ namespace Linqua
 			if (accessStatus == BackgroundAccessStatus.Denied) return null;
 
 			var result = RegisterBackgroundTask(typeof(SynchronizationTask).FullName,
-			                                    SyncTaskName,
+			                                    "LinquaOfflineSync",
 			                                    new SystemTrigger(SystemTriggerType.InternetAvailable, false),
 			                                    new SystemCondition(SystemConditionType.InternetAvailable));
 			SyncTask = result;
+
+			if (Log.IsDebugEnabled)
+				Log.Debug("Background task registered. TaskId: {0}", result.TaskId);
+
+			return result;
+		}
+
+		public static async Task<BackgroundTaskRegistration> RegisterLogsUploadTask()
+		{
+			if (LogsUploadTask != null)
+			{
+				return LogsUploadTask;
+			}
+
+			if (Log.IsDebugEnabled)
+				Log.Debug("Registering LogsUpload background task.");
+
+			var accessStatus = await SetUpAccess();
+			if (accessStatus == BackgroundAccessStatus.Denied) return null;
+
+			var result = RegisterBackgroundTask(typeof(LogsUploadTask).FullName,
+												"LinquaLogsUpload",
+												new TimeTrigger(30, false), 
+												new SystemCondition(SystemConditionType.InternetAvailable));
+			LogsUploadTask = result;
 
 			if (Log.IsDebugEnabled)
 				Log.Debug("Background task registered. TaskId: {0}", result.TaskId);
@@ -59,7 +82,7 @@ namespace Linqua
 			if (accessStatus == BackgroundAccessStatus.Denied) return null;
 
 			var result = RegisterBackgroundTask(typeof(LiveTileUpdateTask).FullName,
-												LiveTileUpdateTaskName,
+												"LinquaLiveTileUpdate",
 												new TimeTrigger(15, false), 
 												new SystemCondition(SystemConditionType.SessionConnected));
 			LiveTileUpdateTask = result;

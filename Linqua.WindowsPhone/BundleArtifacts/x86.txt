@@ -1,0 +1,2 @@
+MainPackage=E:\Pasha\Dev\MyProjects\Linqua\Linqua.WindowsPhone\bin\x86\Debug\Linqua.WindowsPhone_1.0.0.4_x86_Debug.appx
+SymbolPackage=E:\Pasha\Dev\MyProjects\Linqua\Linqua.WindowsPhone\AppPackages\Linqua.WindowsPhone_1.0.0.4_Debug_Test\Linqua.WindowsPhone_1.0.0.4_x86_Debug.appxsym

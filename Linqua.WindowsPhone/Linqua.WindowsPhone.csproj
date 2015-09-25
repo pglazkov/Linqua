@@ -119,11 +119,6 @@
     <Compile Include="Framework\SwipeDetectionBehavior.cs" />
     <Compile Include="ApplicationController.cs" />
     <Compile Include="IEntryOperations.cs" />
-    <Compile Include="Logging\FileStreamingTarget.cs" />
-    <Compile Include="Logging\ILogSharingService.cs" />
-    <Compile Include="Logging\LoggerHelper.cs" />
-    <Compile Include="Logging\LogSharingService.cs" />
-    <Compile Include="Logging\WinRTFileTarget.cs" />
     <Compile Include="Offline\IOfflineSyncController.cs" />
     <Compile Include="Offline\OfflineSyncController.cs" />
     <Compile Include="Persistence\SyncFailedHandler.cs" />
@@ -140,6 +135,7 @@
     <Compile Include="UI\FullEntryListViewModel.cs" />
     <Compile Include="UI\IEntryEditView.cs" />
     <Compile Include="UI\LoginViewModel.cs" />
+    <Compile Include="UI\LogSharingAction.cs" />
     <Compile Include="UI\MainViewModel.cs" />
     <Compile Include="UI\Parts\EmptyListContent.xaml.cs">
       <DependentUpon>EmptyListContent.xaml</DependentUpon>
@@ -435,6 +431,7 @@
       <Name>SQLite for Windows Phone 8.1</Name>
     </SDKReference>
   </ItemGroup>
+  <Import Project="..\Linqua.Shared\Linqua.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>

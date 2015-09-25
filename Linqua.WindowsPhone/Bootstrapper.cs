@@ -1,13 +1,12 @@
-﻿using System.Composition.Convention;
+﻿using System.Composition;
+using System.Composition.Convention;
 using System.Composition.Hosting;
+using System.Linq;
 using System.Reflection;
 using Framework;
-using Framework.Logging;
 using Framework.MefExtensions;
 using Linqua.Logging;
 using MetroLog;
-using MetroLog.Targets;
-using FileStreamingTarget = Linqua.Logging.FileStreamingTarget;
 
 namespace Linqua
 {
@@ -19,18 +18,14 @@ namespace Linqua
         {
 			ConfigureLogger();
 
-			if (Log.IsInfoEnabled)
-				Log.Info("Application Launched. ============================================================================================");
+			Log.Debug("Application Launched. ============================================================================================");
+			Log.Debug("Bootstrapper sequence started.");
 
-			if (Log.IsInfoEnabled)
-				Log.Info("Bootstrapper sequence started.");
-			
-            ConfigureMef();
+			ConfigureMef();
 	        InitializeGlobalServices();
 
-	        if (Log.IsInfoEnabled)
-				Log.Info("Bootstrapper sequence completed.");
-        }
+			Log.Debug("Bootstrapper sequence completed.");
+		}
 
 	    private void ConfigureLogger()
 	    {
@@ -42,16 +37,19 @@ namespace Linqua
 
 	    private static void ConfigureMef()
 	    {
-		    var mvvmConventions = new ConventionBuilder();
+		    var conventions = new ConventionBuilder();
 
-		    mvvmConventions.ForTypesDerivedFrom<ViewModelBase>()
-		                   .Export();
+		    conventions.ForTypesDerivedFrom<ViewModelBase>()
+		               .Export();
 
-		    ViewLocator.BuildMefConventions(mvvmConventions);
+		    conventions.ForTypesMatching(x => x.Name.EndsWith("Service"))
+		               .ExportInterfaces();
+
+		    ViewLocator.BuildMefConventions(conventions);
 
 		    var configuration = new ContainerConfiguration()
-			    .WithAssembly(typeof(App).GetTypeInfo().Assembly, mvvmConventions)
-			    .WithAssembly(typeof(AppPortable).GetTypeInfo().Assembly, mvvmConventions)
+			    .WithAssembly(typeof(App).GetTypeInfo().Assembly, conventions)
+			    .WithAssembly(typeof(AppPortable).GetTypeInfo().Assembly, conventions)
 			    .WithAssembly(typeof(FrameworkPortable).GetTypeInfo().Assembly)
 			    .WithAssembly(typeof(FrameworkPhone).GetTypeInfo().Assembly)
 			    .WithProvider(new DefaultExportDescriptorProvider());

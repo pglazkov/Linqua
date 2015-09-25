@@ -15,7 +15,7 @@ namespace Linqua.Logging
 #if DEBUG
 		    var minLogLevelForFileTarget = LogLevel.Debug;
 #else
-            var minLogLevelForFileTarget = LogLevel.Warn;
+            var minLogLevelForFileTarget = LogLevel.Info;
 #endif
             configuration.AddTarget(minLogLevelForFileTarget, LogLevel.Fatal, FileStreamingTarget.Instance);
 

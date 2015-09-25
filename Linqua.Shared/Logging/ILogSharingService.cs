@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using JetBrains.Annotations;
 
 namespace Linqua.Logging
 {
-	public interface ILogSharingService
+	internal interface ILogSharingService
 	{
 		[NotNull]
-		Task<Uri> ShareCurrentLogAsync();
+		IAsyncOperation<Uri> ShareCurrentLogAsync();
 	}
 }

@@ -300,6 +300,9 @@
   <data name="StatusBusyService_StatusText_Deleting" xml:space="preserve">
     <value>Deleting...</value>
   </data>
+  <data name="StatusBusyService_StatusText_GenericLongRunningTask" xml:space="preserve">
+    <value>please wait...</value>
+  </data>
   <data name="StatusBusyService_StatusText_Loading" xml:space="preserve">
     <value>Loading...</value>
   </data>

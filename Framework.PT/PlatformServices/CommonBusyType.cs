@@ -5,6 +5,7 @@
 		Loading,
 		Saving,
 		Deleting,
-		Syncing
+		Syncing,
+		GenericLongRunningTask
 	}
 }

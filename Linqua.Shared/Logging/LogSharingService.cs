@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Composition;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Framework;
 using JetBrains.Annotations;
 using Linqua.Persistence;
@@ -9,12 +9,10 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Linqua.Logging
 {
-	[Export(typeof(ILogSharingService))]
-	internal class LogSharingService : ILogSharingService
+	internal sealed class LogSharingService : ILogSharingService
 	{
 		private readonly IBackendServiceClient serviceClient;
 
-		[ImportingConstructor]
 		public LogSharingService([NotNull] IBackendServiceClient serviceClient)
 		{
 			Guard.NotNull(serviceClient, nameof(serviceClient));
@@ -22,7 +20,12 @@ namespace Linqua.Logging
 			this.serviceClient = serviceClient;
 		}
 
-		public async Task<Uri> ShareCurrentLogAsync()
+		public IAsyncOperation<Uri> ShareCurrentLogAsync()
+		{
+			return ShareCurrentLogImplAsync().AsAsyncOperation();
+		}
+
+		private async Task<Uri> ShareCurrentLogImplAsync()
 		{
 			var uploadInfo = await serviceClient.GetLogUploadInfoAsync();
 

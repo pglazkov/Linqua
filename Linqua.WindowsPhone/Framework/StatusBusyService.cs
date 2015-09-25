@@ -51,6 +51,8 @@ namespace Linqua.Framework
 					return stringResourceManager.GetString("StatusBusyService_StatusText_Deleting");
 				case CommonBusyType.Syncing:
 					return stringResourceManager.GetString("StatusBusyService_StatusText_Syncing");
+				case CommonBusyType.GenericLongRunningTask:
+					return stringResourceManager.GetString("StatusBusyService_StatusText_GenericLongRunningTask");
 				default:
 					throw new NotImplementedException($"Handling of \"{type}\" is not implemented.");
 			}

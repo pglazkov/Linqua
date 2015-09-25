@@ -294,6 +294,9 @@
   <data name="StatusBusyService_StatusText_Deleting" xml:space="preserve">
     <value>Удаление...</value>
   </data>
+  <data name="StatusBusyService_StatusText_GenericLongRunningTask" xml:space="preserve">
+    <value>пожалуйста подождите...</value>
+  </data>
   <data name="StatusBusyService_StatusText_Loading" xml:space="preserve">
     <value>Загрузка...</value>
   </data>

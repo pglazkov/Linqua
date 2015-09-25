@@ -24,7 +24,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Test Accounts.txt = Test Accounts.txt
 	EndProjectSection
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Linqua.Shared", "Linqua.Shared\Linqua.Shared.shproj", "{97390809-073E-4C46-85D3-19A0FE92D808}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Linqua.Shared\Linqua.Shared.projitems*{97390809-073e-4c46-85d3-19a0fe92d808}*SharedItemsImports = 13
+		Linqua.Shared\Linqua.Shared.projitems*{fbbbf002-c177-42d7-8d15-ae4de436ac4e}*SharedItemsImports = 4
+		Linqua.Shared\Linqua.Shared.projitems*{f3287466-957b-4251-bad0-4364241e0271}*SharedItemsImports = 4
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug_ARM|Any CPU = Debug_ARM|Any CPU
 		Debug_ARM|ARM = Debug_ARM|ARM
@@ -381,5 +388,6 @@ Global
 		{55ABB5AC-F778-455D-BA56-C5EE5089198C} = {04CC264A-181E-4327-A045-6202D53E1D3C}
 		{209FA716-A7AD-4095-BD70-C8710FC66FA7} = {04CC264A-181E-4327-A045-6202D53E1D3C}
 		{FBBBF002-C177-42D7-8D15-AE4DE436AC4E} = {04CC264A-181E-4327-A045-6202D53E1D3C}
+		{97390809-073E-4C46-85D3-19A0FE92D808} = {04CC264A-181E-4327-A045-6202D53E1D3C}
 	EndGlobalSection
 EndGlobal
