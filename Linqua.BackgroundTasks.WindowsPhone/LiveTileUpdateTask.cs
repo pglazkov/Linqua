@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.ApplicationModel.Background;
 using Framework;
 using Linqua.Logging;
 using Linqua.Notifications;
 using Linqua.Persistence;
 using MetroLog;
+using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.Extensibility;
 
 namespace Linqua
 {

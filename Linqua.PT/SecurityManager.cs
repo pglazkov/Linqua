@@ -89,7 +89,7 @@ namespace Linqua
 		    {
 		        result = await liveIdClient.LoginAsync(AuthenticationScopes);
 		    }
-		    catch (NullReferenceException)
+		    catch (NullReferenceException ex)
 		    {
 		        // We have to handle this because this exception occurs if user declines to login with Microsoft account. 
                 // However this error can occur for many other reasons, including bugs in out code.
@@ -99,6 +99,7 @@ namespace Linqua
 		            Debugger.Break();
 		        }
 #endif
+				Telemetry.Client.TrackException(ex);
 		    }
 
 		    if (result != null && result.Status == LiveConnectSessionStatus.Connected)

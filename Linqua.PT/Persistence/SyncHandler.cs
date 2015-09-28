@@ -47,6 +47,8 @@ namespace Linqua.Persistence
 						Log.Error("Synchronization failed. Looks like there is a conflict.", e);
 					}
 
+					Telemetry.Client.TrackException(e);
+
 					ex = e;
 				}
 				catch (MobileServiceConflictException e)
@@ -56,6 +58,8 @@ namespace Linqua.Persistence
 						Log.Error("Synchronization failed. Looks like there is a conflict.", e);
 					}
 
+					Telemetry.Client.TrackException(e);
+
 					throw;
 				}
 				catch (MobileServiceInvalidOperationException e)
@@ -64,6 +68,8 @@ namespace Linqua.Persistence
 					{
 						Log.Error("Synchronization failed. An unexpected exception occured.", e);
 					}
+
+					Telemetry.Client.TrackException(e);
 
 					throw;
 				}

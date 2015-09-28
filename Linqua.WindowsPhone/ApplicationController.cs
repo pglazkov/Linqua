@@ -24,18 +24,21 @@ namespace Linqua
         private readonly IEventAggregator eventAggregator;
 		private readonly ILiveTileManager liveTileManager;
 	    private readonly IDispatcherService dispatcherService;
-	    private Frame navigationFrame;
+		private readonly ITelemetryService telemetry;
+		private Frame navigationFrame;
 
 		[ImportingConstructor]
-		public ApplicationController([NotNull] IEventAggregator eventAggregator, [NotNull] ILiveTileManager liveTileManager, [NotNull] IDispatcherService dispatcherService)
+		public ApplicationController([NotNull] IEventAggregator eventAggregator, [NotNull] ILiveTileManager liveTileManager, [NotNull] IDispatcherService dispatcherService, [NotNull] ITelemetryService telemetry)
 		{
 			Guard.NotNull(eventAggregator, nameof(eventAggregator));
 			Guard.NotNull(liveTileManager, nameof(liveTileManager));
 		    Guard.NotNull(dispatcherService, nameof(dispatcherService));
+			Guard.NotNull(telemetry, nameof(telemetry));
 
 			this.eventAggregator = eventAggregator;
 			this.liveTileManager = liveTileManager;
 		    this.dispatcherService = dispatcherService;
+			this.telemetry = telemetry;
 		}
 
 		public void Initialize()
@@ -75,6 +78,8 @@ namespace Linqua
 	        catch (Exception e)
 	        {
 	            Log.Warn("Could not update live tile.", e);
+
+				telemetry.TrackException(e);
 	        }
 	    }
 	}

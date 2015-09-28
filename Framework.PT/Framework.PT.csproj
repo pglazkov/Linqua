@@ -70,6 +70,7 @@
     <Compile Include="PlatformServices\DefaultImpl\DefaultRoamingSettingsService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultStatusBusyService.cs" />
     <Compile Include="PlatformServices\DefaultImpl\DefaultStringResourceManager.cs" />
+    <Compile Include="PlatformServices\DefaultImpl\DefaultTelemetryService.cs" />
     <Compile Include="PlatformServices\DispatcherServiceExtensions.cs" />
     <Compile Include="PlatformServices\IDialogService.cs" />
     <Compile Include="PlatformServices\ILocalSettingsService.cs" />
@@ -87,6 +88,7 @@
     <Compile Include="PlatformServices\IDesignModeDetectionService.cs" />
     <Compile Include="PlatformServices\IDispatcherService.cs" />
     <Compile Include="PlatformServices\IStringResourceManager.cs" />
+    <Compile Include="PlatformServices\ITelemetryService.cs" />
     <Compile Include="PlatformServices\IViewLocationService.cs" />
     <Compile Include="PlatformServices\SettingsServiceExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

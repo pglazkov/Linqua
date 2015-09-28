@@ -10,6 +10,7 @@ using Framework;
 using Linqua.Framework;
 using Linqua.Persistence;
 using MetroLog;
+using Microsoft.ApplicationInsights;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -32,7 +33,9 @@ namespace Linqua
         /// </summary>
         public App()
         {
-            InitializeComponent();
+			WindowsAppInitializer.InitializeAsync();
+
+			InitializeComponent();
             Suspending += OnSuspending;
 
             //CoreApplication.UnhandledErrorDetected += // TODO

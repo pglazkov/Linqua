@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Concurrency;
@@ -7,6 +8,8 @@ using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
 using Framework;
+using Framework.PlatformServices;
+using Framework.PlatformServices.DefaultImpl;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using MetroLog;
@@ -31,9 +34,9 @@ namespace Linqua.Persistence
         private static readonly TimeSpan SyncQueueProcessInterval = TimeSpan.FromSeconds(30);
         private static readonly ObservableSyncEvent SyncCompletedEvent = new ObservableSyncEvent("Sync Completed Evet");
 
-	    #region Nested Types
+		#region Nested Types
 
-	    #endregion
+		#endregion
 
 		public static async Task InitializeAsync([NotNull] IMobileServiceSyncHandler syncHandler)
 		{
@@ -235,6 +238,8 @@ namespace Linqua.Persistence
 			            Log.Error("Push Failed. Status: {0}. Errors: {1}", ex.PushResult.Status, ex.PushResult.Errors.Count > 0 ? string.Join("; ", ex.PushResult.Errors) : "<none>");
 			        }
 
+				    Telemetry.Client.TrackException(ex);
+
 			        return false;
 			    }
 			    catch (Exception ex)
@@ -244,7 +249,9 @@ namespace Linqua.Persistence
 			            Log.Error("Synchronization failed.", ex);
 			        }
 
-			        return false;
+					Telemetry.Client.TrackException(ex);
+
+					return false;
 			    }
 			    finally
 			    {
@@ -253,7 +260,7 @@ namespace Linqua.Persistence
 			}
 		}
 
-	    public static async Task AwaitPendingSync()
+		public static async Task AwaitPendingSync()
 	    {
             await SyncCompletedEvent;
 

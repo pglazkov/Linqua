@@ -34,6 +34,7 @@ namespace Linqua
 		private readonly IStatusBusyService statusBusyService;
 		private readonly Lazy<ITranslationService> translator;
 		private readonly ILocalSettingsService settingsService;
+		private readonly ITelemetryService telemetry;
 
 		[ImportingConstructor]
 		public EntryOperations(
@@ -42,7 +43,8 @@ namespace Linqua
 			IEventAggregator eventAggregator,
 			IStatusBusyService statusBusyService,
 			Lazy<ITranslationService> translator,
-			ILocalSettingsService settingsService)
+			ILocalSettingsService settingsService,
+			ITelemetryService telemetry)
 		{
 			this.compositionFactory = compositionFactory;
 			this.storage = storage;
@@ -50,6 +52,7 @@ namespace Linqua
 			this.statusBusyService = statusBusyService;
 			this.translator = translator;
 			this.settingsService = settingsService;
+			this.telemetry = telemetry;
 		}
 
 		public async Task DeleteEntryAsync(EntryViewModel entry)
@@ -116,6 +119,8 @@ namespace Linqua
 				{
 					if (Log.IsErrorEnabled)
 						Log.Error("An error occured while trying to find an existing entry.", ex);
+
+					telemetry.TrackException(ex);
 				}
 
 				if (string.IsNullOrEmpty(translation))
@@ -156,6 +161,8 @@ namespace Linqua
 			{
 				if (Log.IsErrorEnabled)
 					Log.Error("An error occured while trying to translate an entry.", ex);
+
+				telemetry.TrackException(ex);
 			}
 			finally
 			{
@@ -190,6 +197,8 @@ namespace Linqua
 					{
 						Log.Error($"An error occured while trying to get language name for {languageCode}", ex);
 					}
+
+					telemetry.TrackException(ex);
 
 					return languageCode;
 				}

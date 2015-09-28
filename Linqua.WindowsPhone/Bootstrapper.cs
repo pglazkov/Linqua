@@ -16,6 +16,7 @@ namespace Linqua
 
         public void Run(App application)
         {
+
 			ConfigureLogger();
 
 			Log.Debug("Application Launched. ============================================================================================");
