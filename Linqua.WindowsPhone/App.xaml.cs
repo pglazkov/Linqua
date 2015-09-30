@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
@@ -7,6 +8,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
+using Framework.PlatformServices;
 using Linqua.Framework;
 using Linqua.Persistence;
 using MetroLog;
@@ -63,6 +65,11 @@ namespace Linqua
             }
 #endif
 			log.Info("Launched. DeviceId: " + DeviceInfo.DeviceId);
+
+		    Telemetry.Client.TrackTrace("App Launched.", TelemetrySeverityLevel.Information, new Dictionary<string, string>
+		    {
+			    {"DeviceId", DeviceInfo.DeviceId}
+		    });
 
             Frame rootFrame = Window.Current.Content as Frame;
 

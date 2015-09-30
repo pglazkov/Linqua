@@ -228,6 +228,8 @@ namespace Linqua.UI
 
 		private async Task DeleteSelfAsync()
 		{
+			Telemetry.Client.TrackUserAction("DeleteWord");
+
 			Guard.Assert(Entry != null, "Entry != null");
 
 			var confirmed = await DialogService.ShowConfirmation(
@@ -339,6 +341,8 @@ namespace Linqua.UI
 		private Task EditSelfAsync()
 		{
 			Guard.Assert(Entry != null, "Entry != null");
+
+			Telemetry.Client.TrackUserAction("EditWord");
 
 			EventAggregator.Publish(new EntryEditRequestedEvent(Entry.Id));
 

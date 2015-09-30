@@ -26,10 +26,14 @@ namespace Linqua
 
 		public async Task<bool> RunAsync()
 		{
+			Telemetry.Client.TrackTrace("Startup Workflow - Begin");
+
 			var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
 			if (!authenticatedSilently)
 			{
+				Telemetry.Client.TrackTrace("Startup Workflow - Authentication required.");
+
 				if (!frame.Navigate(typeof(LoginPage), arguments))
 				{
 					throw new Exception("Failed to create login page");
@@ -43,7 +47,9 @@ namespace Linqua
 
                     if (!authenticated)
 					{
-					    var resourceManager = CompositionManager.Current.GetInstance<IStringResourceManager>();
+						Telemetry.Client.TrackTrace("Startup Workflow - Authentication failed. Asking user to retry.");
+
+						var resourceManager = CompositionManager.Current.GetInstance<IStringResourceManager>();
 
 					    var messageTitle = resourceManager.GetString("LoginRequiredMessageTitle");
 					    var messageText = resourceManager.GetString("LoginRequiredMessageText");
@@ -60,11 +66,15 @@ namespace Linqua
 
 					    if (dialogResult == cancelCommand)
 					    {
-					        return false;
+							Telemetry.Client.TrackTrace("Startup Workflow - Authentication failed. User declined to retry.", TelemetrySeverityLevel.Warning);
+
+							return false;
 					    }
 					}
 				}
 			}
+
+			Telemetry.Client.TrackTrace("Startup Workflow - Authentication successful. Redirecting to the main page.");
 
 			if (!frame.Navigate(typeof(MainPage), arguments))
 			{

@@ -363,6 +363,8 @@ namespace Linqua.UI
 
 	    private void ShowNextEntries()
 		{
+			Telemetry.Client.TrackUserAction("NextWord", TelemetryConstants.Features.RandomWords);
+
 			UpdateRandomEntries();
 		}
 
@@ -370,6 +372,8 @@ namespace Linqua.UI
 
 	    private void ShowPreviousEntries()
 		{
+			Telemetry.Client.TrackUserAction("PreviousWord", TelemetryConstants.Features.RandomWords);
+
 			var entriesToAdd = PreviousRandomEntryViewModelsStack.Pop();
 
 			RandomEntryViewModels.Clear();

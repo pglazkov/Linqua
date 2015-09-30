@@ -41,6 +41,11 @@ namespace Linqua.UI
 				isTranslationShown = value;
 				RaisePropertyChanged();
 
+				if (value)
+				{
+					Telemetry.Client.TrackUserAction("ShowTranslation", TelemetryConstants.Features.RandomWords);
+				}
+
 				EventAggregator.Publish(new IsTranslationShownChangedEvent(this));
 			}
 		}

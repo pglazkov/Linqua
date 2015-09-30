@@ -224,6 +224,8 @@ namespace Linqua.UI
 				localSettingsService.SetValue(LocalSettingsKeys.MainPivotSelectedIndex, value);
 				RaisePropertyChanged();
 				RaisePropertyChanged(nameof(IsInFullListMode));
+
+				Telemetry.Client.TrackUserAction("PivotSwitchTo_" + value);
 			}
 		}
 
@@ -276,7 +278,13 @@ namespace Linqua.UI
 
 		private async Task InitializeWordListAsync(IBackendServiceClient storage)
 		{
-            IEnumerable<ClientEntry> words = null;
+			Telemetry.Client.TrackTrace("MainPage. Loading word list started.");
+
+			var sw = new Stopwatch();
+
+			sw.Start();
+
+			IEnumerable<ClientEntry> words = null;
 
             IsLoadingEntries = true;
 
@@ -302,6 +310,10 @@ namespace Linqua.UI
 					RandomEntryListViewModel.IsInitializationComplete = true;
 				}
             }
+
+			sw.Stop();
+
+			Telemetry.Client.TrackTrace("MainPage. Loading word list finished. Elapsed: " + sw.Elapsed);
 
 			words = await SyncAsync();
 
@@ -388,6 +400,8 @@ namespace Linqua.UI
 
 		private void AddWord()
 		{
+			Telemetry.Client.TrackUserAction("AddWord");
+
 			EntryTextEditorViewModel.Clear();
 			IsEntryEditorVisible = true;
 
@@ -396,6 +410,8 @@ namespace Linqua.UI
 
 		private async void OnEntryEditingFinished(EntryEditingFinishedEvent e)
 		{
+			Telemetry.Client.TrackUserAction("AddWord.Save");
+
             IsAddingWord = true;
 
             try
@@ -644,6 +660,8 @@ namespace Linqua.UI
 
 		private void ToggleShowHideLearnedEntries()
 		{
+			Telemetry.Client.TrackUserAction("ToggleShowHideLearnedWords");
+
 			ShowLearnedEntries = !ShowLearnedEntries;
 
 			RefreshWithBusyNotificationAsync().FireAndForget();

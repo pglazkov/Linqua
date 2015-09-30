@@ -118,6 +118,8 @@ namespace Linqua.UI
 
 		protected override void SetIsLearnt(bool value)
 		{
+			Telemetry.Client.TrackUserAction("ChangeIsLearned", TelemetryConstants.Features.WordEditor);
+
 			Entry.IsLearnt = value;
 
 			RaisePropertyChanged(nameof(IsLearnt));
@@ -127,6 +129,8 @@ namespace Linqua.UI
 
 		private async Task SaveAsync()
 		{
+			Telemetry.Client.TrackUserAction("Save", TelemetryConstants.Features.WordEditor);
+
 		    IsSaving = true;
 
 		    try
@@ -161,6 +165,8 @@ namespace Linqua.UI
 
 		private async Task TranslateAsync()
 		{
+			Telemetry.Client.TrackUserAction("Translate", TelemetryConstants.Features.WordEditor);
+
 			await entryOperations.TranslateEntryItemAsync(Entry, new[] { this });
 		}
 

@@ -69,6 +69,8 @@
     <Compile Include="RoamingStorageKeys.cs" />
     <Compile Include="SecurityManager.cs" />
     <Compile Include="Telemetry.cs" />
+    <Compile Include="TelemetryConstants.cs" />
+    <Compile Include="TelemetryExtensions.cs" />
     <Compile Include="Translation\ITranslationService.cs" />
     <Compile Include="Translation\Microsoft\AdmAccessToken.cs" />
     <Compile Include="Translation\Microsoft\MicrosoftAccessTokenProvider.cs" />

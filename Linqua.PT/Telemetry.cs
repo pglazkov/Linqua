@@ -5,7 +5,7 @@ using Framework.PlatformServices.DefaultImpl;
 
 namespace Linqua
 {
-	internal static class Telemetry
+	public static class Telemetry
 	{
 		public static ITelemetryService Client
 		{

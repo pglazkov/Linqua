@@ -120,7 +120,7 @@ namespace Linqua.UI
 			{
 				return;
 			}
-
+			
 			SetValue(IsFlippedProperty, !IsFlipped);
 		}
 

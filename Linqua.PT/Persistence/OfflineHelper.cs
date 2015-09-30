@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
@@ -192,6 +193,8 @@ namespace Linqua.Persistence
 
             using (await AcquireSyncLock())
 			{
+				var sw = new Stopwatch();
+
 			    if (!SyncCompletedEvent.CanPublish)
 			    {
 			        SyncCompletedEvent.Reset();
@@ -203,6 +206,8 @@ namespace Linqua.Persistence
 			    {
 			        if (Log.IsDebugEnabled)
 			            Log.Debug("Sync Started.");
+
+					Telemetry.Client.TrackTrace("Sync Started.");
 
 			        await MobileService.Client.SyncContext.PushAsync();
 
@@ -225,9 +230,6 @@ namespace Linqua.Persistence
 			        }
 
 			        await entryTable.PullAsync(queryId, mobileServiceTableQuery);
-
-			        if (Log.IsDebugEnabled)
-			            Log.Debug("Sync completed.");
 
 			        return true;
 			    }
@@ -255,7 +257,14 @@ namespace Linqua.Persistence
 			    }
 			    finally
 			    {
-                    SyncCompletedEvent.Publish();
+					sw.Stop();
+
+					if (Log.IsDebugEnabled)
+						Log.Debug("Sync completed. Elapsed: " + sw.Elapsed);
+
+					Telemetry.Client.TrackTrace("Sync Completed. Elapsed: " + sw.Elapsed);
+
+					SyncCompletedEvent.Publish();
                 }
 			}
 		}
