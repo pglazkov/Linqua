@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Threading;
 using System.Threading.Tasks;
 using Framework;
-using Framework.PlatformServices;
-using Framework.PlatformServices.DefaultImpl;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using MetroLog;
@@ -33,7 +29,13 @@ namespace Linqua.Persistence
 		private static readonly AsyncLock SyncLock = new AsyncLock();
         private static readonly Queue<SyncAction> SyncQueue = new Queue<SyncAction>();
         private static readonly TimeSpan SyncQueueProcessInterval = TimeSpan.FromSeconds(30);
-        private static readonly ObservableSyncEvent SyncCompletedEvent = new ObservableSyncEvent("Sync Completed Evet");
+        private static readonly ObservableSyncEvent SyncCompletedEvent;
+
+		static OfflineHelper()
+		{
+			SyncCompletedEvent = new ObservableSyncEvent("Sync Completed Event");
+			SyncCompletedEvent.Publish();
+		}
 
 		#region Nested Types
 
@@ -190,6 +192,14 @@ namespace Linqua.Persistence
 
                 return false;
             }
+
+	        if (MobileService.Client.CurrentUser == null)
+	        {
+		        if (Log.IsDebugEnabled)
+					Log.Debug("Cannot sync. User is not authenticated.");
+
+		        return false;
+	        }
 
             using (await AcquireSyncLock())
 			{
