@@ -39,8 +39,7 @@ namespace Linqua.UI
 			}
 			catch (Exception ex)
 			{
-				if (Log.IsErrorEnabled)
-					Log.Error("Unexpected exception occured while trying to share the log files.", ex);
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "Unexpected exception occured while trying to share the log files.");
 			}
 
 			await tcs.Task;
@@ -69,8 +68,7 @@ namespace Linqua.UI
 			}
 			catch (Exception ex)
 			{
-				if (Log.IsErrorEnabled)
-					Log.Error("Unexpected exception occured while trying to share the log files.", ex);
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "Unexpected exception occured while trying to share the log files.");
 			}
 			finally
 			{

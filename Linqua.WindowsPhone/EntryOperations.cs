@@ -117,10 +117,7 @@ namespace Linqua
 				}
 				catch (Exception ex)
 				{
-					if (Log.IsErrorEnabled)
-						Log.Error("An error occured while trying to find an existing entry.", ex);
-
-					telemetry.TrackException(ex);
+					ExceptionHandlingHelper.HandleNonFatalError(ex, "An error occured while trying to find an existing entry.");
 				}
 
 				if (string.IsNullOrEmpty(translation))
@@ -159,10 +156,7 @@ namespace Linqua
 			}
 			catch (Exception ex)
 			{
-				if (Log.IsErrorEnabled)
-					Log.Error("An error occured while trying to translate an entry.", ex);
-
-				telemetry.TrackException(ex);
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "An error occured while trying to translate an entry.");
 			}
 			finally
 			{
@@ -193,12 +187,7 @@ namespace Linqua
 				}
 				catch (Exception ex)
 				{
-					if (Log.IsErrorEnabled)
-					{
-						Log.Error($"An error occured while trying to get language name for {languageCode}", ex);
-					}
-
-					telemetry.TrackException(ex);
+					ExceptionHandlingHelper.HandleNonFatalError(ex, $"An error occured while trying to get language name for {languageCode}");
 
 					return languageCode;
 				}

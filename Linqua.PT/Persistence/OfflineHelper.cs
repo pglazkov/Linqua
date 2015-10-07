@@ -222,7 +222,7 @@ namespace Linqua.Persistence
 			        await MobileService.Client.SyncContext.PushAsync();
 
 			        var entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
-
+					
 			        var mobileServiceTableQuery = entryTable.CreateQuery();
 
 			        if (args.Query != null)
@@ -245,23 +245,18 @@ namespace Linqua.Persistence
 			    }
 			    catch (MobileServicePushFailedException ex)
 			    {
-			        if (Log.IsErrorEnabled)
+			        if (Log.IsWarnEnabled)
 			        {
-			            Log.Error("Push Failed. Status: {0}. Errors: {1}", ex.PushResult.Status, ex.PushResult.Errors.Count > 0 ? string.Join("; ", ex.PushResult.Errors) : "<none>");
+			            Log.Warn("Push Failed. Status: {0}. Errors: {1}", ex.PushResult.Status, ex.PushResult.Errors.Count > 0 ? string.Join("; ", ex.PushResult.Errors) : "<none>");
 			        }
 
-				    Telemetry.Client.TrackException(ex);
+				    ExceptionHandlingHelper.HandleNonFatalError(ex, "Push failed.");
 
 			        return false;
 			    }
 			    catch (Exception ex)
 			    {
-			        if (Log.IsErrorEnabled)
-			        {
-			            Log.Error("Synchronization failed.", ex);
-			        }
-
-					Telemetry.Client.TrackException(ex);
+			        ExceptionHandlingHelper.HandleNonFatalError(ex, "Synchronization failed.");
 
 					return false;
 			    }

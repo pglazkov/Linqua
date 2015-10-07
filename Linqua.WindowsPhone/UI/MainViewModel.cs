@@ -299,8 +299,6 @@ namespace Linqua.UI
                         Log.Debug("Loaded {0} entries from local storage.", words.Count());
 
                     UpdateUIWithData(words);
-
-                    await UpdateStatistics();
                 }
                 finally
                 {
@@ -314,6 +312,11 @@ namespace Linqua.UI
 			sw.Stop();
 
 			Telemetry.Client.TrackTrace("MainPage. Loading word list finished. Elapsed: " + sw.Elapsed);
+
+			using (await RefreshLock.LockAsync())
+			{
+				await UpdateStatistics();
+			}
 
 			words = await SyncAsync();
 

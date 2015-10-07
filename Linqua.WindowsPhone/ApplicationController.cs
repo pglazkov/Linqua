@@ -77,9 +77,7 @@ namespace Linqua
 	        }
 	        catch (Exception e)
 	        {
-	            Log.Warn("Could not update live tile.", e);
-
-				telemetry.TrackException(e);
+				ExceptionHandlingHelper.HandleNonFatalError(e, "Could not update live tile.");
 	        }
 	    }
 	}

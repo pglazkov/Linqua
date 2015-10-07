@@ -42,34 +42,19 @@ namespace Linqua.Persistence
 				}
 				catch (MobileServicePreconditionFailedException e)
 				{
-					if (Log.IsErrorEnabled)
-					{
-						Log.Error("Synchronization failed. Looks like there is a conflict.", e);
-					}
-
-					Telemetry.Client.TrackException(e);
+					ExceptionHandlingHelper.HandleNonFatalError(e, "Synchronization failed. Looks like there is a conflict.");
 
 					ex = e;
 				}
 				catch (MobileServiceConflictException e)
 				{
-					if (Log.IsErrorEnabled)
-					{
-						Log.Error("Synchronization failed. Looks like there is a conflict.", e);
-					}
-
-					Telemetry.Client.TrackException(e);
+					ExceptionHandlingHelper.HandleNonFatalError(e, "Synchronization failed. Looks like there is a conflict.");
 
 					throw;
 				}
 				catch (MobileServiceInvalidOperationException e)
 				{
-					if (Log.IsErrorEnabled)
-					{
-						Log.Error("Synchronization failed. An unexpected exception occured.", e);
-					}
-
-					Telemetry.Client.TrackException(e);
+					ExceptionHandlingHelper.HandleNonFatalError(e, "Synchronization failed. An unexpected exception occured.");
 
 					throw;
 				}

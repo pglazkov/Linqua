@@ -7,18 +7,21 @@ namespace Linqua
 {
 	public static class Telemetry
 	{
-		public static ITelemetryService Client
+		private static readonly Lazy<ITelemetryService> TelemetryServiceLazy = new Lazy<ITelemetryService>(GetTelemetryService);
+
+		public static ITelemetryService Client => TelemetryServiceLazy.Value;
+
+		private static ITelemetryService GetTelemetryService()
 		{
-			get
+			try
 			{
-				try
-				{
-					return CompositionManager.Current.GetInstance<ITelemetryService>();
-				}
-				catch (Exception)
-				{
-					return new DefaultTelemetryService();
-				}
+				return CompositionManager.Current.GetInstance<ITelemetryService>();
+			}
+			catch (Exception ex)
+			{
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "Error getting an instance of the telemetry service.", sendTelemetry: false);
+
+				return new DefaultTelemetryService();
 			}
 		}
 	}

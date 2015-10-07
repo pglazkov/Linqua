@@ -99,7 +99,7 @@ namespace Linqua
 		            Debugger.Break();
 		        }
 #endif
-				Telemetry.Client.TrackException(ex);
+				ExceptionHandlingHelper.HandleNonFatalError(ex);
 		    }
 
 		    if (result != null && result.Status == LiveConnectSessionStatus.Connected)

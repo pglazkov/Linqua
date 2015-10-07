@@ -47,8 +47,7 @@ namespace Linqua
 			}
 			catch (Exception ex)
 			{
-				if (Log.IsErrorEnabled)
-					Log.Error("Synchronization background task failed.", ex);
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "Synchronization background task failed.", sendTelemetry: false);
 			}
 			finally
 			{

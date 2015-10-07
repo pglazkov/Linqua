@@ -35,7 +35,7 @@ namespace Linqua
         /// </summary>
         public App()
         {
-			WindowsAppInitializer.InitializeAsync();
+			WindowsAppInitializer.InitializeAsync(WindowsCollectors.Metadata | WindowsCollectors.Session);
 
 			InitializeComponent();
             Suspending += OnSuspending;
@@ -195,11 +195,24 @@ namespace Linqua
             deferral.Complete();
         }
 
-		private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+		private async void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			log.Fatal(e.Message, e.Exception);
+			// say we've handled this one. this allows our FATAL write to complete.
+			e.Handled = true;
+
+			var ex = ExceptionUtils.UnwrapException(e.Exception);
+
+			Telemetry.Client.TrackCrash(ex);
+
+			await ((ILoggerAsync)log).FatalAsync("CRASH!", ex);
+
+			// if we're aborting, fake a suspend to flush the targets...
+			await LazyFlushManager.FlushAllAsync(new LogWriteContext());
 
 			ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = true;
+
+			// abort the app here...
+			Current.Exit();
 		}
     }
 }

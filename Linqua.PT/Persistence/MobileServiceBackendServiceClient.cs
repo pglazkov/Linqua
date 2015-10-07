@@ -24,7 +24,7 @@ namespace Linqua.Persistence
 	public class MobileServiceBackendServiceClient : IBackendServiceClient
 	{
 		//private readonly IMobileServiceTable<ClientEntry> entryTable;
-		private readonly IMobileServiceSyncTable<ClientEntry> entrySyncTable;
+		private readonly Lazy<IMobileServiceSyncTable<ClientEntry>> entrySyncTable;
 		private readonly IMobileServiceSyncHandler syncHandler;
 		private readonly IEventAggregator eventAggregator;
 	    private bool initialized;
@@ -40,13 +40,14 @@ namespace Linqua.Persistence
 			this.eventAggregator = eventAggregator;
 
 			//entryTable = MobileService.Client.GetTable<ClientEntry>();
-			entrySyncTable = MobileService.Client.GetSyncTable<ClientEntry>();
-            //entryTable.SystemProperties = MobileServiceSystemProperties.CreatedAt;
+			entrySyncTable = new Lazy<IMobileServiceSyncTable<ClientEntry>>(() => MobileService.Client.GetSyncTable<ClientEntry>());
         }
+
+		private IMobileServiceSyncTable<ClientEntry> EntrySyncTable => entrySyncTable.Value;
 
 		public async Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
 		{
-			IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
+			IMobileServiceTableQuery<ClientEntry> query = EntrySyncTable.CreateQuery();
 
 			if (filter != null)
 			{
@@ -60,7 +61,7 @@ namespace Linqua.Persistence
 
 		public async Task<long> GetCount(Expression<Func<ClientEntry, bool>> filter)
 		{
-			IMobileServiceTableQuery<ClientEntry> query = entrySyncTable.CreateQuery();
+			IMobileServiceTableQuery<ClientEntry> query = EntrySyncTable.CreateQuery();
 
 			if (filter != null)
 			{
@@ -76,7 +77,7 @@ namespace Linqua.Persistence
 		{
 			Guard.NotNull(entryId, nameof(entryId));
 
-			var result = await entrySyncTable.LookupAsync(entryId);
+			var result = await EntrySyncTable.LookupAsync(entryId);
 
 			return result;
 		}
@@ -97,7 +98,7 @@ namespace Linqua.Persistence
 				return serviceResult;
 			}
 
-			var existingEntiesInLocalStorage = await entrySyncTable.Where(x => x.Text == example.Text && x.Id != example.Id).ToListAsync();
+			var existingEntiesInLocalStorage = await EntrySyncTable.Where(x => x.Text == example.Text && x.Id != example.Id).ToListAsync();
 
 			if (existingEntiesInLocalStorage.Count > 0)
 			{
@@ -122,7 +123,7 @@ namespace Linqua.Persistence
 			}
 			else
 			{
-                var existingEntiesInLocalStorage = await entrySyncTable.Where(x => !x.IsLearnt).ToListAsync();
+                var existingEntiesInLocalStorage = await EntrySyncTable.Where(x => !x.IsLearnt).ToListAsync();
 
                 if (existingEntiesInLocalStorage.Count > 0)
                 {
@@ -159,20 +160,20 @@ namespace Linqua.Persistence
 		{
 			ClientEntry resultEntry = null;
 
-			var existingEntries = await entrySyncTable.Where(x => x.Text == newEntry.Text).ToListAsync();
+			var existingEntries = await EntrySyncTable.Where(x => x.Text == newEntry.Text).ToListAsync();
 
 			if (existingEntries.Count > 0)
 			{
 				resultEntry = existingEntries[0];
 				resultEntry.IsLearnt = false;
 
-				await entrySyncTable.UpdateAsync(resultEntry);
+				await EntrySyncTable.UpdateAsync(resultEntry);
 			}
 			else
 			{
 				resultEntry = newEntry;
 
-				await entrySyncTable.InsertAsync(newEntry);
+				await EntrySyncTable.InsertAsync(newEntry);
 			}
 
 			OfflineHelper.EnqueueSync();
@@ -182,14 +183,14 @@ namespace Linqua.Persistence
 
 		public async Task DeleteEntry(ClientEntry entry)
 		{
-			await entrySyncTable.DeleteAsync(entry);
+			await EntrySyncTable.DeleteAsync(entry);
 
 			OfflineHelper.EnqueueSync();
 		}
 
 		public async Task UpdateEntry(ClientEntry entry)
 		{
-			await entrySyncTable.UpdateAsync(entry);
+			await EntrySyncTable.UpdateAsync(entry);
 
 			OfflineHelper.EnqueueSync();
 		}

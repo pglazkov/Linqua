@@ -42,6 +42,8 @@ namespace Linqua
 				if (authenticatedSilently)
 				{
 					IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
+					await storage.InitializeAsync(doInitialPoolIfNeeded: false);
+
 					var logsUploadService = new LogSharingService(storage);
 
 					var uri = await logsUploadService.ShareCurrentLogAsync();
@@ -61,8 +63,7 @@ namespace Linqua
 			}
 			catch (Exception ex)
 			{
-				if (Log.IsErrorEnabled)
-					Log.Error("LogsUpload background task failed.", ex);
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "LogsUpload background task failed.", sendTelemetry: false);
 			}
 			finally
 			{

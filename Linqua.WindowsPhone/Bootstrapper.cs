@@ -31,9 +31,6 @@ namespace Linqua
 	    private void ConfigureLogger()
 	    {
             LoggerHelper.SetupLogger();
-
-            // setup the global crash handler...
-            GlobalCrashHandler.Configure();
         }
 
 	    private static void ConfigureMef()

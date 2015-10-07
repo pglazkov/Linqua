@@ -55,5 +55,11 @@ namespace Linqua.Shared.PlatformServices
 	    {
 			Client.Value.TrackRequest(name, startTime, duration, responseCode, success);
         }
+
+		public void TrackCrash(Exception exception)
+		{
+			Client.Value.TrackException(new ExceptionTelemetry(exception) { HandledAt = ExceptionHandledAt.Unhandled });
+			Client.Value.Flush();
+		}
     }
 }

@@ -51,5 +51,10 @@ namespace Framework.PlatformServices.DefaultImpl
 		{
 			
 		}
+
+		public void TrackCrash(Exception exception)
+		{
+			
+		}
 	}
 }

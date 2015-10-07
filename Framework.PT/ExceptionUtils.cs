@@ -46,8 +46,7 @@ namespace Framework
 
 			if (unwrappedExceptions.Length > 1)
 			{
-				throw new InvalidOperationException(
-				    $"Exception {exception.GetType()} was unwrapped into more than 1 instance of other exceptions, but this method can return only one exception. Please call UnwrapExceptions that returns an enumerable to get all unwrapped exceptions");
+				return new AggregateException(unwrappedExceptions);
 			}
 
 			return unwrappedExceptions[0];

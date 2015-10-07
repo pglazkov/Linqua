@@ -54,10 +54,7 @@ namespace Linqua
 			}
 			catch (Exception ex)
 			{
-				if (Log.IsErrorEnabled)
-					Log.Error("An error occured while trying to update the live tile.", ex);
-
-				throw;
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "An error occured while trying to update the live tile.", sendTelemetry: false);
 			}
 			finally
 			{

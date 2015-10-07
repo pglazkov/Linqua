@@ -58,6 +58,12 @@ namespace Framework.PlatformServices
 		/// </summary>
 		/// <param name="name">The request name.</param><param name="startTime">The time when the page was requested.</param><param name="duration">The time taken by the application to handle the request.</param><param name="responseCode">The response status code.</param><param name="success">True if the request was handled successfully by the application.</param>
 		void TrackRequest(string name, DateTimeOffset startTime, TimeSpan duration, string responseCode, bool success);
+
+		/// <summary>
+		/// Send infromation about a crash in the app.
+		/// </summary>
+		/// <param name="exception">The exception that caused the crash.</param>
+		void TrackCrash(Exception exception);
 	}
 
 	public enum TelemetrySeverityLevel
