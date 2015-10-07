@@ -29,10 +29,18 @@ namespace Linqua
 		{
 			get
 			{
-				var profile = NetworkInformation.GetInternetConnectionProfile();
-				var isConnected = (profile != null
-					&& profile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
-				return isConnected;
+				try
+				{
+					var profile = NetworkInformation.GetInternetConnectionProfile();
+					var isConnected = (profile != null
+					                   && profile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+					return isConnected;
+				}
+				catch (Exception e)
+				{
+					ExceptionHandlingHelper.HandleNonFatalError(e);
+					return false;
+				}
 			}
 		}
 	}

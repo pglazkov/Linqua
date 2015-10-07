@@ -286,28 +286,28 @@ namespace Linqua.UI
 
 			IEnumerable<ClientEntry> words = null;
 
-            IsLoadingEntries = true;
+			IsLoadingEntries = true;
 
-            using (await RefreshLock.LockAsync())
-            {
-                try
-                {
-                    await storage.InitializeAsync();
-                    words = await LoadEntries(storage);
+			using (await RefreshLock.LockAsync())
+			{
+				try
+				{
+					await storage.InitializeAsync();
+					words = await LoadEntries(storage);
 
-                    if (Log.IsDebugEnabled)
-                        Log.Debug("Loaded {0} entries from local storage.", words.Count());
+					if (Log.IsDebugEnabled)
+						Log.Debug("Loaded {0} entries from local storage.", words.Count());
 
-                    UpdateUIWithData(words);
-                }
-                finally
-                {
+					UpdateUIWithData(words);
+				}
+				finally
+				{
 					IsLoadingEntries = false;
 
 					FullEntryListViewModel.IsInitializationComplete = true;
 					RandomEntryListViewModel.IsInitializationComplete = true;
 				}
-            }
+			}
 
 			sw.Stop();
 
@@ -321,9 +321,9 @@ namespace Linqua.UI
 			words = await SyncAsync();
 
 			if (words != null)
-		    {
-		        await TranslatePendingEntriesAsync(words);
-		    }
+			{
+				await TranslatePendingEntriesAsync(words);
+			}
 		}
 
 	    private async Task TranslatePendingEntriesAsync(IEnumerable<ClientEntry> entries)

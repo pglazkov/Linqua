@@ -71,7 +71,14 @@ namespace Linqua
 			    {"DeviceId", DeviceInfo.DeviceId}
 		    });
 
-            Frame rootFrame = Window.Current.Content as Frame;
+			log.Info("Internet Connection: " + ConnectionHelper.IsConnectedToInternet);
+
+			Telemetry.Client.TrackTrace("Internet Connection", TelemetrySeverityLevel.Information, new Dictionary<string, string>
+			{
+				{"IsAvailable", ConnectionHelper.IsConnectedToInternet.ToString() }
+			});
+
+			Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

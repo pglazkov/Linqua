@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
@@ -10,6 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using Framework;
+using Framework.PlatformServices;
 using Linqua.Events;
 using MetroLog;
 
@@ -107,7 +109,12 @@ namespace Linqua.UI
 		    if (Log.IsDebugEnabled)
 				Log.Debug("Internet connection changed. IsConnected={0}.", e.IsConnected);
 
-		    if (e.IsConnected)
+			Telemetry.Client.TrackTrace("Internet Connection", TelemetrySeverityLevel.Information, new Dictionary<string, string>
+			{
+				{"IsAvailable", e.IsConnected.ToString() }
+			});
+
+			if (e.IsConnected)
 		    {
 				Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
 				{

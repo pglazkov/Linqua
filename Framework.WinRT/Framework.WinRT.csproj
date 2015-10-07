@@ -61,6 +61,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>LocalizedStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Retry.cs" />
     <Compile Include="ViewLocator.cs" />
     <Compile Include="VisualTreeHelperExtensions.cs" />
     <Compile Include="ZipFile.cs" />

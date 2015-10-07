@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Windows.Storage;
 using MetroLog;
@@ -11,19 +12,31 @@ namespace Linqua
 
 		public static void HandleNonFatalError(Exception exception, string errorHeader = null, bool sendTelemetry = true, [CallerMemberName] string callerMethodName = null)
 		{
-			if (Log.IsErrorEnabled)
+			try
 			{
-				errorHeader = errorHeader ?? "An error occured (non-fatal).";
+				if (Log.IsErrorEnabled)
+				{
+					errorHeader = errorHeader ?? "An error occured (non-fatal).";
 
-				Log.Error($"[Caller:{callerMethodName}] {errorHeader}", exception);
+					Log.Error($"[Caller:{callerMethodName}] {errorHeader}", exception);
+				}
+
+				if (sendTelemetry)
+				{
+					Telemetry.Client.TrackException(exception);
+				}
+
+				ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = true;
 			}
-
-			if (sendTelemetry)
+			catch (Exception)
 			{
-				Telemetry.Client.TrackException(exception);
+#if DEBUG
+				if (Debugger.IsAttached)
+				{
+					Debugger.Break();
+				}
+#endif
 			}
-
-			ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = true;
 		}
 	}
 }
