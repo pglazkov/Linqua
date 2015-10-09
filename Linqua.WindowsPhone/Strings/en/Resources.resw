@@ -223,13 +223,14 @@
     <value>exit</value>
   </data>
   <data name="LoginFailedRetry" xml:space="preserve">
-    <value>ok</value>
+    <value>retry</value>
   </data>
   <data name="LoginRequiredMessageText" xml:space="preserve">
-    <value>Please log in. Login is required for the app to be able to store the data in the cloud so that you don't loose it if something happens to your device. </value>
+    <value>Please login. Login is required for the app to be able to store the data in the cloud so that you don't loose it if something happens to your device. 
+Internet connection is required for login.</value>
   </data>
   <data name="LoginRequiredMessageTitle" xml:space="preserve">
-    <value>Login Required</value>
+    <value>Login Error</value>
   </data>
   <data name="MainPageHeader.Text" xml:space="preserve">
     <value>vocabulary</value>

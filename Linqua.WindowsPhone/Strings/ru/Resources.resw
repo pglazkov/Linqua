@@ -223,13 +223,14 @@
     <value>выход</value>
   </data>
   <data name="LoginFailedRetry" xml:space="preserve">
-    <value>ok</value>
+    <value>повторить</value>
   </data>
   <data name="LoginRequiredMessageText" xml:space="preserve">
-    <value>Приложению требуется авторизация с вашим Майкрософт аккаунтом. Это нужно для того, чтобы приложение могло сохранять данные в облаке. </value>
+    <value>Приложению требуется авторизация с вашим Майкрософт аккаунтом. Это нужно для того, чтобы приложение могло сохранять данные в облаке. 
+Для авторизации требуется интернет соединение.</value>
   </data>
   <data name="LoginRequiredMessageTitle" xml:space="preserve">
-    <value>Авторизация</value>
+    <value>Ошибка Авторизации</value>
   </data>
   <data name="MainPageHeaderStatisticsUnderlineTextBlock.Text" xml:space="preserve">
     <value>выучить / всего</value>

@@ -54,9 +54,17 @@ namespace Linqua
 			{
 				LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
 
-				var result = await liveIdClient.InitializeAsync(AuthenticationScopes);
+				LiveLoginResult result = null;
+				try
+				{
+					result = await liveIdClient.InitializeAsync(AuthenticationScopes);
+				}
+				catch (LiveAuthException ex)
+				{
+					ExceptionHandlingHelper.HandleNonFatalError(ex, "Authentication error");
+				}
 
-				if (result.Status == LiveConnectSessionStatus.Connected)
+				if (result != null && result.Status == LiveConnectSessionStatus.Connected)
 				{
 					user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
 
@@ -85,10 +93,14 @@ namespace Linqua
 
 			LiveLoginResult result = null;
 
-		    try
-		    {
-		        result = await liveIdClient.LoginAsync(AuthenticationScopes);
-		    }
+			try
+			{
+				result = await liveIdClient.LoginAsync(AuthenticationScopes);
+			}
+			catch (LiveAuthException ex)
+			{
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "Authentication error");
+			}
 		    catch (NullReferenceException ex)
 		    {
 		        // We have to handle this because this exception occurs if user declines to login with Microsoft account. 
