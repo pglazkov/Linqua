@@ -120,6 +120,7 @@
     <Compile Include="Offline\IOfflineSyncController.cs" />
     <Compile Include="Offline\OfflineSyncController.cs" />
     <Compile Include="Persistence\SyncFailedHandler.cs" />
+    <Compile Include="PlatformServices\TelemetryService.cs" />
     <Compile Include="Resources\WindowsRuntimeResourceManager.cs" />
     <Compile Include="UI\EntryTextEditorViewModel.cs" />
     <Compile Include="UI\EntryDetailsViewModel.cs" />

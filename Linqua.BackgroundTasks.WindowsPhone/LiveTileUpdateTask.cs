@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
 using Windows.ApplicationModel.Background;
 using Framework;
-using Linqua.Logging;
 using Linqua.Notifications;
 using Linqua.Persistence;
 using MetroLog;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.Extensibility;
 
 namespace Linqua
 {
@@ -19,7 +15,8 @@ namespace Linqua
 		  
 		static LiveTileUpdateTask()
 		{
-			LoggerHelper.SetupLogger();
+			Bootstrapper.Run();
+
 			Log = LogManagerFactory.DefaultLogManager.GetLogger<LiveTileUpdateTask>();
 		}
 
@@ -54,7 +51,7 @@ namespace Linqua
 			}
 			catch (Exception ex)
 			{
-				ExceptionHandlingHelper.HandleNonFatalError(ex, "An error occured while trying to update the live tile.", sendTelemetry: false);
+				ExceptionHandlingHelper.HandleNonFatalError(ex, "Live tile background task failed.", sendTelemetry: false);
 			}
 			finally
 			{

@@ -14,6 +14,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)Logging\LoggerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\LogSharingService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\WinRTFileTarget.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)PlatformServices\TelemetryService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)PlatformServices\" />
   </ItemGroup>
 </Project>

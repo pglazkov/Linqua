@@ -271,10 +271,10 @@ namespace Linqua.Persistence
 			throw new NoInternetConnectionException();
 		}
 
-		private static Task Retry(Func<Task> action, [CallerMemberName] string callingMemberName = null)
+		private static async Task Retry(Func<Task> action, [CallerMemberName] string callingMemberName = null)
 		{
 			// ReSharper disable ExplicitCallerInfoArgument
-			return Retry(async () =>
+			await Retry(async () =>
 			{
 				await action();
 				return true;
@@ -282,9 +282,9 @@ namespace Linqua.Persistence
 			// ReSharper restore ExplicitCallerInfoArgument
 		}
 
-        private static Task<T> Retry<T>(Func<Task<T>> action, [CallerMemberName] string callingMemberName = null)
+        private static async Task<T> Retry<T>(Func<Task<T>> action, [CallerMemberName] string callingMemberName = null)
 		{
-			return Framework.Retry.DoAsync(action, TimeSpan.FromSeconds(2), onExceptionAction: ex =>
+			return await Framework.Retry.DoAsync(action, TimeSpan.FromSeconds(2), onExceptionAction: ex =>
 			{
 				ExceptionHandlingHelper.HandleNonFatalError(ex, $"Exception when executing an operation: {callingMemberName}.");
 			});

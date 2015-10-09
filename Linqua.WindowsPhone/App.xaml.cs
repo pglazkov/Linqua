@@ -35,7 +35,7 @@ namespace Linqua
         /// </summary>
         public App()
         {
-			WindowsAppInitializer.InitializeAsync(WindowsCollectors.Metadata | WindowsCollectors.Session);
+			WindowsAppInitializer.InitializeAsync(WindowsCollectors.Metadata | WindowsCollectors.Session | WindowsCollectors.PageView);
 
 			InitializeComponent();
             Suspending += OnSuspending;
@@ -66,7 +66,7 @@ namespace Linqua
 #endif
 			log.Info("Launched. DeviceId: " + DeviceInfo.DeviceId);
 
-		    Telemetry.Client.TrackTrace("App Launched.", TelemetrySeverityLevel.Information, new Dictionary<string, string>
+		    Telemetry.Client.TrackEvent("App Launched.", new Dictionary<string, string>
 		    {
 			    {"DeviceId", DeviceInfo.DeviceId}
 		    });

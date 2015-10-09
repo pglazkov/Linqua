@@ -5,11 +5,16 @@ using Framework.PlatformServices;
 using Microsoft.ApplicationInsights;
 using Microsoft.ApplicationInsights.DataContracts;
 
-namespace Linqua.Shared.PlatformServices
+namespace Linqua.PlatformServices
 {
 	internal class TelemetryService : ITelemetryService
     {
 		private static readonly ThreadLocal<TelemetryClient> Client = new ThreadLocal<TelemetryClient>(() => new TelemetryClient());
+
+		public void TrackEvent(string eventName, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
+		{
+			Client.Value.TrackEvent(eventName, properties, metrics);
+		}
 
 		public void TrackTrace(string message)
 	    {
@@ -59,6 +64,11 @@ namespace Linqua.Shared.PlatformServices
 		public void TrackCrash(Exception exception)
 		{
 			Client.Value.TrackException(new ExceptionTelemetry(exception) { HandledAt = ExceptionHandledAt.Unhandled });
+			Client.Value.Flush();
+		}
+
+		public void Flush()
+		{
 			Client.Value.Flush();
 		}
     }

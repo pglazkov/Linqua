@@ -7,6 +7,11 @@ namespace Framework.PlatformServices.DefaultImpl
 	[DefaultExport(typeof(ITelemetryService))]
 	public class DefaultTelemetryService : ITelemetryService
 	{
+		public void TrackEvent(string eventName, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
+		{
+			
+		}
+
 		public void TrackTrace(string message)
 		{
 			
@@ -53,6 +58,11 @@ namespace Framework.PlatformServices.DefaultImpl
 		}
 
 		public void TrackCrash(Exception exception)
+		{
+			
+		}
+
+		public void Flush()
 		{
 			
 		}

@@ -2,14 +2,20 @@
 using Framework;
 using Framework.PlatformServices;
 using Framework.PlatformServices.DefaultImpl;
+using JetBrains.Annotations;
 
 namespace Linqua
 {
 	public static class Telemetry
 	{
-		private static readonly Lazy<ITelemetryService> TelemetryServiceLazy = new Lazy<ITelemetryService>(GetTelemetryService);
+		private static Lazy<ITelemetryService> telemetryServiceLazy = new Lazy<ITelemetryService>(GetTelemetryService);
 
-		public static ITelemetryService Client => TelemetryServiceLazy.Value;
+		[NotNull]
+		public static ITelemetryService Client
+		{
+			get { return telemetryServiceLazy.Value; }
+			set { telemetryServiceLazy = new Lazy<ITelemetryService>(() => value); }
+		}
 
 		private static ITelemetryService GetTelemetryService()
 		{

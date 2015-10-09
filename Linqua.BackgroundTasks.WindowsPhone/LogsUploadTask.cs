@@ -16,7 +16,8 @@ namespace Linqua
 
 		static LogsUploadTask()
 		{
-			LoggerHelper.SetupLogger();
+			Bootstrapper.Run();
+
 			Log = LogManagerFactory.DefaultLogManager.GetLogger<LogsUploadTask>();
 		}
 

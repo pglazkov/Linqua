@@ -15,7 +15,8 @@ namespace Linqua
 
 		static SynchronizationTask()
 		{
-			LoggerHelper.SetupLogger();
+			Bootstrapper.Run();
+
 			Log = LogManagerFactory.DefaultLogManager.GetLogger<SynchronizationTask>();
 		}
 

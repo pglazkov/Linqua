@@ -24,8 +24,9 @@ namespace Linqua
 			Guard.NotNull(telemetryService, nameof(telemetryService));
 			Guard.NotNullOrEmpty(userActionName, nameof(userActionName));
 
-			telemetryService.TrackTrace("User Action", TelemetrySeverityLevel.Information, new Dictionary<string, string>
+			telemetryService.TrackEvent(userActionName, new Dictionary<string, string>
 			{
+				{"Type", "UserAction"},
 				{"Feature", featureName ?? "General"},
 				{"ActionName", userActionName}
 			});

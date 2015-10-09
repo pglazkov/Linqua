@@ -6,6 +6,13 @@ namespace Framework.PlatformServices
 	public interface ITelemetryService
 	{
 		/// <summary>
+		/// Send an <see cref="T:Microsoft.ApplicationInsights.DataContracts.EventTelemetry"/> for display in Diagnostic Search and aggregation in Metrics Explorer.
+		/// 
+		/// </summary>
+		/// <param name="eventName">A name for the event.</param><param name="properties">Named string values you can use to search and classify events.</param><param name="metrics">Measurements associated with this event.</param>
+		void TrackEvent(string eventName, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null);
+
+		/// <summary>
 		/// Send a trace message for display in Diagnostic Search.
 		/// </summary>
 		/// <param name="message">Message to display.</param>
@@ -64,6 +71,11 @@ namespace Framework.PlatformServices
 		/// </summary>
 		/// <param name="exception">The exception that caused the crash.</param>
 		void TrackCrash(Exception exception);
+
+		/// <summary>
+		/// Flushes the in-memory buffer.
+		/// </summary>
+		void Flush();
 	}
 
 	public enum TelemetrySeverityLevel
