@@ -507,32 +507,35 @@ namespace Linqua.UI
 			}
 			else
 			{
-                var entryToAdd = entry;
+				var entryToAdd = entry;
 
-                ClientEntry addedEntry = null;
+				ClientEntry addedEntry = null;
 
-                EntryListItemViewModel randomListItem;
+				EntryListItemViewModel randomListItem;
 
-                using (statusBusyService.Busy(CommonBusyType.Saving))
-                {
-                    addedEntry = await storage.AddEntry(entryToAdd);
+				using (statusBusyService.Busy(CommonBusyType.Saving))
+				{
+					addedEntry = await storage.AddEntry(entryToAdd);
 
-                    fullListItem = FullEntryListViewModel.AddEntry(addedEntry);
-                    randomListItem = RandomEntryListViewModel.AddEntry(addedEntry);
+					fullListItem = FullEntryListViewModel.AddEntry(addedEntry);
+					randomListItem = RandomEntryListViewModel.AddEntry(addedEntry);
 
-                    OnEntryAdded(addedEntry);
-                }
+					OnEntryAdded(addedEntry);
+				}
 
-                if (string.IsNullOrWhiteSpace(addedEntry.Definition))
-                {
-                    var translation = await entryOperations.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
+				// Delay the follow up actions a little bit in order to let the UI update and display the newly added word. 
+				await Task.Delay(TimeSpan.FromSeconds(0.2));
 
-                    addedEntry.Definition = translation;
+				if (string.IsNullOrWhiteSpace(addedEntry.Definition))
+				{
+					var translation = await entryOperations.TranslateEntryItemAsync(addedEntry, new[] { randomListItem, fullListItem });
 
-                    await entryOperations.UpdateEntryAsync(addedEntry);
-                }
+					addedEntry.Definition = translation;
 
-                await UpdateStatistics();
+					await entryOperations.UpdateEntryAsync(addedEntry);
+				}
+
+				await UpdateStatistics();
 			}
 		}
 
