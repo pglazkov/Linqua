@@ -366,12 +366,12 @@
     <PackageInfo>
       <OsMinVersion>6.3.1.0</OsMinVersion>
       <PackageArchitecture>Arm</PackageArchitecture>
-      <PackageMaxArchitectureVersion>1.1.0.5</PackageMaxArchitectureVersion>
+      <PackageMaxArchitectureVersion>1.1.0.7</PackageMaxArchitectureVersion>
     </PackageInfo>
     <PackageInfo>
       <OsMinVersion>6.3.1.0</OsMinVersion>
       <PackageArchitecture>Neutral</PackageArchitecture>
-      <PackageMaxArchitectureVersion>1.1.0.5</PackageMaxArchitectureVersion>
+      <PackageMaxArchitectureVersion>1.1.0.7</PackageMaxArchitectureVersion>
     </PackageInfo>
   </PackageInfoList>
 </StoreAssociation>
