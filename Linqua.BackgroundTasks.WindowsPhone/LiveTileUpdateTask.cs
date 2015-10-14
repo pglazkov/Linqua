@@ -22,8 +22,8 @@ namespace Linqua
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			if (Log.IsDebugEnabled)
-				Log.Debug("Live tile update background task starting");
+			if (Log.IsInfoEnabled)
+				Log.Info("Live tile update background task started.");
 
 			var deferral = taskInstance.GetDeferral();
 

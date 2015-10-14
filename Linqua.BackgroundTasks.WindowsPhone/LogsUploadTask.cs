@@ -23,14 +23,14 @@ namespace Linqua
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			if (Log.IsDebugEnabled)
-				Log.Debug("LogsUpload background task starting");
+			if (Log.IsInfoEnabled)
+				Log.Info("LogsUpload background task started");
 
 			var logsUploadPending = Equals(ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending], true);
 
 			if (!logsUploadPending)
 			{
-				Log.Debug("There are no pending logs to upload.");
+				Log.Info("There are no pending logs to upload.");
 				return;
 			}
 

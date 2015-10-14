@@ -22,8 +22,8 @@ namespace Linqua
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			if (Log.IsDebugEnabled)
-				Log.Debug("Synchronization background task starting");
+			if (Log.IsInfoEnabled)
+				Log.Info("Synchronization background task started");
 
 			var deferral = taskInstance.GetDeferral();
 

@@ -14,6 +14,7 @@ using Linqua.DataObjects;
 using Linqua.Persistence.Events;
 using Linqua.Persistence.Exceptions;
 using Linqua.Service.DataObjects;
+using MetroLog;
 using Microsoft.WindowsAzure.MobileServices;
 using Microsoft.WindowsAzure.MobileServices.Sync;
 using Nito.AsyncEx;
@@ -24,6 +25,8 @@ namespace Linqua.Persistence
 	[Shared]
 	public class MobileServiceBackendServiceClient : IBackendServiceClient
 	{
+		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MobileServiceBackendServiceClient).Name);
+
 		//private readonly IMobileServiceTable<ClientEntry> entryTable;
 		private readonly Lazy<IMobileServiceSyncTable<ClientEntry>> entrySyncTable;
 		private readonly IMobileServiceSyncHandler syncHandler;
@@ -233,15 +236,15 @@ namespace Linqua.Persistence
 		            return;
 		        }
 
-			    await Retry(async () =>
-			    {
-				    await OfflineHelper.InitializeAsync(syncHandler);
+				await OfflineHelper.InitializeAsync(syncHandler);
 
-				    if (doInitialPoolIfNeeded)
-				    {
-					    await OfflineHelper.DoInitialPullIfNeededAsync();
-				    }
-			    });
+				if (doInitialPoolIfNeeded)
+				{
+					await Retry(async () =>
+					{
+						await OfflineHelper.DoInitialPullIfNeededAsync();
+					});
+				}
 
 		        initialized = true;
 
@@ -286,7 +289,7 @@ namespace Linqua.Persistence
 		{
 			return await Framework.Retry.DoAsync(action, TimeSpan.FromSeconds(2), onExceptionAction: ex =>
 			{
-				ExceptionHandlingHelper.HandleNonFatalError(ex, $"Exception when executing an operation: {callingMemberName}.");
+				Log.Warn($"Exception when executing \"{callingMemberName}\": {ex.Message}. Will retry.");
 			});
 		}
     }

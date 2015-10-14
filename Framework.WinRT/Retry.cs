@@ -48,7 +48,7 @@ namespace Framework
 
 		public static async Task<T> DoAsync<T>(Func<Task<T>> action, TimeSpan retryInterval, int retryCount = 3, Action<Exception> onExceptionAction = null)
 		{
-			var exceptions = new List<Exception>();
+			var uniqueExceptions = new Dictionary<string, Exception>();
 
 			for (var retry = 0; retry < retryCount; retry++)
 			{
@@ -58,13 +58,19 @@ namespace Framework
 				}
 				catch (Exception ex)
 				{
-					exceptions.Add(ex);
+					if (!uniqueExceptions.ContainsKey(ex.Message))
+					{
+						uniqueExceptions.Add(ex.Message, ex);
+					}
 
 					if (onExceptionAction != null)
 					{
 						try
 						{
-							onExceptionAction(ex);
+							if (retry < (retryCount - 1))
+							{
+								onExceptionAction(ex);
+							}
 						}
 						catch (Exception)
 						{
@@ -75,7 +81,7 @@ namespace Framework
 				await Task.Delay(retryInterval);
 			}
 
-			throw new AggregateException(exceptions);
+			throw new AggregateException(uniqueExceptions.Values);
 		}
 	}
 }
