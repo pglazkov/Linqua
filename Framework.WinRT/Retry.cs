@@ -63,22 +63,22 @@ namespace Framework
 						uniqueExceptions.Add(ex.Message, ex);
 					}
 
-					if (onExceptionAction != null)
+					if (retry < (retryCount - 1))
 					{
-						try
+						if (onExceptionAction != null)
 						{
-							if (retry < (retryCount - 1))
+							try
 							{
 								onExceptionAction(ex);
 							}
+							catch (Exception)
+							{
+							}
 						}
-						catch (Exception)
-						{
-						}
+
+						await Task.Delay(retryInterval);
 					}
 				}
-
-				await Task.Delay(retryInterval);
 			}
 
 			throw new AggregateException(uniqueExceptions.Values);

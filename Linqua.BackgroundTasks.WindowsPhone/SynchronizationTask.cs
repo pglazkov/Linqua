@@ -15,15 +15,14 @@ namespace Linqua
 
 		static SynchronizationTask()
 		{
-			Bootstrapper.Run();
+			Bootstrapper.Run(typeof(SynchronizationTask));
 
 			Log = LogManagerFactory.DefaultLogManager.GetLogger<SynchronizationTask>();
 		}
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			if (Log.IsInfoEnabled)
-				Log.Info("Synchronization background task started");
+			Log.Info("Synchronization background task started");
 
 			var deferral = taskInstance.GetDeferral();
 
@@ -39,12 +38,10 @@ namespace Linqua
 				}
 				else
 				{
-					if (Log.IsWarnEnabled)
-						Log.Warn("Authentication failed.");
+					Log.Warn("Authentication failed.");
 				}
 
-				if (Log.IsDebugEnabled)
-					Log.Debug("Synchronization background task completed");
+				Log.Info("Synchronization background task completed");
 			}
 			catch (Exception ex)
 			{

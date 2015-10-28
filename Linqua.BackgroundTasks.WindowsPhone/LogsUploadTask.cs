@@ -16,15 +16,14 @@ namespace Linqua
 
 		static LogsUploadTask()
 		{
-			Bootstrapper.Run();
+			Bootstrapper.Run(typeof(LogsUploadTask));
 
 			Log = LogManagerFactory.DefaultLogManager.GetLogger<LogsUploadTask>();
 		}
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			if (Log.IsInfoEnabled)
-				Log.Info("LogsUpload background task started");
+			Log.Info("LogsUpload background task started");
 
 			var logsUploadPending = Equals(ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending], true);
 
@@ -55,12 +54,10 @@ namespace Linqua
 				}
 				else
 				{
-					if (Log.IsWarnEnabled)
-						Log.Warn("Authentication failed.");
+					Log.Warn("Authentication failed.");
 				}
 
-				if (Log.IsDebugEnabled)
-					Log.Debug("LogsUpload background task completed");
+				Log.Info("LogsUpload background task completed");
 			}
 			catch (Exception ex)
 			{

@@ -15,15 +15,14 @@ namespace Linqua
 		  
 		static LiveTileUpdateTask()
 		{
-			Bootstrapper.Run();
+			Bootstrapper.Run(typeof(LiveTileUpdateTask));
 
 			Log = LogManagerFactory.DefaultLogManager.GetLogger<LiveTileUpdateTask>();
 		}
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			if (Log.IsInfoEnabled)
-				Log.Info("Live tile update background task started.");
+			Log.Info("Live tile update background task started.");
 
 			var deferral = taskInstance.GetDeferral();
 
@@ -42,12 +41,10 @@ namespace Linqua
 				}
 				else
 				{
-					if (Log.IsWarnEnabled)
-						Log.Warn("Authentication failed.");
+					Log.Warn("Authentication failed.");
 				}
 
-				if (Log.IsDebugEnabled)
-					Log.Debug("Live tile update background task completed");
+				Log.Info("Live tile update background task completed");
 			}
 			catch (Exception ex)
 			{

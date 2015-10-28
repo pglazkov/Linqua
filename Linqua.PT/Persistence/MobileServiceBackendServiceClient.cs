@@ -236,7 +236,10 @@ namespace Linqua.Persistence
 		            return;
 		        }
 
-				await OfflineHelper.InitializeAsync(syncHandler);
+			    await Retry(async () =>
+			    {
+				    await OfflineHelper.InitializeAsync(syncHandler);
+			    });
 
 				if (doInitialPoolIfNeeded)
 				{

@@ -2,7 +2,7 @@
 
 namespace Linqua
 {
-	public static class DeviceInfo
+	internal static class DeviceInfo
 	{
 		private static readonly EasClientDeviceInformation Info = new EasClientDeviceInformation();
 

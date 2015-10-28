@@ -63,7 +63,7 @@ namespace Linqua.Service.Controllers
             result.SasQueryString = container.GetSharedAccessSignature(sasPolicy);
 
             // Set the URL used to store the image.
-            result.ResourceName = DateTime.UtcNow.ToString("O") + currentUser.Id + ".zip";
+            result.ResourceName = currentUser.Id + DateTime.UtcNow.ToString("O") + ".zip";
             result.UploadUri = $"{blobEndpoint}{ContainerName}/{result.ResourceName}";
             
             return result;

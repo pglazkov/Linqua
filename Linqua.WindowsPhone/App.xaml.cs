@@ -64,8 +64,6 @@ namespace Linqua
                 DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-			log.Info("Launched. DeviceId: " + DeviceInfo.DeviceId);
-
 		    Telemetry.Client.TrackEvent("App Launched.", new Dictionary<string, string>
 		    {
 			    {"DeviceId", DeviceInfo.DeviceId}

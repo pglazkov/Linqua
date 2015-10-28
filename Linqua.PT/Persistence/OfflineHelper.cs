@@ -30,6 +30,8 @@ namespace Linqua.Persistence
         private static readonly Queue<SyncAction> SyncQueue = new Queue<SyncAction>();
         private static readonly TimeSpan SyncQueueProcessInterval = TimeSpan.FromSeconds(30);
         private static readonly ObservableSyncEvent SyncCompletedEvent;
+		private static readonly AsyncLock InitializeLock = new AsyncLock();
+		private static bool isInitialized;
 
 		static OfflineHelper()
 		{
@@ -43,13 +45,23 @@ namespace Linqua.Persistence
 
 		public static async Task InitializeAsync([NotNull] IMobileServiceSyncHandler syncHandler)
 		{
-			if (!MobileService.Client.SyncContext.IsInitialized)
+			using (await InitializeLock.LockAsync())
 			{
-				var store = new MobileServiceSQLiteStore(SqLiteDatabaseFileName);
-				store.DefineTable<ClientEntry>();
-				await MobileService.Client.SyncContext.InitializeAsync(store, syncHandler);
+				if (isInitialized)
+				{
+					return;
+				}
 
-			    SetupSyncQueueMonitoring();
+				if (!MobileService.Client.SyncContext.IsInitialized)
+				{
+					var store = new MobileServiceSQLiteStore(SqLiteDatabaseFileName);
+					store.DefineTable<ClientEntry>();
+					await MobileService.Client.SyncContext.InitializeAsync(store, syncHandler);
+				}
+
+				SetupSyncQueueMonitoring();
+
+				isInitialized = true;
 			}
 		}
 

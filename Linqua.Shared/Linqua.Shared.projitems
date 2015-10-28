@@ -9,6 +9,7 @@
     <Import_RootNamespace>Linqua.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\FileStreamingTarget.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\ILogSharingService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\LoggerHelper.cs" />

@@ -11,6 +11,10 @@ namespace Linqua
 {
 	public static class BackgroundTaskHelper
 	{
+		// Do not use simple intervals like 15 and 30 minutes in order to minimize the number of times the tasks run simultaneously. 
+		private const int LiveTileUpdateTaskIntervalMinutes = 17;
+		private const int LogsUploadTaskIntervalMinutes = 33;
+
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(BackgroundTaskHelper));
 
 		private static BackgroundAccessStatus? AccessStatus { get; set; }
@@ -58,7 +62,7 @@ namespace Linqua
 
 			var result = RegisterBackgroundTask(typeof(LogsUploadTask).FullName,
 												"LinquaLogsUpload",
-												new TimeTrigger(30, false), 
+												new TimeTrigger(LogsUploadTaskIntervalMinutes, false), 
 												new SystemCondition(SystemConditionType.InternetAvailable));
 			LogsUploadTask = result;
 
@@ -83,7 +87,7 @@ namespace Linqua
 
 			var result = RegisterBackgroundTask(typeof(LiveTileUpdateTask).FullName,
 												"LinquaLiveTileUpdate",
-												new TimeTrigger(15, false), 
+												new TimeTrigger(LiveTileUpdateTaskIntervalMinutes, false), 
 												new SystemCondition(SystemConditionType.SessionConnected));
 			LiveTileUpdateTask = result;
 
