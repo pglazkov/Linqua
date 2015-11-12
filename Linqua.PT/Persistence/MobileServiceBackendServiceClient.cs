@@ -290,7 +290,7 @@ namespace Linqua.Persistence
 
         private static async Task<T> Retry<T>(Func<Task<T>> action, [CallerMemberName] string callingMemberName = null)
 		{
-			return await Framework.Retry.DoAsync(action, TimeSpan.FromSeconds(2), onExceptionAction: ex =>
+			return await Framework.Retry.DoAsync(action, TimeSpan.FromSeconds(3), retryCount: 4, onExceptionAction: ex =>
 			{
 				Log.Warn($"Exception when executing \"{callingMemberName}\": {ex.Message}. Will retry.");
 			});
