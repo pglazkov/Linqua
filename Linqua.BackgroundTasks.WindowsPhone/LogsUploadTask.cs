@@ -4,6 +4,7 @@ using Windows.Storage;
 using Framework;
 using Linqua.Logging;
 using Linqua.Persistence;
+using Linqua.Persistence.Exceptions;
 using MetroLog;
 
 namespace Linqua
@@ -38,7 +39,7 @@ namespace Linqua
 			try
 			{
 				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
-				
+
 				if (authenticatedSilently)
 				{
 					IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
@@ -58,6 +59,10 @@ namespace Linqua
 				}
 
 				Log.Info("LogsUpload background task completed");
+			}
+			catch (NoInternetConnectionException)
+			{
+				Log.Info("There is no internet connection. Do nothing.");
 			}
 			catch (Exception ex)
 			{
