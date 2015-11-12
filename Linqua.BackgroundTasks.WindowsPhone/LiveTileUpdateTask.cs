@@ -11,23 +11,23 @@ namespace Linqua
     // Otherwise an exception will be thrown when registering the task ("Class not registered").
     public sealed class LiveTileUpdateTask : IBackgroundTask
 	{
-		private static readonly ILogger Log;
+		private static readonly ILoggerAsync Log;
 		  
 		static LiveTileUpdateTask()
 		{
 			Bootstrapper.Run(typeof(LiveTileUpdateTask));
 
-			Log = LogManagerFactory.DefaultLogManager.GetLogger<LiveTileUpdateTask>();
+			Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<LiveTileUpdateTask>();
 		}
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			Log.Info("Live tile update background task started.");
-
 			var deferral = taskInstance.GetDeferral();
 
 			try
 			{
+				await Log.InfoAsync("Live tile update background task started.");
+
 				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
 				if (authenticatedSilently)
@@ -41,14 +41,14 @@ namespace Linqua
 				}
 				else
 				{
-					Log.Warn("Authentication failed.");
+					await Log.WarnAsync("Authentication failed.");
 				}
 
-				Log.Info("Live tile update background task completed");
+				await Log.InfoAsync("Live tile update background task completed");
 			}
 			catch (Exception ex)
 			{
-				ExceptionHandlingHelper.HandleNonFatalError(ex, "Live tile background task failed.", sendTelemetry: false);
+				await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "Live tile background task failed.", sendTelemetry: false);
 			}
 			finally
 			{

@@ -13,31 +13,31 @@ namespace Linqua
     // Otherwise an exception will be thrown when registering the task ("Class not registered").
     public sealed class LogsUploadTask : IBackgroundTask
     {
-		private static readonly ILogger Log;
+		private static readonly ILoggerAsync Log;
 
 		static LogsUploadTask()
 		{
 			Bootstrapper.Run(typeof(LogsUploadTask));
 
-			Log = LogManagerFactory.DefaultLogManager.GetLogger<LogsUploadTask>();
+			Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<LogsUploadTask>();
 		}
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			Log.Info("LogsUpload background task started");
-
-			var logsUploadPending = Equals(ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending], true);
-
-			if (!logsUploadPending)
-			{
-				Log.Info("There are no pending logs to upload.");
-				return;
-			}
-
 			var deferral = taskInstance.GetDeferral();
 
 			try
 			{
+				await Log.InfoAsync("LogsUpload background task started");
+
+				var logsUploadPending = Equals(ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending], true);
+
+				if (!logsUploadPending)
+				{
+					await Log.InfoAsync("There are no pending logs to upload.");
+					return;
+				}
+
 				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
 				if (authenticatedSilently)
@@ -49,24 +49,24 @@ namespace Linqua
 
 					var uri = await logsUploadService.ShareCurrentLogAsync();
 
-					Log.Debug("Log is shared at: " + uri);
+					await Log.DebugAsync("Log is shared at: " + uri);
 
 					ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = false;
 				}
 				else
 				{
-					Log.Warn("Authentication failed.");
+					await Log.WarnAsync("Authentication failed.");
 				}
 
-				Log.Info("LogsUpload background task completed");
+				await Log.InfoAsync("LogsUpload background task completed");
 			}
 			catch (NoInternetConnectionException)
 			{
-				Log.Info("There is no internet connection. Do nothing.");
+				await Log.InfoAsync("There is no internet connection. Do nothing.");
 			}
 			catch (Exception ex)
 			{
-				ExceptionHandlingHelper.HandleNonFatalError(ex, "LogsUpload background task failed.", sendTelemetry: false);
+				await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "LogsUpload background task failed.", sendTelemetry: false);
 			}
 			finally
 			{

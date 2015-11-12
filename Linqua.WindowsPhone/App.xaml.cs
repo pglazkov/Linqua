@@ -196,8 +196,9 @@ namespace Linqua
 
 			await SuspensionManager.SaveAsync();
             await OfflineHelper.AwaitPendingSync();
+			await LazyFlushManager.FlushAllAsync(new LogWriteContext());
 
-            deferral.Complete();
+			deferral.Complete();
         }
 
 		private async void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)

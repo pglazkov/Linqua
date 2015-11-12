@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Windows.Storage;
+using Framework;
 using MetroLog;
 
 namespace Linqua
@@ -10,7 +12,14 @@ namespace Linqua
 	{
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(ExceptionHandlingHelper).Name);
 
+		private static ILoggerAsync LogAsync => (ILoggerAsync)Log;
+
 		public static void HandleNonFatalError(Exception exception, string errorHeader = null, bool sendTelemetry = true, [CallerMemberName] string callerMethodName = null)
+		{
+			HandleNonFatalErrorAsync(exception, errorHeader, sendTelemetry, callerMethodName).FireAndForget();
+		}
+
+		public static async Task HandleNonFatalErrorAsync(Exception exception, string errorHeader = null, bool sendTelemetry = true, [CallerMemberName] string callerMethodName = null)
 		{
 			try
 			{
@@ -18,7 +27,7 @@ namespace Linqua
 				{
 					errorHeader = errorHeader ?? "An error occured (non-fatal).";
 
-					Log.Error($"[Caller:{callerMethodName}] {errorHeader}", exception);
+					await LogAsync.ErrorAsync($"[Caller:{callerMethodName}] {errorHeader}", exception);
 				}
 
 				if (sendTelemetry)
@@ -27,7 +36,7 @@ namespace Linqua
 				}
 
 				ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = true;
-			}
+            }
 			catch (Exception)
 			{
 #if DEBUG

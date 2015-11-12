@@ -11,23 +11,23 @@ namespace Linqua
     // Otherwise an exception will be thrown when registering the task ("Class not registered").
     public sealed class SynchronizationTask : IBackgroundTask
     {
-		private static readonly ILogger Log;
+		private static readonly ILoggerAsync Log;
 
 		static SynchronizationTask()
 		{
 			Bootstrapper.Run(typeof(SynchronizationTask));
 
-			Log = LogManagerFactory.DefaultLogManager.GetLogger<SynchronizationTask>();
+			Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<SynchronizationTask>();
 		}
 
 		public async void Run(IBackgroundTaskInstance taskInstance)
 		{
-			Log.Info("Synchronization background task started");
-
 			var deferral = taskInstance.GetDeferral();
 
 			try
 			{
+				await Log.InfoAsync("Synchronization background task started");
+
 				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 				
 				if (authenticatedSilently)
@@ -38,14 +38,14 @@ namespace Linqua
 				}
 				else
 				{
-					Log.Warn("Authentication failed.");
+					await Log.WarnAsync("Authentication failed.");
 				}
 
-				Log.Info("Synchronization background task completed");
+				await Log.InfoAsync("Synchronization background task completed");
 			}
 			catch (Exception ex)
 			{
-				ExceptionHandlingHelper.HandleNonFatalError(ex, "Synchronization background task failed.", sendTelemetry: false);
+				await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "Synchronization background task failed.", sendTelemetry: false);
 			}
 			finally
 			{
