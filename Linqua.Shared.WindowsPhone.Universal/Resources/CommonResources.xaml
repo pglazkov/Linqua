@@ -1,0 +1,297 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:local="using:Linqua.Resources"
+					xmlns:system="using:System">
+
+	<Color x:Key="PhoneBackgroundColor">Black</Color>
+	<Color x:Key="PhoneTextHighColor">#FFFFFFFF</Color>
+	
+	<Color x:Key="ApplicationThemeColor">#B5DB4E</Color>
+	<SolidColorBrush x:Key="ApplicationThemeBrush"
+					 Color="{StaticResource ApplicationThemeColor}"/>
+	
+	<SolidColorBrush x:Key="ProgressRingBrush"
+					 Color="{StaticResource ApplicationThemeColor}"/>
+
+	<Color x:Key="TextOnThemeBackgroundColor">White</Color>
+	<SolidColorBrush x:Key="TextOnThemeBackgroundBrush"
+					 Color="{StaticResource TextOnThemeBackgroundColor}"/>
+	
+	<SolidColorBrush x:Key="EntryTextForegroundBrush"
+					 Color="{ThemeResource PhoneTextHighColor}"/>
+	
+	<SolidColorBrush x:Key="ApplicationThemeDimmedBrush"
+					 Color="{StaticResource ApplicationThemeColor}"
+					 Opacity="0.3"/>
+	
+	<LinearGradientBrush x:Key="UnderlineBrush"
+						 StartPoint="0,0"
+						 EndPoint="1,0">
+		<GradientStop Color="{StaticResource ApplicationThemeColor}"
+					  Offset="0.0" />
+		<GradientStop Color="{StaticResource ApplicationThemeColor}"
+					  Offset="0.5" />
+		<GradientStop Color="Transparent"
+					  Offset="1.0" />
+	</LinearGradientBrush>
+
+	<LinearGradientBrush x:Key="UnderlineDimmedBrush"
+						 StartPoint="0,0"
+						 EndPoint="1,0"
+						 Opacity="0.4">
+		<GradientStop Color="{StaticResource ApplicationThemeColor}"
+					  Offset="0.0" />
+		<GradientStop Color="{StaticResource ApplicationThemeColor}"
+					  Offset="0.5" />
+		<GradientStop Color="Transparent"
+					  Offset="1.0" />
+	</LinearGradientBrush>
+
+	<SolidColorBrush x:Key="ProgressBarIndeterminateForegroundThemeBrush"
+					 Color="{StaticResource ApplicationThemeColor}" />
+
+	<x:Double x:Key="ProgressBarThemeMinHeight">2</x:Double>
+
+	<SolidColorBrush x:Key="TextBoxBackgroundThemeBrush"
+					 Color="White" />
+
+	<Color x:Key="SystemColorControlAccentColor">#8CC63E</Color>
+	<SolidColorBrush x:Key="PhoneAccentBrush"
+					 Color="{StaticResource SystemColorControlAccentColor}" />
+
+	<SolidColorBrush x:Key="ButtonPressedBackgroundThemeBrush"
+					 Color="{ThemeResource SystemColorControlAccentColor}" />
+
+	<SolidColorBrush x:Key="TextSelectionHighlightColorThemeBrush"
+					 Color="{ThemeResource SystemColorControlAccentColor}" />
+
+	<!-- ===================================================== -->
+
+	<Thickness x:Key="TabHeaderListItemSelectedBorderThickness">0,4,0,0</Thickness>
+	
+	<Style x:Key="TabHeaderItemStyle"
+		   TargetType="ListBoxItem">
+		<Setter Property="Background"
+				Value="Transparent" />
+		<Setter Property="TabNavigation"
+				Value="Local" />
+		<Setter Property="Padding"
+				Value="0,8" />
+		<Setter Property="HorizontalAlignment"
+				Value="Stretch" />
+		<Setter Property="HorizontalContentAlignment"
+				Value="Center" />
+		<Setter Property="Foreground"
+				Value="{ThemeResource PivotHeaderForegroundUnselectedBrush}" />
+		<Setter Property="FontSize"
+				Value="20" />
+		<Setter Property="Template">
+			<Setter.Value>
+				<ControlTemplate TargetType="ListBoxItem">
+					<Border x:Name="LayoutRoot"
+							BorderBrush="{TemplateBinding BorderBrush}"
+							BorderThickness="{TemplateBinding BorderThickness}"
+							Background="{TemplateBinding Background}">
+						<VisualStateManager.VisualStateGroups>
+							<VisualStateGroup x:Name="CommonStates">
+								<VisualStateGroup.Transitions>
+									<VisualTransition From="Pressed"
+													  To="Normal">
+										<Storyboard>
+											<PointerUpThemeAnimation Storyboard.TargetName="InnerGrid" />
+										</Storyboard>
+									</VisualTransition>
+								</VisualStateGroup.Transitions>
+								<VisualState x:Name="Normal" />
+								<VisualState x:Name="PointerOver" />
+								<VisualState x:Name="Disabled">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
+																	   Storyboard.TargetName="ContentPresenter">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{ThemeResource ListBoxItemDisabledForegroundThemeBrush}" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="Pressed">
+									<Storyboard>
+										<PointerDownThemeAnimation Storyboard.TargetName="InnerGrid" />
+										<DoubleAnimation Duration="0"
+														 To="1"
+														 Storyboard.TargetProperty="Opacity"
+														 Storyboard.TargetName="PressedBackground" />
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
+																	   Storyboard.TargetName="ContentPresenter">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{ThemeResource PivotHeaderForegroundSelectedBrush}" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+							<VisualStateGroup x:Name="SelectionStates">
+								<VisualState x:Name="Unselected" />
+								<VisualState x:Name="Selected">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
+																	   Storyboard.TargetName="ContentPresenter">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{ThemeResource PivotHeaderForegroundSelectedBrush}" />
+										</ObjectAnimationUsingKeyFrames>
+
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness"
+																	   Storyboard.TargetName="UnderlineBorder">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{StaticResource TabHeaderListItemSelectedBorderThickness}" />
+										</ObjectAnimationUsingKeyFrames>
+
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="SelectedUnfocused">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
+																	   Storyboard.TargetName="ContentPresenter">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{ThemeResource PivotHeaderForegroundSelectedBrush}" />
+										</ObjectAnimationUsingKeyFrames>
+
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness"
+																	   Storyboard.TargetName="UnderlineBorder">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{StaticResource TabHeaderListItemSelectedBorderThickness}" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="SelectedDisabled">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
+																	   Storyboard.TargetName="ContentPresenter">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{ThemeResource PivotHeaderForegroundSelectedBrush}" />
+										</ObjectAnimationUsingKeyFrames>
+
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness"
+																	   Storyboard.TargetName="UnderlineBorder">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{StaticResource TabHeaderListItemSelectedBorderThickness}" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="SelectedPointerOver">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
+																	   Storyboard.TargetName="ContentPresenter">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{ThemeResource PivotHeaderForegroundSelectedBrush}" />
+										</ObjectAnimationUsingKeyFrames>
+
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness"
+																	   Storyboard.TargetName="UnderlineBorder">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{StaticResource TabHeaderListItemSelectedBorderThickness}" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+								<VisualState x:Name="SelectedPressed">
+									<Storyboard>
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground"
+																	   Storyboard.TargetName="ContentPresenter">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{ThemeResource PivotHeaderForegroundSelectedBrush}" />
+										</ObjectAnimationUsingKeyFrames>
+
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness"
+																	   Storyboard.TargetName="UnderlineBorder">
+											<DiscreteObjectKeyFrame KeyTime="0"
+																	Value="{StaticResource TabHeaderListItemSelectedBorderThickness}" />
+										</ObjectAnimationUsingKeyFrames>
+									</Storyboard>
+								</VisualState>
+							</VisualStateGroup>
+						</VisualStateManager.VisualStateGroups>
+						<Grid x:Name="InnerGrid"
+							  Background="Transparent">
+							<Rectangle x:Name="PressedBackground"
+									   Fill="Transparent"
+									   Opacity="0" />
+							<Border x:Name="UnderlineBorder"
+									BorderBrush="{StaticResource ApplicationThemeBrush}"
+									BorderThickness="0,0,0,0">
+								
+								<ContentPresenter x:Name="ContentPresenter"
+												  ContentTemplate="{TemplateBinding ContentTemplate}"
+												  ContentTransitions="{TemplateBinding ContentTransitions}"
+												  Content="{TemplateBinding Content}"
+												  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+												  Margin="{TemplateBinding Padding}"
+												  VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+							</Border>
+
+						</Grid>
+					</Border>
+				</ControlTemplate>
+			</Setter.Value>
+		</Setter>
+	</Style>
+
+	<!-- ===================================================== -->
+
+	<Thickness x:Key="PivotPortraitThemePadding">0</Thickness>
+	<Thickness x:Key="PivotLandscapeThemePadding">0</Thickness>
+
+	<!-- ===================================================== -->
+
+	<Style x:Key="MarkLearnedButtonStyle"
+		   TargetType="ToggleButton"
+		   BasedOn="{StaticResource IconToggleButtonStyle}">
+		<Setter Property="Content"
+				Value="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z " />
+	</Style>
+
+	<Style x:Key="RefreshButtonStyle"
+		   TargetType="Button"
+		   BasedOn="{StaticResource IconButtonStyle}">
+		<Setter Property="Content"
+				Value="F1 M 38,20.5833C 42.9908,20.5833 47.4912,22.6825 50.6667,26.046L 50.6667,17.4167L 55.4166,22.1667L 55.4167,34.8333L 42.75,34.8333L 38,30.0833L 46.8512,30.0833C 44.6768,27.6539 41.517,26.125 38,26.125C 31.9785,26.125 27.0037,30.6068 26.2296,36.4167L 20.6543,36.4167C 21.4543,27.5397 28.9148,20.5833 38,20.5833 Z M 38,49.875C 44.0215,49.875 48.9963,45.3932 49.7703,39.5833L 55.3457,39.5833C 54.5457,48.4603 47.0852,55.4167 38,55.4167C 33.0092,55.4167 28.5088,53.3175 25.3333,49.954L 25.3333,58.5833L 20.5833,53.8333L 20.5833,41.1667L 33.25,41.1667L 38,45.9167L 29.1487,45.9167C 31.3231,48.3461 34.483,49.875 38,49.875 Z " />
+	</Style>
+
+	<Style x:Key="NextButtonStyle"
+		   TargetType="Button"
+		   BasedOn="{StaticResource IconButtonStyle}">
+		<Setter Property="Content"
+				Value="F1 M 42.3542,38L 26.5208,53.8333L 37.2083,53.8333L 53.8333,38L 37.2083,22.1667L 26.5208,22.1667L 42.3542,38 Z " />
+	</Style>
+
+	<Style x:Key="RedoButtonStyle"
+		   TargetType="Button"
+		   BasedOn="{StaticResource IconButtonStyle}">
+		<Setter Property="Content"
+				Value="F1 M 50.672,20.5864L 55.4219,25.3364L 55.422,38.0031L 42.7553,38.0031L 38.0053,33.2531L 46.8578,33.2522C 44.6831,30.8224 41.5227,29.2932 38.0052,29.2932C 31.4459,29.2932 26.1285,34.6106 26.1285,41.1699C 26.1285,44.4495 27.4579,47.4187 29.6071,49.5679L 25.6881,53.4869C 22.5359,50.3347 20.5862,45.9799 20.5862,41.1698C 20.5862,31.5494 28.385,23.7507 38.0053,23.7507C 42.9966,23.7507 47.4975,25.8499 50.6734,29.2137L 50.672,20.5864 Z " />
+	</Style>
+
+	<Style x:Key="UndoButtonStyle"
+		   TargetType="Button"
+		   BasedOn="{StaticResource IconButtonStyle}">
+		<Setter Property="Content"
+				Value="F1 M 25.3362,20.5864L 25.3348,29.2137C 28.5107,25.8499 33.0116,23.7507 38.0029,23.7507C 47.6232,23.7507 55.422,31.5494 55.422,41.1698C 55.422,45.9799 53.4723,50.3347 50.32,53.4869L 46.401,49.5679C 48.5503,47.4187 49.8796,44.4495 49.8796,41.1699C 49.8796,34.6106 44.5623,29.2932 38.003,29.2932C 34.4855,29.2932 31.3251,30.8224 29.1504,33.2522L 38.0029,33.2531L 33.2529,38.0031L 20.5862,38.0031L 20.5862,25.3364L 25.3362,20.5864 Z " />
+	</Style>
+
+	<Style x:Key="InfoButtonStyle"
+		   TargetType="Button"
+		   BasedOn="{StaticResource IconButtonStyle}">
+		<Setter Property="Content"
+				Value="F1 M 31.6666,30.0834L 42.7499,30.0834L 42.7499,33.2501L 42.7499,52.2501L 45.9165,52.2501L 45.9165,57.0001L 31.6666,57.0001L 31.6666,52.2501L 34.8332,52.2501L 34.8332,34.8335L 31.6666,34.8335L 31.6666,30.0834 Z M 38.7917,19C 40.9778,19 42.75,20.7722 42.75,22.9583C 42.75,25.1445 40.9778,26.9167 38.7917,26.9167C 36.6055,26.9167 34.8333,25.1445 34.8333,22.9583C 34.8333,20.7722 36.6055,19 38.7917,19 Z" />
+	</Style>
+
+	<Style x:Key="QuestionButtonStyle"
+		   TargetType="Button"
+		   BasedOn="{StaticResource IconButtonStyle}">
+		<Setter Property="Content"
+				Value="F1 M 37.2083,49.0833C 39.3945,49.0833 41.1667,50.8555 41.1667,53.0417C 41.1667,55.2278 39.3945,57 37.2083,57C 35.0222,57 33.25,55.2278 33.25,53.0417C 33.25,50.8555 35.0222,49.0833 37.2083,49.0833 Z M 38,17.4167C 44.9956,17.4167 50.6666,21.9416 50.6666,28.5C 50.6666,30.875 49.0833,34.8333 45.9167,36.4167C 42.75,38 41.1667,40.1267 41.1667,42.75L 41.1667,45.9167L 33.25,45.9167L 33.25,43.5417C 33.25,38.1571 38,34.8333 39.5833,33.25C 42.75,30.0833 42.75,29.644 42.75,28.5C 42.75,25.8767 40.6233,23.75 38,23.75C 35.3766,23.75 33.25,25.8767 33.25,28.5L 33.25,30.875L 25.3333,30.875L 25.3333,29.2917C 25.3333,22.7333 31.0044,17.4167 38,17.4167 Z" />
+	</Style>
+
+	<Style x:Key="EntryItemMenuFlyoutPresenterStyle"
+		   TargetType="MenuFlyoutPresenter">
+		<Setter Property="ScrollViewer.ZoomMode"
+				Value="Disabled" />
+	</Style>
+</ResourceDictionary>

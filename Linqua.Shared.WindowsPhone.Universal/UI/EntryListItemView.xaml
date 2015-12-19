@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="Linqua.UI.EntryListItemView"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:converters="using:Framework.Converters"
+			 xmlns:loc="using:Linqua.UI"
+			 mc:Ignorable="d"
+			 d:DesignHeight="480"
+			 d:DesignWidth="480"
+			 d:DataContext="{d:DesignInstance loc:EntryListItemViewModel, IsDesignTimeCreatable=True}">
+
+	<UserControl.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceDictionary Source="../Resources/CommonResources.xaml" />
+			</ResourceDictionary.MergedDictionaries>
+
+			<converters:BooleanToDoubleConverter x:Key="IsLearnedToOpacityConverter"
+												 TrueValue="0.5"
+												 FalseValue="1" />
+		</ResourceDictionary>
+
+	</UserControl.Resources>
+
+	<FlyoutBase.AttachedFlyout>
+		<MenuFlyout MenuFlyoutPresenterStyle="{StaticResource EntryItemMenuFlyoutPresenterStyle}">
+			<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
+							Text="Delete"
+							Command="{Binding DeleteCommand}" />
+
+			<MenuFlyoutItem x:Uid="EditFlyoutItem"
+							Text="RESMISSING EditFlyoutItem"
+							Command="{Binding EditCommand}" />
+
+		</MenuFlyout>
+	</FlyoutBase.AttachedFlyout>
+
+	<Border x:Name="RootBorder"
+			Background="{ThemeResource EntryBoxBackgroundBrush}"
+			Padding="12,0,12,6"
+			BorderThickness="1"
+			BorderBrush="{ThemeResource EntryBoxBorderBrush}"
+			CornerRadius="0">
+		<Grid x:Name="LayoutRoot"
+			  VerticalAlignment="Center">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="Auto" />
+				<RowDefinition Height="Auto" />
+			</Grid.RowDefinitions>
+
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="Auto" />
+			</Grid.ColumnDefinitions>
+
+			<TextBlock x:Name="EntryTextBox"
+					   Grid.Row="0"
+					   Grid.Column="0"
+					   Text="{Binding Text}"
+					   Style="{ThemeResource SubheaderTextBlockStyle}"
+					   Foreground="{StaticResource EntryTextForegroundBrush}"
+					   TextWrapping="Wrap"
+					   Margin="0"
+					   VerticalAlignment="Top"
+					   Pivot.SlideInAnimationGroup="1"
+					   CommonNavigationTransitionInfo.IsStaggerElement="True"
+					   Opacity="{Binding IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}}" />
+
+			<loc:TranslationViewControl Grid.Row="1"
+										Grid.Column="0"
+										Margin="0,2,0,0"
+										Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+										Pivot.SlideInAnimationGroup="2"
+										VerticalAlignment="Top"
+										CommonNavigationTransitionInfo.IsStaggerElement="True"
+										Opacity="{Binding IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}}" />
+
+			<ToggleButton Grid.Row="0"
+						  Grid.RowSpan="2"
+						  Grid.Column="1"
+						  Margin="10,6,0,0"
+						  Style="{StaticResource MarkLearnedButtonStyle}"
+						  IsChecked="{Binding IsLearnt, Mode=TwoWay}" />
+		</Grid>
+	</Border>
+</UserControl>

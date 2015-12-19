@@ -49,4 +49,4 @@ namespace Linqua.Logging
 			return uploadUri;
 		}
 	}
-}
+} 

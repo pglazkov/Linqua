@@ -46,10 +46,15 @@
     <Compile Include="AppPortable.cs" />
     <Compile Include="AuthFailureHandler.cs" />
     <Compile Include="ConnectionHelper.cs" />
+    <Compile Include="DeviceInfo.cs" />
     <Compile Include="ExceptionHandlingHelper.cs" />
     <Compile Include="FakeData.cs" />
     <Compile Include="DataObjects\ClientEntry.cs" />
     <Compile Include="LocalSettingsKeys.cs" />
+    <Compile Include="Logging\FileStreamingTarget.cs" />
+    <Compile Include="Logging\ILogSharingService.cs" />
+    <Compile Include="Logging\LoggerHelper.cs" />
+    <Compile Include="Logging\WinRTFileTarget.cs" />
     <Compile Include="MobileService.cs" />
     <Compile Include="Notifications\ILiveTileManager.cs" />
     <Compile Include="Notifications\LiveTileManager.cs" />
@@ -153,7 +158,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

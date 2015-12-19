@@ -3,20 +3,12 @@
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
     <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>97390809-073e-4c46-85d3-19a0fe92d808</SharedGUID>
+    <SharedGUID>ef8ad5d1-7f4d-4c06-a15b-2acdc2411f87</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
     <Import_RootNamespace>Linqua.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)DeviceInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Logging\FileStreamingTarget.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Logging\ILogSharingService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Logging\LoggerHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\LogSharingService.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Logging\WinRTFileTarget.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)PlatformServices\" />
   </ItemGroup>
 </Project>

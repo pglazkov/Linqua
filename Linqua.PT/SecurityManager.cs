@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Security.Authentication.OnlineId;
 using Windows.Security.Credentials;
 using Microsoft.Live;
 using Microsoft.WindowsAzure.MobileServices;
@@ -52,24 +54,31 @@ namespace Linqua
 			
 			if (user == null)
 			{
-				LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
+				user = await DoLoginAsync(CredentialPromptType.DoNotPrompt);
 
-				LiveLoginResult result = null;
-				try
+				if (user != null)
 				{
-					result = await liveIdClient.InitializeAsync(AuthenticationScopes);
-				}
-				catch (LiveAuthException ex)
-				{
-					ExceptionHandlingHelper.HandleNonFatalError(ex, "Authentication error");
-				}
-
-				if (result != null && result.Status == LiveConnectSessionStatus.Connected)
-				{
-					user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
-
 					vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
 				}
+
+				//LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
+
+				//LiveLoginResult result = null;
+				//try
+				//{
+				//	result = await liveIdClient.InitializeAsync(AuthenticationScopes);
+				//}
+				//catch (LiveAuthException ex)
+				//{
+				//	ExceptionHandlingHelper.HandleNonFatalError(ex, "Authentication error");
+				//}
+
+				//if (result != null && result.Status == LiveConnectSessionStatus.Connected)
+				//{
+				//	user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
+
+				//	vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
+				//}
 			}
 
 			return user != null;
@@ -89,13 +98,11 @@ namespace Linqua
 				return true;
 			}
 
-			LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
-
-			LiveLoginResult result = null;
+			MobileServiceUser user = null;
 
 			try
 			{
-				result = await liveIdClient.LoginAsync(AuthenticationScopes);
+				user = await DoLoginAsync(CredentialPromptType.PromptIfNeeded);
 			}
 			catch (LiveAuthException ex)
 			{
@@ -114,10 +121,8 @@ namespace Linqua
 				ExceptionHandlingHelper.HandleNonFatalError(ex);
 		    }
 
-		    if (result != null && result.Status == LiveConnectSessionStatus.Connected)
+		    if (user != null)
 			{
-				var user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
-
 				var vault = new PasswordVault();
 				vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
 
@@ -125,6 +130,27 @@ namespace Linqua
 			}
 
 			return false;
+		}
+
+
+		private static async Task<MobileServiceUser> DoLoginAsync(CredentialPromptType promptType)
+		{
+			MobileServiceUser user = null;
+			var authenticator = new OnlineIdAuthenticator();
+			var mobileServicesTicket = new OnlineIdServiceTicketRequest(AuthenticationRedirectUrl, "JWT" /*"DELEGATION"*/);
+
+			var ticketRequests = new List<OnlineIdServiceTicketRequest> { mobileServicesTicket };
+
+			var authResult = await authenticator.AuthenticateUserAsync(ticketRequests, promptType);
+
+			if ((authResult.Tickets.Count == 1) && (authResult.Tickets[0].ErrorCode == 0))
+			{
+				var accessToken = authResult.Tickets[0];
+
+				user = await MobileService.Client.LoginWithMicrosoftAccountAsync(accessToken.Value);
+			}
+
+			return user;
 		}
 	}
 }

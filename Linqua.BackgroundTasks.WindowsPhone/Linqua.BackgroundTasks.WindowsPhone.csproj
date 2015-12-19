@@ -82,11 +82,7 @@
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Bootstrapper.cs" />
-    <Compile Include="LiveTileUpdateTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="LogsUploadTask.cs" />
-    <Compile Include="SynchronizationTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MetroLog, Version=0.8.8.0, Culture=neutral, PublicKeyToken=ba4ace74c3b410f3, processorArchitecture=MSIL">
@@ -158,7 +154,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
+  <Import Project="..\Linqua.Shared.WindowsPhone.BackgroundTasks\Linqua.Shared.projitems" Label="Shared" />
   <Import Project="..\Linqua.Shared\Linqua.Shared.projitems" Label="Shared" />
+  <Import Project="..\Linqua.Shared.BackgroundTasks.WindowsPhone.Universal\Linqua.Shared.BackgroundTasks.WindowsPhone.Universal.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
