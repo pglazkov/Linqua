@@ -108,7 +108,11 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="LiveTileUpdateTask.cs" />
+    <Compile Include="LogsUploadTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SynchronizationTask.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Framework.PT\Framework.PT.csproj">
@@ -125,7 +129,6 @@
       <AdditionalProperties>SkipValidatePackageReferences=true</AdditionalProperties>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Linqua.Shared.BackgroundTasks.WindowsPhone.Universal\Linqua.Shared.BackgroundTasks.WindowsPhone.Universal.projitems" Label="Shared" />
   <Import Project="..\Linqua.Shared\Linqua.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

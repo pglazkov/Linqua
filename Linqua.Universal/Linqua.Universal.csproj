@@ -93,11 +93,114 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <None Include="ApplicationInsights.config" />
     <None Include="Linqua.Universal_StoreKey.pfx" />
     <None Include="project.json" />
+    <PRIResource Include="Strings\ru\Resources.resw" />
+    <PRIResource Include="Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationController.cs" />
+    <Compile Include="BackgroundTaskHelper.cs" />
+    <Compile Include="Bootstrapper.cs" />
+    <Compile Include="DesignTimeApplicationContoller.cs" />
+    <Compile Include="EntryOperations.cs" />
+    <Compile Include="Events\EntryCreatedEvent.cs" />
+    <Compile Include="Events\EntryDeletedEvent.cs" />
+    <Compile Include="Events\EntryDetailsRequestedEvent.cs" />
+    <Compile Include="Events\EntryEditingFinishedEvent.cs" />
+    <Compile Include="Events\EntryEditRequestedEvent.cs" />
+    <Compile Include="Events\EntryIsLearntChangedEvent.cs" />
+    <Compile Include="Events\EntryQuickEditRequestedEvent.cs" />
+    <Compile Include="Events\EntryUpdatedEvent.cs" />
+    <Compile Include="Events\IsTranslationShownChangedEvent.cs" />
+    <Compile Include="Framework\AwaitableExtensions.cs" />
+    <Compile Include="Framework\Behavior.cs" />
+    <Compile Include="Framework\BusyStatus.cs" />
+    <Compile Include="Framework\FlickDirection.cs" />
+    <Compile Include="Framework\FlickedAwayEventArgs.cs" />
+    <Compile Include="Framework\FlickingEventArgs.cs" />
+    <Compile Include="Framework\HorizontalFlickBehavior.cs" />
+    <Compile Include="Framework\INavigationView.cs" />
+    <Compile Include="Framework\NavigationHelper.cs" />
+    <Compile Include="Framework\ObservableDictionary.cs" />
+    <Compile Include="Framework\PivotSwipeLockBehavior.cs" />
+    <Compile Include="Framework\StatusBarBehavior.cs" />
+    <Compile Include="Framework\StatusBusyService.cs" />
+    <Compile Include="Framework\SuspensionManager.cs" />
+    <Compile Include="Framework\SwipeDetectionBehavior.cs" />
+    <Compile Include="IEntryOperations.cs" />
+    <Compile Include="NavigationConstants.cs" />
+    <Compile Include="Offline\IOfflineSyncController.cs" />
+    <Compile Include="Offline\OfflineSyncController.cs" />
+    <Compile Include="Persistence\SyncFailedHandler.cs" />
+    <Compile Include="PlatformServices\TelemetryService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\WindowsRuntimeResourceManager.cs" />
+    <Compile Include="StartupWorkflow.cs" />
+    <Compile Include="UI\EntryDetailsPage.xaml.cs">
+      <DependentUpon>EntryDetailsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EntryDetailsViewModel.cs" />
+    <Compile Include="UI\EntryEditPage.xaml.cs">
+      <DependentUpon>EntryEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EntryEditViewModel.cs" />
+    <Compile Include="UI\EntryListItemTimeGroupViewModel.cs" />
+    <Compile Include="UI\EntryListItemView.xaml.cs">
+      <DependentUpon>EntryListItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EntryListItemViewModel.cs" />
+    <Compile Include="UI\EntryTextEditorView.xaml.cs">
+      <DependentUpon>EntryTextEditorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\EntryTextEditorViewModel.cs" />
+    <Compile Include="UI\EntryViewModel.cs" />
+    <Compile Include="UI\FullEntryListView.xaml.cs">
+      <DependentUpon>FullEntryListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FullEntryListViewModel.cs" />
+    <Compile Include="UI\IEntryDetailsView.cs" />
+    <Compile Include="UI\IEntryEditView.cs" />
+    <Compile Include="UI\IEntryListItemView.cs" />
+    <Compile Include="UI\IMainView.cs" />
+    <Compile Include="UI\IPivotContentView.cs" />
+    <Compile Include="UI\IPivotHostView.cs" />
+    <Compile Include="UI\LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\LoginViewModel.cs" />
+    <Compile Include="UI\LogSharingAction.cs" />
+    <Compile Include="UI\MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MainViewModel.cs" />
+    <Compile Include="UI\NewEntryPage.xaml.cs">
+      <DependentUpon>NewEntryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Parts\EmptyListContent.xaml.cs">
+      <DependentUpon>EmptyListContent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Parts\FlipControl.xaml.cs">
+      <DependentUpon>FlipControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Parts\PageHeader.xaml.cs">
+      <DependentUpon>PageHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Parts\TranslationViewControl.xaml.cs">
+      <DependentUpon>TranslationViewControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RandomEntryListItemView.xaml.cs">
+      <DependentUpon>RandomEntryListItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RandomEntryListView.xaml.cs">
+      <DependentUpon>RandomEntryListView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\RandomEntryListViewModel.cs" />
+    <Compile Include="UI\TimeGroupViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -107,6 +210,23 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Package.StoreAssociation.xml" />
+    <Content Include="Assets\AlignmentGrid.png" />
+    <Content Include="Assets\BadgeLogo.scale-240.png" />
+    <Content Include="Assets\icon-48x48px.png" />
+    <Content Include="Assets\icon-50x50px.png" />
+    <Content Include="Assets\Icons\Dark\add.png" />
+    <Content Include="Assets\Icons\Dark\delete.png" />
+    <Content Include="Assets\Icons\Dark\edit.png" />
+    <Content Include="Assets\Icons\icon-16x16px-white.png" />
+    <Content Include="Assets\Icons\icon-16x16px.png" />
+    <Content Include="Assets\Icons\icon-48x48px-white.png" />
+    <Content Include="Assets\Icons\icon-48x48px.png" />
+    <Content Include="Assets\Logo.scale-240.png" />
+    <Content Include="Assets\SmallLogo.scale-240.png" />
+    <Content Include="Assets\SplashScreen.scale-240.png" />
+    <Content Include="Assets\Square71x71Logo.scale-240.png" />
+    <Content Include="Assets\StoreLogo.scale-240.png" />
+    <Content Include="Assets\WideLogo.scale-240.png" />
     <Content Include="Properties\Default.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -139,7 +259,88 @@
       <AdditionalProperties>SkipValidatePackageReferences=true</AdditionalProperties>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="..\Linqua.Shared.WindowsPhone.Universal\Linqua.Shared.WindowsPhone.Universal.projitems" Label="Shared" />
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Resources\ButtonStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\CommonResources.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Converters.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Theme\Dark.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\Theme\Light.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\EntryDetailsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\EntryEditPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\EntryListItemView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\EntryTextEditorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\FullEntryListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\LoginPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\NewEntryPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Parts\EmptyListContent.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Parts\FlipControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Parts\PageHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\Parts\TranslationViewControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\RandomEntryListItemView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\RandomEntryListView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
   <Import Project="..\Linqua.Shared\Linqua.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
