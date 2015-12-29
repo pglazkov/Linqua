@@ -43,6 +43,13 @@
 				<Style TargetType="ListViewItem">
 					<Setter Property="HorizontalContentAlignment"
 							Value="Stretch" />
+					<Setter Property="Template">
+						<Setter.Value>
+							<ControlTemplate TargetType="ListViewItem">
+								<ContentPresenter />
+							</ControlTemplate>
+						</Setter.Value>
+					</Setter>
 				</Style>
 
 			</ListView.ItemContainerStyle>

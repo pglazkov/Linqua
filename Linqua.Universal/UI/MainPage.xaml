@@ -44,7 +44,7 @@
             <TextBlock x:Uid="MainPageHeaderStatisticsUnderlineTextBlock"
                        Text="RESMISSING MainPageHeaderStatisticsUnderlineTextBlock"
                        HorizontalAlignment="Right"
-                       Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"/>
+					   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
 
             <TextBlock Grid.Row="1"
                        Foreground="{ThemeResource ApplicationThemeBrush}"
@@ -60,13 +60,12 @@
 			  Grid.Row="1"
 			  Margin="0,0,0,0">
 			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
 				<RowDefinition Height="*" />
 				<RowDefinition Height="Auto" />
 			</Grid.RowDefinitions>
 
             <Grid VerticalAlignment="Center"
-                  Grid.Row="1"
+                  Grid.Row="0"
                   Visibility="{Binding IsLoadingEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
                   Margin="24,0,24,74">
                 <Grid.RowDefinitions>
@@ -94,40 +93,15 @@
 
             </Grid>
 
-			<ListBox x:Name="ImageBar"
-					 Grid.Row="0"
-					 ScrollViewer.VerticalScrollBarVisibility="Disabled"
-					 ItemContainerStyle="{StaticResource TabHeaderItemStyle}"
-					 SelectedIndex="{Binding SelectedIndex, ElementName=Pivot, Mode=TwoWay}"
-					 Background="Transparent"
-					 Margin="24,-2,24,8"
-					 HorizontalAlignment="Stretch"
-					 HorizontalContentAlignment="Stretch"
-					 BorderThickness="0">
-				<ListBox.ItemsPanel>
-					<ItemsPanelTemplate>
-						<controls:SplitPanel />
-					</ItemsPanelTemplate>
-				</ListBox.ItemsPanel>
-
-				<ListBoxItem>
-					<TextBlock x:Uid="PivotRandomItemHeader"
-							   Text="RES_MISSING PivotRandomItemHeader" />
-				</ListBoxItem>
-				<ListBoxItem>
-					<TextBlock x:Uid="PivotFullListItemHeader"
-							   Text="RES_MISSING PivotFullListItemHeader" />
-				</ListBoxItem>
-			</ListBox>
-
-			<Pivot Grid.Row="1"
+			<Pivot Grid.Row="0"
 				   x:Name="Pivot"
 				   x:Uid="Pivot"
 				   CommonNavigationTransitionInfo.IsStaggerElement="True"
 				   Margin="0,0,0,0"
 				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
 				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded"
-				   SelectedIndex="{Binding PivotSelectedIndex, Mode=TwoWay}">
+				   SelectedIndex="{Binding PivotSelectedIndex, Mode=TwoWay}"
+				   Style="{StaticResource TabsStylePivotStyle}">
 
 				<!--<interactivity:Interaction.Behaviors>
 					<framework:PivotSwipeLockBehavior />
@@ -136,6 +110,14 @@
 				<PivotItem Margin="0"
 						   CommonNavigationTransitionInfo.IsStaggerElement="True"
                            ManipulationMode="TranslateX">
+					<PivotItem.Header>
+						<Border MinWidth="100">
+							<TextBlock x:Uid="PivotRandomItemHeader"
+									   Text="RES_MISSING PivotRandomItemHeader"
+									   HorizontalAlignment="Center"/>
+						</Border>
+					</PivotItem.Header>
+					
 					<loc:RandomEntryListView DataContext="{Binding RandomEntryListViewModel}"
 											 Margin="0,0,0,24" />
 
@@ -143,20 +125,28 @@
 
 				<PivotItem Margin="0"
                            ManipulationMode="TranslateX">
+					<PivotItem.Header>
+						<Border MinWidth="100">
+							<TextBlock x:Uid="PivotFullListItemHeader"
+									   Text="RES_MISSING PivotFullListItemHeader"
+									   HorizontalAlignment="Center"/>
+						</Border>
+					</PivotItem.Header>
+					
 					<loc:FullEntryListView DataContext="{Binding FullEntryListViewModel}"
 										   Margin="0,0,0,0" />
 				</PivotItem>
 			</Pivot>
 			
 			<Border Grid.Row="0"
-					Grid.RowSpan="3"
+					Grid.RowSpan="2"
 					Grid.Column="0"
 					Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
 					Opacity="0.4"
 					Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
 			<loc:EntryTextEditorView x:Name="EntryEditorView"
-								 Grid.Row="2"
+								 Grid.Row="1"
 								 DataContext="{Binding EntryTextEditorViewModel}"
 								 Margin="20,12,20,22"
 								 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"

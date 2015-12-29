@@ -12,13 +12,13 @@
 	<Grid>
 		<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
 				   Text="RES_MISSING Translating..."
-				   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+				   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
 				   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}"
 				   HorizontalAlignment="{Binding ElementName=ThisControl, Path=HorizontalContentAlignment}"/>
 
 		<TextBlock Text="{Binding Definition}"
 				   TextWrapping="Wrap"
-				   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+				   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
 				   Visibility="{Binding IsTranslating, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
 				   HorizontalAlignment="{Binding ElementName=ThisControl, Path=HorizontalContentAlignment}"/>
 	</Grid>
