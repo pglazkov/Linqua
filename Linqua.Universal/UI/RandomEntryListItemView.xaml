@@ -108,7 +108,7 @@
 					<TextBlock x:Uid="TranslationTitleTextBlock"
 							   Grid.Row="0"
 							   Text="RES_MISSING translation"
-							   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+							   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
 							   FontSize="10"
 							   HorizontalAlignment="Center"
 							   VerticalAlignment="Top"
@@ -133,7 +133,7 @@
 							<TextBlock x:Uid="NoTraslationTextBlock"
 									   Text="{Binding NoDefinitionText}"
 									   Visibility="{Binding IsDefinitionVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-									   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+									   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
 									   Pivot.SlideInAnimationGroup="2"
 									   VerticalAlignment="Center"
 									   HorizontalAlignment="Center"
@@ -169,7 +169,7 @@
                                          Command="{Binding EditCommand}"
                                          VerticalContentAlignment="Center"
                                          Padding="25,0,0,0">
-                            <TextBlock Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                            <TextBlock Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                        FontSize="14"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center">

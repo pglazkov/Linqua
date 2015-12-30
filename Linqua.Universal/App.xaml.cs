@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Globalization;
 using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -36,6 +37,8 @@ namespace Linqua
         public App()
         {
 			WindowsAppInitializer.InitializeAsync(WindowsCollectors.Metadata | WindowsCollectors.Session | WindowsCollectors.PageView);
+
+	        ApplicationLanguages.PrimaryLanguageOverride = "ru";
 
 			InitializeComponent();
             Suspending += OnSuspending;

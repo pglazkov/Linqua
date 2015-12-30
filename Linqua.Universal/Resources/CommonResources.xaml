@@ -130,8 +130,6 @@
 
 	<!-- =========================================================== --> 
 	
-	<Thickness x:Key="TabHeaderSelectedBorderThickness">0,0,0,2</Thickness>
-	
 	<Style x:Key="TabsPivotHeaderItemStyle"
 		   TargetType="PivotHeaderItem">
 		<Setter Property="FontSize"
@@ -147,9 +145,9 @@
 		<Setter Property="Foreground"
 				Value="{ThemeResource SystemControlForegroundBaseMediumBrush}" />
 		<Setter Property="Padding"
-				Value="{ThemeResource PivotHeaderItemMargin}" />
+				Value="24,0,24,0" />
 		<Setter Property="Height"
-				Value="48" />
+				Value="40" />
 		<Setter Property="VerticalContentAlignment"
 				Value="Center" />
 		<Setter Property="IsTabStop"
@@ -232,10 +230,10 @@
 											<DiscreteObjectKeyFrame KeyTime="0"
 																	Value="{ThemeResource SystemControlHighlightTransparentBrush}" />
 										</ObjectAnimationUsingKeyFrames>
-										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderThickness"
+										<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility"
 																	   Storyboard.TargetName="UnderlineBorder">
 											<DiscreteObjectKeyFrame KeyTime="0"
-																	Value="{StaticResource TabHeaderSelectedBorderThickness}" />
+																	Value="Visible" />
 										</ObjectAnimationUsingKeyFrames>
 									</Storyboard>
 								</VisualState>
@@ -292,24 +290,43 @@
 								</VisualState>
 							</VisualStateGroup>
 						</VisualStateManager.VisualStateGroups>
+						<Grid>
+							
+						</Grid>
 						<Border x:Name="UnderlineBorder"
-								BorderBrush="{StaticResource ApplicationThemeBrush}"
-								BorderThickness="0,0,0,0">
-
-							<ContentPresenter x:Name="ContentPresenter"
-											  Content="{TemplateBinding Content}"
-											  ContentTemplate="{TemplateBinding ContentTemplate}"
-											  Margin="{TemplateBinding Padding}"
-											  FontSize="{TemplateBinding FontSize}"
-											  FontFamily="{TemplateBinding FontFamily}"
-											  FontWeight="{TemplateBinding FontWeight}"
-											  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-											  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-								<ContentPresenter.RenderTransform>
-									<TranslateTransform x:Name="ContentPresenterTranslateTransform" />
-								</ContentPresenter.RenderTransform>
-							</ContentPresenter>
+								Height="2"
+								Visibility="Collapsed"
+								VerticalAlignment="Top">
+							<Border.Background>
+								<LinearGradientBrush StartPoint="0,0"
+													 EndPoint="1,0">
+									<LinearGradientBrush.GradientStops>
+										<GradientStop Color="Transparent"
+													  Offset="0.0" />
+										<GradientStop Color="{StaticResource ApplicationThemeColor}"
+													  Offset="0.3" />
+										<GradientStop Color="{StaticResource ApplicationThemeColor}"
+													  Offset="0.7"/>
+										<GradientStop Color="Transparent"
+													  Offset="1.0" />
+									</LinearGradientBrush.GradientStops>
+								</LinearGradientBrush>
+							</Border.Background>
 						</Border>
+
+						<ContentPresenter x:Name="ContentPresenter"
+										  Content="{TemplateBinding Content}"
+										  ContentTemplate="{TemplateBinding ContentTemplate}"
+										  Margin="{TemplateBinding Padding}"
+										  FontSize="{TemplateBinding FontSize}"
+										  FontFamily="{TemplateBinding FontFamily}"
+										  FontWeight="{TemplateBinding FontWeight}"
+										  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+										  VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+							<ContentPresenter.RenderTransform>
+								<TranslateTransform x:Name="ContentPresenterTranslateTransform" />
+							</ContentPresenter.RenderTransform>
+						</ContentPresenter>
 					</Grid>
 				</ControlTemplate>
 			</Setter.Value>

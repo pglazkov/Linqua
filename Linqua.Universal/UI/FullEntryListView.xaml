@@ -66,13 +66,10 @@
 					</GroupStyle.HeaderContainerStyle>
 					<GroupStyle.HeaderTemplate>
 						<DataTemplate>
-							<Border Margin="24,0,24,8"
-									Padding="0,8,0,2"
-									d:DataContext="{d:DesignInstance loc:EntryListItemTimeGroupViewModel}"
-									BorderThickness="0,0,0,1"
-									BorderBrush="{ThemeResource UnderlineDimmedBrush}">
+							<Border Margin="12,8,12,6"
+									d:DataContext="{d:DesignInstance loc:EntryListItemTimeGroupViewModel}">
 								<TextBlock Text="{Binding GroupName}"
-										   FontSize="14"
+										   FontSize="15"
 										   Foreground="{StaticResource ApplicationThemeBrush}"
 										   Opacity="0.8"
 										   HorizontalAlignment="Left"/>

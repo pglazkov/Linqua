@@ -70,14 +70,8 @@
 								HorizontalAlignment="Right"
 								Margin="0,-4,0,0"
 								Visibility="{Binding HasDetectedLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
-						<!--<TextBlock x:Uid="EntryEditPage_DetectedLanguageLabel"
-                                   Text="RES_MISSING EntryEditPage_DetectedLanguageLabel"
-								   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
-                                   FontSize="12"
-								   VerticalAlignment="Center"/>-->
-
-                        <TextBlock Text="{Binding DetectedLanguage}"
-                                   Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+						<TextBlock Text="{Binding DetectedLanguage}"
+                                   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                    FontSize="12"
 								   VerticalAlignment="Center"
 								   Margin="4,0,0,0"/>

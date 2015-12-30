@@ -127,6 +127,8 @@ namespace Linqua.Framework
 
 		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
 		{
+			if (args.NewValue == null) return;
+
 			translateTransform.X = -translateTransform.X;
 
 			AnimateBackToOriginalPosition();

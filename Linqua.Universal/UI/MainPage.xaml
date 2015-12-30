@@ -44,7 +44,8 @@
             <TextBlock x:Uid="MainPageHeaderStatisticsUnderlineTextBlock"
                        Text="RESMISSING MainPageHeaderStatisticsUnderlineTextBlock"
                        HorizontalAlignment="Right"
-					   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"/>
+					   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+					   FontSize="10"/>
 
             <TextBlock Grid.Row="1"
                        Foreground="{ThemeResource ApplicationThemeBrush}"
@@ -58,7 +59,7 @@
 		<!--ContentPanel - place additional content here-->
 		<Grid x:Name="ContentPanel"
 			  Grid.Row="1"
-			  Margin="0,0,0,0">
+			  Margin="0,-2,0,0">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="*" />
 				<RowDefinition Height="Auto" />
@@ -118,8 +119,7 @@
 						</Border>
 					</PivotItem.Header>
 					
-					<loc:RandomEntryListView DataContext="{Binding RandomEntryListViewModel}"
-											 Margin="0,0,0,24" />
+					<loc:RandomEntryListView DataContext="{Binding RandomEntryListViewModel}" />
 
 				</PivotItem>
 
@@ -133,8 +133,7 @@
 						</Border>
 					</PivotItem.Header>
 					
-					<loc:FullEntryListView DataContext="{Binding FullEntryListViewModel}"
-										   Margin="0,0,0,0" />
+					<loc:FullEntryListView DataContext="{Binding FullEntryListViewModel}" />
 				</PivotItem>
 			</Pivot>
 			

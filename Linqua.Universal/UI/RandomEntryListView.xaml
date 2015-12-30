@@ -98,7 +98,7 @@
 
                             <TextBlock x:Uid="RandomEntryView_SlideLeftForNextEntryHintTextBlock"
                                        Text="RES_MISSING RandomEntryView_SlideLeftForNextEntryHintTextBlock"
-                                       Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+                                       Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                        FontSize="12"
                                        VerticalAlignment="Center"
                                        Margin="0,0,0,1" />
@@ -107,7 +107,7 @@
                     </Border>
 					
                     <Border BorderThickness="0,0,0,0"
-                            BorderBrush="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+							BorderBrush="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                             Visibility="{Binding ElementName=PreviousEntriesHintContainer, Path=Visibility}"
                             Margin="16,2,16,2"
                             Opacity="0.5"/>
@@ -122,7 +122,7 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock x:Uid="RandomEntryView_SlideRightForPreviousEntryHintTextBlock"
                                        Text="RES_MISSING RandomEntryView_SlideRightForPreviousEntryHintTextBlock"
-                                       Foreground="{ThemeResource TextBoxPlaceholderTextThemeBrush}"
+									   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                        FontSize="12"
                                        VerticalAlignment="Center"
                                        Margin="0,0,0,1" />
