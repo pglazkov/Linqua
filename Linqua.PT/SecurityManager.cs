@@ -54,7 +54,14 @@ namespace Linqua
 			
 			if (user == null)
 			{
-				user = await DoLoginAsync(CredentialPromptType.DoNotPrompt);
+				try
+				{
+					user = await DoLoginAsync(CredentialPromptType.DoNotPrompt);
+				}
+				catch (Exception)
+				{
+					// Do nothing
+				}
 
 				if (user != null)
 				{
