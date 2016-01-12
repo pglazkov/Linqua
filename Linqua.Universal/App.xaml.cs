@@ -25,6 +25,7 @@ namespace Linqua
     public sealed partial class App : Application
     {
 		private readonly ILogger log;
+	    private RootFrameNavigationHelper frameNavigationHelper;
 
 #if WINDOWS_PHONE_APP
         //private TransitionCollection transitions;
@@ -87,6 +88,7 @@ namespace Linqua
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
+				frameNavigationHelper = new RootFrameNavigationHelper(rootFrame);
 
 				// Associate the frame with a SuspensionManager key.
 				SuspensionManager.RegisterFrame(rootFrame, "AppFrame");

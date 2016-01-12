@@ -35,7 +35,7 @@ namespace Linqua.UI
             this.InitializeComponent();
 			
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
+			
 			navigationHelper = new NavigationHelper(this);
 			navigationHelper.LoadState += NavigationHelper_LoadState;
 			navigationHelper.SaveState += NavigationHelper_SaveState;
