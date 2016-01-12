@@ -7,10 +7,10 @@
 			 mc:Ignorable="d">
 
 	<Border Margin="24,0,24,0"
-			Padding="0,18,0,18"
+			Padding="0,4,0,8"
 			BorderThickness="0,0,0,2"
 			BorderBrush="{ThemeResource HeaderUnderlineBrush}">
-		<Grid>
+		<Grid VerticalAlignment="Center">
 			<Grid.ColumnDefinitions>
 				<ColumnDefinition Width="Auto"/>
 				<ColumnDefinition Width="*"/>

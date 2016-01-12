@@ -50,25 +50,19 @@
 					<RowDefinition Height="Auto" />
 				</Grid.RowDefinitions>
 
-				<Grid.ChildrenTransitions>
-					<TransitionCollection>
-						<EntranceThemeTransition FromHorizontalOffset="200" />
-					</TransitionCollection>
-				</Grid.ChildrenTransitions>
-
-                <StackPanel Grid.Row="0"
+				<StackPanel Grid.Row="0"
                             Grid.Column="0"
                             Orientation="Vertical">
                     <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             FontSize="{ThemeResource TextStyleExtraLargePlusFontSize}"
+                             FontSize="{ThemeResource TextStyleExtraLargeFontSize}"
                              TextWrapping="Wrap"
                              IsTextPredictionEnabled="False"
                              CommonNavigationTransitionInfo.IsStaggerElement="True"
                              Padding="10,3,10,8" />
 					
 					<StackPanel Orientation="Horizontal"
-								HorizontalAlignment="Right"
-								Margin="0,-4,0,0"
+								HorizontalAlignment="Center"
+								Margin="0,2,0,0"
 								Visibility="{Binding HasDetectedLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
 						<TextBlock Text="{Binding DetectedLanguage}"
                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
@@ -82,7 +76,7 @@
 				<Button Grid.Row="1"
 						Command="{Binding TranslateCommand}"
 						HorizontalAlignment="Center"
-						Margin="0,0,0,0">
+						Margin="0,18,0,0">
 					<StackPanel Orientation="Horizontal">
 						<Path Data="M5,18.07L14.68,12.82L12,11.53L10.37,7.8L19,10.6V14.8L8.97,20.87L5,18.07V3.13L9,4.5V14.5L5,18.07Z"
 							  Stretch="Uniform"
@@ -97,14 +91,8 @@
 					
 				</Button>
 				
-				<!--<TextBlock x:Uid="TranslationTitleTextBlock"
-						   Grid.Row="2"
-						   Text="RES_MISSING TranslationTitleTextBlock"
-						   Style="{ThemeResource ControlHeaderTextBlockStyle}"
-						   Margin="0,0,0,0"/>-->
-				
 				<Grid Grid.Row="3"
-					  Margin="0,0,0,0">
+					  Margin="0,18,0,0">
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition Width="*" />
 						<ColumnDefinition Width="Auto" />

@@ -72,6 +72,10 @@
 
 	<!-- ===================================================== -->
 
+	<x:Double x:Key="TextStyleSmallFontSize">10.66</x:Double>
+
+	<!-- ===================================================== -->
+	
 	<Style x:Key="MarkLearnedButtonStyle"
 		   TargetType="ToggleButton"
 		   BasedOn="{StaticResource IconToggleButtonStyle}">
@@ -296,23 +300,8 @@
 						<Border x:Name="UnderlineBorder"
 								Height="2"
 								Visibility="Collapsed"
-								VerticalAlignment="Top">
-							<Border.Background>
-								<LinearGradientBrush StartPoint="0,0"
-													 EndPoint="1,0">
-									<LinearGradientBrush.GradientStops>
-										<GradientStop Color="Transparent"
-													  Offset="0.0" />
-										<GradientStop Color="{StaticResource ApplicationThemeColor}"
-													  Offset="0.3" />
-										<GradientStop Color="{StaticResource ApplicationThemeColor}"
-													  Offset="0.7"/>
-										<GradientStop Color="Transparent"
-													  Offset="1.0" />
-									</LinearGradientBrush.GradientStops>
-								</LinearGradientBrush>
-							</Border.Background>
-						</Border>
+								VerticalAlignment="Top"
+								Background="{StaticResource ApplicationThemeBrush}"/>
 
 						<ContentPresenter x:Name="ContentPresenter"
 										  Content="{TemplateBinding Content}"
@@ -381,6 +370,27 @@
 							
 						</Grid.Resources>
 						<VisualStateManager.VisualStateGroups>
+							<!--<VisualStateGroup>
+								<VisualState x:Name="Narrow">
+									<VisualState.StateTriggers>
+										<AdaptiveTrigger MinWindowWidth="0" />
+									</VisualState.StateTriggers>
+									<VisualState.Setters>
+										<Setter Target="HeaderClipper.HorizontalContentAlignment"
+												Value="Center" />
+									</VisualState.Setters>
+								</VisualState>
+								<VisualState x:Name="Wide">
+									<VisualState.StateTriggers>
+										<AdaptiveTrigger MinWindowWidth="500" />
+									</VisualState.StateTriggers>
+									<VisualState.Setters>
+										<Setter Target="HeaderClipper.HorizontalContentAlignment"
+												Value="Stretch" />
+									</VisualState.Setters>
+								</VisualState>
+							</VisualStateGroup>-->
+							
 							<VisualStateGroup x:Name="Orientation">
 								<VisualState x:Name="Portrait">
 									<Storyboard>
@@ -605,9 +615,9 @@
 
 										<!-- By setting the column definitions to *,Auto,* allows the tabs to be centered by default -->
 										<Grid.ColumnDefinitions>
-											<ColumnDefinition Width="*" />
 											<ColumnDefinition Width="Auto" />
 											<ColumnDefinition Width="*" />
+											<ColumnDefinition Width="Auto" />
 										</Grid.ColumnDefinitions>
 										<Grid.RenderTransform>
 											<CompositeTransform x:Name="PivotLayoutElementTranslateTransform" />
@@ -623,7 +633,7 @@
 										<ContentControl x:Name="HeaderClipper"
 														Grid.Row="0"
 														Grid.Column="1"
-														HorizontalContentAlignment="Stretch"
+														HorizontalContentAlignment="Center"
 														UseSystemFocusVisuals="True">
 											<ContentControl.Clip>
 												<RectangleGeometry x:Name="HeaderClipperGeometry" />

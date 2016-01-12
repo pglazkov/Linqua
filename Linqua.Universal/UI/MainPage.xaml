@@ -34,7 +34,8 @@
 
 		<Grid Grid.Row="0"
 			  HorizontalAlignment="Right"
-			  Margin="0,9,24,0"
+			  VerticalAlignment="Top"
+			  Margin="0,0,24,0"
 			  Visibility="{Binding IsStatisticsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
 			<Grid.RowDefinitions>
 				<RowDefinition Height="Auto" />
@@ -51,7 +52,7 @@
                        Foreground="{ThemeResource ApplicationThemeBrush}"
 					   FontSize="{ThemeResource TextStyleLargeFontSize}"
 					   HorizontalAlignment="Right"
-                       Margin="0,2,0,0">
+                       Margin="0,0,0,0">
 				<Run Text="{Binding NotLearnedEntriesCount}" /> / <Run Text="{Binding TotalEntriesCount}" />
 			</TextBlock>
 		</Grid>

@@ -116,6 +116,14 @@ namespace Linqua.Framework
 			}
 
 			AssociatedObject.RenderTransform = translateTransform;
+
+			AssociatedObject.ManipulationMode =
+				ManipulationModes.TranslateX |
+				ManipulationModes.TranslateInertia;
+
+			AssociatedObject.ManipulationStarting += OnAssociatedObjectManipulationStarting;
+			AssociatedObject.ManipulationDelta += OnAssociatedObjectManipulationDelta;
+			AssociatedObject.ManipulationCompleted += OnManipulationCompleted;
 		}
 
 		protected override void OnDetaching()
@@ -123,6 +131,10 @@ namespace Linqua.Framework
 			AssociatedObject.Loaded -= OnLoaded;
 			AssociatedObject.Unloaded -= OnUnloaded;
 			AssociatedObject.DataContextChanged -= OnDataContextChanged;
+
+			AssociatedObject.ManipulationStarting -= OnAssociatedObjectManipulationStarting;
+			AssociatedObject.ManipulationDelta -= OnAssociatedObjectManipulationDelta;
+			AssociatedObject.ManipulationCompleted -= OnManipulationCompleted;
 		}
 
 		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
@@ -139,21 +151,11 @@ namespace Linqua.Framework
 			Container = Container ?? AssociatedObject.GetFirstAncestorOfType<Panel>();
 
 			containerTransform = AssociatedObject.TransformToVisual(Container);
-
-			AssociatedObject.ManipulationMode =
-				ManipulationModes.TranslateX |
-				ManipulationModes.TranslateInertia;
-
-			AssociatedObject.ManipulationStarting += OnAssociatedObjectManipulationStarting;
-			AssociatedObject.ManipulationDelta += OnAssociatedObjectManipulationDelta;
-			AssociatedObject.ManipulationCompleted += OnManipulationCompleted;
 		}
 
 		private void OnUnloaded(object sender, RoutedEventArgs e)
 		{
-			AssociatedObject.ManipulationStarting -= OnAssociatedObjectManipulationStarting;
-			AssociatedObject.ManipulationDelta -= OnAssociatedObjectManipulationDelta;
-			AssociatedObject.ManipulationCompleted -= OnManipulationCompleted;
+			
 		}
 
 		private void OnAssociatedObjectManipulationStarting(object sender, ManipulationStartingRoutedEventArgs e)

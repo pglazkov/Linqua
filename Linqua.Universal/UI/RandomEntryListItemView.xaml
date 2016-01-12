@@ -83,7 +83,6 @@
 										   LineHeight="21.5"
 										   TextLineBounds="Tight"
 										   FontSize="72"
-										   Foreground="{StaticResource EntryTextForegroundBrush}"
 										   TextWrapping="Wrap"
 										   VerticalAlignment="Top"
 										   Pivot.SlideInAnimationGroup="1"

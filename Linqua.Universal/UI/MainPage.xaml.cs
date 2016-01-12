@@ -28,13 +28,18 @@ namespace Linqua.UI
 		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<MainPage>();
 
 	    private BackgroundTaskRegistration syncBackgroundTask;
+	    private NavigationHelper navigationHelper;
 
 	    public MainPage()
 	    {
             this.InitializeComponent();
 			
             this.NavigationCacheMode = NavigationCacheMode.Required;
-	        
+
+			navigationHelper = new NavigationHelper(this);
+			navigationHelper.LoadState += NavigationHelper_LoadState;
+			navigationHelper.SaveState += NavigationHelper_SaveState;
+
 			if (!DesignMode.DesignModeEnabled)
 			{
 				DataContext = ViewModel = CompositionManager.Current.GetInstance<ICompositionFactory>().Create<MainViewModel>();
@@ -214,5 +219,15 @@ namespace Linqua.UI
 				content.OnPivotItemUnloaded(this);
 			}
 		}
-    }
+
+		private void NavigationHelper_SaveState(object sender, SaveStateEventArgs e)
+		{
+
+		}
+
+		private void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
+		{
+
+		}
+	}
 }

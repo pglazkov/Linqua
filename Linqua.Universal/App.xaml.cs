@@ -36,9 +36,9 @@ namespace Linqua
         /// </summary>
         public App()
         {
+#if !DEBUG
 			WindowsAppInitializer.InitializeAsync(WindowsCollectors.Metadata | WindowsCollectors.Session | WindowsCollectors.PageView);
-
-	        ApplicationLanguages.PrimaryLanguageOverride = "ru";
+#endif
 
 			InitializeComponent();
             Suspending += OnSuspending;
