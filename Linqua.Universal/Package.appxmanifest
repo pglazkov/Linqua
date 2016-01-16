@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" IgnorableNamespaces= "uap mp">
+<Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" IgnorableNamespaces="uap mp">
   <Identity Name="24216PavloGlazkov.Linqua" Publisher="CN=E9D8E231-C5A5-4AB6-9999-41A6A9AFE6F5" Version="1.1.0.12" />
   <mp:PhoneIdentity PhoneProductId="6ddedcb9-e456-4bff-a30b-7d5e9123aeae" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Dependencies>
@@ -16,11 +16,12 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="Linqua.App">
-      <uap:VisualElements DisplayName="Linqua" Square150x150Logo="Assets\Logo.png" Square44x44Logo="Assets\SmallLogo.png" Description="ms-resource:Manifest_AppDescription" BackgroundColor="transparent">
-        <uap:DefaultTile Wide310x150Logo="Assets\WideLogo.png" Square71x71Logo="Assets\Square71x71Logo.png">
+      <uap:VisualElements DisplayName="Linqua" Square150x150Logo="Assets\Square150x150Logo.png" Square44x44Logo="Assets\Square44x44Logo.png" Description="ms-resource:Manifest_AppDescription" BackgroundColor="transparent">
+        <uap:DefaultTile Wide310x150Logo="Assets\Wide310x150Logo.png" Square71x71Logo="Assets\Square71x71Logo.png" Square310x310Logo="Assets\Square310x310Logo.png">
           <uap:ShowNameOnTiles>
             <uap:ShowOn Tile="square150x150Logo" />
             <uap:ShowOn Tile="wide310x150Logo" />
+            <uap:ShowOn Tile="square310x310Logo" />
           </uap:ShowNameOnTiles>
         </uap:DefaultTile>
         <uap:InitialRotationPreference>
@@ -29,9 +30,9 @@
         <uap:SplashScreen Image="Assets\SplashScreen.png" BackgroundColor="#1E1E1E" />
       </uap:VisualElements>
       <Extensions>
-        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.SynchronizationTask">
+        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.LogsUploadTask">
           <BackgroundTasks>
-            <Task Type="systemEvent" />
+            <Task Type="timer" />
           </BackgroundTasks>
         </Extension>
         <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.LiveTileUpdateTask">
@@ -39,9 +40,9 @@
             <Task Type="timer" />
           </BackgroundTasks>
         </Extension>
-        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.LogsUploadTask">
+        <Extension Category="windows.backgroundTasks" EntryPoint="Linqua.SynchronizationTask">
           <BackgroundTasks>
-            <Task Type="timer" />
+            <Task Type="systemEvent" />
           </BackgroundTasks>
         </Extension>
       </Extensions>
