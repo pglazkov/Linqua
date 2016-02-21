@@ -1,4 +1,7 @@
-﻿using Framework;
+﻿using System;
+using System.Reactive.Linq;
+using Framework;
+using Framework.PlatformServices;
 using Linqua.DataObjects;
 using Linqua.Events;
 
@@ -22,9 +25,11 @@ namespace Linqua.UI
 
 			this.eventAggregator = eventAggregator;
 			FinishCommand = new DelegateCommand(Finish, CanFinish);
+            CancelCommand = new DelegateCommand(Cancel);
 		}
 
-		public DelegateCommand FinishCommand { get; }
+	    public DelegateCommand FinishCommand { get; }
+        public DelegateCommand CancelCommand { get; }
 
 		public ClientEntry Data
 		{
@@ -78,6 +83,13 @@ namespace Linqua.UI
 			return !string.IsNullOrEmpty(EntryText) && !IsBusy;
 		}
 
+		private void Cancel()
+		{
+			EntryText = string.Empty;
+
+			eventAggregator.Publish(new EntryEditingCancelledEvent());
+		}
+
 		private void Finish()
 		{
 			IsBusy = true;
@@ -91,7 +103,12 @@ namespace Linqua.UI
 				Data.Text = EntryText;
 			}
 
-			eventAggregator.Publish(new EntryEditingFinishedEvent(Data));
+			// Schedule publishing the event after a small timeout to allow the layout to update as a result of 
+			// hiding the on-screen keyboard when user presses "Save".
+			Observable.Timer(TimeSpan.FromSeconds(0.2)).ObserveOnDispatcher().Subscribe(_ =>
+			{
+				eventAggregator.Publish(new EntryEditingFinishedEvent(Data));
+			});
 		}
 
 		public void Clear()

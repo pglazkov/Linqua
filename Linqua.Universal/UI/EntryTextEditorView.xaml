@@ -9,11 +9,6 @@
 			 d:DesignWidth="250"
 			 d:DesignHeight="150">
 	<Grid>
-		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*" />
-			<ColumnDefinition Width="Auto" />
-		</Grid.ColumnDefinitions>
-
 		<TextBox x:Uid="NewEntryTextBox"
 				 x:Name="NewEntryTextBox"
 				 Text="{Binding EntryText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

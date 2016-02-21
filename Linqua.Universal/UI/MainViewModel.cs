@@ -96,6 +96,7 @@ namespace Linqua.UI
 			EntryTextEditorViewModel = compositionFactory.Create<EntryTextEditorViewModel>();
 
 			eventAggregator.GetEvent<EntryEditingFinishedEvent>().Subscribe(OnEntryEditingFinished);
+			eventAggregator.GetEvent<EntryEditingCancelledEvent>().Subscribe(OnEntryEditingCancelled);
 			eventAggregator.GetEvent<EntryDeletedEvent>().Subscribe(OnEntryDeleted);
 			eventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
 			eventAggregator.GetEvent<EntryUpdatedEvent>().SubscribeWithAsync(OnEntryDefinitionChangedAsync);
@@ -409,6 +410,11 @@ namespace Linqua.UI
 			IsEntryEditorVisible = true;
 
 			View.FocusEntryCreationView();
+		}
+
+		private void OnEntryEditingCancelled(EntryEditingCancelledEvent e)
+		{
+			IsEntryEditorVisible = false;
 		}
 
 		private async void OnEntryEditingFinished(EntryEditingFinishedEvent e)

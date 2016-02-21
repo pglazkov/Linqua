@@ -195,10 +195,7 @@ namespace Linqua.UI
 
 	    private void EntryEditorView_OnInputTargetLostFocus(object sender, EventArgs e)
 	    {
-		    //ViewModel.EntryTextEditorViewModel.Clear();
-		    ViewModel.IsEntryEditorVisible = false;
 	    }
-		
 
 		private void Pivot_OnPivotItemLoaded(Pivot sender, PivotItemEventArgs args)
 		{

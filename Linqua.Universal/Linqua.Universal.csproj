@@ -111,6 +111,7 @@
     <Compile Include="Events\EntryCreatedEvent.cs" />
     <Compile Include="Events\EntryDeletedEvent.cs" />
     <Compile Include="Events\EntryDetailsRequestedEvent.cs" />
+    <Compile Include="Events\EntryEditingCancelledEvent.cs" />
     <Compile Include="Events\EntryEditingFinishedEvent.cs" />
     <Compile Include="Events\EntryEditRequestedEvent.cs" />
     <Compile Include="Events\EntryIsLearntChangedEvent.cs" />

@@ -56,8 +56,7 @@
 				<Run Text="{Binding NotLearnedEntriesCount}" /> / <Run Text="{Binding TotalEntriesCount}" />
 			</TextBlock>
 		</Grid>
-
-		<!--ContentPanel - place additional content here-->
+		
 		<Grid x:Name="ContentPanel"
 			  Grid.Row="1"
 			  Margin="0,-2,0,0">
@@ -145,14 +144,17 @@
 					Opacity="0.4"
 					Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-			<loc:EntryTextEditorView x:Name="EntryEditorView"
-								 Grid.Row="1"
-								 DataContext="{Binding EntryTextEditorViewModel}"
-								 Margin="20,12,20,22"
-								 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
-								 Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
-								 InputTargetLostFocus="EntryEditorView_OnInputTargetLostFocus"
-								 Grid.ColumnSpan="2" />
+			<Border Grid.Row="0"
+					Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+					VerticalAlignment="Bottom"
+					Padding="22,22,22,22"
+					Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+				<loc:EntryTextEditorView x:Name="EntryEditorView"
+										 DataContext="{Binding EntryTextEditorViewModel}"
+										 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
+										 InputTargetLostFocus="EntryEditorView_OnInputTargetLostFocus" />
+			</Border>
+			
 		</Grid>
 
 		<!--Uncomment to see an alignment grid to help ensure your controls are
@@ -184,7 +186,12 @@
 							  Icon="Accept"
 							  Command="{Binding EntryTextEditorViewModel.FinishCommand}"
 							  Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
-			</CommandBar.PrimaryCommands>
+                <AppBarButton x:Uid="CancelNewWordButton"
+                              Label="RES_MISSING CancelNewWordButton"
+                              Icon="Cancel"
+                              Command="{Binding EntryTextEditorViewModel.CancelCommand}"
+                              Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </CommandBar.PrimaryCommands>
 			<CommandBar.SecondaryCommands>
 				<AppBarButton x:Uid="SyncButton"
 							  Label="RES_MISSING sync"

@@ -58,7 +58,8 @@
 					   Grid.Row="0"
 					   Grid.Column="0"
 					   Text="{Binding Text}"
-					   Style="{ThemeResource SubheaderTextBlockStyle}"
+					   Style="{ThemeResource TitleTextBlockStyle}"
+					   FontSize="26"
 					   TextWrapping="Wrap"
 					   Margin="0"
 					   VerticalAlignment="Top"
@@ -73,7 +74,8 @@
 										Pivot.SlideInAnimationGroup="2"
 										VerticalAlignment="Top"
 										CommonNavigationTransitionInfo.IsStaggerElement="True"
-										Opacity="{Binding IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}}" />
+										Opacity="{Binding IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}}"
+										FontSize="12"/>
 
 			<ToggleButton Grid.Row="0"
 						  Grid.RowSpan="2"

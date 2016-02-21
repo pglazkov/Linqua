@@ -123,6 +123,9 @@
   <data name="ApplicationHeader.Text" xml:space="preserve">
     <value>LINQUA</value>
   </data>
+  <data name="CancelNewWordButton.Label" xml:space="preserve">
+    <value>отмена</value>
+  </data>
   <data name="ConfirmNewWordButton.Label" xml:space="preserve">
     <value>сохранить</value>
   </data>

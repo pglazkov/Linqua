@@ -62,16 +62,39 @@
 									Value="Stretch" />
 							<Setter Property="VerticalContentAlignment"
 									Value="Center" />
-						</Style>
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewHeaderItem">
+                                        <StackPanel Background="{TemplateBinding Background}"
+                                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                                    BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ContentPresenter x:Name="ContentPresenter"
+                                                              Margin="{TemplateBinding Padding}"
+                                                              Content="{TemplateBinding Content}"
+                                                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                                                              ContentTransitions="{TemplateBinding ContentTransitions}"
+                                                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                            <Rectangle Stroke="{StaticResource ApplicationThemeDimmedBrush}"
+                                                       StrokeThickness="0.5"
+                                                       Height="1"
+                                                       VerticalAlignment="Bottom"
+                                                       HorizontalAlignment="Stretch"
+                                                       Margin="24,6,24,6" />
+                                        </StackPanel>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
 					</GroupStyle.HeaderContainerStyle>
 					<GroupStyle.HeaderTemplate>
 						<DataTemplate>
-							<Border Margin="12,8,12,6"
+							<Border Margin="12,8,12,0"
 									d:DataContext="{d:DesignInstance loc:EntryListItemTimeGroupViewModel}">
 								<TextBlock Text="{Binding GroupName}"
-										   FontSize="15"
+										   FontSize="14"
 										   Foreground="{StaticResource ApplicationThemeBrush}"
-										   Opacity="0.8"
+										   Opacity="0.7"
 										   HorizontalAlignment="Left"/>
 							</Border>
 						</DataTemplate>
