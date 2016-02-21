@@ -211,3 +211,4 @@ pip-log.txt
 /Temp
 /.vs/config/applicationhost.config
 /Linqua.WindowsPhone/BundleArtifacts/arm.txt
+project.lock.json
