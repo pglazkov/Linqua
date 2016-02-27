@@ -63,6 +63,14 @@
 								</DiscreteObjectKeyFrame.Value>
 							</DiscreteObjectKeyFrame>
 						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+													   Storyboard.TargetName="FontSideControl">
+							<DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
 
 						<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Projection).(PlaneProjection.RotationY)"
 													   Storyboard.TargetName="BackSideControl">
@@ -86,10 +94,18 @@
 							                      Value="-90" />
 						</DoubleAnimationUsingKeyFrames>
 						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
-													   Storyboard.TargetName="BackSideControl">
+													   Storyboard.TargetName="FontSideControl">
 							<DiscreteObjectKeyFrame KeyTime="0:0:0.2">
 								<DiscreteObjectKeyFrame.Value>
 									<Visibility>Visible</Visibility>
+								</DiscreteObjectKeyFrame.Value>
+							</DiscreteObjectKeyFrame>
+						</ObjectAnimationUsingKeyFrames>
+						<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)"
+													   Storyboard.TargetName="BackSideControl">
+							<DiscreteObjectKeyFrame KeyTime="0:0:0.2">
+								<DiscreteObjectKeyFrame.Value>
+									<Visibility>Collapsed</Visibility>
 								</DiscreteObjectKeyFrame.Value>
 							</DiscreteObjectKeyFrame>
 						</ObjectAnimationUsingKeyFrames>
@@ -124,6 +140,7 @@
 		</Border>
 
 		<Border x:Name="FontSideControl"
+				Visibility="Visible"
 				Style="{StaticResource BorderStyle}">
 			<Border.Projection>
 				<PlaneProjection/>
