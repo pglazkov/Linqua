@@ -266,7 +266,10 @@ namespace Linqua.Persistence
 			{
 				return await Retry(async () =>
 				{
-					var parameters = new Dictionary<string, string>();
+				    var parameters = new Dictionary<string, string>
+				    {
+				        {"deviceId", DeviceInfo.DeviceId}
+				    };
 
 					var serviceResult = await MobileService.Client.InvokeApiAsync<LogUploadInfo>("LogUploadInfo", HttpMethod.Get, parameters);
 

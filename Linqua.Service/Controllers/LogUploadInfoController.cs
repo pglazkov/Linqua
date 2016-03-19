@@ -13,7 +13,7 @@ namespace Linqua.Service.Controllers
     public class LogUploadInfoController : ApiController
     {
         // GET api/RandomEntry
-        public async Task<LogUploadInfo> Get()
+        public async Task<LogUploadInfo> Get(string deviceId = "")
         {
             string storageAccountName = ConfigurationManager.AppSettings["STORAGE_ACCOUNT_NAME"];
             string storageAccountKey = ConfigurationManager.AppSettings["STORAGE_ACCOUNT_ACCESS_KEY"];
@@ -62,8 +62,16 @@ namespace Linqua.Service.Controllers
             // Get the SAS as a string.
             result.SasQueryString = container.GetSharedAccessSignature(sasPolicy);
 
-            // Set the URL used to store the image.
-            result.ResourceName = currentUser.Id + DateTime.UtcNow.ToString("O") + ".zip";
+            // Set the URL used to store the log file.
+
+            var deviceIdNamePart = string.Empty;
+
+            if (!string.IsNullOrEmpty(deviceId))
+            {
+                deviceIdNamePart = "_" + deviceId;
+            }
+            
+            result.ResourceName = currentUser.Id + deviceIdNamePart + ".zip";
             result.UploadUri = $"{blobEndpoint}{ContainerName}/{result.ResourceName}";
             
             return result;

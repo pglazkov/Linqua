@@ -14,7 +14,7 @@ namespace Linqua
 		{
 			LoggerHelper.SetupLogger();
 
-			Log.Info($"=== Background Task Created. Name: {taskType.Name}; DeviceId: {DeviceInfo.DeviceId}; App Version: {$"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}"}");
+			Log.Info($"=== Background Task Created. Name: {taskType.Name}; DeviceId: {DeviceInfo.DeviceId}; DeviceName: {DeviceInfo.DeviceName}; App Version: {$"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}"}");
 		}
 	}
 }

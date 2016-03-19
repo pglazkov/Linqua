@@ -20,7 +20,8 @@ namespace Linqua
 			ConfigureLogger();
 
 			Log.Info("**** Application Launched. ****");
-			Log.Info("DeviceId: " + DeviceInfo.DeviceId);
+			Log.Info("DeviceName: " + DeviceInfo.DeviceName);
+            Log.Info("DeviceId: " + DeviceInfo.DeviceId);
 			Log.Info($"Version: {$"{Package.Current.Id.Version.Major}.{Package.Current.Id.Version.Minor}.{Package.Current.Id.Version.Build}.{Package.Current.Id.Version.Revision}"}");
 			Log.Debug("Bootstrapper sequence started.");
 

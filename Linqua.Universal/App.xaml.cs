@@ -68,10 +68,11 @@ namespace Linqua
                 DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-		    Telemetry.Client.TrackEvent("App Launched.", new Dictionary<string, string>
-		    {
-			    {"DeviceId", DeviceInfo.DeviceId}
-		    });
+	        Telemetry.Client.TrackEvent("App Launched.", new Dictionary<string, string>
+	        {
+	            {"DeviceName", DeviceInfo.DeviceName},
+	            {"DeviceId", DeviceInfo.DeviceId}
+	        });
 
 			log.Info("Internet Connection: " + ConnectionHelper.IsConnectedToInternet);
 

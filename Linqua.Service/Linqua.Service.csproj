@@ -271,9 +271,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Properties\PublishProfiles\mobile-linqua.pubxml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Migrations\201501251238040_InitialCreate.resx">
       <DependentUpon>201501251238040_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
@@ -298,6 +295,10 @@
     <EmbeddedResource Include="Migrations\201509170643097_AddIndexOnTextColumn.resx">
       <DependentUpon>201509170643097_AddIndexOnTextColumn.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\linqua - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\linqua - Web Deploy.pubxml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

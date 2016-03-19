@@ -61,7 +61,7 @@ namespace Linqua.UI
 
 			try
 			{
-				args.Request.Data.Properties.Title = $"Linqua Logs - {DateTime.UtcNow:s} | {DeviceInfo.DeviceId}";
+				args.Request.Data.Properties.Title = $"Linqua Logs - {DateTime.UtcNow:s} | {DeviceInfo.DeviceName}";
 				args.Request.Data.Properties.Description = "Linqua compressed log files.";
 
 				args.Request.Data.SetWebLink(logUri);
