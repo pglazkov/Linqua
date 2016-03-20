@@ -1,11 +1,14 @@
-﻿using Windows.UI.Xaml;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Animation;
 using Framework;
+using JetBrains.Annotations;
 
 namespace Linqua.UI
 {
-	public partial class EntryListItemView : UserControl, IEntryListItemView
+	public partial class EntryListItemView : UserControl, IEntryListItemView, INotifyPropertyChanged
 	{
 		public EntryListItemView()
 		{
@@ -16,7 +19,7 @@ namespace Linqua.UI
 			Unloaded += OnUnloaded;
 		}
 
-		private EntryListItemViewModel ViewModel => (EntryListItemViewModel)DataContext;
+		public EntryListItemViewModel ViewModel => (EntryListItemViewModel)DataContext;
 
 	    private void OnLoaded(object sender, RoutedEventArgs e)
 		{
@@ -30,6 +33,8 @@ namespace Linqua.UI
 
 		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
 		{
+            OnPropertyChanged(nameof(ViewModel));
+
 			var newVm = (EntryListItemViewModel)args.NewValue;
 
 			if (newVm != null)
@@ -63,5 +68,18 @@ namespace Linqua.UI
 				}
 			}
 		}
+
+        #region PropertyChanged Event
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+	    [NotifyPropertyChangedInvocator]
+	    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+	    {
+	        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+	    }
+
+	    #endregion
+
 	}
 }

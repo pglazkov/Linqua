@@ -27,11 +27,11 @@
 		<MenuFlyout MenuFlyoutPresenterStyle="{StaticResource EntryItemMenuFlyoutPresenterStyle}">
 			<MenuFlyoutItem x:Uid="DeleteFlyoutItem"
 							Text="Delete"
-							Command="{Binding DeleteCommand}" />
+                            Command="{x:Bind ViewModel.DeleteCommand, Mode=OneWay}" />
 
 			<MenuFlyoutItem x:Uid="EditFlyoutItem"
 							Text="RESMISSING EditFlyoutItem"
-							Command="{Binding EditCommand}" />
+                            Command="{x:Bind ViewModel.EditCommand, Mode=OneWay}" />
 
 		</MenuFlyout>
 	</FlyoutBase.AttachedFlyout>
@@ -57,7 +57,7 @@
 			<TextBlock x:Name="EntryTextBox"
 					   Grid.Row="0"
 					   Grid.Column="0"
-					   Text="{Binding Text}"
+					   Text="{x:Bind ViewModel.Text, Mode=OneWay}"
 					   Style="{ThemeResource TitleTextBlockStyle}"
 					   FontSize="26"
 					   TextWrapping="Wrap"
@@ -65,16 +65,16 @@
 					   VerticalAlignment="Top"
 					   Pivot.SlideInAnimationGroup="1"
 					   CommonNavigationTransitionInfo.IsStaggerElement="True"
-					   Opacity="{Binding IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}}" />
+					   Opacity="{x:Bind ViewModel.IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}, Mode=OneWay}" />
 
 			<loc:TranslationViewControl Grid.Row="1"
 										Grid.Column="0"
 										Margin="0,2,0,0"
-										Visibility="{Binding IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Visibility="{x:Bind ViewModel.IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"
 										Pivot.SlideInAnimationGroup="2"
 										VerticalAlignment="Top"
 										CommonNavigationTransitionInfo.IsStaggerElement="True"
-										Opacity="{Binding IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}}"
+                                        Opacity="{x:Bind ViewModel.IsLearnt, Converter={StaticResource IsLearnedToOpacityConverter}, Mode=OneWay}"
 										FontSize="12"/>
 
 			<ToggleButton Grid.Row="0"
@@ -82,7 +82,7 @@
 						  Grid.Column="1"
 						  Margin="10,6,0,0"
 						  Style="{StaticResource MarkLearnedButtonStyle}"
-						  IsChecked="{Binding IsLearnt, Mode=TwoWay}" />
+                          IsChecked="{x:Bind ViewModel.IsLearnt, Mode=TwoWay, Converter={StaticResource BooleanToNullableBooleanConverter}}" />
 		</Grid>
 	</Border>
 </UserControl>

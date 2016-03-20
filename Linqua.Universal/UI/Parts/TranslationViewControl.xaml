@@ -13,13 +13,13 @@
 		<TextBlock x:Uid="EntryListItemView_TranslatingBusyTextBlock"
 				   Text="RES_MISSING Translating..."
 				   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-				   Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}"
-				   HorizontalAlignment="{Binding ElementName=ThisControl, Path=HorizontalContentAlignment}"/>
+                   Visibility="{x:Bind ViewModel.IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"
+                   HorizontalAlignment="{x:Bind HorizontalContentAlignment, Mode=OneWay}"/>
 
-		<TextBlock Text="{Binding Definition}"
+        <TextBlock Text="{x:Bind ViewModel.Definition, Mode=OneWay}"
 				   TextWrapping="Wrap"
 				   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-				   Visibility="{Binding IsTranslating, Converter={StaticResource InvertedBooleanToVisibilityConverter}}"
-				   HorizontalAlignment="{Binding ElementName=ThisControl, Path=HorizontalContentAlignment}"/>
+                   Visibility="{x:Bind ViewModel.IsTranslating, Converter={StaticResource InvertedBooleanToVisibilityConverter}, Mode=OneWay}"
+                   HorizontalAlignment="{x:Bind HorizontalContentAlignment, Mode=OneWay}"/>
 	</Grid>
 </UserControl>

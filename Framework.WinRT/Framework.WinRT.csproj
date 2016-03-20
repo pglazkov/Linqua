@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controls\SplitPanel.cs" />
+    <Compile Include="Converters\BooleanToNullableBooleanConverter.cs" />
     <Compile Include="Converters\BooleanToDoubleConverter.cs" />
     <Compile Include="Converters\InvertedBooleanConverter.cs" />
     <Compile Include="Converters\BooleanToVisibilityConverter.cs" />
