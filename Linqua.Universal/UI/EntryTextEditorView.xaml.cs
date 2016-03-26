@@ -43,6 +43,14 @@ namespace Linqua.UI
 					ViewModel.FinishCommand.Execute().FireAndForget();
 				}
 			}
+
+		    if (e.Key == VirtualKey.Escape && !ViewModel.IsBusy)
+		    {
+		        if (ViewModel.CancelCommand.CanExecute())
+		        {
+		            ViewModel.CancelCommand.Execute().FireAndForget();
+		        }
+		    }
 		}
 
 		private void EntryTextBox_OnLostFocus(object sender, RoutedEventArgs e)
