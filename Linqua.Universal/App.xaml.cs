@@ -41,13 +41,13 @@ namespace Linqua
 			WindowsAppInitializer.InitializeAsync(WindowsCollectors.Metadata | WindowsCollectors.Session | WindowsCollectors.PageView);
 #endif
 
-			InitializeComponent();
+            InitializeComponent();
             Suspending += OnSuspending;
 
             //CoreApplication.UnhandledErrorDetected += // TODO
 	        UnhandledException += OnUnhandledException;
 
-			var bootstrapper = new Bootstrapper();
+            var bootstrapper = new Bootstrapper();
 
 			bootstrapper.Run(this);
 

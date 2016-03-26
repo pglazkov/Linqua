@@ -75,7 +75,8 @@
 
             <Grid VerticalAlignment="Center"
                   HorizontalAlignment="Stretch"
-                  Margin="24,24,24,24">
+                  Margin="24,24,24,24"
+                  MaxWidth="452">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>

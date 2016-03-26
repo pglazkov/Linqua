@@ -38,7 +38,7 @@
 
 	<Border x:Name="RootBorder"
 			Background="{ThemeResource EntryBoxBackgroundBrush}"
-			Padding="12,0,12,6"
+			Padding="12,0,12,0"
 			BorderThickness="1"
 			BorderBrush="{ThemeResource EntryBoxBorderBrush}"
 			CornerRadius="0">
@@ -69,7 +69,7 @@
 
 			<loc:TranslationViewControl Grid.Row="1"
 										Grid.Column="0"
-										Margin="0,2,0,0"
+										Margin="0,2,0,8"
                                         Visibility="{x:Bind ViewModel.IsDefinitionVisible, Converter={StaticResource BooleanToVisibilityConverter}, Mode=OneWay}"
 										Pivot.SlideInAnimationGroup="2"
 										VerticalAlignment="Top"
@@ -80,7 +80,7 @@
 			<ToggleButton Grid.Row="0"
 						  Grid.RowSpan="2"
 						  Grid.Column="1"
-						  Margin="10,6,0,0"
+						  Margin="10,0,0,0"
 						  Style="{StaticResource MarkLearnedButtonStyle}"
                           IsChecked="{x:Bind ViewModel.IsLearnt, Mode=TwoWay, Converter={StaticResource BooleanToNullableBooleanConverter}}" />
 		</Grid>

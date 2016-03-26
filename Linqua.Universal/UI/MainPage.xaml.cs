@@ -4,6 +4,7 @@ using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Background;
+using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.ViewManagement;
@@ -33,7 +34,10 @@ namespace Linqua.UI
 	    public MainPage()
 	    {
             this.InitializeComponent();
-			
+
+            ApplicationView.PreferredLaunchViewSize = new Size(500, 800);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
             this.NavigationCacheMode = NavigationCacheMode.Required;
 			
 			navigationHelper = new NavigationHelper(this);

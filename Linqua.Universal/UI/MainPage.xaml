@@ -99,6 +99,7 @@
 				   x:Uid="Pivot"
 				   CommonNavigationTransitionInfo.IsStaggerElement="True"
 				   Margin="0,0,0,0"
+                   MaxWidth="500"
 				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
 				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded"
 				   SelectedIndex="{Binding PivotSelectedIndex, Mode=TwoWay}"
