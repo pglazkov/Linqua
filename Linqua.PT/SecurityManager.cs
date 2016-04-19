@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.OnlineId;
@@ -14,8 +13,6 @@ namespace Linqua
 	{
 		private const string ProviderId = "MicrosoftLive";
 		private const string AuthenticationRedirectUrl = MobileService.MobileServiceUrl;
-
-		private static readonly string[] AuthenticationScopes = { "wl.signin" };
 
 		public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
 		{
@@ -67,25 +64,6 @@ namespace Linqua
 				{
 					vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
 				}
-
-				//LiveAuthClient liveIdClient = new LiveAuthClient(AuthenticationRedirectUrl);
-
-				//LiveLoginResult result = null;
-				//try
-				//{
-				//	result = await liveIdClient.InitializeAsync(AuthenticationScopes);
-				//}
-				//catch (LiveAuthException ex)
-				//{
-				//	ExceptionHandlingHelper.HandleNonFatalError(ex, "Authentication error");
-				//}
-
-				//if (result != null && result.Status == LiveConnectSessionStatus.Connected)
-				//{
-				//	user = await MobileService.Client.LoginWithMicrosoftAccountAsync(result.Session.AuthenticationToken);
-
-				//	vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
-				//}
 			}
 
 			return user != null;
