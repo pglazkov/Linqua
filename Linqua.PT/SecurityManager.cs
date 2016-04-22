@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.OnlineId;
 using Windows.Security.Credentials;
-using Microsoft.Live;
 using Microsoft.WindowsAzure.MobileServices;
 
 namespace Linqua
@@ -90,24 +89,19 @@ namespace Linqua
 			{
 				user = await DoLoginAsync(CredentialPromptType.PromptIfNeeded);
 			}
-			catch (LiveAuthException ex)
-			{
-				ExceptionHandlingHelper.HandleNonFatalError(ex, "Authentication error");
-			}
-		    catch (NullReferenceException ex)
-		    {
-		        // We have to handle this because this exception occurs if user declines to login with Microsoft account. 
+            catch (Exception ex) {
+                // We have to handle this because an exception can occur if user declines to login with Microsoft account. 
                 // However this error can occur for many other reasons, including bugs in out code.
 #if DEBUG
-                if (Debugger.IsAttached)
-		        {
-		            Debugger.Break();
-		        }
+                if (Debugger.IsAttached) {
+                    Debugger.Break();
+                }
 #endif
-				ExceptionHandlingHelper.HandleNonFatalError(ex);
-		    }
 
-		    if (user != null)
+                ExceptionHandlingHelper.HandleNonFatalError(ex, "Authentication error");
+            }
+
+            if (user != null)
 			{
 				var vault = new PasswordVault();
 				vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
