@@ -9,13 +9,13 @@ using Microsoft.WindowsAzure.MobileServices;
 
 namespace Linqua
 {
-	public static class SecurityManager
-	{
-		private const string ProviderId = "MicrosoftLive";
-		private const string AuthenticationRedirectUrl = MobileService.MobileServiceUrl;
+    public static class SecurityManager
+    {
+        private const string ProviderId = "MicrosoftLive";
+        private const string AuthenticationRedirectUrl = MobileService.MobileServiceUrl;
 
-		public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
-		{
+        public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
+        {
             if (MobileService.Client.ApplicationUri.Host == "localhost")
             {
                 return true;
@@ -23,9 +23,9 @@ namespace Linqua
 
             MobileServiceUser user = null;
 
-			var vault = new PasswordVault();
+            var vault = new PasswordVault();
 
-			PasswordCredential savedCredentials = null;
+            PasswordCredential savedCredentials = null;
 
             if (useCachedCredentials)
             {
@@ -40,37 +40,37 @@ namespace Linqua
             }
 
             if (savedCredentials != null)
-			{
-				user = new MobileServiceUser(savedCredentials.UserName)
-				{
-					MobileServiceAuthenticationToken = vault.Retrieve(ProviderId, savedCredentials.UserName).Password
-				};
+            {
+                user = new MobileServiceUser(savedCredentials.UserName)
+                {
+                    MobileServiceAuthenticationToken = vault.Retrieve(ProviderId, savedCredentials.UserName).Password
+                };
 
-				MobileService.Client.CurrentUser = user;
-			}
-			
-			if (user == null)
-			{
-				try
-				{
-					user = await DoLoginAsync(CredentialPromptType.DoNotPrompt);
-				}
-				catch (Exception)
-				{
-					// Do nothing
-				}
+                MobileService.Client.CurrentUser = user;
+            }
 
-				if (user != null)
-				{
-					vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
-				}
-			}
+            if (user == null)
+            {
+                try
+                {
+                    user = await DoLoginAsync(CredentialPromptType.DoNotPrompt);
+                }
+                catch (Exception)
+                {
+                    // Do nothing
+                }
 
-			return user != null;
-		}
+                if (user != null)
+                {
+                    vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
+                }
+            }
 
-		public static async Task<bool> Authenticate(bool useCachedCredentials = true)
-		{
+            return user != null;
+        }
+
+        public static async Task<bool> Authenticate(bool useCachedCredentials = true)
+        {
             if (MobileService.Client.ApplicationUri.Host == "localhost")
             {
                 return true;
@@ -78,22 +78,24 @@ namespace Linqua
 
             var authenticated = await TryAuthenticateSilently(useCachedCredentials);
 
-			if (authenticated)
-			{
-				return true;
-			}
+            if (authenticated)
+            {
+                return true;
+            }
 
-			MobileServiceUser user = null;
+            MobileServiceUser user = null;
 
-			try
-			{
-				user = await DoLoginAsync(CredentialPromptType.PromptIfNeeded);
-			}
-            catch (Exception ex) {
+            try
+            {
+                user = await DoLoginAsync(CredentialPromptType.PromptIfNeeded);
+            }
+            catch (Exception ex)
+            {
                 // We have to handle this because an exception can occur if user declines to login with Microsoft account. 
                 // However this error can occur for many other reasons, including bugs in out code.
 #if DEBUG
-                if (Debugger.IsAttached) {
+                if (Debugger.IsAttached)
+                {
                     Debugger.Break();
                 }
 #endif
@@ -102,35 +104,35 @@ namespace Linqua
             }
 
             if (user != null)
-			{
-				var vault = new PasswordVault();
-				vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
+            {
+                var vault = new PasswordVault();
+                vault.Add(new PasswordCredential(ProviderId, user.UserId, user.MobileServiceAuthenticationToken));
 
-				return true;
-			}
+                return true;
+            }
 
-			return false;
-		}
+            return false;
+        }
 
 
-		private static async Task<MobileServiceUser> DoLoginAsync(CredentialPromptType promptType)
-		{
-			MobileServiceUser user = null;
-			var authenticator = new OnlineIdAuthenticator();
-			var mobileServicesTicket = new OnlineIdServiceTicketRequest(AuthenticationRedirectUrl, "JWT" /*"DELEGATION"*/);
+        private static async Task<MobileServiceUser> DoLoginAsync(CredentialPromptType promptType)
+        {
+            MobileServiceUser user = null;
+            var authenticator = new OnlineIdAuthenticator();
+            var mobileServicesTicket = new OnlineIdServiceTicketRequest(AuthenticationRedirectUrl, "JWT" /*"DELEGATION"*/);
 
-			var ticketRequests = new List<OnlineIdServiceTicketRequest> { mobileServicesTicket };
+            var ticketRequests = new List<OnlineIdServiceTicketRequest> { mobileServicesTicket };
 
-			var authResult = await authenticator.AuthenticateUserAsync(ticketRequests, promptType);
+            var authResult = await authenticator.AuthenticateUserAsync(ticketRequests, promptType);
 
-			if ((authResult.Tickets.Count == 1) && (authResult.Tickets[0].ErrorCode == 0))
-			{
-				var accessToken = authResult.Tickets[0];
+            if ((authResult.Tickets.Count == 1) && (authResult.Tickets[0].ErrorCode == 0))
+            {
+                var accessToken = authResult.Tickets[0];
 
-				user = await MobileService.Client.LoginWithMicrosoftAccountAsync(accessToken.Value);
-			}
+                user = await MobileService.Client.LoginWithMicrosoftAccountAsync(accessToken.Value);
+            }
 
-			return user;
-		}
-	}
+            return user;
+        }
+    }
 }
