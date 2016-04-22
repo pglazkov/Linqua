@@ -212,3 +212,6 @@ pip-log.txt
 /.vs/config/applicationhost.config
 /Linqua.WindowsPhone/BundleArtifacts/arm.txt
 project.lock.json
+/Linqua.Universal/BundleArtifacts
+/Linqua.Universal/*.appx
+/Linqua.Universal/_pkginfo.txt

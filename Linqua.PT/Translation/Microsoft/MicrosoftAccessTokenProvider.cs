@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Composition;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Framework;
@@ -32,9 +33,12 @@ namespace Linqua.Translation.Microsoft
 		{
 			var tokenExpirationTimeValue = localSettingsService.GetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey) as string;
 
-			var tokenExpirationTime = DateTime.Parse(tokenExpirationTimeValue ?? DateTime.UtcNow.AddMinutes(-1).ToString());
+            DateTime tokenExpirationTime;
+            if (!DateTime.TryParse(tokenExpirationTimeValue, out tokenExpirationTime)) {
+                tokenExpirationTime = DateTime.UtcNow.AddMinutes(-1);
+            }
 
-			string token;
+            string token;
 
 			if (tokenExpirationTime < DateTime.UtcNow.AddMinutes(1))
 			{
@@ -54,7 +58,7 @@ namespace Linqua.Translation.Microsoft
 		{
 			AdmAccessToken newAccessToken = await GetTokenAsync();
 
-			localSettingsService.SetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey, DateTime.UtcNow.AddSeconds(int.Parse(newAccessToken.expires_in)).ToString());
+			localSettingsService.SetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey, DateTime.UtcNow.AddSeconds(int.Parse(newAccessToken.expires_in)).ToString("O"));
 
 			localSettingsService.SetValue(AccessTokenKey, newAccessToken.access_token);
 

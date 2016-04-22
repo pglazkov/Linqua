@@ -106,7 +106,7 @@ namespace Linqua
 
 					var existingEntry = await storage.LookupByExample(entry);
 
-					if (existingEntry != null && !string.IsNullOrWhiteSpace(existingEntry.Definition) && Equals(existingEntry.DefinitionLanguageCode, translateToLanguage))
+					if (existingEntry != null && existingEntry.Id != entry.Id && !string.IsNullOrWhiteSpace(existingEntry.Definition) && Equals(existingEntry.DefinitionLanguageCode, translateToLanguage))
 					{
 						if (Log.IsDebugEnabled)
 							Log.Debug("Found existing entry with translation: \"{0}\". Entry ID: {1}", existingEntry.Definition, existingEntry.Id);
