@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.Universal", "Linqua.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BA352A7A-9663-4DA7-BDAC-538CE63E699D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UAP", "UAP", "{6097D808-A9F5-45B7-8BC4-5A9102B5EA02}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{6097D808-A9F5-45B7-8BC4-5A9102B5EA02}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.BackgroundTasks.Universal", "Linqua.BackgroundTasks.Universal\Linqua.BackgroundTasks.Universal.csproj", "{5BC9B592-CEB4-4ACE-9BF9-C9AF7E85EA7C}"
 EndProject
