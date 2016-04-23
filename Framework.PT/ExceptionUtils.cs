@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Reflection;
 
@@ -10,9 +9,7 @@ namespace Framework
 	{
 		public static IEnumerable<Exception> UnwrapExceptions(Exception exception)
 		{
-			Contract.Requires(exception != null);
-			Contract.Ensures(Contract.Result<IEnumerable<Exception>>() != null);
-			Contract.Ensures(Contract.Result<IEnumerable<Exception>>().Any());
+			Guard.NotNull(exception, nameof(exception));
 
 			if (exception is ReflectionTypeLoadException)
 			{
@@ -39,8 +36,7 @@ namespace Framework
 
 		public static Exception UnwrapException(Exception exception)
 		{
-			Contract.Requires(exception != null);
-			Contract.Ensures(Contract.Result<Exception>() != null);
+			Guard.NotNull(exception, nameof(exception));
 
 			var unwrappedExceptions = UnwrapExceptions(exception).ToArray();
 

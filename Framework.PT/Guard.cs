@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
@@ -21,7 +20,6 @@ namespace Framework
 		/// <exception cref="ArgumentNullException">
 		///     <paramref name="value" /> is a null value.
 		/// </exception>
-		[ContractArgumentValidator]
 		[ContractAnnotation("value:null => halt")]
 		public static void NotNull<T>(T value, string paramName,
 									  [CallerMemberName] string callerMemberName = null,
@@ -37,8 +35,6 @@ namespace Framework
 
 				throw new ArgumentNullException(paramName, message);
 			}
-
-			Contract.EndContractBlock();
 		}
 
 		/// <summary>
@@ -52,7 +48,6 @@ namespace Framework
 		/// <param name="callerLineNumber">To be populated by the compiler.</param>
 		/// <exception cref="ArgumentNullException">Value is a null value.</exception>
 		/// <exception cref="ArgumentException">Value is an empty string value.</exception>
-		[ContractArgumentValidator]
 		[ContractAnnotation("value:null => halt")]
 		public static void NotNullOrEmpty(string value, string argumentName,
 										  [CallerMemberName] string callerMemberName = null,
@@ -72,8 +67,6 @@ namespace Framework
 
 				throw new ArgumentException(message, argumentName);
 			}
-
-			Contract.EndContractBlock();
 		}
 
 		//#endregion

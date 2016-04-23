@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Framework
@@ -331,8 +330,8 @@ namespace Framework
 		/// <param name="actionToExecute">The action to execute.</param>
 		public static void WithAll<T>(this IEnumerable<T> collection, Action<T> actionToExecute)
 		{
-			Contract.Requires(collection != null);
-			Contract.Requires(actionToExecute != null);
+		    Guard.NotNull(collection, nameof(collection));
+		    Guard.NotNull(actionToExecute, nameof(actionToExecute));
 
 			foreach (var item in collection)
 			{
@@ -349,7 +348,7 @@ namespace Framework
 		/// <returns></returns>
 		public static IEnumerable<T> Append<T>(this IEnumerable<T> collection, T itemToAdd)
 		{
-			Contract.Requires(collection != null);
+		    Guard.NotNull(collection, nameof(collection));
 
 			return collection.Concat(new T[] { itemToAdd });
 		}
@@ -399,16 +398,15 @@ namespace Framework
 
 		public static IEnumerable<T> ExceptOne<T>(this IEnumerable<T> collection, T itemToExclude)
 		{
-			Contract.Requires(collection != null);
-			Contract.Requires(itemToExclude != null);
-			Contract.Ensures(Contract.Result<IEnumerable<T>>() != null);
+			Guard.NotNull(collection, nameof(collection));
+			Guard.NotNull(itemToExclude, nameof(itemToExclude));
 
 			return collection.Except(new[] { itemToExclude });
 		}
 
 		public static bool TryGetFirst<T>(this IEnumerable<T> sequence, out T firstItem)
 		{
-			Contract.Requires(sequence != null);
+			Guard.NotNull(sequence, nameof(sequence));
 
 			firstItem = default(T);
 			using (IEnumerator<T> current = sequence.GetEnumerator())
@@ -425,7 +423,7 @@ namespace Framework
 
 		public static bool TryGetLast<T>(this IEnumerable<T> sequence, out T lastItem)
 		{
-			Contract.Requires(sequence != null);
+			Guard.NotNull(sequence, nameof(sequence));
 
 			bool hasAtLeastOne = false;
 			lastItem = default(T);

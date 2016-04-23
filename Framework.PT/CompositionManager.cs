@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Composition;
 using System.Composition.Hosting;
-using System.Diagnostics.Contracts;
 
 namespace Framework
 {
@@ -12,7 +11,7 @@ namespace Framework
 
         private CompositionManager(CompositionHost container)
         {
-            Contract.Requires(container != null);
+            Guard.NotNull(container, nameof(container));
 
             this.container = container;
         }
@@ -79,8 +78,7 @@ namespace Framework
 
         public static ICompositionManager Initialize(CompositionHost container)
         {
-            Contract.Requires(container != null);
-            Contract.Ensures(Contract.Result<ICompositionManager>() != null);
+            Guard.NotNull(container, nameof(container));
 
 	        instance = new CompositionManager(container);
 
@@ -89,8 +87,7 @@ namespace Framework
 
         public static ICompositionManager Initialize(ICompositionManager impl)
         {
-            Contract.Requires(impl != null);
-            Contract.Ensures(Contract.Result<ICompositionManager>() != null);
+            Guard.NotNull(impl, nameof(impl));
 
             instance = impl;
 
