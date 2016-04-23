@@ -1,56 +1,56 @@
 ﻿<Page x:Class="Linqua.UI.EntryEditPage"
-	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	  xmlns:local="using:Linqua.UI"
-	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	  mc:Ignorable="d"
-	  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-	  d:DataContext="{d:DesignInstance local:EntryEditViewModel, IsDesignTimeCreatable=True}">
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:Linqua.UI"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+      d:DataContext="{d:DesignInstance local:EntryEditViewModel, IsDesignTimeCreatable=True}">
 
-	<Page.Transitions>
-		<TransitionCollection>
-			<NavigationThemeTransition>
-				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
-					<ContinuumNavigationTransitionInfo />
-				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
-			</NavigationThemeTransition>
-		</TransitionCollection>
-	</Page.Transitions>
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <ContinuumNavigationTransitionInfo />
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
 
-	<Grid x:Name="LayoutRoot"
-		  Margin="0,27,0,60">
+    <Grid x:Name="LayoutRoot"
+          Margin="0,27,0,60">
 
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-		<!-- Title Panel -->
-		<local:PageHeader Grid.Row="0" />
+        <!-- Title Panel -->
+        <local:PageHeader Grid.Row="0" />
 
-		<!--TODO: Content should be placed within the following grid-->
-		<Grid Grid.Row="1"
-			  x:Name="ContentRoot"
-			  Margin="24,12,24,12">
+        <!--TODO: Content should be placed within the following grid-->
+        <Grid Grid.Row="1"
+              x:Name="ContentRoot"
+              Margin="24,12,24,12">
 
-			<ProgressRing x:Name="LoadingProgressRing"
-						  IsActive="{Binding IsLoadingData}"
-						  VerticalAlignment="Center"
-						  HorizontalAlignment="Center"
-						  Foreground="{StaticResource ProgressRingBrush}"
-						  Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
+            <ProgressRing x:Name="LoadingProgressRing"
+                          IsActive="{Binding IsLoadingData}"
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          Foreground="{StaticResource ProgressRingBrush}"
+                          Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" />
 
-			<Grid Visibility="{Binding IsLoadingData, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
-				<Grid.RowDefinitions>
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-					<RowDefinition Height="Auto" />
-				</Grid.RowDefinitions>
+            <Grid Visibility="{Binding IsLoadingData, Converter={StaticResource InvertedBooleanToVisibilityConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-				<StackPanel Grid.Row="0"
+                <StackPanel Grid.Row="0"
                             Grid.Column="0"
                             Orientation="Vertical">
                     <TextBox Text="{Binding Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -59,107 +59,109 @@
                              IsTextPredictionEnabled="False"
                              CommonNavigationTransitionInfo.IsStaggerElement="True"
                              Padding="10,3,10,8" />
-					
-					<StackPanel Orientation="Horizontal"
-								HorizontalAlignment="Center"
-								Margin="0,2,0,0"
-								Visibility="{Binding HasDetectedLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
-						<TextBlock Text="{Binding DetectedLanguage}"
+
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"
+                                Margin="0,2,0,0"
+                                Visibility="{Binding HasDetectedLanguage, Converter={StaticResource BooleanToVisibilityConverter}}">
+                        <TextBlock Text="{Binding DetectedLanguage}"
                                    Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
                                    FontSize="12"
-								   VerticalAlignment="Center"
-								   Margin="4,0,0,0"/>
+                                   VerticalAlignment="Center"
+                                   Margin="4,0,0,0" />
                     </StackPanel>
                 </StackPanel>
-				
 
-				<Button Grid.Row="1"
-						Command="{Binding TranslateCommand}"
-						HorizontalAlignment="Center"
-						Margin="0,18,0,0">
-					<StackPanel Orientation="Horizontal">
-						<Path Data="M5,18.07L14.68,12.82L12,11.53L10.37,7.8L19,10.6V14.8L8.97,20.87L5,18.07V3.13L9,4.5V14.5L5,18.07Z"
-							  Stretch="Uniform"
-							  Fill="{ThemeResource ApplicationForegroundThemeBrush}"
-							  VerticalAlignment="Center"/>
 
-						<TextBlock x:Uid="EntryEditPage_TranslateButtonTextBlock"
-								   Text="RES_MISSING EntryEditPage_TranslateButtonTextBlock"
-								   VerticalAlignment="Center"
-								   Margin="6,0,0,1"/>
-					</StackPanel>
-					
-				</Button>
-				
-				<Grid Grid.Row="3"
-					  Margin="0,18,0,0">
-					<Grid.ColumnDefinitions>
-						<ColumnDefinition Width="*" />
-						<ColumnDefinition Width="Auto" />
-					</Grid.ColumnDefinitions>
+                <Button Grid.Row="1"
+                        Command="{Binding TranslateCommand}"
+                        HorizontalAlignment="Center"
+                        Margin="0,18,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Path
+                            Data="M5,18.07L14.68,12.82L12,11.53L10.37,7.8L19,10.6V14.8L8.97,20.87L5,18.07V3.13L9,4.5V14.5L5,18.07Z"
+                            Stretch="Uniform"
+                            Fill="{ThemeResource ApplicationForegroundThemeBrush}"
+                            VerticalAlignment="Center" />
 
-					<TextBox x:Uid="EntryEditPage_DefinitionTextBox" 
-							 Grid.Row="0"
-							 Text="{Binding Definition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-							 HorizontalAlignment="Stretch"
-							 TextWrapping="Wrap"
-							 AcceptsReturn="True"
-							 Height="90"
-							 IsTextPredictionEnabled="False"
+                        <TextBlock x:Uid="EntryEditPage_TranslateButtonTextBlock"
+                                   Text="RES_MISSING EntryEditPage_TranslateButtonTextBlock"
+                                   VerticalAlignment="Center"
+                                   Margin="6,0,0,1" />
+                    </StackPanel>
+
+                </Button>
+
+                <Grid Grid.Row="3"
+                      Margin="0,18,0,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBox x:Uid="EntryEditPage_DefinitionTextBox"
+                             Grid.Row="0"
+                             Text="{Binding Definition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             HorizontalAlignment="Stretch"
+                             TextWrapping="Wrap"
+                             AcceptsReturn="True"
+                             Height="90"
+                             IsTextPredictionEnabled="False"
                              PlaceholderText="RES_MISSING EntryEditPage_DefinitionTextBox"
-							 CommonNavigationTransitionInfo.IsStaggerElement="True"
-							 IsEnabled="{Binding IsTranslating, Converter={StaticResource InvertedBooleanConverter}}"/>
-					
-					<ProgressBar Grid.Column="0"
-								 IsIndeterminate="True"
-								 VerticalAlignment="Bottom"
-								 Margin="0,0,0,1"
-								 Padding="0"
-								 Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}" />
-				</Grid>
+                             CommonNavigationTransitionInfo.IsStaggerElement="True"
+                             IsEnabled="{Binding IsTranslating, Converter={StaticResource InvertedBooleanConverter}}" />
 
-				<StackPanel Grid.Row="4"
-							Grid.Column="0"
-							Orientation="Vertical"
-							HorizontalAlignment="Center"
-							Margin="0,54,0,0">
-					<ToggleButton Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
-								  HorizontalAlignment="Center"
-								  Style="{StaticResource IconToggleButtonStyle}"
-								  IsChecked="{Binding IsLearnt, Mode=TwoWay}" />
+                    <ProgressBar Grid.Column="0"
+                                 IsIndeterminate="True"
+                                 VerticalAlignment="Bottom"
+                                 Margin="0,0,0,1"
+                                 Padding="0"
+                                 Visibility="{Binding IsTranslating, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                </Grid>
+
+                <StackPanel Grid.Row="4"
+                            Grid.Column="0"
+                            Orientation="Vertical"
+                            HorizontalAlignment="Center"
+                            Margin="0,54,0,0">
+                    <ToggleButton
+                        Content="F1 M 23.7501,33.25L 34.8334,44.3333L 52.2499,22.1668L 56.9999,26.9168L 34.8334,53.8333L 19.0001,38L 23.7501,33.25 Z "
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource IconToggleButtonStyle}"
+                        IsChecked="{Binding IsLearnt, Mode=TwoWay}" />
 
 
-				    <TextBlock Text="{Binding IsLearnStatusText}"
-							   FontSize="{ThemeResource TextStyleSmallFontSize}"
-							   HorizontalAlignment="Center"
-							   Margin="0,8,0,0" />
+                    <TextBlock Text="{Binding IsLearnStatusText}"
+                               FontSize="{ThemeResource TextStyleSmallFontSize}"
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0" />
 
                     <TextBlock Text="{Binding ToggleLearnedButtonHint}"
                                FontSize="{ThemeResource TextStyleSmallFontSize}"
                                HorizontalAlignment="Center"
                                Margin="0,16,0,0"
-                               Opacity="0.8"/>
+                               Opacity="0.8" />
                 </StackPanel>
 
-			</Grid>
-		</Grid>
-	</Grid>
+            </Grid>
+        </Grid>
+    </Grid>
 
-	<Page.BottomAppBar>
-		<CommandBar ClosedDisplayMode="Compact">
-			<CommandBar.PrimaryCommands>
-				<AppBarButton x:Uid="EntryEditPage_SaveButton"
-							  Label="RES_MISSING EntryEditPage_SaveButton"
-							  Icon="Save"
-							  Command="{Binding SaveCommand}" />
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Compact">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton x:Uid="EntryEditPage_SaveButton"
+                              Label="RES_MISSING EntryEditPage_SaveButton"
+                              Icon="Save"
+                              Command="{Binding SaveCommand}" />
 
                 <AppBarButton x:Uid="EntryDetailsPage_DeleteButton"
                               Label="RES_MISSING EntryDetailsPage_DeleteButton"
                               Icon="Delete"
                               Command="{Binding DeleteCommand}" />
             </CommandBar.PrimaryCommands>
-			<CommandBar.SecondaryCommands>
-			</CommandBar.SecondaryCommands>
-		</CommandBar>
-	</Page.BottomAppBar>
+            <CommandBar.SecondaryCommands>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

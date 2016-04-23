@@ -8,8 +8,8 @@ namespace Framework
 {
     [Export(typeof(IEventLocator))]
     [Export(typeof(IEventPublisher))]
-	[Export(typeof(IEventAggregator))]
-	[Shared]
+    [Export(typeof(IEventAggregator))]
+    [Shared]
     public class EventManager : IEventAggregator
     {
         private readonly Dictionary<Type, object> subjects = new Dictionary<Type, object>();

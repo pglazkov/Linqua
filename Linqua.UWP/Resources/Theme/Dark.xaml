@@ -1,19 +1,19 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-					xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-	<SolidColorBrush x:Key="HeaderUnderlineBrush"
-					 Color="#565759" />
+    <SolidColorBrush x:Key="HeaderUnderlineBrush"
+                     Color="#565759" />
 
-	<SolidColorBrush x:Key="EntryBoxBorderBrush"
-					 Color="#333436" />
+    <SolidColorBrush x:Key="EntryBoxBorderBrush"
+                     Color="#333436" />
 
-	<LinearGradientBrush x:Key="EntryBoxBackgroundBrush"
-						 StartPoint="0,0"
-						 EndPoint="0,1">
-		<GradientStop Offset="0.0"
-					  Color="#1A1A1A" />
-		<GradientStop Offset="1.0"
-					  Color="#1A1A1A" />
-	</LinearGradientBrush>
+    <LinearGradientBrush x:Key="EntryBoxBackgroundBrush"
+                         StartPoint="0,0"
+                         EndPoint="0,1">
+        <GradientStop Offset="0.0"
+                      Color="#1A1A1A" />
+        <GradientStop Offset="1.0"
+                      Color="#1A1A1A" />
+    </LinearGradientBrush>
 
 </ResourceDictionary>

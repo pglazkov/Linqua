@@ -1,6 +1,6 @@
 ﻿namespace Linqua
 {
-	public static class RoamingStorageKeys
-	{
-	}
+    public static class RoamingStorageKeys
+    {
+    }
 }

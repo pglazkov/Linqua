@@ -1,7 +1,6 @@
 ﻿namespace Linqua.Offline
 {
-	public interface IOfflineSyncController
-	{
-		 
-	}
+    public interface IOfflineSyncController
+    {
+    }
 }

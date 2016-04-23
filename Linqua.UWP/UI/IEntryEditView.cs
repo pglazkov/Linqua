@@ -1,7 +1,7 @@
 ﻿namespace Linqua.UI
 {
-	public interface IEntryEditView
-	{
-		void NavigateBack();
-	}
+    public interface IEntryEditView
+    {
+        void NavigateBack();
+    }
 }

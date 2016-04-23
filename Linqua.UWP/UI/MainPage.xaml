@@ -1,69 +1,69 @@
 ﻿<Page x:Class="Linqua.UI.MainPage"
-	  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	  xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-	  xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	  xmlns:controls="using:Framework.Controls"
-	  xmlns:loc="using:Linqua.UI"
-	  mc:Ignorable="d"
-	  d:DataContext="{d:DesignInstance loc:MainViewModel, IsDesignTimeCreatable=True}"
-	  x:Name="ThisPage">
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:controls="using:Framework.Controls"
+      xmlns:loc="using:Linqua.UI"
+      mc:Ignorable="d"
+      d:DataContext="{d:DesignInstance loc:MainViewModel, IsDesignTimeCreatable=True}"
+      x:Name="ThisPage">
 
-	<Page.Resources>
-	</Page.Resources>
+    <Page.Resources>
+    </Page.Resources>
 
-	<Page.Transitions>
-		<TransitionCollection>
-			<NavigationThemeTransition>
-				<NavigationThemeTransition.DefaultNavigationTransitionInfo>
-					<ContinuumNavigationTransitionInfo />
-				</NavigationThemeTransition.DefaultNavigationTransitionInfo>
-			</NavigationThemeTransition>
-		</TransitionCollection>
-	</Page.Transitions>
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition>
+                <NavigationThemeTransition.DefaultNavigationTransitionInfo>
+                    <ContinuumNavigationTransitionInfo />
+                </NavigationThemeTransition.DefaultNavigationTransitionInfo>
+            </NavigationThemeTransition>
+        </TransitionCollection>
+    </Page.Transitions>
 
-	<Grid x:Name="LayoutRoot"
-		  Margin="0,27,0,61">
-		<Grid.RowDefinitions>
-			<RowDefinition Height="Auto" />
-			<RowDefinition Height="*" />
-		</Grid.RowDefinitions>
+    <Grid x:Name="LayoutRoot"
+          Margin="0,27,0,61">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-		<!--TitlePanel contains the name of the application and page title-->
-		<loc:PageHeader Grid.Row="0" />
+        <!--TitlePanel contains the name of the application and page title-->
+        <loc:PageHeader Grid.Row="0" />
 
-		<Grid Grid.Row="0"
-			  HorizontalAlignment="Right"
-			  VerticalAlignment="Top"
-			  Margin="0,0,24,0"
-			  Visibility="{Binding IsStatisticsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="Auto" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
+        <Grid Grid.Row="0"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Top"
+              Margin="0,0,24,0"
+              Visibility="{Binding IsStatisticsAvailable, Converter={StaticResource BooleanToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
             <TextBlock x:Uid="MainPageHeaderStatisticsUnderlineTextBlock"
                        Text="RESMISSING MainPageHeaderStatisticsUnderlineTextBlock"
                        HorizontalAlignment="Right"
-					   Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
-					   FontSize="10"/>
+                       Foreground="{ThemeResource ApplicationSecondaryForegroundThemeBrush}"
+                       FontSize="10" />
 
             <TextBlock Grid.Row="1"
                        Foreground="{ThemeResource ApplicationThemeBrush}"
-					   FontSize="{ThemeResource TextStyleLargeFontSize}"
-					   HorizontalAlignment="Right"
+                       FontSize="{ThemeResource TextStyleLargeFontSize}"
+                       HorizontalAlignment="Right"
                        Margin="0,0,0,0">
-				<Run Text="{Binding NotLearnedEntriesCount}" /> / <Run Text="{Binding TotalEntriesCount}" />
-			</TextBlock>
-		</Grid>
-		
-		<Grid x:Name="ContentPanel"
-			  Grid.Row="1"
-			  Margin="0,-2,0,0">
-			<Grid.RowDefinitions>
-				<RowDefinition Height="*" />
-				<RowDefinition Height="Auto" />
-			</Grid.RowDefinitions>
+                <Run Text="{Binding NotLearnedEntriesCount}" /> / <Run Text="{Binding TotalEntriesCount}" />
+            </TextBlock>
+        </Grid>
+
+        <Grid x:Name="ContentPanel"
+              Grid.Row="1"
+              Margin="0,-2,0,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
             <Grid VerticalAlignment="Center"
                   Grid.Row="0"
@@ -86,7 +86,7 @@
                            Text="RES_MISSING InitialLoadingProgressLabel"
                            LineHeight="20"
                            FontSize="14"
-						   TextWrapping="Wrap"
+                           TextWrapping="Wrap"
                            TextAlignment="Center"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
@@ -94,77 +94,77 @@
 
             </Grid>
 
-			<Pivot Grid.Row="0"
-				   x:Name="Pivot"
-				   x:Uid="Pivot"
-				   CommonNavigationTransitionInfo.IsStaggerElement="True"
-				   Margin="0,0,0,0"
+            <Pivot Grid.Row="0"
+                   x:Name="Pivot"
+                   x:Uid="Pivot"
+                   CommonNavigationTransitionInfo.IsStaggerElement="True"
+                   Margin="0,0,0,0"
                    MaxWidth="500"
-				   PivotItemLoaded="Pivot_OnPivotItemLoaded"
-				   PivotItemUnloaded="Pivot_OnPivotItemUnloaded"
-				   SelectedIndex="{Binding PivotSelectedIndex, Mode=TwoWay}"
-				   Style="{StaticResource TabsStylePivotStyle}">
+                   PivotItemLoaded="Pivot_OnPivotItemLoaded"
+                   PivotItemUnloaded="Pivot_OnPivotItemUnloaded"
+                   SelectedIndex="{Binding PivotSelectedIndex, Mode=TwoWay}"
+                   Style="{StaticResource TabsStylePivotStyle}">
 
-				<!--<interactivity:Interaction.Behaviors>
+                <!--<interactivity:Interaction.Behaviors>
 					<framework:PivotSwipeLockBehavior />
 				</interactivity:Interaction.Behaviors>-->
 
-				<PivotItem Margin="0"
-						   CommonNavigationTransitionInfo.IsStaggerElement="True"
+                <PivotItem Margin="0"
+                           CommonNavigationTransitionInfo.IsStaggerElement="True"
                            ManipulationMode="TranslateX">
-					<PivotItem.Header>
-						<Border MinWidth="100">
-							<TextBlock x:Uid="PivotRandomItemHeader"
-									   Text="RES_MISSING PivotRandomItemHeader"
-									   HorizontalAlignment="Center"/>
-						</Border>
-					</PivotItem.Header>
-					
-					<loc:RandomEntryListView DataContext="{Binding RandomEntryListViewModel}" />
+                    <PivotItem.Header>
+                        <Border MinWidth="100">
+                            <TextBlock x:Uid="PivotRandomItemHeader"
+                                       Text="RES_MISSING PivotRandomItemHeader"
+                                       HorizontalAlignment="Center" />
+                        </Border>
+                    </PivotItem.Header>
 
-				</PivotItem>
+                    <loc:RandomEntryListView DataContext="{Binding RandomEntryListViewModel}" />
 
-				<PivotItem Margin="0"
+                </PivotItem>
+
+                <PivotItem Margin="0"
                            ManipulationMode="TranslateX">
-					<PivotItem.Header>
-						<Border MinWidth="100">
-							<TextBlock x:Uid="PivotFullListItemHeader"
-									   Text="RES_MISSING PivotFullListItemHeader"
-									   HorizontalAlignment="Center"/>
-						</Border>
-					</PivotItem.Header>
-					
-					<loc:FullEntryListView DataContext="{Binding FullEntryListViewModel}" />
-				</PivotItem>
-			</Pivot>
-			
-			<Border Grid.Row="0"
-					Grid.RowSpan="2"
-					Grid.Column="0"
-					Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-					Opacity="0.4"
-					Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                    <PivotItem.Header>
+                        <Border MinWidth="100">
+                            <TextBlock x:Uid="PivotFullListItemHeader"
+                                       Text="RES_MISSING PivotFullListItemHeader"
+                                       HorizontalAlignment="Center" />
+                        </Border>
+                    </PivotItem.Header>
 
-			<Border Grid.Row="0"
-					Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-					VerticalAlignment="Bottom"
-					Padding="22,22,22,22"
-					Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
-				<loc:EntryTextEditorView x:Name="EntryEditorView"
-										 DataContext="{Binding EntryTextEditorViewModel}"
-										 IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
-										 InputTargetLostFocus="EntryEditorView_OnInputTargetLostFocus" />
-			</Border>
-			
-		</Grid>
+                    <loc:FullEntryListView DataContext="{Binding FullEntryListViewModel}" />
+                </PivotItem>
+            </Pivot>
 
-		<!--Uncomment to see an alignment grid to help ensure your controls are
+            <Border Grid.Row="0"
+                    Grid.RowSpan="2"
+                    Grid.Column="0"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    Opacity="0.4"
+                    Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+
+            <Border Grid.Row="0"
+                    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                    VerticalAlignment="Bottom"
+                    Padding="22,22,22,22"
+                    Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <loc:EntryTextEditorView x:Name="EntryEditorView"
+                                         DataContext="{Binding EntryTextEditorViewModel}"
+                                         IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
+                                         InputTargetLostFocus="EntryEditorView_OnInputTargetLostFocus" />
+            </Border>
+
+        </Grid>
+
+        <!--Uncomment to see an alignment grid to help ensure your controls are
             aligned on common boundaries.  The image has a top margin of -32px to
             account for the System Tray. Set this to 0 (or remove the margin altogether)
             if the System Tray is hidden.
 
             Before shipping remove this XAML and the image itself.-->
-		<!--<Image Source="/Assets/AlignmentGrid.png"
+        <!--<Image Source="/Assets/AlignmentGrid.png"
 			   VerticalAlignment="Top"
 			   Height="800"
 			   Width="480"
@@ -172,45 +172,45 @@
 			   Grid.Row="0"
 			   Grid.RowSpan="2"
 			   IsHitTestVisible="False" />-->
-	</Grid>
+    </Grid>
 
-	<Page.BottomAppBar>
-		<CommandBar ClosedDisplayMode="Compact">
-			<CommandBar.PrimaryCommands>
-				<AppBarButton x:Uid="NewWordButton"
-							  Label="RES_MISSIN NewWordButton"
-							  Icon="Add"
-							  Command="{Binding AddWordCommand}"
-							  Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
-				<AppBarButton x:Uid="ConfirmNewWordButton"
-							  Label="RES_MISSING ConfirmNewWordButton"
-							  Icon="Accept"
-							  Command="{Binding EntryTextEditorViewModel.FinishCommand}"
-							  Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
+    <Page.BottomAppBar>
+        <CommandBar ClosedDisplayMode="Compact">
+            <CommandBar.PrimaryCommands>
+                <AppBarButton x:Uid="NewWordButton"
+                              Label="RES_MISSIN NewWordButton"
+                              Icon="Add"
+                              Command="{Binding AddWordCommand}"
+                              Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource InvertedBooleanToVisibilityConverter}}" />
+                <AppBarButton x:Uid="ConfirmNewWordButton"
+                              Label="RES_MISSING ConfirmNewWordButton"
+                              Icon="Accept"
+                              Command="{Binding EntryTextEditorViewModel.FinishCommand}"
+                              Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
                 <AppBarButton x:Uid="CancelNewWordButton"
                               Label="RES_MISSING CancelNewWordButton"
                               Icon="Cancel"
                               Command="{Binding EntryTextEditorViewModel.CancelCommand}"
                               Visibility="{Binding IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}" />
             </CommandBar.PrimaryCommands>
-			<CommandBar.SecondaryCommands>
-				<AppBarButton x:Uid="SyncButton"
-							  Label="RES_MISSING sync"
-							  Command="{Binding SyncCommand}"
-							  Visibility="{Binding IsDebug, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <CommandBar.SecondaryCommands>
+                <AppBarButton x:Uid="SyncButton"
+                              Label="RES_MISSING sync"
+                              Command="{Binding SyncCommand}"
+                              Visibility="{Binding IsDebug, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-				<AppBarButton x:Name="ToggleShowHideLearnedEntriesButton"
-							  Label="{Binding ToggleShowHideLearnedEntriesButtonLabel}"
-							  Command="{Binding ToggleShowHideLearnedEntriesCommand}"
-							  Visibility="{Binding IsInFullListMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                <AppBarButton x:Name="ToggleShowHideLearnedEntriesButton"
+                              Label="{Binding ToggleShowHideLearnedEntriesButtonLabel}"
+                              Command="{Binding ToggleShowHideLearnedEntriesCommand}"
+                              Visibility="{Binding IsInFullListMode, Converter={StaticResource BooleanToVisibilityConverter}}" />
 
-				<AppBarButton x:Uid="SendLogsButton"
-							  Label="RES_MISSING (advanced) share logs"
-							  Command="{Binding SendLogsCommand}"
-							  Visibility="{Binding IsDebug, Converter={StaticResource BooleanToVisibilityConverter}}"/>
-			</CommandBar.SecondaryCommands>
-		</CommandBar>
-	</Page.BottomAppBar>
+                <AppBarButton x:Uid="SendLogsButton"
+                              Label="RES_MISSING (advanced) share logs"
+                              Command="{Binding SendLogsCommand}"
+                              Visibility="{Binding IsDebug, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+    </Page.BottomAppBar>
 
 
 </Page>

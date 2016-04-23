@@ -6,13 +6,13 @@ namespace Linqua.Events
 {
     public class EntryIsLearntChangedEvent : EventBase
     {
-	    public EntryIsLearntChangedEvent([NotNull] EntryViewModel entryViewModel)
-	    {
-		    Guard.NotNull(entryViewModel, nameof(entryViewModel));
+        public EntryIsLearntChangedEvent([NotNull] EntryViewModel entryViewModel)
+        {
+            Guard.NotNull(entryViewModel, nameof(entryViewModel));
 
-		    EntryViewModel = entryViewModel;
-	    }
+            EntryViewModel = entryViewModel;
+        }
 
-	    public EntryViewModel EntryViewModel { get; private set; }
+        public EntryViewModel EntryViewModel { get; private set; }
     }
 }

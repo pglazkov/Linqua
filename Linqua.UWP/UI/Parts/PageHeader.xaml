@@ -1,38 +1,38 @@
 ﻿<UserControl x:Class="Linqua.UI.PageHeader"
-			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-			 xmlns:framework="using:Framework"
-			 mc:Ignorable="d">
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:framework="using:Framework"
+             mc:Ignorable="d">
 
-	<Border Margin="24,0,24,0"
-			Padding="0,11,0,12"
-			BorderThickness="0,0,0,2"
-			BorderBrush="{ThemeResource HeaderUnderlineBrush}">
-		<Grid VerticalAlignment="Center">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="Auto"/>
-				<ColumnDefinition Width="*"/>
-			</Grid.ColumnDefinitions>
+    <Border Margin="24,0,24,0"
+            Padding="0,11,0,12"
+            BorderThickness="0,0,0,2"
+            BorderBrush="{ThemeResource HeaderUnderlineBrush}">
+        <Grid VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-			<StackPanel x:Name="TitlePanel"
-						Orientation="Horizontal">
-				<StackPanel Orientation="Horizontal">
-					<Image Source="../../Assets/Icons/icon-48x48px.png"
-						   Width="32"
-						   Height="32"
-						   Stretch="UniformToFill"
-						   VerticalAlignment="Center" />
+            <StackPanel x:Name="TitlePanel"
+                        Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="../../Assets/Icons/icon-48x48px.png"
+                           Width="32"
+                           Height="32"
+                           Stretch="UniformToFill"
+                           VerticalAlignment="Center" />
 
-					<TextBlock x:Uid="ApplicationHeader"
-							   Text="REST_MISSING LINQUA"
-							   Style="{ThemeResource TitleTextBlockStyle}"
+                    <TextBlock x:Uid="ApplicationHeader"
+                               Text="REST_MISSING LINQUA"
+                               Style="{ThemeResource TitleTextBlockStyle}"
                                FontSize="18"
-							   VerticalAlignment="Center"
-							   Margin="12,0,0,2" />
-				</StackPanel>
-			</StackPanel>
-		</Grid>
-	</Border>
+                               VerticalAlignment="Center"
+                               Margin="12,0,0,2" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
 </UserControl>

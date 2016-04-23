@@ -5,9 +5,9 @@ using Microsoft.WindowsAzure.Mobile.Service.Tables;
 
 namespace Linqua.Service.DataObjects
 {
-	public class ClientEntry : EntityData
-	{
-		public string Text { get; set; }
+    public class ClientEntry : EntityData
+    {
+        public string Text { get; set; }
 
         public string TextLanguageCode { get; set; }
 
@@ -19,8 +19,8 @@ namespace Linqua.Service.DataObjects
 
         public string UserId { get; set; }
 
-		public bool IsLearnt { get; set; }
+        public bool IsLearnt { get; set; }
 
         public DateTimeOffset ClientCreatedAt { get; set; }
-	}
+    }
 }

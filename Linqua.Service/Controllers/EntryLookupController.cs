@@ -10,7 +10,7 @@ using Microsoft.WindowsAzure.Mobile.Service.Security;
 
 namespace Linqua.Service.Controllers
 {
-	[AuthorizeLevel(AuthorizationLevel.User)]
+    [AuthorizeLevel(AuthorizationLevel.User)]
     public class EntryLookupController : ApiController
     {
         public ApiServices Services { get; set; }
@@ -20,20 +20,19 @@ namespace Linqua.Service.Controllers
         {
             //Services.Log.Info("Hello from custom controller!");
 
-	        using (var ctx = new LinquaContext())
-	        {
-		        var foundEntries = await ctx.Entries
-		                                    .Where(x => x.Text == entryText && x.Definition != null && (string.IsNullOrEmpty(excludeId) || !Equals(x.Id, excludeId)))
-		                                    .ToListAsync();
+            using (var ctx = new LinquaContext())
+            {
+                var foundEntries = await ctx.Entries
+                                            .Where(x => x.Text == entryText && x.Definition != null && (string.IsNullOrEmpty(excludeId) || !Equals(x.Id, excludeId)))
+                                            .ToListAsync();
 
-		        if (foundEntries != null && foundEntries.Count > 0)
-		        {
-			        return Mapper.Map<ClientEntry>(foundEntries[0]);
-		        }
-	        }
+                if (foundEntries != null && foundEntries.Count > 0)
+                {
+                    return Mapper.Map<ClientEntry>(foundEntries[0]);
+                }
+            }
 
-	        return null;
+            return null;
         }
-
     }
 }

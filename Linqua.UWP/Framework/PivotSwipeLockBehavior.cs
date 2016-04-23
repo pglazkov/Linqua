@@ -6,62 +6,62 @@ using Microsoft.Xaml.Interactivity;
 
 namespace Linqua.Framework
 {
-	public class PivotSwipeLockBehavior : DependencyObject, IBehavior
-	{
-		private readonly PointerEventHandler pivotItemPointerPressedHandler;
-		private readonly PointerEventHandler pivotItemPointerReleasedHandler;
+    public class PivotSwipeLockBehavior : DependencyObject, IBehavior
+    {
+        private readonly PointerEventHandler pivotItemPointerPressedHandler;
+        private readonly PointerEventHandler pivotItemPointerReleasedHandler;
 
-		public PivotSwipeLockBehavior()
-		{
-			pivotItemPointerPressedHandler = PivotItem_OnPointerPressed;
-			pivotItemPointerReleasedHandler = PivotItem_OnPointerReleased;
-		}
+        public PivotSwipeLockBehavior()
+        {
+            pivotItemPointerPressedHandler = PivotItem_OnPointerPressed;
+            pivotItemPointerReleasedHandler = PivotItem_OnPointerReleased;
+        }
 
-		public DependencyObject AssociatedObject { get; private set; }
+        public DependencyObject AssociatedObject { get; private set; }
 
-		private Pivot Pivot
-		{
-			get { return (Pivot)AssociatedObject; }
-		}
+        private Pivot Pivot
+        {
+            get { return (Pivot)AssociatedObject; }
+        }
 
-		public void Attach(DependencyObject associatedObject)
-		{
-			Guard.Assert(associatedObject is Pivot, "associatedObject is Pivot");
+        public void Attach(DependencyObject associatedObject)
+        {
+            Guard.Assert(associatedObject is Pivot, "associatedObject is Pivot");
 
-			AssociatedObject = associatedObject;
+            AssociatedObject = associatedObject;
 
-			Pivot.PivotItemLoaded += OnPivotItemLoaded;
-			Pivot.PivotItemUnloaded += OnPivotItemUnloaded;
-		}
+            Pivot.PivotItemLoaded += OnPivotItemLoaded;
+            Pivot.PivotItemUnloaded += OnPivotItemUnloaded;
+        }
 
-		public void Detach()
-		{
-			Pivot.PivotItemLoaded -= OnPivotItemLoaded;
-			Pivot.PivotItemUnloaded -= OnPivotItemUnloaded;
+        public void Detach()
+        {
+            Pivot.PivotItemLoaded -= OnPivotItemLoaded;
+            Pivot.PivotItemUnloaded -= OnPivotItemUnloaded;
 
-			AssociatedObject = null;
-		}
+            AssociatedObject = null;
+        }
 
-		private void OnPivotItemLoaded(Pivot sender, PivotItemEventArgs args)
-		{
-			args.Item.AddHandler(UIElement.PointerPressedEvent, pivotItemPointerPressedHandler, true);
-			args.Item.AddHandler(UIElement.PointerReleasedEvent, pivotItemPointerReleasedHandler, true);
-		}
+        private void OnPivotItemLoaded(Pivot sender, PivotItemEventArgs args)
+        {
+            args.Item.AddHandler(UIElement.PointerPressedEvent, pivotItemPointerPressedHandler, true);
+            args.Item.AddHandler(UIElement.PointerReleasedEvent, pivotItemPointerReleasedHandler, true);
+        }
 
-		private void OnPivotItemUnloaded(Pivot sender, PivotItemEventArgs args)
-		{
-			args.Item.RemoveHandler(UIElement.PointerPressedEvent, pivotItemPointerPressedHandler);
-			args.Item.RemoveHandler(UIElement.PointerReleasedEvent, pivotItemPointerReleasedHandler);
-		}
+        private void OnPivotItemUnloaded(Pivot sender, PivotItemEventArgs args)
+        {
+            args.Item.RemoveHandler(UIElement.PointerPressedEvent, pivotItemPointerPressedHandler);
+            args.Item.RemoveHandler(UIElement.PointerReleasedEvent, pivotItemPointerReleasedHandler);
+        }
 
-		private void PivotItem_OnPointerPressed(object sender, PointerRoutedEventArgs e)
-		{
-			Pivot.IsLocked = true;
-		}
+        private void PivotItem_OnPointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            Pivot.IsLocked = true;
+        }
 
-		private void PivotItem_OnPointerReleased(object sender, PointerRoutedEventArgs e)
-		{
-			Pivot.IsLocked = false;
-		}
-	}
+        private void PivotItem_OnPointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            Pivot.IsLocked = false;
+        }
+    }
 }

@@ -14,71 +14,68 @@ using MetroLog;
 
 namespace Linqua
 {
-	[Export]
-	[Shared]
-	[UsedImplicitly]
-	public class ApplicationController
-	{
+    [Export]
+    [Shared]
+    [UsedImplicitly]
+    public class ApplicationController
+    {
         private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<ApplicationController>();
 
         private readonly IEventAggregator eventAggregator;
-		private readonly ILiveTileManager liveTileManager;
-	    private readonly IDispatcherService dispatcherService;
-		private readonly ITelemetryService telemetry;
-		private Frame navigationFrame;
+        private readonly ILiveTileManager liveTileManager;
+        private readonly IDispatcherService dispatcherService;
+        private readonly ITelemetryService telemetry;
+        private Frame navigationFrame;
 
-		[ImportingConstructor]
-		public ApplicationController([NotNull] IEventAggregator eventAggregator, [NotNull] ILiveTileManager liveTileManager, [NotNull] IDispatcherService dispatcherService, [NotNull] ITelemetryService telemetry)
-		{
-			Guard.NotNull(eventAggregator, nameof(eventAggregator));
-			Guard.NotNull(liveTileManager, nameof(liveTileManager));
-		    Guard.NotNull(dispatcherService, nameof(dispatcherService));
-			Guard.NotNull(telemetry, nameof(telemetry));
+        [ImportingConstructor]
+        public ApplicationController([NotNull] IEventAggregator eventAggregator, [NotNull] ILiveTileManager liveTileManager, [NotNull] IDispatcherService dispatcherService, [NotNull] ITelemetryService telemetry)
+        {
+            Guard.NotNull(eventAggregator, nameof(eventAggregator));
+            Guard.NotNull(liveTileManager, nameof(liveTileManager));
+            Guard.NotNull(dispatcherService, nameof(dispatcherService));
+            Guard.NotNull(telemetry, nameof(telemetry));
 
-			this.eventAggregator = eventAggregator;
-			this.liveTileManager = liveTileManager;
-		    this.dispatcherService = dispatcherService;
-			this.telemetry = telemetry;
-		}
+            this.eventAggregator = eventAggregator;
+            this.liveTileManager = liveTileManager;
+            this.dispatcherService = dispatcherService;
+            this.telemetry = telemetry;
+        }
 
-		public void Initialize()
-		{
-			eventAggregator.GetEvent<EntryEditRequestedEvent>().Subscribe(OnEntryEditRequested);
-			eventAggregator.GetEvent<StorageInitializedEvent>().Subscribe(OnStorageInitialized);
-		}
+        public void Initialize()
+        {
+            eventAggregator.GetEvent<EntryEditRequestedEvent>().Subscribe(OnEntryEditRequested);
+            eventAggregator.GetEvent<StorageInitializedEvent>().Subscribe(OnStorageInitialized);
+        }
 
-		public void RegisterFrame([NotNull] Frame frame)
-		{
-			Guard.NotNull(frame, nameof(frame));
+        public void RegisterFrame([NotNull] Frame frame)
+        {
+            Guard.NotNull(frame, nameof(frame));
 
-			navigationFrame = frame;
-		}
+            navigationFrame = frame;
+        }
 
-		private void OnEntryEditRequested(EntryEditRequestedEvent e)
-		{
-			Guard.Assert(navigationFrame != null, "Please initialize the main navigation frame first (call the RegisterFrame method)");
+        private void OnEntryEditRequested(EntryEditRequestedEvent e)
+        {
+            Guard.Assert(navigationFrame != null, "Please initialize the main navigation frame first (call the RegisterFrame method)");
 
-		    dispatcherService.InvokeAsync(() =>
-		    {
-		        navigationFrame.Navigate(typeof(EntryEditPage), e.EntryId);
-		    });
-		}
+            dispatcherService.InvokeAsync(() => { navigationFrame.Navigate(typeof(EntryEditPage), e.EntryId); });
+        }
 
-		private void OnStorageInitialized(StorageInitializedEvent e)
-		{
-		    UpdateLiveTileAsync().FireAndForget();
-		}
+        private void OnStorageInitialized(StorageInitializedEvent e)
+        {
+            UpdateLiveTileAsync().FireAndForget();
+        }
 
-	    private async Task UpdateLiveTileAsync()
-	    {
-	        try
-	        {
-	            await Task.Run(() => liveTileManager.UpdateTileAsync());
-	        }
-	        catch (Exception e)
-	        {
-				ExceptionHandlingHelper.HandleNonFatalError(e, "Could not update live tile.");
-	        }
-	    }
-	}
+        private async Task UpdateLiveTileAsync()
+        {
+            try
+            {
+                await Task.Run(() => liveTileManager.UpdateTileAsync());
+            }
+            catch (Exception e)
+            {
+                ExceptionHandlingHelper.HandleNonFatalError(e, "Could not update live tile.");
+            }
+        }
+    }
 }

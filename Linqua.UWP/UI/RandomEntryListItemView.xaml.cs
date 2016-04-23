@@ -8,28 +8,28 @@ using Windows.UI.Xaml.Media.Animation;
 
 namespace Linqua.UI
 {
-	public sealed partial class RandomEntryListItemView : UserControl
-	{
-		public RandomEntryListItemView()
-		{
-			this.InitializeComponent();
+    public sealed partial class RandomEntryListItemView : UserControl
+    {
+        public RandomEntryListItemView()
+        {
+            this.InitializeComponent();
 
-			DataContextChanged += OnDataContextChanged;
-		}
+            DataContextChanged += OnDataContextChanged;
+        }
 
-		private EntryListItemViewModel ViewModel => (EntryListItemViewModel)DataContext;
+        private EntryListItemViewModel ViewModel => (EntryListItemViewModel)DataContext;
 
-	    private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-		{
-			var storyboard = (Storyboard)Resources["DataContextChangedStoryboard"];
-			storyboard.Begin();
-		}
+        private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            var storyboard = (Storyboard)Resources["DataContextChangedStoryboard"];
+            storyboard.Begin();
+        }
 
-		private void OnContainerHolding(object sender, HoldingRoutedEventArgs e)
-		{
-			var flyoutBase = FlyoutBase.GetAttachedFlyout(this);
+        private void OnContainerHolding(object sender, HoldingRoutedEventArgs e)
+        {
+            var flyoutBase = FlyoutBase.GetAttachedFlyout(this);
 
-			flyoutBase.ShowAt(RootBorder);
-		}
-	}
+            flyoutBase.ShowAt(RootBorder);
+        }
+    }
 }

@@ -4,6 +4,6 @@ namespace Linqua.Persistence
 {
     public interface ISyncHandle
     {
-        Task Task { get; } 
+        Task Task { get; }
     }
 }

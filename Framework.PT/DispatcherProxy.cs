@@ -4,28 +4,28 @@ using Framework.PlatformServices;
 
 namespace Framework
 {
-	public class DispatcherProxy
-	{
-		private readonly IDispatcherService impl;
+    public class DispatcherProxy
+    {
+        private readonly IDispatcherService impl;
 
-		private DispatcherProxy()
-		{
-			impl = CompositionManager.Current.GetInstance<IDispatcherService>();
-		}
+        private DispatcherProxy()
+        {
+            impl = CompositionManager.Current.GetInstance<IDispatcherService>();
+        }
 
-		public static DispatcherProxy CreateDispatcher()
-		{
-			return new DispatcherProxy();
-		}
+        public static DispatcherProxy CreateDispatcher()
+        {
+            return new DispatcherProxy();
+        }
 
-		public bool CheckAccess()
-		{
-			return impl.CheckAccess();
-		}
+        public bool CheckAccess()
+        {
+            return impl.CheckAccess();
+        }
 
-		public Task InvokeAsync(Delegate method, params object[] args)
-		{
-			return impl.InvokeAsync(method, args);
-		}
-	}
+        public Task InvokeAsync(Delegate method, params object[] args)
+        {
+            return impl.InvokeAsync(method, args);
+        }
+    }
 }

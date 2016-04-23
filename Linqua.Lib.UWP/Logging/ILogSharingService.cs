@@ -5,9 +5,9 @@ using JetBrains.Annotations;
 
 namespace Linqua.Logging
 {
-	public interface ILogSharingService
-	{
-		[NotNull]
-		IAsyncOperation<Uri> ShareCurrentLogAsync();
-	}
+    public interface ILogSharingService
+    {
+        [NotNull]
+        IAsyncOperation<Uri> ShareCurrentLogAsync();
+    }
 }

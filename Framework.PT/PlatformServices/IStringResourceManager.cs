@@ -2,8 +2,8 @@
 
 namespace Framework.PlatformServices
 {
-	public interface IStringResourceManager
-	{
-		string GetString([NotNull] string key, string defaultValue = null);
-	}
+    public interface IStringResourceManager
+    {
+        string GetString([NotNull] string key, string defaultValue = null);
+    }
 }

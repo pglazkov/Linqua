@@ -7,9 +7,13 @@ namespace Framework.MefExtensions
     public class DefaultExportAttribute : ExportAttribute
     {
         public DefaultExportAttribute(Type contractType)
-            : base(Constants.DefaultContractNamePrefix, contractType) { }
+            : base(Constants.DefaultContractNamePrefix, contractType)
+        {
+        }
 
         public DefaultExportAttribute(string contractName, Type contractType)
-            : base(Constants.DefaultContractNamePrefix + contractName, contractType) { }
+            : base(Constants.DefaultContractNamePrefix + contractName, contractType)
+        {
+        }
     }
 }

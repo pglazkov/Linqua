@@ -17,7 +17,7 @@ namespace Framework.MefExtensions
                 return NoExportDescriptors;
 
             var defaultImplementationDiscriminator = Constants.DefaultContractNamePrefix + (contract.ContractName ?? "");
-            IDictionary<string,object> copiedConstraints = null;
+            IDictionary<string, object> copiedConstraints = null;
             if (contract.MetadataConstraints != null)
                 copiedConstraints = contract.MetadataConstraints.ToDictionary(k => k.Key, k => k.Value);
             var defaultImplementationContract = new CompositionContract(contract.ContractType, defaultImplementationDiscriminator, copiedConstraints);
@@ -26,15 +26,19 @@ namespace Framework.MefExtensions
             if (!descriptorAccessor.TryResolveOptionalDependency("default", defaultImplementationContract, true, out defaultImplementation))
                 return NoExportDescriptors;
 
-            return new[] { new ExportDescriptorPromise(
-                contract,
-                "Default Implementation",
-                false,
-                () => new[] { defaultImplementation },
-                _ => {
-                    var defaultDescriptor = defaultImplementation.Target.GetDescriptor();
-                    return ExportDescriptor.Create((c, o) => defaultDescriptor.Activator(c, o), defaultDescriptor.Metadata);
-                })};
+            return new[]
+            {
+                new ExportDescriptorPromise(
+                    contract,
+                    "Default Implementation",
+                    false,
+                    () => new[] {defaultImplementation},
+                    _ =>
+                    {
+                        var defaultDescriptor = defaultImplementation.Target.GetDescriptor();
+                        return ExportDescriptor.Create((c, o) => defaultDescriptor.Activator(c, o), defaultDescriptor.Metadata);
+                    })
+            };
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Linqua.Service.Models
 
         public LinquaContext() : base(ConnectionStringName)
         {
-        } 
+        }
 
         public DbSet<Entry> Entries { get; set; }
 
@@ -40,5 +40,4 @@ namespace Linqua.Service.Models
                     "ServiceTableColumn", (property, attributes) => attributes.Single().ColumnType.ToString()));
         }
     }
-
 }

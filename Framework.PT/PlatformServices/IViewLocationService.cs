@@ -1,7 +1,7 @@
 ﻿namespace Framework.PlatformServices
 {
-	public interface IViewLocationService
-	{
-		object LocateForViewModel(IViewModel viewModel);
-	}
+    public interface IViewLocationService
+    {
+        object LocateForViewModel(IViewModel viewModel);
+    }
 }

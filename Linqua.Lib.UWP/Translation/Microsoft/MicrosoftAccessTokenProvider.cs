@@ -12,94 +12,94 @@ using Newtonsoft.Json;
 
 namespace Linqua.Translation.Microsoft
 {
-	[Export(typeof(IMicrosoftAccessTokenProvider))]
-	public class MicrosoftAccessTokenProvider : IMicrosoftAccessTokenProvider
-	{
-		private const string AccessTokenKey = "MicrosoftAccessToken";
+    [Export(typeof(IMicrosoftAccessTokenProvider))]
+    public class MicrosoftAccessTokenProvider : IMicrosoftAccessTokenProvider
+    {
+        private const string AccessTokenKey = "MicrosoftAccessToken";
 
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MicrosoftAccessTokenProvider).Name);
+        private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MicrosoftAccessTokenProvider).Name);
 
-		private readonly ILocalSettingsService localSettingsService;
+        private readonly ILocalSettingsService localSettingsService;
 
-		[ImportingConstructor]
-		public MicrosoftAccessTokenProvider([NotNull] ILocalSettingsService localSettingsService)
-		{
-			Guard.NotNull(localSettingsService, nameof(localSettingsService));
+        [ImportingConstructor]
+        public MicrosoftAccessTokenProvider([NotNull] ILocalSettingsService localSettingsService)
+        {
+            Guard.NotNull(localSettingsService, nameof(localSettingsService));
 
-			this.localSettingsService = localSettingsService;
-		}
+            this.localSettingsService = localSettingsService;
+        }
 
-		public async Task<string> GetAccessTokenAsync()
-		{
+        public async Task<string> GetAccessTokenAsync()
+        {
             string token;
 
             var tokenExpirationTime = GetCurrentTokenExpirationTime();
 
-			if (tokenExpirationTime < DateTime.UtcNow.AddMinutes(1))
-			{
-				token = await RenewAccessTokenAsync();
-			}
-			else
-			{
-				token = localSettingsService.GetValue(AccessTokenKey) as string;
-			}
+            if (tokenExpirationTime < DateTime.UtcNow.AddMinutes(1))
+            {
+                token = await RenewAccessTokenAsync();
+            }
+            else
+            {
+                token = localSettingsService.GetValue(AccessTokenKey) as string;
+            }
 
-			Guard.Assert(token != null, "token != null");
-			
-			return token;
-		}
+            Guard.Assert(token != null, "token != null");
 
-	    private DateTime GetCurrentTokenExpirationTime()
-	    {
-	        var tokenExpirationTimeValue = localSettingsService.GetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey) as string;
+            return token;
+        }
 
-	        DateTime tokenExpirationTime;
-	        if (!DateTime.TryParse(tokenExpirationTimeValue, CultureInfo.CurrentCulture, DateTimeStyles.AssumeUniversal, out tokenExpirationTime))
-	        {
-	            tokenExpirationTime = DateTime.UtcNow.AddMinutes(-1);
-	        }
-	        else
-	        {
-	            tokenExpirationTime = tokenExpirationTime.ToUniversalTime();
-	        }
+        private DateTime GetCurrentTokenExpirationTime()
+        {
+            var tokenExpirationTimeValue = localSettingsService.GetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey) as string;
 
-	        return tokenExpirationTime;
-	    }
+            DateTime tokenExpirationTime;
+            if (!DateTime.TryParse(tokenExpirationTimeValue, CultureInfo.CurrentCulture, DateTimeStyles.AssumeUniversal, out tokenExpirationTime))
+            {
+                tokenExpirationTime = DateTime.UtcNow.AddMinutes(-1);
+            }
+            else
+            {
+                tokenExpirationTime = tokenExpirationTime.ToUniversalTime();
+            }
 
-	    private async Task<string> RenewAccessTokenAsync()
-		{
-			AdmAccessToken newAccessToken = await GetTokenAsync();
+            return tokenExpirationTime;
+        }
 
-			localSettingsService.SetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey, DateTime.UtcNow.AddSeconds(int.Parse(newAccessToken.expires_in)).ToString("O"));
+        private async Task<string> RenewAccessTokenAsync()
+        {
+            AdmAccessToken newAccessToken = await GetTokenAsync();
 
-			localSettingsService.SetValue(AccessTokenKey, newAccessToken.access_token);
+            localSettingsService.SetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey, DateTime.UtcNow.AddSeconds(int.Parse(newAccessToken.expires_in)).ToString("O"));
 
-			return newAccessToken.access_token;
-		}
+            localSettingsService.SetValue(AccessTokenKey, newAccessToken.access_token);
 
-		private async Task<AdmAccessToken> GetTokenAsync()
-		{
-			var requestDetails = new Dictionary<string, string>
-			{
-				{ "grant_type", "client_credentials" },
-				{ "client_id",   TranslatorServiceConsts.ClientId},
-				{ "client_secret",  TranslatorServiceConsts.ClientSecret },
-				{ "scope", TranslatorServiceConsts.AuthenticationScope }
-			};
+            return newAccessToken.access_token;
+        }
 
-			var requestContent = new FormUrlEncodedContent(requestDetails);
+        private async Task<AdmAccessToken> GetTokenAsync()
+        {
+            var requestDetails = new Dictionary<string, string>
+            {
+                {"grant_type", "client_credentials"},
+                {"client_id", TranslatorServiceConsts.ClientId},
+                {"client_secret", TranslatorServiceConsts.ClientSecret},
+                {"scope", TranslatorServiceConsts.AuthenticationScope}
+            };
 
-			var client = new HttpClient();
+            var requestContent = new FormUrlEncodedContent(requestDetails);
 
-			var dataMarketResponse = await client.PostAsync(TranslatorServiceConsts.AuthenticationUri, requestContent);
+            var client = new HttpClient();
 
-			await MicrosoftApiHelper.ThrowIfErrorResponse(dataMarketResponse);
+            var dataMarketResponse = await client.PostAsync(TranslatorServiceConsts.AuthenticationUri, requestContent);
 
-			var responseString = await dataMarketResponse.Content.ReadAsStringAsync();
+            await MicrosoftApiHelper.ThrowIfErrorResponse(dataMarketResponse);
 
-			var result = JsonConvert.DeserializeObject<AdmAccessToken>(responseString);
+            var responseString = await dataMarketResponse.Content.ReadAsStringAsync();
 
-			return result;
-		}
-	}
+            var result = JsonConvert.DeserializeObject<AdmAccessToken>(responseString);
+
+            return result;
+        }
+    }
 }

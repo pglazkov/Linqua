@@ -2,8 +2,8 @@
 
 namespace Linqua.Notifications
 {
-	public interface ILiveTileManager
-	{
-		Task UpdateTileAsync();
-	}
+    public interface ILiveTileManager
+    {
+        Task UpdateTileAsync();
+    }
 }

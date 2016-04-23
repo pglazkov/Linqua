@@ -10,50 +10,50 @@ namespace Linqua
     // IMPORTANT: When renaming or moving the task don't forget to change the task declaration in the app manifest. 
     // Otherwise an exception will be thrown when registering the task ("Class not registered").
     public sealed class LiveTileUpdateTask : IBackgroundTask
-	{
-		private static readonly ILoggerAsync Log;
-		  
-		static LiveTileUpdateTask()
-		{
-			Bootstrapper.Run(typeof(LiveTileUpdateTask));
+    {
+        private static readonly ILoggerAsync Log;
 
-			Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<LiveTileUpdateTask>();
-		}
+        static LiveTileUpdateTask()
+        {
+            Bootstrapper.Run(typeof(LiveTileUpdateTask));
 
-		public async void Run(IBackgroundTaskInstance taskInstance)
-		{
-			var deferral = taskInstance.GetDeferral();
+            Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<LiveTileUpdateTask>();
+        }
 
-			try
-			{
-				await Log.InfoAsync("Live tile update background task started.");
+        public async void Run(IBackgroundTaskInstance taskInstance)
+        {
+            var deferral = taskInstance.GetDeferral();
 
-				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
+            try
+            {
+                await Log.InfoAsync("Live tile update background task started.");
 
-				if (authenticatedSilently)
-				{
-					IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
-					await storage.InitializeAsync(doInitialPoolIfNeeded: false);
+                var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
-					var liveTileManager = new LiveTileManager(storage);
+                if (authenticatedSilently)
+                {
+                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
+                    await storage.InitializeAsync(doInitialPoolIfNeeded: false);
 
-					await liveTileManager.UpdateTileAsync();
-				}
-				else
-				{
-					await Log.WarnAsync("Authentication failed.");
-				}
+                    var liveTileManager = new LiveTileManager(storage);
 
-				await Log.InfoAsync("Live tile update background task completed");
-			}
-			catch (Exception ex)
-			{
-				await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "Live tile background task failed.", sendTelemetry: false);
-			}
-			finally
-			{
-				deferral.Complete();
-			}
-		}
-	}
+                    await liveTileManager.UpdateTileAsync();
+                }
+                else
+                {
+                    await Log.WarnAsync("Authentication failed.");
+                }
+
+                await Log.InfoAsync("Live tile update background task completed");
+            }
+            catch (Exception ex)
+            {
+                await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "Live tile background task failed.", sendTelemetry: false);
+            }
+            finally
+            {
+                deferral.Complete();
+            }
+        }
+    }
 }

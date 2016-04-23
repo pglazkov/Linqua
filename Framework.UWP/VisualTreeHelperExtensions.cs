@@ -177,7 +177,7 @@ namespace Framework
             int i = 0;
             var indexedChildren =
                 parent.GetChildren().Cast<FrameworkElement>().Select(
-                child => new { Index = i++, ZIndex = Canvas.GetZIndex(child), Child = child });
+                    child => new {Index = i++, ZIndex = Canvas.GetZIndex(child), Child = child});
 
             return
                 from indexedChild in indexedChildren
@@ -279,7 +279,7 @@ namespace Framework
             return
                 root != null && dob.GetAncestors().Contains(root) ||
                 VisualTreeHelper.GetOpenPopups(Window.Current)
-                    .Any(popup => popup.Child != null && dob.GetAncestors().Contains(popup.Child));
+                                .Any(popup => popup.Child != null && dob.GetAncestors().Contains(popup.Child));
         }
 
         /// <summary>
@@ -377,7 +377,6 @@ namespace Framework
             //    throw new InvalidOperationException("Element not in visual tree.");
             //}
 
-
             var fe2 = dob as FrameworkElement;
             var aw2 = fe2 != null ? fe2.ActualWidth : 0;
             var ah2 = fe2 != null ? fe2.ActualHeight : 0;
@@ -408,10 +407,10 @@ namespace Framework
                             aw2,
                             ah2));
 
-            var minX = new[] { topLeft.X, topRight.X, bottomLeft.X, bottomRight.X }.Min();
-            var maxX = new[] { topLeft.X, topRight.X, bottomLeft.X, bottomRight.X }.Max();
-            var minY = new[] { topLeft.Y, topRight.Y, bottomLeft.Y, bottomRight.Y }.Min();
-            var maxY = new[] { topLeft.Y, topRight.Y, bottomLeft.Y, bottomRight.Y }.Max();
+            var minX = new[] {topLeft.X, topRight.X, bottomLeft.X, bottomRight.X}.Min();
+            var maxX = new[] {topLeft.X, topRight.X, bottomLeft.X, bottomRight.X}.Max();
+            var minY = new[] {topLeft.Y, topRight.Y, bottomLeft.Y, bottomRight.Y}.Min();
+            var maxY = new[] {topLeft.Y, topRight.Y, bottomLeft.Y, bottomRight.Y}.Max();
 
             return new Rect(minX, minY, maxX - minX, maxY - minY);
         }

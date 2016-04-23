@@ -13,65 +13,65 @@ namespace Linqua
     // Otherwise an exception will be thrown when registering the task ("Class not registered").
     public sealed class LogsUploadTask : IBackgroundTask
     {
-		private static readonly ILoggerAsync Log;
+        private static readonly ILoggerAsync Log;
 
-		static LogsUploadTask()
-		{
-			Bootstrapper.Run(typeof(LogsUploadTask));
+        static LogsUploadTask()
+        {
+            Bootstrapper.Run(typeof(LogsUploadTask));
 
-			Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<LogsUploadTask>();
-		}
+            Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<LogsUploadTask>();
+        }
 
-		public async void Run(IBackgroundTaskInstance taskInstance)
-		{
-			var deferral = taskInstance.GetDeferral();
+        public async void Run(IBackgroundTaskInstance taskInstance)
+        {
+            var deferral = taskInstance.GetDeferral();
 
-			try
-			{
-				await Log.InfoAsync("LogsUpload background task started");
+            try
+            {
+                await Log.InfoAsync("LogsUpload background task started");
 
-				var logsUploadPending = Equals(ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending], true);
+                var logsUploadPending = Equals(ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending], true);
 
-				if (!logsUploadPending)
-				{
-					await Log.InfoAsync("There are no pending logs to upload.");
-					return;
-				}
+                if (!logsUploadPending)
+                {
+                    await Log.InfoAsync("There are no pending logs to upload.");
+                    return;
+                }
 
-				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
+                var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
-				if (authenticatedSilently)
-				{
-					IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
-					await storage.InitializeAsync(doInitialPoolIfNeeded: false);
+                if (authenticatedSilently)
+                {
+                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
+                    await storage.InitializeAsync(doInitialPoolIfNeeded: false);
 
-					var logsUploadService = new LogSharingService(storage);
+                    var logsUploadService = new LogSharingService(storage);
 
-					var uri = await logsUploadService.ShareCurrentLogAsync();
+                    var uri = await logsUploadService.ShareCurrentLogAsync();
 
-					await Log.DebugAsync("Log is shared at: " + uri);
+                    await Log.DebugAsync("Log is shared at: " + uri);
 
-					ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = false;
-				}
-				else
-				{
-					await Log.WarnAsync("Authentication failed.");
-				}
+                    ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = false;
+                }
+                else
+                {
+                    await Log.WarnAsync("Authentication failed.");
+                }
 
-				await Log.InfoAsync("LogsUpload background task completed");
-			}
-			catch (NoInternetConnectionException)
-			{
-				await Log.InfoAsync("There is no internet connection. Do nothing.");
-			}
-			catch (Exception ex)
-			{
-				await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "LogsUpload background task failed.", sendTelemetry: false);
-			}
-			finally
-			{
-				deferral.Complete();
-			}
-		}
+                await Log.InfoAsync("LogsUpload background task completed");
+            }
+            catch (NoInternetConnectionException)
+            {
+                await Log.InfoAsync("There is no internet connection. Do nothing.");
+            }
+            catch (Exception ex)
+            {
+                await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "LogsUpload background task failed.", sendTelemetry: false);
+            }
+            finally
+            {
+                deferral.Complete();
+            }
+        }
     }
 }

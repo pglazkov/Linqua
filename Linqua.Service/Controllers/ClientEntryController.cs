@@ -10,7 +10,7 @@ using Microsoft.WindowsAzure.Mobile.Service.Security;
 
 namespace Linqua.Service.Controllers
 {
-	[AuthorizeLevel(AuthorizationLevel.User)] 
+    [AuthorizeLevel(AuthorizationLevel.User)]
     public class ClientEntryController : TableController<ClientEntry>
     {
         protected override void Initialize(HttpControllerContext controllerContext)
@@ -20,11 +20,11 @@ namespace Linqua.Service.Controllers
             DomainManager = new EntryDomainManager(context, Request, Services, true);
         }
 
-		// GET tables/ClientEntry
+        // GET tables/ClientEntry
         public IQueryable<ClientEntry> GetAllEntries()
         {
-			// Get the logged-in user.
-			var currentUser = (ServiceUser)User;
+            // Get the logged-in user.
+            var currentUser = (ServiceUser)User;
 
             return Query().Where(e => e.UserId == currentUser.Id);
         }
@@ -44,14 +44,14 @@ namespace Linqua.Service.Controllers
         // POST tables/ClientEntry
         public async Task<IHttpActionResult> PostEntry(ClientEntry item)
         {
-			// Get the logged-in user.
-			var currentUser = (ServiceUser)User;
+            // Get the logged-in user.
+            var currentUser = (ServiceUser)User;
 
-			// Set the user ID on the item.
-			item.UserId = currentUser.Id;
+            // Set the user ID on the item.
+            item.UserId = currentUser.Id;
 
             ClientEntry current = await InsertAsync(item);
-            return CreatedAtRoute("Tables", new { id = current.Id }, current);
+            return CreatedAtRoute("Tables", new {id = current.Id}, current);
         }
 
         // DELETE tables/ClientEntry/48D68C86-6EA6-4C25-AA33-223FC9A27959

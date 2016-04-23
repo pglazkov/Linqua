@@ -2,10 +2,9 @@
 
 namespace Linqua.Offline
 {
-	[Export(typeof(IOfflineSyncController))]
-	[Shared]
-	public class OfflineSyncController : IOfflineSyncController
-	{
-		 
-	}
+    [Export(typeof(IOfflineSyncController))]
+    [Shared]
+    public class OfflineSyncController : IOfflineSyncController
+    {
+    }
 }

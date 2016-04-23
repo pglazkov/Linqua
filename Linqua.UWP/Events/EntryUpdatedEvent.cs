@@ -4,16 +4,15 @@ using Linqua.DataObjects;
 
 namespace Linqua.Events
 {
-	public class EntryUpdatedEvent : EventBase
+    public class EntryUpdatedEvent : EventBase
     {
-		public EntryUpdatedEvent([NotNull] ClientEntry entry)
-		{
-			Guard.NotNull(entry, nameof(entry));
+        public EntryUpdatedEvent([NotNull] ClientEntry entry)
+        {
+            Guard.NotNull(entry, nameof(entry));
 
-			Entry = entry;
-		}
+            Entry = entry;
+        }
 
-		public ClientEntry Entry { get; private set; }
+        public ClientEntry Entry { get; private set; }
     }
 }
-	

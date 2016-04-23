@@ -2,8 +2,8 @@
 
 namespace Linqua
 {
-	public static class MobileService
-	{
+    public static class MobileService
+    {
         //public static readonly MobileServiceClient Client = new MobileServiceClient("http://localhost:59988");
         //public static readonly MobileServiceClient Client = new MobileServiceClient("https://localhost:44300");
 
@@ -20,5 +20,5 @@ namespace Linqua
 
         // Use this constructor instead after publishing to the cloud
         public static readonly MobileServiceClient Client = new MobileServiceClient(MobileServiceUrl, ApplicationKey, new AuthFailureHandler());
-	}
+    }
 }

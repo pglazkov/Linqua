@@ -4,11 +4,11 @@
 
 namespace Linqua.UI
 {
-	public sealed partial class PageHeader : UserControl
-	{
-		public PageHeader()
-		{
-			this.InitializeComponent();
-		}
-	}
+    public sealed partial class PageHeader : UserControl
+    {
+        public PageHeader()
+        {
+            this.InitializeComponent();
+        }
+    }
 }

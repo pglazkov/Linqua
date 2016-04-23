@@ -6,28 +6,28 @@ using Framework;
 
 namespace Linqua.UI
 {
-	/// <summary>
-	/// An empty page that can be used on its own or navigated to within a Frame.
-	/// </summary>
-	public sealed partial class LoginPage : Page
-	{
-		public LoginPage()
-		{
-			this.InitializeComponent();
+    /// <summary>
+    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// </summary>
+    public sealed partial class LoginPage : Page
+    {
+        public LoginPage()
+        {
+            this.InitializeComponent();
 
-			if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
-			{
-				DataContext = CompositionManager.Current.GetInstance<LoginViewModel>();
-			}
-		}
+            if (!Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+            {
+                DataContext = CompositionManager.Current.GetInstance<LoginViewModel>();
+            }
+        }
 
-		/// <summary>
-		/// Invoked when this page is about to be displayed in a Frame.
-		/// </summary>
-		/// <param name="e">Event data that describes how this page was reached.
-		/// This parameter is typically used to configure the page.</param>
-		protected override void OnNavigatedTo(NavigationEventArgs e)
-		{
-		}
-	}
+        /// <summary>
+        /// Invoked when this page is about to be displayed in a Frame.
+        /// </summary>
+        /// <param name="e">Event data that describes how this page was reached.
+        /// This parameter is typically used to configure the page.</param>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+        }
+    }
 }

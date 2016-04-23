@@ -7,34 +7,34 @@ using MetroLog.Targets;
 
 namespace Linqua.Logging
 {
-	/// <summary>
-	/// Defines a target that will append messages to a single file.
-	/// </summary>
-	public class FileStreamingTarget : WinRTFileTarget
-	{
-		public static readonly FileStreamingTarget Instance = new FileStreamingTarget();
+    /// <summary>
+    /// Defines a target that will append messages to a single file.
+    /// </summary>
+    public class FileStreamingTarget : WinRTFileTarget
+    {
+        public static readonly FileStreamingTarget Instance = new FileStreamingTarget();
 
-		private FileStreamingTarget()
-			: this(new LoggingLayout())
-		{
-		}
+        private FileStreamingTarget()
+            : this(new LoggingLayout())
+        {
+        }
 
-		private FileStreamingTarget(Layout layout)
-			: base(layout)
-		{
-			FileNamingParameters.IncludeLevel = false;
-			FileNamingParameters.IncludeLogger = false;
-			FileNamingParameters.IncludeSequence = false;
-			FileNamingParameters.IncludeSession = false;
-			FileNamingParameters.IncludeTimestamp = FileTimestampMode.Date;
-			FileNamingParameters.CreationMode = FileCreationMode.AppendIfExisting;
+        private FileStreamingTarget(Layout layout)
+            : base(layout)
+        {
+            FileNamingParameters.IncludeLevel = false;
+            FileNamingParameters.IncludeLogger = false;
+            FileNamingParameters.IncludeSequence = false;
+            FileNamingParameters.IncludeSession = false;
+            FileNamingParameters.IncludeTimestamp = FileTimestampMode.Date;
+            FileNamingParameters.CreationMode = FileCreationMode.AppendIfExisting;
 
-			RetainDays = 2;
-		}
+            RetainDays = 2;
+        }
 
-		protected override Task WriteTextToFileCore(IStorageFile file, string contents)
-		{
-			return FileIO.AppendTextAsync(file, contents + Environment.NewLine).AsTask();
-		}
-	}
+        protected override Task WriteTextToFileCore(IStorageFile file, string contents)
+        {
+            return FileIO.AppendTextAsync(file, contents + Environment.NewLine).AsTask();
+        }
+    }
 }

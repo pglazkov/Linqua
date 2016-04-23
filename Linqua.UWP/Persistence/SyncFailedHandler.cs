@@ -3,12 +3,12 @@ using System.Composition;
 
 namespace Linqua.Persistence
 {
-	[Export(typeof(ISyncFailedHandler))]
+    [Export(typeof(ISyncFailedHandler))]
     public class SyncFailedHandler : ISyncFailedHandler
     {
-	    public void Handle(Exception ex)
-	    {
-		    // TODO: Log the exception
-	    }
+        public void Handle(Exception ex)
+        {
+            // TODO: Log the exception
+        }
     }
 }

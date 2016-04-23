@@ -102,7 +102,6 @@ namespace Framework
             await base.Execute(parameter);
         }
 
-
         private DelegateCommand(Func<T, Task> executeMethod)
             : this(executeMethod, o => true)
         {
@@ -114,7 +113,6 @@ namespace Framework
             if (executeMethod == null || canExecuteMethod == null)
                 throw new ArgumentNullException("executeMethod");
         }
-
     }
 
     /// <summary>
@@ -196,5 +194,4 @@ namespace Framework
                 throw new ArgumentNullException("executeMethod");
         }
     }
-
 }

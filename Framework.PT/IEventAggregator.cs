@@ -1,7 +1,6 @@
 ﻿namespace Framework
 {
-	public interface IEventAggregator : IEventLocator, IEventPublisher
-	{
-		 
-	}
+    public interface IEventAggregator : IEventLocator, IEventPublisher
+    {
+    }
 }

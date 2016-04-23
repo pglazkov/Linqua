@@ -10,29 +10,29 @@ namespace Linqua
 {
     public class DesignTimeApplicationContoller : IEntryOperations
     {
-	    public Task DeleteEntryAsync(EntryViewModel entry)
-	    {
-		    return Task.FromResult(true);
-	    }
+        public Task DeleteEntryAsync(EntryViewModel entry)
+        {
+            return Task.FromResult(true);
+        }
 
-	    public Task UpdateEntryAsync(ClientEntry entry)
-	    {
-		    return Task.FromResult(true);
-	    }
+        public Task UpdateEntryAsync(ClientEntry entry)
+        {
+            return Task.FromResult(true);
+        }
 
-	    public Task UpdateEntryIsLearnedAsync(EntryViewModel entry)
-	    {
-			return Task.FromResult(true);
-	    }
+        public Task UpdateEntryIsLearnedAsync(EntryViewModel entry)
+        {
+            return Task.FromResult(true);
+        }
 
-	    public Task<string> TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
-	    {
-			return Task.FromResult(string.Empty);
-	    }
+        public Task<string> TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
+        {
+            return Task.FromResult(string.Empty);
+        }
 
-	    public Task<string> GetEntryLanguageNameAsync(string languageCode, string locale)
-	    {
-		    return Task.FromResult(string.Empty);
-	    }
+        public Task<string> GetEntryLanguageNameAsync(string languageCode, string locale)
+        {
+            return Task.FromResult(string.Empty);
+        }
     }
 }

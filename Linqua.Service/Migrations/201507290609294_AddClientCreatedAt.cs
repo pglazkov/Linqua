@@ -2,7 +2,7 @@ namespace Linqua.Service.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class AddClientCreatedAt : DbMigration
     {
         public override void Up()
@@ -11,7 +11,7 @@ namespace Linqua.Service.Migrations
 
             Sql("UPDATE linqua.Entries SET ClientCreatedAt = CreatedAt");
         }
-        
+
         public override void Down()
         {
             DropColumn("linqua.Entries", "ClientCreatedAt");

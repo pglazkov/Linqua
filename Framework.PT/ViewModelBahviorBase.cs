@@ -2,20 +2,20 @@
 
 namespace Framework
 {
-	public abstract class ViewModelBahviorBase<TViewModel> : NotificationObject, IViewModelBahavior
-		where TViewModel : IViewModelWithBehaviors
-	{
-		public TViewModel AssociatedViewModel { get; private set; }
+    public abstract class ViewModelBahviorBase<TViewModel> : NotificationObject, IViewModelBahavior
+        where TViewModel : IViewModelWithBehaviors
+    {
+        public TViewModel AssociatedViewModel { get; private set; }
 
-		public void Attach([NotNull] IViewModelWithBehaviors viewModel)
-		{
-			Guard.NotNull(viewModel, nameof(viewModel));
+        public void Attach([NotNull] IViewModelWithBehaviors viewModel)
+        {
+            Guard.NotNull(viewModel, nameof(viewModel));
 
-			AssociatedViewModel = (TViewModel)viewModel;
-		}
+            AssociatedViewModel = (TViewModel)viewModel;
+        }
 
-		protected virtual void AttachOverride([NotNull] TViewModel viewModel)
-		{
-		}
-	}
+        protected virtual void AttachOverride([NotNull] TViewModel viewModel)
+        {
+        }
+    }
 }

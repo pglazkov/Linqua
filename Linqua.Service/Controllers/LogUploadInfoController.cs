@@ -54,8 +54,9 @@ namespace Linqua.Service.Controllers
             // Define a policy that gives write access to the container for 5 minutes.
             SharedAccessBlobPolicy sasPolicy = new SharedAccessBlobPolicy
             {
-                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-1), // Start 1 minute in the past because I saw the following error happen "Signature not valid in the specified time frame: Start [Mon, 12 Oct 2015 20:40:06 GMT] - Expiry [Mon, 12 Oct 2015 20:45:06 GMT] - Current [Mon, 12 Oct 2015 20:40:05 GMT]"
-				SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(5),
+                SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-1),
+                // Start 1 minute in the past because I saw the following error happen "Signature not valid in the specified time frame: Start [Mon, 12 Oct 2015 20:40:06 GMT] - Expiry [Mon, 12 Oct 2015 20:45:06 GMT] - Current [Mon, 12 Oct 2015 20:40:05 GMT]"
+                SharedAccessExpiryTime = DateTime.UtcNow.AddMinutes(5),
                 Permissions = SharedAccessBlobPermissions.Write
             };
 
@@ -70,10 +71,10 @@ namespace Linqua.Service.Controllers
             {
                 deviceIdNamePart = "_" + deviceId;
             }
-            
+
             result.ResourceName = currentUser.Id + deviceIdNamePart + ".zip";
             result.UploadUri = $"{blobEndpoint}{ContainerName}/{result.ResourceName}";
-            
+
             return result;
         }
     }

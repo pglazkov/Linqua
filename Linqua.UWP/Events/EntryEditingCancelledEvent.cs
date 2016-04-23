@@ -2,8 +2,7 @@
 
 namespace Linqua.Events
 {
-	public class EntryEditingCancelledEvent : EventBase
-	{
-		 
-	}
+    public class EntryEditingCancelledEvent : EventBase
+    {
+    }
 }

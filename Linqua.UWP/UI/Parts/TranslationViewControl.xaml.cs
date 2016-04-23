@@ -8,33 +8,32 @@ using JetBrains.Annotations;
 
 namespace Linqua.UI
 {
-	public sealed partial class TranslationViewControl : UserControl, INotifyPropertyChanged
-	{
-		public TranslationViewControl()
-		{
-			InitializeComponent();
+    public sealed partial class TranslationViewControl : UserControl, INotifyPropertyChanged
+    {
+        public TranslationViewControl()
+        {
+            InitializeComponent();
 
-		    DataContextChanged += OnDataContextChanged;
-		}
+            DataContextChanged += OnDataContextChanged;
+        }
 
-	    public EntryViewModel ViewModel => (EntryViewModel)DataContext;
+        public EntryViewModel ViewModel => (EntryViewModel)DataContext;
 
-	    private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-	    {
-	        OnPropertyChanged(nameof(ViewModel));
-	    }
+        private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            OnPropertyChanged(nameof(ViewModel));
+        }
 
-	    #region PropertyChanged Event
+        #region PropertyChanged Event
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-	    [NotifyPropertyChangedInvocator]
-	    private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-	    {
-	        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-	    }
+        [NotifyPropertyChangedInvocator]
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
-	    #endregion
-
-	}
+        #endregion
+    }
 }

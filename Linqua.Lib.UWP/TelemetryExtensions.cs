@@ -6,30 +6,30 @@ using JetBrains.Annotations;
 
 namespace Linqua
 {
-	public static class TelemetryExtensions
-	{
-		public static void TrackMemberCall([NotNull] this ITelemetryService telemetryService, [CallerMemberName] string memberName = null)
-		{
-			Guard.NotNull(telemetryService, nameof(telemetryService));
-			Guard.NotNullOrEmpty(memberName, nameof(memberName));
+    public static class TelemetryExtensions
+    {
+        public static void TrackMemberCall([NotNull] this ITelemetryService telemetryService, [CallerMemberName] string memberName = null)
+        {
+            Guard.NotNull(telemetryService, nameof(telemetryService));
+            Guard.NotNullOrEmpty(memberName, nameof(memberName));
 
-			telemetryService.TrackTrace("Member Call", TelemetrySeverityLevel.Information, new Dictionary<string, string>
-			{
-				{"MemberName", memberName}
-			});
-		}
+            telemetryService.TrackTrace("Member Call", TelemetrySeverityLevel.Information, new Dictionary<string, string>
+            {
+                {"MemberName", memberName}
+            });
+        }
 
-		public static void TrackUserAction([NotNull] this ITelemetryService telemetryService, [NotNull] string userActionName, string featureName = null)
-		{
-			Guard.NotNull(telemetryService, nameof(telemetryService));
-			Guard.NotNullOrEmpty(userActionName, nameof(userActionName));
+        public static void TrackUserAction([NotNull] this ITelemetryService telemetryService, [NotNull] string userActionName, string featureName = null)
+        {
+            Guard.NotNull(telemetryService, nameof(telemetryService));
+            Guard.NotNullOrEmpty(userActionName, nameof(userActionName));
 
-			telemetryService.TrackEvent(userActionName, new Dictionary<string, string>
-			{
-				{"Type", "UserAction"},
-				{"Feature", featureName ?? "General"},
-				{"ActionName", userActionName}
-			});
-		}
-	}
+            telemetryService.TrackEvent(userActionName, new Dictionary<string, string>
+            {
+                {"Type", "UserAction"},
+                {"Feature", featureName ?? "General"},
+                {"ActionName", userActionName}
+            });
+        }
+    }
 }

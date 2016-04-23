@@ -2,6 +2,6 @@
 {
     public interface IEntryListItemView
     {
-	    void Focus();
+        void Focus();
     }
 }

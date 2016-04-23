@@ -29,7 +29,11 @@ namespace Framework
             if (executeMethod == null || canExecuteMethod == null)
                 throw new ArgumentNullException("executeMethod");
 
-            this.executeMethod = arg => { executeMethod(arg); return Task.Delay(0); };
+            this.executeMethod = arg =>
+            {
+                executeMethod(arg);
+                return Task.Delay(0);
+            };
             this.canExecuteMethod = canExecuteMethod;
         }
 
@@ -38,7 +42,7 @@ namespace Framework
         /// </summary>
         /// <param name="executeMethod">The <see cref="Func{Object,Task}"/> to execute when <see cref="ICommand.Execute"/> is invoked.</param>
         /// <param name="canExecuteMethod">The <see cref="Func{Object,Bool}"/> to invoked when <see cref="ICommand.CanExecute"/> is invoked.</param>
-        protected DelegateCommandBase(Func<object,Task> executeMethod, Func<object, bool> canExecuteMethod)
+        protected DelegateCommandBase(Func<object, Task> executeMethod, Func<object, bool> canExecuteMethod)
         {
             if (executeMethod == null || canExecuteMethod == null)
                 throw new ArgumentNullException("executeMethod");
@@ -46,7 +50,7 @@ namespace Framework
             this.executeMethod = executeMethod;
             this.canExecuteMethod = canExecuteMethod;
         }
-        
+
         /// <summary>
         /// Raises <see cref="ICommand.CanExecuteChanged"/> on the UI thread so every 
         /// command invoker can requery <see cref="ICommand.CanExecute"/>.
@@ -59,7 +63,6 @@ namespace Framework
                 handlers(this, EventArgs.Empty);
             }
         }
-
 
         /// <summary>
         /// Raises <see cref="DelegateCommandBase.CanExecuteChanged"/> on the UI thread so every command invoker
@@ -88,7 +91,7 @@ namespace Framework
         /// <param name="parameter"></param>
         protected async Task Execute(object parameter)
         {
-            await executeMethod(parameter);  
+            await executeMethod(parameter);
         }
 
         /// <summary>
@@ -105,6 +108,5 @@ namespace Framework
         /// Occurs when changes happen that affect whether or not the command should execute. 
         /// </summary>
         public event EventHandler CanExecuteChanged;
-
     }
 }

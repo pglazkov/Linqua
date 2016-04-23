@@ -2,7 +2,7 @@
 
 namespace Linqua.Persistence.Events
 {
-	public class StorageInitializedEvent : EventBase
-	{
-	}
+    public class StorageInitializedEvent : EventBase
+    {
+    }
 }

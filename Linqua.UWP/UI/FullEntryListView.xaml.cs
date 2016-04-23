@@ -11,72 +11,66 @@ using Linqua.Framework;
 
 namespace Linqua.UI
 {
-	public sealed partial class FullEntryListView : UserControl, IPivotContentView
-	{
-		public FullEntryListView()
-		{
-			this.InitializeComponent();
-		}
+    public sealed partial class FullEntryListView : UserControl, IPivotContentView
+    {
+        public FullEntryListView()
+        {
+            this.InitializeComponent();
+        }
 
-		private void EntryHolding(object sender, HoldingRoutedEventArgs e)
-		{
-			var senderElement = sender as FrameworkElement;
-			var flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
+        private void EntryHolding(object sender, HoldingRoutedEventArgs e)
+        {
+            var senderElement = sender as FrameworkElement;
+            var flyoutBase = FlyoutBase.GetAttachedFlyout(senderElement);
 
-			flyoutBase.ShowAt(senderElement);
-		}
+            flyoutBase.ShowAt(senderElement);
+        }
 
-		private void EntryPressed(object sender, PointerRoutedEventArgs e)
-		{
+        private void EntryPressed(object sender, PointerRoutedEventArgs e)
+        {
+        }
 
-		}
+        private void EntryLoaded(object sender, RoutedEventArgs e)
+        {
+            var entryView = (Control)sender;
 
-		private void EntryLoaded(object sender, RoutedEventArgs e)
-		{
-			var entryView = (Control)sender;
+            var entryVm = (EntryListItemViewModel)entryView.DataContext;
 
-			var entryVm = (EntryListItemViewModel)entryView.DataContext;
+            if (entryVm == null)
+            {
+                return;
+            }
 
-			if (entryVm == null)
-			{
-				return;
-			}
+            if (entryVm.JustAdded)
+            {
+                var itemView = EntryItemsControl.ContainerFromItem(entryVm) as Control;
 
-			if (entryVm.JustAdded)
-			{
-				var itemView = EntryItemsControl.ContainerFromItem(entryVm) as Control;
+                if (itemView != null)
+                {
+                    itemView.Focus(FocusState.Programmatic);
+                }
 
-				if (itemView != null)
-				{
-					itemView.Focus(FocusState.Programmatic);
-				}
+                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { EntryItemsControl.ScrollIntoView(entryVm); }).FireAndForget();
 
-				Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-				{
-					EntryItemsControl.ScrollIntoView(entryVm);
-				}).FireAndForget();
+                entryVm.JustAdded = false;
+            }
+        }
 
-				entryVm.JustAdded = false;
-			}
-		}
+        private void OnItemClicked(object sender, ItemClickEventArgs e)
+        {
+            var entryVm = (EntryListItemViewModel)e.ClickedItem;
 
-		private void OnItemClicked(object sender, ItemClickEventArgs e)
-		{
-			var entryVm = (EntryListItemViewModel)e.ClickedItem;
+            var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
 
-			var eventAggregator = CompositionManager.Current.GetInstance<IEventAggregator>();
+            eventAggregator.Publish(new EntryEditRequestedEvent(entryVm.Entry.Id));
+        }
 
-			eventAggregator.Publish(new EntryEditRequestedEvent(entryVm.Entry.Id));
-		}
+        public void OnPivotItemLoaded(IPivotHostView host)
+        {
+        }
 
-		public void OnPivotItemLoaded(IPivotHostView host)
-		{
-			
-		}
-
-		public void OnPivotItemUnloaded(IPivotHostView host)
-		{
-			
-		}
-	}
+        public void OnPivotItemUnloaded(IPivotHostView host)
+        {
+        }
+    }
 }

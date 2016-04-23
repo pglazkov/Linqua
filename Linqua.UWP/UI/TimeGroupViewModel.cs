@@ -6,48 +6,48 @@ using JetBrains.Annotations;
 
 namespace Linqua.UI
 {
-	public class TimeGroupViewModel<TItemViewModel> : ViewModelBase
-		where TItemViewModel : ViewModelBase
-	{
-		private ObservableCollection<TItemViewModel> items;
-		private IDictionary<TItemViewModel, bool> itemIsMatchFilterStatuses = new Dictionary<TItemViewModel, bool>();
+    public class TimeGroupViewModel<TItemViewModel> : ViewModelBase
+        where TItemViewModel : ViewModelBase
+    {
+        private ObservableCollection<TItemViewModel> items;
+        private IDictionary<TItemViewModel, bool> itemIsMatchFilterStatuses = new Dictionary<TItemViewModel, bool>();
 
-		public TimeGroupViewModel([NotNull] string groupName)
-		{
-			Guard.NotNullOrEmpty(groupName, nameof(groupName));
+        public TimeGroupViewModel([NotNull] string groupName)
+        {
+            Guard.NotNullOrEmpty(groupName, nameof(groupName));
 
-			GroupName = groupName;
-		}
+            GroupName = groupName;
+        }
 
-		public string GroupName { get; private set; }
+        public string GroupName { get; private set; }
 
-		public ObservableCollection<TItemViewModel> Items
-		{
-			get { return items; }
-			set
-			{
-				if (items == value)
-				{
-					return;
-				}
+        public ObservableCollection<TItemViewModel> Items
+        {
+            get { return items; }
+            set
+            {
+                if (items == value)
+                {
+                    return;
+                }
 
-				items = value;
+                items = value;
 
-				items = value;
-				itemIsMatchFilterStatuses = items.ToDictionary(x => x, x => true);
-			}
-		}
+                items = value;
+                itemIsMatchFilterStatuses = items.ToDictionary(x => x, x => true);
+            }
+        }
 
-		public void NotifyIsMatch(TItemViewModel item, bool isMatch)
-		{
-			itemIsMatchFilterStatuses[item] = isMatch;
+        public void NotifyIsMatch(TItemViewModel item, bool isMatch)
+        {
+            itemIsMatchFilterStatuses[item] = isMatch;
 
-			RaisePropertyChanged(nameof(IsFilterNoMatch));
-		}
+            RaisePropertyChanged(nameof(IsFilterNoMatch));
+        }
 
-		public bool IsFilterNoMatch
-		{
-			get { return !itemIsMatchFilterStatuses.Any(x => x.Value); }
-		}
-	}
+        public bool IsFilterNoMatch
+        {
+            get { return !itemIsMatchFilterStatuses.Any(x => x.Value); }
+        }
+    }
 }

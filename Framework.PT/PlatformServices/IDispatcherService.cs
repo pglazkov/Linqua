@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace Framework.PlatformServices
 {
-	public interface IDispatcherService
-	{
-		bool CheckAccess();
+    public interface IDispatcherService
+    {
+        bool CheckAccess();
 
-		Task InvokeAsync(Delegate method, params Object[] args);
-	}
+        Task InvokeAsync(Delegate method, params Object[] args);
+    }
 }

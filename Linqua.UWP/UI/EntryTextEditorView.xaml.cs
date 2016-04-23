@@ -8,54 +8,54 @@ using Framework;
 
 namespace Linqua.UI
 {
-	public partial class EntryTextEditorView : UserControl
-	{
-		public EntryTextEditorView()
-		{
-			InitializeComponent();
-		}
+    public partial class EntryTextEditorView : UserControl
+    {
+        public EntryTextEditorView()
+        {
+            InitializeComponent();
+        }
 
-		#region InputTargetLostFocus Event
+        #region InputTargetLostFocus Event
 
-		public event EventHandler InputTargetLostFocus;
+        public event EventHandler InputTargetLostFocus;
 
-		protected virtual void OnInputTargetLostFocus()
-		{
-			var handler = InputTargetLostFocus;
-			if (handler != null) handler(this, EventArgs.Empty);
-		}
+        protected virtual void OnInputTargetLostFocus()
+        {
+            var handler = InputTargetLostFocus;
+            if (handler != null) handler(this, EventArgs.Empty);
+        }
 
-		#endregion
+        #endregion
 
-		private EntryTextEditorViewModel ViewModel => (EntryTextEditorViewModel)DataContext;
+        private EntryTextEditorViewModel ViewModel => (EntryTextEditorViewModel)DataContext;
 
-	    public void FocusInputTarget()
-		{
-			NewEntryTextBox.Focus(FocusState.Programmatic);
-		}
+        public void FocusInputTarget()
+        {
+            NewEntryTextBox.Focus(FocusState.Programmatic);
+        }
 
-		private void EntryTextBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
-		{
-			if (e.Key == VirtualKey.Enter && !ViewModel.IsBusy)
-			{
-				if (ViewModel.FinishCommand.CanExecute())
-				{
-					ViewModel.FinishCommand.Execute().FireAndForget();
-				}
-			}
+        private void EntryTextBox_OnKeyDown(object sender, KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Enter && !ViewModel.IsBusy)
+            {
+                if (ViewModel.FinishCommand.CanExecute())
+                {
+                    ViewModel.FinishCommand.Execute().FireAndForget();
+                }
+            }
 
-		    if (e.Key == VirtualKey.Escape && !ViewModel.IsBusy)
-		    {
-		        if (ViewModel.CancelCommand.CanExecute())
-		        {
-		            ViewModel.CancelCommand.Execute().FireAndForget();
-		        }
-		    }
-		}
+            if (e.Key == VirtualKey.Escape && !ViewModel.IsBusy)
+            {
+                if (ViewModel.CancelCommand.CanExecute())
+                {
+                    ViewModel.CancelCommand.Execute().FireAndForget();
+                }
+            }
+        }
 
-		private void EntryTextBox_OnLostFocus(object sender, RoutedEventArgs e)
-		{
-			OnInputTargetLostFocus();
-		}
-	}
+        private void EntryTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            OnInputTargetLostFocus();
+        }
+    }
 }

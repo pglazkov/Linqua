@@ -9,240 +9,237 @@ using Framework;
 
 namespace Linqua.Framework
 {
-	public sealed class HorizontalFlickBehavior : Behavior<FrameworkElement>
-	{
-		private double startPositionX;
-		private TranslateTransform translateTransform;
-		private GeneralTransform containerTransform;
-		private bool isFlickedAway;
-		private FlickDirection? lastDirection;
+    public sealed class HorizontalFlickBehavior : Behavior<FrameworkElement>
+    {
+        private double startPositionX;
+        private TranslateTransform translateTransform;
+        private GeneralTransform containerTransform;
+        private bool isFlickedAway;
+        private FlickDirection? lastDirection;
 
-		#region Container DP
+        #region Container DP
 
-		public FrameworkElement Container
-		{
-			get { return (FrameworkElement)GetValue(ContainerProperty); }
-			set { SetValue(ContainerProperty, value); }
-		}
+        public FrameworkElement Container
+        {
+            get { return (FrameworkElement)GetValue(ContainerProperty); }
+            set { SetValue(ContainerProperty, value); }
+        }
 
-		public static readonly DependencyProperty ContainerProperty =
-			DependencyProperty.Register("Container", typeof(FrameworkElement), typeof(HorizontalFlickBehavior), new PropertyMetadata(null));
+        public static readonly DependencyProperty ContainerProperty =
+            DependencyProperty.Register("Container", typeof(FrameworkElement), typeof(HorizontalFlickBehavior), new PropertyMetadata(null));
 
-		#endregion
+        #endregion
 
-		#region IsEnabled DP
+        #region IsEnabled DP
 
-		public bool IsEnabled
-		{
-			get { return (bool)GetValue(IsEnabledProperty); }
-			set { SetValue(IsEnabledProperty, value); }
-		}
+        public bool IsEnabled
+        {
+            get { return (bool)GetValue(IsEnabledProperty); }
+            set { SetValue(IsEnabledProperty, value); }
+        }
 
-		public static readonly DependencyProperty IsEnabledProperty =
-			DependencyProperty.Register("IsEnabled", typeof(bool), typeof(HorizontalFlickBehavior), new PropertyMetadata(true, OnIsEnabledChanged));
+        public static readonly DependencyProperty IsEnabledProperty =
+            DependencyProperty.Register("IsEnabled", typeof(bool), typeof(HorizontalFlickBehavior), new PropertyMetadata(true, OnIsEnabledChanged));
 
-		private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-		{
-			var this_ = (HorizontalFlickBehavior)d;
+        private static void OnIsEnabledChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var this_ = (HorizontalFlickBehavior)d;
 
-			this_.OnIsEnabledChanged(e);
-		}
+            this_.OnIsEnabledChanged(e);
+        }
 
-		private void OnIsEnabledChanged(DependencyPropertyChangedEventArgs e)
-		{
-			
-		}
+        private void OnIsEnabledChanged(DependencyPropertyChangedEventArgs e)
+        {
+        }
 
-		#endregion
+        #endregion
 
-		#region OverrideRenderTransform DP
+        #region OverrideRenderTransform DP
 
-		public bool OverrideRenderTransform
-		{
-			get { return (bool)GetValue(OverrideRenderTransformProperty); }
-			set { SetValue(OverrideRenderTransformProperty, value); }
-		}
+        public bool OverrideRenderTransform
+        {
+            get { return (bool)GetValue(OverrideRenderTransformProperty); }
+            set { SetValue(OverrideRenderTransformProperty, value); }
+        }
 
-		public static readonly DependencyProperty OverrideRenderTransformProperty =
-			DependencyProperty.Register("OverrideRenderTransform", typeof(bool), typeof(HorizontalFlickBehavior), new PropertyMetadata(false));
+        public static readonly DependencyProperty OverrideRenderTransformProperty =
+            DependencyProperty.Register("OverrideRenderTransform", typeof(bool), typeof(HorizontalFlickBehavior), new PropertyMetadata(false));
 
-		#endregion
+        #endregion
 
-		#region FlickedAway
+        #region FlickedAway
 
-		public event EventHandler<FlickedAwayEventArgs> FlickedAway;
+        public event EventHandler<FlickedAwayEventArgs> FlickedAway;
 
-		private void OnFlickedAway(FlickDirection direction)
-		{
-			var handler = FlickedAway;
-			if (handler != null) handler(this, new FlickedAwayEventArgs(direction));
-		}
+        private void OnFlickedAway(FlickDirection direction)
+        {
+            var handler = FlickedAway;
+            if (handler != null) handler(this, new FlickedAwayEventArgs(direction));
+        }
 
-		#endregion
+        #endregion
 
-		#region Flicking Event
+        #region Flicking Event
 
-		public event EventHandler<FlickingEventArgs> Flicking;
+        public event EventHandler<FlickingEventArgs> Flicking;
 
-		private void OnFlicking(FlickingEventArgs e)
-		{
-			var handler = Flicking;
-			if (handler != null) handler(this, e);
-		}
+        private void OnFlicking(FlickingEventArgs e)
+        {
+            var handler = Flicking;
+            if (handler != null) handler(this, e);
+        }
 
-		#endregion
+        #endregion
 
-		protected override void OnAttached()
-		{
-			AssociatedObject.Loaded += OnLoaded;
-			AssociatedObject.Unloaded += OnUnloaded;
-			AssociatedObject.DataContextChanged += OnDataContextChanged;
+        protected override void OnAttached()
+        {
+            AssociatedObject.Loaded += OnLoaded;
+            AssociatedObject.Unloaded += OnUnloaded;
+            AssociatedObject.DataContextChanged += OnDataContextChanged;
 
-			var existingRenderTransform = AssociatedObject.RenderTransform as TranslateTransform;
+            var existingRenderTransform = AssociatedObject.RenderTransform as TranslateTransform;
 
-			if (existingRenderTransform != null)
-			{
-				translateTransform = existingRenderTransform;
-			}
-			else if (!OverrideRenderTransform)
-			{
-				throw new InvalidOperationException("Associated object must have RenderTransform set to TranslateTransform or the " +
-				                                    "OverrideRenderTransform property on this behavior must be set to True. This behavior needs to manipulate the " +
-				                                    "position of the object via a TranslateTransofrm.");
-			}
-			else
-			{
-				translateTransform = new TranslateTransform();
-			}
+            if (existingRenderTransform != null)
+            {
+                translateTransform = existingRenderTransform;
+            }
+            else if (!OverrideRenderTransform)
+            {
+                throw new InvalidOperationException("Associated object must have RenderTransform set to TranslateTransform or the " +
+                                                    "OverrideRenderTransform property on this behavior must be set to True. This behavior needs to manipulate the " +
+                                                    "position of the object via a TranslateTransofrm.");
+            }
+            else
+            {
+                translateTransform = new TranslateTransform();
+            }
 
-			AssociatedObject.RenderTransform = translateTransform;
+            AssociatedObject.RenderTransform = translateTransform;
 
-			AssociatedObject.ManipulationMode =
-				ManipulationModes.TranslateX |
-				ManipulationModes.TranslateInertia;
+            AssociatedObject.ManipulationMode =
+                ManipulationModes.TranslateX |
+                ManipulationModes.TranslateInertia;
 
-			AssociatedObject.ManipulationStarting += OnAssociatedObjectManipulationStarting;
-			AssociatedObject.ManipulationDelta += OnAssociatedObjectManipulationDelta;
-			AssociatedObject.ManipulationCompleted += OnManipulationCompleted;
-		}
+            AssociatedObject.ManipulationStarting += OnAssociatedObjectManipulationStarting;
+            AssociatedObject.ManipulationDelta += OnAssociatedObjectManipulationDelta;
+            AssociatedObject.ManipulationCompleted += OnManipulationCompleted;
+        }
 
-		protected override void OnDetaching()
-		{
-			AssociatedObject.Loaded -= OnLoaded;
-			AssociatedObject.Unloaded -= OnUnloaded;
-			AssociatedObject.DataContextChanged -= OnDataContextChanged;
+        protected override void OnDetaching()
+        {
+            AssociatedObject.Loaded -= OnLoaded;
+            AssociatedObject.Unloaded -= OnUnloaded;
+            AssociatedObject.DataContextChanged -= OnDataContextChanged;
 
-			AssociatedObject.ManipulationStarting -= OnAssociatedObjectManipulationStarting;
-			AssociatedObject.ManipulationDelta -= OnAssociatedObjectManipulationDelta;
-			AssociatedObject.ManipulationCompleted -= OnManipulationCompleted;
-		}
+            AssociatedObject.ManipulationStarting -= OnAssociatedObjectManipulationStarting;
+            AssociatedObject.ManipulationDelta -= OnAssociatedObjectManipulationDelta;
+            AssociatedObject.ManipulationCompleted -= OnManipulationCompleted;
+        }
 
-		private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
-		{
-			if (args.NewValue == null) return;
+        private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
+        {
+            if (args.NewValue == null) return;
 
-			translateTransform.X = -translateTransform.X;
+            translateTransform.X = -translateTransform.X;
 
-			AnimateBackToOriginalPosition();
-		}
+            AnimateBackToOriginalPosition();
+        }
 
-		private void OnLoaded(object sender, RoutedEventArgs e)
-		{
-			Container = Container ?? AssociatedObject.GetFirstAncestorOfType<Panel>();
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
+            Container = Container ?? AssociatedObject.GetFirstAncestorOfType<Panel>();
 
-			containerTransform = AssociatedObject.TransformToVisual(Container);
-		}
+            containerTransform = AssociatedObject.TransformToVisual(Container);
+        }
 
-		private void OnUnloaded(object sender, RoutedEventArgs e)
-		{
-			
-		}
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+        }
 
-		private void OnAssociatedObjectManipulationStarting(object sender, ManipulationStartingRoutedEventArgs e)
-		{
-			startPositionX = translateTransform.X;
-		}
+        private void OnAssociatedObjectManipulationStarting(object sender, ManipulationStartingRoutedEventArgs e)
+        {
+            startPositionX = translateTransform.X;
+        }
 
-		private void OnAssociatedObjectManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
-		{
-			if (!IsEnabled)
-			{
-				e.Complete();
-				return;
-			}
+        private void OnAssociatedObjectManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
+        {
+            if (!IsEnabled)
+            {
+                e.Complete();
+                return;
+            }
 
-		    if (Math.Abs(e.Delta.Translation.X) < double.Epsilon)
-		    {
-		        return;
-		    }
+            if (Math.Abs(e.Delta.Translation.X) < double.Epsilon)
+            {
+                return;
+            }
 
-			lastDirection = e.Delta.Translation.X > 0 ? FlickDirection.Right : FlickDirection.Left;
+            lastDirection = e.Delta.Translation.X > 0 ? FlickDirection.Right : FlickDirection.Left;
 
-			var flickingEventArgs = new FlickingEventArgs(lastDirection.Value, e.Delta);
+            var flickingEventArgs = new FlickingEventArgs(lastDirection.Value, e.Delta);
 
-			OnFlicking(flickingEventArgs);
+            OnFlicking(flickingEventArgs);
 
-			if (!flickingEventArgs.CanContinue)
-			{
-				e.Complete();
+            if (!flickingEventArgs.CanContinue)
+            {
+                e.Complete();
                 //return;
-			}
+            }
 
-			var dx = e.Cumulative.Translation.X;
+            var dx = e.Cumulative.Translation.X;
 
-			var x = startPositionX + dx;
+            var x = startPositionX + dx;
 
-			translateTransform.X = x;
+            translateTransform.X = x;
 
-			var positionRelativeToContainer = containerTransform.TransformPoint(new Point(0, 0));
+            var positionRelativeToContainer = containerTransform.TransformPoint(new Point(0, 0));
 
-			var realPositionX = positionRelativeToContainer.X + translateTransform.X;
+            var realPositionX = positionRelativeToContainer.X + translateTransform.X;
 
-			if (realPositionX < 0)
-			{
-				isFlickedAway = realPositionX + AssociatedObject.ActualWidth < 0;
-			}
-			else
-			{
-				isFlickedAway = realPositionX > Container.ActualWidth;
-			}
+            if (realPositionX < 0)
+            {
+                isFlickedAway = realPositionX + AssociatedObject.ActualWidth < 0;
+            }
+            else
+            {
+                isFlickedAway = realPositionX > Container.ActualWidth;
+            }
 
-			if (isFlickedAway)
-			{
-				e.Complete();
-			}
-		}
+            if (isFlickedAway)
+            {
+                e.Complete();
+            }
+        }
 
-		private void OnManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
-		{
-			if (isFlickedAway)
-			{
-				OnFlickedAway(lastDirection ?? FlickDirection.Right);
-			}
-			else
-			{
-				AnimateBackToOriginalPosition();
-			}
-		}
+        private void OnManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
+        {
+            if (isFlickedAway)
+            {
+                OnFlickedAway(lastDirection ?? FlickDirection.Right);
+            }
+            else
+            {
+                AnimateBackToOriginalPosition();
+            }
+        }
 
-		private void AnimateBackToOriginalPosition()
-		{
-			var sb = new Storyboard();
+        private void AnimateBackToOriginalPosition()
+        {
+            var sb = new Storyboard();
 
-			var doubleAnimation = new DoubleAnimation
-			{
-				To = 0,
-				Duration = new Duration(TimeSpan.FromMilliseconds(400)),
-				EasingFunction = new ExponentialEase()
-			};
+            var doubleAnimation = new DoubleAnimation
+            {
+                To = 0,
+                Duration = new Duration(TimeSpan.FromMilliseconds(400)),
+                EasingFunction = new ExponentialEase()
+            };
 
-			Storyboard.SetTarget(doubleAnimation, translateTransform);
-			Storyboard.SetTargetProperty(doubleAnimation, "X");
+            Storyboard.SetTarget(doubleAnimation, translateTransform);
+            Storyboard.SetTargetProperty(doubleAnimation, "X");
 
-			sb.Children.Add(doubleAnimation);
+            sb.Children.Add(doubleAnimation);
 
-			sb.Begin();
-		}
-		
-	}
+            sb.Begin();
+        }
+    }
 }

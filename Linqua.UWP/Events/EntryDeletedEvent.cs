@@ -5,16 +5,16 @@ using Linqua.UI;
 
 namespace Linqua.Events
 {
-	public class EntryDeletedEvent : EventBase
-	{
-		public EntryDeletedEvent([NotNull] EntryViewModel deletedEntry)
-		{
-			Guard.NotNull(deletedEntry, nameof(deletedEntry));
+    public class EntryDeletedEvent : EventBase
+    {
+        public EntryDeletedEvent([NotNull] EntryViewModel deletedEntry)
+        {
+            Guard.NotNull(deletedEntry, nameof(deletedEntry));
 
-			DeletedEntry = deletedEntry;
-		}
+            DeletedEntry = deletedEntry;
+        }
 
-		[NotNull]
-		public EntryViewModel DeletedEntry { get; private set; }
-	}
+        [NotNull]
+        public EntryViewModel DeletedEntry { get; private set; }
+    }
 }

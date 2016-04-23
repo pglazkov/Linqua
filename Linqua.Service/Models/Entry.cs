@@ -5,8 +5,8 @@ using Microsoft.WindowsAzure.Mobile.Service;
 
 namespace Linqua.Service.Models
 {
-	public class Entry : EntityData
-	{
+    public class Entry : EntityData
+    {
         [Index]
         [MaxLength(256)]
         public string Text { get; set; }
@@ -19,9 +19,9 @@ namespace Linqua.Service.Models
 
         public TranslationState TranslationState { get; set; }
 
-		public string UserId { get; set; }
+        public string UserId { get; set; }
 
-		public bool IsLearnt { get; set; }
+        public bool IsLearnt { get; set; }
 
         public DateTimeOffset ClientCreatedAt { get; set; }
     }

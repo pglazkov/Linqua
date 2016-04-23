@@ -114,14 +114,13 @@ namespace Linqua
             return false;
         }
 
-
         private static async Task<MobileServiceUser> DoLoginAsync(CredentialPromptType promptType)
         {
             MobileServiceUser user = null;
             var authenticator = new OnlineIdAuthenticator();
             var mobileServicesTicket = new OnlineIdServiceTicketRequest(AuthenticationRedirectUrl, "JWT" /*"DELEGATION"*/);
 
-            var ticketRequests = new List<OnlineIdServiceTicketRequest> { mobileServicesTicket };
+            var ticketRequests = new List<OnlineIdServiceTicketRequest> {mobileServicesTicket};
 
             var authResult = await authenticator.AuthenticateUserAsync(ticketRequests, promptType);
 

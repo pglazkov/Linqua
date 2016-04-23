@@ -24,13 +24,14 @@ namespace Linqua
     /// </summary>
     public sealed partial class App : Application
     {
-		private readonly ILogger log;
-	    private RootFrameNavigationHelper frameNavigationHelper;
+        private readonly ILogger log;
+        private RootFrameNavigationHelper frameNavigationHelper;
 
 #if WINDOWS_PHONE_APP
-        //private TransitionCollection transitions;
+    //private TransitionCollection transitions;
 #endif
-		public static ICompositionManager CompositionManager { get; internal set; }
+        public static ICompositionManager CompositionManager { get; internal set; }
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().
@@ -45,16 +46,16 @@ namespace Linqua
             Suspending += OnSuspending;
 
             //CoreApplication.UnhandledErrorDetected += // TODO
-	        UnhandledException += OnUnhandledException;
+            UnhandledException += OnUnhandledException;
 
             var bootstrapper = new Bootstrapper();
 
-			bootstrapper.Run(this);
+            bootstrapper.Run(this);
 
-			log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
+            log = LogManagerFactory.DefaultLogManager.GetLogger<App>();
         }
 
-	    /// <summary>
+        /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used when the application is launched to open a specific file, to display
         /// search results, and so forth.
@@ -68,20 +69,20 @@ namespace Linqua
                 DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-	        Telemetry.Client.TrackEvent("App Launched.", new Dictionary<string, string>
-	        {
-	            {"DeviceName", DeviceInfo.DeviceName},
-	            {"DeviceId", DeviceInfo.DeviceId}
-	        });
+            Telemetry.Client.TrackEvent("App Launched.", new Dictionary<string, string>
+            {
+                {"DeviceName", DeviceInfo.DeviceName},
+                {"DeviceId", DeviceInfo.DeviceId}
+            });
 
-			log.Info("Internet Connection: " + ConnectionHelper.IsConnectedToInternet);
+            log.Info("Internet Connection: " + ConnectionHelper.IsConnectedToInternet);
 
-			Telemetry.Client.TrackTrace("Internet Connection", TelemetrySeverityLevel.Information, new Dictionary<string, string>
-			{
-				{"IsAvailable", ConnectionHelper.IsConnectedToInternet.ToString() }
-			});
+            Telemetry.Client.TrackTrace("Internet Connection", TelemetrySeverityLevel.Information, new Dictionary<string, string>
+            {
+                {"IsAvailable", ConnectionHelper.IsConnectedToInternet.ToString()}
+            });
 
-			Frame rootFrame = Window.Current.Content as Frame;
+            Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active
@@ -89,30 +90,30 @@ namespace Linqua
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
-				frameNavigationHelper = new RootFrameNavigationHelper(rootFrame);
+                frameNavigationHelper = new RootFrameNavigationHelper(rootFrame);
 
-				// Associate the frame with a SuspensionManager key.
-				SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
+                // Associate the frame with a SuspensionManager key.
+                SuspensionManager.RegisterFrame(rootFrame, "AppFrame");
 
-				// Register the main navigation frame with the application controller.
-	            var applicationController = CompositionManager.GetInstance<ApplicationController>();
-				applicationController.RegisterFrame(rootFrame);
-				
+                // Register the main navigation frame with the application controller.
+                var applicationController = CompositionManager.GetInstance<ApplicationController>();
+                applicationController.RegisterFrame(rootFrame);
+
                 // TODO: change this value to a cache size that is appropriate for your application
                 rootFrame.CacheSize = 1;
 
                 if (e.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-					// Restore the saved session state only when appropriate.
-					try
-					{
-						await SuspensionManager.RestoreAsync();
-					}
-					catch (SuspensionManagerException)
-					{
-						// Something went wrong restoring state.
-						// Assume there is no state and continue.
-					}
+                    // Restore the saved session state only when appropriate.
+                    try
+                    {
+                        await SuspensionManager.RestoreAsync();
+                    }
+                    catch (SuspensionManagerException)
+                    {
+                        // Something went wrong restoring state.
+                        // Assume there is no state and continue.
+                    }
                 }
 
                 // Place the frame in the current Window
@@ -122,21 +123,21 @@ namespace Linqua
             if (rootFrame.Content == null)
             {
 #if WINDOWS_PHONE_APP
-                // Removes the turnstile navigation for startup.
-				//if (rootFrame.ContentTransitions != null)
-				//{
-				//	transitions = new TransitionCollection();
-				//	foreach (var c in rootFrame.ContentTransitions)
-				//	{
-				//		transitions.Add(c);
-				//	}
-				//}
+    // Removes the turnstile navigation for startup.
+    //if (rootFrame.ContentTransitions != null)
+    //{
+    //	transitions = new TransitionCollection();
+    //	foreach (var c in rootFrame.ContentTransitions)
+    //	{
+    //		transitions.Add(c);
+    //	}
+    //}
 
                 rootFrame.ContentTransitions = null;
                 rootFrame.Navigated += RootFrame_FirstNavigated;
 #endif
 
-	            StartupAsync(rootFrame, e).FireAndForget();
+                StartupAsync(rootFrame, e).FireAndForget();
             }
 
             // Ensure the current window is active
@@ -156,11 +157,11 @@ namespace Linqua
         }
 
 #if WINDOWS_PHONE_APP
-        /// <summary>
-        /// Restores the content transitions after the app has launched.
-        /// </summary>
-        /// <param name="sender">The object where the handler is attached.</param>
-        /// <param name="e">Details about the navigation event.</param>
+    /// <summary>
+    /// Restores the content transitions after the app has launched.
+    /// </summary>
+    /// <param name="sender">The object where the handler is attached.</param>
+    /// <param name="e">Details about the navigation event.</param>
         private void RootFrame_FirstNavigated(object sender, NavigationEventArgs e)
         {
 			var rootFrame = (Frame)sender;
@@ -169,22 +170,22 @@ namespace Linqua
         }
 #endif
 
-		protected override void OnActivated(IActivatedEventArgs args)
-		{
-			log.Debug("Application Activated.");
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            log.Debug("Application Activated.");
 
-			// Windows Phone 8.1 requires you to handle the respose from the WebAuthenticationBroker.
+            // Windows Phone 8.1 requires you to handle the respose from the WebAuthenticationBroker.
 #if WINDOWS_PHONE_APP
-			//if (args.Kind == ActivationKind.WebAuthenticationBrokerContinuation)
-			//{
-			//	// Completes the sign-in process started by LoginAsync.
-			//	// Change 'MobileService' to the name of your MobileServiceClient instance. 
-			//	MobileService.Client.LoginComplete(args as WebAuthenticationBrokerContinuationEventArgs);
-			//}
+    //if (args.Kind == ActivationKind.WebAuthenticationBrokerContinuation)
+    //{
+    //	// Completes the sign-in process started by LoginAsync.
+    //	// Change 'MobileService' to the name of your MobileServiceClient instance. 
+    //	MobileService.Client.LoginComplete(args as WebAuthenticationBrokerContinuationEventArgs);
+    //}
 #endif
 
-			base.OnActivated(args);
-		}
+            base.OnActivated(args);
+        }
 
         /// <summary>
         /// Invoked when application execution is being suspended.  Application state is saved
@@ -197,34 +198,34 @@ namespace Linqua
         {
             var deferral = e.SuspendingOperation.GetDeferral();
 
-			if (log.IsDebugEnabled)
-				await ((ILoggerAsync)log).DebugAsync("Application is suspending.");
+            if (log.IsDebugEnabled)
+                await ((ILoggerAsync)log).DebugAsync("Application is suspending.");
 
-			await SuspensionManager.SaveAsync();
+            await SuspensionManager.SaveAsync();
             await OfflineHelper.AwaitPendingSync();
-			await LazyFlushManager.FlushAllAsync(new LogWriteContext());
+            await LazyFlushManager.FlushAllAsync(new LogWriteContext());
 
-			deferral.Complete();
+            deferral.Complete();
         }
 
-		private async void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
-		{
-			// say we've handled this one. this allows our FATAL write to complete.
-			e.Handled = true;
+        private async void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            // say we've handled this one. this allows our FATAL write to complete.
+            e.Handled = true;
 
-			var ex = ExceptionUtils.UnwrapException(e.Exception);
+            var ex = ExceptionUtils.UnwrapException(e.Exception);
 
-			Telemetry.Client.TrackCrash(ex);
+            Telemetry.Client.TrackCrash(ex);
 
-			await ((ILoggerAsync)log).FatalAsync("CRASH!", ex);
+            await ((ILoggerAsync)log).FatalAsync("CRASH!", ex);
 
-			// if we're aborting, fake a suspend to flush the targets...
-			await LazyFlushManager.FlushAllAsync(new LogWriteContext());
+            // if we're aborting, fake a suspend to flush the targets...
+            await LazyFlushManager.FlushAllAsync(new LogWriteContext());
 
-			ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = true;
+            ApplicationData.Current.LocalSettings.Values[LocalSettingsKeys.LogsUploadPending] = true;
 
-			// abort the app here...
-			Current.Exit();
-		}
+            // abort the app here...
+            Current.Exit();
+        }
     }
 }

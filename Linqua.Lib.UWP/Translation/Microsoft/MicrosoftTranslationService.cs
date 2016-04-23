@@ -13,73 +13,73 @@ using Newtonsoft.Json.Linq;
 
 namespace Linqua.Translation.Microsoft
 {
-	[Export(typeof(ITranslationService))]
-	public class MicrosoftTranslationService : ITranslationService
-	{
-		private const string DetectLanguageUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Detect?text={0}";
-		private const string TranslateUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text={0}&from={1}&to={2}";
-	    private const string GetLanguagesForTranslateUri = "http://api.microsofttranslator.com/V2/Http.svc/GetLanguagesForTranslate";
-		private const string GetLanguageNamesUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/GetLanguageNames?locale={0}";
+    [Export(typeof(ITranslationService))]
+    public class MicrosoftTranslationService : ITranslationService
+    {
+        private const string DetectLanguageUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Detect?text={0}";
+        private const string TranslateUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/Translate?text={0}&from={1}&to={2}";
+        private const string GetLanguagesForTranslateUri = "http://api.microsofttranslator.com/V2/Http.svc/GetLanguagesForTranslate";
+        private const string GetLanguageNamesUriTemplate = "http://api.microsofttranslator.com/v2/Http.svc/GetLanguageNames?locale={0}";
 
         private readonly IMicrosoftAccessTokenProvider accessTokenProvider;
 
-		[ImportingConstructor]
-		public MicrosoftTranslationService([NotNull] IMicrosoftAccessTokenProvider accessTokenProvider)
-		{
-			Guard.NotNull(accessTokenProvider, nameof(accessTokenProvider));
+        [ImportingConstructor]
+        public MicrosoftTranslationService([NotNull] IMicrosoftAccessTokenProvider accessTokenProvider)
+        {
+            Guard.NotNull(accessTokenProvider, nameof(accessTokenProvider));
 
-			this.accessTokenProvider = accessTokenProvider;
-		}
+            this.accessTokenProvider = accessTokenProvider;
+        }
 
-		public async Task<string> DetectLanguageAsync(string text)
-		{
-			Guard.NotNullOrEmpty(text, nameof(text));
+        public async Task<string> DetectLanguageAsync(string text)
+        {
+            Guard.NotNullOrEmpty(text, nameof(text));
 
-			var uri = string.Format(DetectLanguageUriTemplate, text);
+            var uri = string.Format(DetectLanguageUriTemplate, text);
 
-			using (var httpClient = new HttpClient())
-			{
-				await ConfigureRequestAuthentication(httpClient);
+            using (var httpClient = new HttpClient())
+            {
+                await ConfigureRequestAuthentication(httpClient);
 
-				var response = await httpClient.GetAsync(uri);
+                var response = await httpClient.GetAsync(uri);
 
-				await MicrosoftApiHelper.ThrowIfErrorResponse(response);
+                await MicrosoftApiHelper.ThrowIfErrorResponse(response);
 
-				var responseStream = await response.Content.ReadAsStreamAsync();
+                var responseStream = await response.Content.ReadAsStreamAsync();
 
-				DataContractSerializer dcs = new DataContractSerializer(Type.GetType("System.String"));
-				string languageDetected = (string)dcs.ReadObject(responseStream);
+                DataContractSerializer dcs = new DataContractSerializer(Type.GetType("System.String"));
+                string languageDetected = (string)dcs.ReadObject(responseStream);
 
-				return languageDetected;
-			}
-		}
+                return languageDetected;
+            }
+        }
 
-		public async Task<string> TranslateAsync(string text, string fromLanguageCode, string toLanguageCode)
-		{
-			Guard.NotNullOrEmpty(text, nameof(text));
-			Guard.NotNullOrEmpty(fromLanguageCode, nameof(fromLanguageCode));
-			Guard.NotNullOrEmpty(toLanguageCode, nameof(toLanguageCode));
-		    
-			string uri = string.Format(TranslateUriTemplate, Uri.EscapeUriString(text), fromLanguageCode, toLanguageCode);
+        public async Task<string> TranslateAsync(string text, string fromLanguageCode, string toLanguageCode)
+        {
+            Guard.NotNullOrEmpty(text, nameof(text));
+            Guard.NotNullOrEmpty(fromLanguageCode, nameof(fromLanguageCode));
+            Guard.NotNullOrEmpty(toLanguageCode, nameof(toLanguageCode));
 
-			using (var httpClient = new HttpClient())
-			{
-				await ConfigureRequestAuthentication(httpClient);
-				var response = await httpClient.GetAsync(uri);
+            string uri = string.Format(TranslateUriTemplate, Uri.EscapeUriString(text), fromLanguageCode, toLanguageCode);
 
-				await MicrosoftApiHelper.ThrowIfErrorResponse(response);
+            using (var httpClient = new HttpClient())
+            {
+                await ConfigureRequestAuthentication(httpClient);
+                var response = await httpClient.GetAsync(uri);
 
-				var responseStream = await response.Content.ReadAsStreamAsync();
+                await MicrosoftApiHelper.ThrowIfErrorResponse(response);
 
-				DataContractSerializer dcs = new DataContractSerializer(Type.GetType("System.String"));
-				string translation = (string)dcs.ReadObject(responseStream);
+                var responseStream = await response.Content.ReadAsStreamAsync();
 
-				return translation;
-			}
-		}
+                DataContractSerializer dcs = new DataContractSerializer(Type.GetType("System.String"));
+                string translation = (string)dcs.ReadObject(responseStream);
 
-	    public async Task<IEnumerable<string>> GetSupportedLanguageCodesAsync()
-	    {
+                return translation;
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetSupportedLanguageCodesAsync()
+        {
             string uri = GetLanguagesForTranslateUri;
 
             using (var httpClient = new HttpClient())
@@ -99,55 +99,55 @@ namespace Linqua.Translation.Microsoft
             }
         }
 
-		public async Task<IDictionary<string, string>> GetLanguageNamesAsync(IEnumerable<string> languageCodes, string locale)
-		{
-			Guard.NotNull(languageCodes, nameof(languageCodes));
-			Guard.NotNullOrEmpty(locale, nameof(locale));
+        public async Task<IDictionary<string, string>> GetLanguageNamesAsync(IEnumerable<string> languageCodes, string locale)
+        {
+            Guard.NotNull(languageCodes, nameof(languageCodes));
+            Guard.NotNullOrEmpty(locale, nameof(locale));
 
-			var languageCodesArray = languageCodes.ToArray();
+            var languageCodesArray = languageCodes.ToArray();
 
-			string uri = string.Format(GetLanguageNamesUriTemplate, locale);
+            string uri = string.Format(GetLanguageNamesUriTemplate, locale);
 
-			using (var contentStream = new MemoryStream())
-			{
-				DataContractSerializer dcs = new DataContractSerializer(Type.GetType("System.String[]"));
-				dcs.WriteObject(contentStream, languageCodesArray);
+            using (var contentStream = new MemoryStream())
+            {
+                DataContractSerializer dcs = new DataContractSerializer(Type.GetType("System.String[]"));
+                dcs.WriteObject(contentStream, languageCodesArray);
 
-				contentStream.Position = 0;
+                contentStream.Position = 0;
 
-				HttpContent postContent = new StreamContent(contentStream);
-				postContent.Headers.ContentType = new MediaTypeHeaderValue("text/xml");
+                HttpContent postContent = new StreamContent(contentStream);
+                postContent.Headers.ContentType = new MediaTypeHeaderValue("text/xml");
 
-				using (var httpClient = new HttpClient())
-				{
-					await ConfigureRequestAuthentication(httpClient);
-					var response = await httpClient.PostAsync(uri, postContent);
+                using (var httpClient = new HttpClient())
+                {
+                    await ConfigureRequestAuthentication(httpClient);
+                    var response = await httpClient.PostAsync(uri, postContent);
 
-					await MicrosoftApiHelper.ThrowIfErrorResponse(response);
+                    await MicrosoftApiHelper.ThrowIfErrorResponse(response);
 
-					var responseStream = await response.Content.ReadAsStreamAsync();
+                    var responseStream = await response.Content.ReadAsStreamAsync();
 
-					var languageNames = (string[])dcs.ReadObject(responseStream);
+                    var languageNames = (string[])dcs.ReadObject(responseStream);
 
-					var result = new Dictionary<string, string>();
+                    var result = new Dictionary<string, string>();
 
-					for (var i = 0; i < languageNames.Length; i++)
-					{
-						var code = languageCodesArray[i];
-						var name = languageNames[i];
+                    for (var i = 0; i < languageNames.Length; i++)
+                    {
+                        var code = languageCodesArray[i];
+                        var name = languageNames[i];
 
-						result.Add(code, name);
-					}
+                        result.Add(code, name);
+                    }
 
-					return result;
-				}
-			}
-		}
+                    return result;
+                }
+            }
+        }
 
-		private async Task ConfigureRequestAuthentication(HttpClient httpClient)
-		{
-			var accessToken = await accessTokenProvider.GetAccessTokenAsync();
-			httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
-		}
-	}
+        private async Task ConfigureRequestAuthentication(HttpClient httpClient)
+        {
+            var accessToken = await accessTokenProvider.GetAccessTokenAsync();
+            httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+        }
+    }
 }

@@ -2,6 +2,6 @@
 {
     public interface IEntryDetailsView
     {
-	    void NavigateHome();
+        void NavigateHome();
     }
 }

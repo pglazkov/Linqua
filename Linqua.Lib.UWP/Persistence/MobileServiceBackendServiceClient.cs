@@ -21,282 +21,267 @@ using Nito.AsyncEx;
 
 namespace Linqua.Persistence
 {
-	[Export(typeof(IBackendServiceClient))]
-	[Shared]
-	public class MobileServiceBackendServiceClient : IBackendServiceClient
-	{
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MobileServiceBackendServiceClient).Name);
+    [Export(typeof(IBackendServiceClient))]
+    [Shared]
+    public class MobileServiceBackendServiceClient : IBackendServiceClient
+    {
+        private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MobileServiceBackendServiceClient).Name);
 
-		//private readonly IMobileServiceTable<ClientEntry> entryTable;
-		private readonly Lazy<IMobileServiceSyncTable<ClientEntry>> entrySyncTable;
-		private readonly IMobileServiceSyncHandler syncHandler;
-		private readonly IEventAggregator eventAggregator;
-	    private bool initialized;
+        //private readonly IMobileServiceTable<ClientEntry> entryTable;
+        private readonly Lazy<IMobileServiceSyncTable<ClientEntry>> entrySyncTable;
+        private readonly IMobileServiceSyncHandler syncHandler;
+        private readonly IEventAggregator eventAggregator;
+        private bool initialized;
         private readonly AsyncLock initializationLock = new AsyncLock();
 
         [ImportingConstructor]
-		public MobileServiceBackendServiceClient([NotNull] IMobileServiceSyncHandler syncHandler, [NotNull] IEventAggregator eventAggregator)
-		{
-			Guard.NotNull(syncHandler, nameof(syncHandler));
-			Guard.NotNull(eventAggregator, nameof(eventAggregator));
+        public MobileServiceBackendServiceClient([NotNull] IMobileServiceSyncHandler syncHandler, [NotNull] IEventAggregator eventAggregator)
+        {
+            Guard.NotNull(syncHandler, nameof(syncHandler));
+            Guard.NotNull(eventAggregator, nameof(eventAggregator));
 
-			this.syncHandler = syncHandler;
-			this.eventAggregator = eventAggregator;
+            this.syncHandler = syncHandler;
+            this.eventAggregator = eventAggregator;
 
-			//entryTable = MobileService.Client.GetTable<ClientEntry>();
-			entrySyncTable = new Lazy<IMobileServiceSyncTable<ClientEntry>>(CreateSyncTable);
+            //entryTable = MobileService.Client.GetTable<ClientEntry>();
+            entrySyncTable = new Lazy<IMobileServiceSyncTable<ClientEntry>>(CreateSyncTable);
         }
 
-		private IMobileServiceSyncTable<ClientEntry> CreateSyncTable()
-		{
-			return Framework.Retry.Do(() => MobileService.Client.GetSyncTable<ClientEntry>(), TimeSpan.FromSeconds(1), 2);
-		}
+        private IMobileServiceSyncTable<ClientEntry> CreateSyncTable()
+        {
+            return Framework.Retry.Do(() => MobileService.Client.GetSyncTable<ClientEntry>(), TimeSpan.FromSeconds(1), 2);
+        }
 
-		private IMobileServiceSyncTable<ClientEntry> EntrySyncTable => entrySyncTable.Value;
+        private IMobileServiceSyncTable<ClientEntry> EntrySyncTable => entrySyncTable.Value;
 
-		public async Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
-		{
-			return await Retry(async () =>
-			{
-				IMobileServiceTableQuery<ClientEntry> query = EntrySyncTable.CreateQuery();
+        public async Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
+        {
+            return await Retry(async () =>
+            {
+                IMobileServiceTableQuery<ClientEntry> query = EntrySyncTable.CreateQuery();
 
-				if (filter != null)
-				{
-					query = query.Where(filter);
-				}
+                if (filter != null)
+                {
+                    query = query.Where(filter);
+                }
 
-				query = query.OrderByDescending(x => x.ClientCreatedAt);
+                query = query.OrderByDescending(x => x.ClientCreatedAt);
 
-				return await query.ToListAsync();
-			});
-		}
+                return await query.ToListAsync();
+            });
+        }
 
-		public async Task<long> GetCount(Expression<Func<ClientEntry, bool>> filter)
-		{
-			return await Retry(async () =>
-			{
-				IMobileServiceTableQuery<ClientEntry> query = EntrySyncTable.CreateQuery();
+        public async Task<long> GetCount(Expression<Func<ClientEntry, bool>> filter)
+        {
+            return await Retry(async () =>
+            {
+                IMobileServiceTableQuery<ClientEntry> query = EntrySyncTable.CreateQuery();
 
-				if (filter != null)
-				{
-					query = query.Where(filter);
-				}
+                if (filter != null)
+                {
+                    query = query.Where(filter);
+                }
 
-				var result = (await query.ToEnumerableAsync()).Count();
+                var result = (await query.ToEnumerableAsync()).Count();
 
-				return result;
-			});
-		}
+                return result;
+            });
+        }
 
-		public async Task<ClientEntry> LookupById(string entryId, CancellationToken? cancellationToken)
-		{
-			Guard.NotNull(entryId, nameof(entryId));
+        public async Task<ClientEntry> LookupById(string entryId, CancellationToken? cancellationToken)
+        {
+            Guard.NotNull(entryId, nameof(entryId));
 
-			return await Retry(async () =>
-			{
-				var result = await EntrySyncTable.LookupAsync(entryId);
+            return await Retry(async () =>
+            {
+                var result = await EntrySyncTable.LookupAsync(entryId);
 
-				return result;
-			});
-		}
+                return result;
+            });
+        }
 
-		public async Task<ClientEntry> LookupByExample(ClientEntry example)
-		{
-			Guard.Assert(!string.IsNullOrEmpty(example.Text), "!string.IsNullOrEmpty(example.Text)");
+        public async Task<ClientEntry> LookupByExample(ClientEntry example)
+        {
+            Guard.Assert(!string.IsNullOrEmpty(example.Text), "!string.IsNullOrEmpty(example.Text)");
 
-			return await Retry(async () =>
-			{
-				if (ConnectionHelper.IsConnectedToInternet)
-				{
-					var parameters = new Dictionary<string, string>();
+            return await Retry(async () =>
+            {
+                if (ConnectionHelper.IsConnectedToInternet)
+                {
+                    var parameters = new Dictionary<string, string>();
 
-					parameters.Add("entryText", example.Text);
-					parameters.Add("excludeId", example.Id);
+                    parameters.Add("entryText", example.Text);
+                    parameters.Add("excludeId", example.Id);
 
-					var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("EntryLookup", HttpMethod.Post, parameters);
+                    var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("EntryLookup", HttpMethod.Post, parameters);
 
-					return serviceResult;
-				}
+                    return serviceResult;
+                }
 
-				var existingEntiesInLocalStorage = await EntrySyncTable.Where(x => x.Text == example.Text && x.Id != example.Id).ToListAsync();
+                var existingEntiesInLocalStorage = await EntrySyncTable.Where(x => x.Text == example.Text && x.Id != example.Id).ToListAsync();
 
-				if (existingEntiesInLocalStorage.Count > 0)
-				{
-					return existingEntiesInLocalStorage[0];
-				}
+                if (existingEntiesInLocalStorage.Count > 0)
+                {
+                    return existingEntiesInLocalStorage[0];
+                }
 
-				return null;
-			});
-		}
+                return null;
+            });
+        }
 
-		public async Task<IEnumerable<ClientEntry>> GetRandomEntries(int count)
-		{
-			return await Retry(async () =>
-			{
-				IEnumerable<ClientEntry> result = null;
+        public async Task<IEnumerable<ClientEntry>> GetRandomEntries(int count)
+        {
+            return await Retry(async () =>
+            {
+                IEnumerable<ClientEntry> result = null;
 
-				if (ConnectionHelper.IsConnectedToInternet)
-				{
-					var parameters = new Dictionary<string, string>
-					{
-						{"number", count.ToString()}
-					};
+                if (ConnectionHelper.IsConnectedToInternet)
+                {
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"number", count.ToString()}
+                    };
 
-					result = await MobileService.Client.InvokeApiAsync<IEnumerable<ClientEntry>>("RandomEntry", HttpMethod.Get, parameters);
-				}
-				else
-				{
-					var existingEntiesInLocalStorage = await EntrySyncTable.Where(x => !x.IsLearnt).ToListAsync();
+                    result = await MobileService.Client.InvokeApiAsync<IEnumerable<ClientEntry>>("RandomEntry", HttpMethod.Get, parameters);
+                }
+                else
+                {
+                    var existingEntiesInLocalStorage = await EntrySyncTable.Where(x => !x.IsLearnt).ToListAsync();
 
-					if (existingEntiesInLocalStorage.Count > 0)
-					{
-						var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
-						var randomEntries = new List<ClientEntry>();
-						var excludeIndices = new HashSet<int>();
+                    if (existingEntiesInLocalStorage.Count > 0)
+                    {
+                        var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
+                        var randomEntries = new List<ClientEntry>();
+                        var excludeIndices = new HashSet<int>();
 
-						count = Math.Min(count, existingEntiesInLocalStorage.Count);
+                        count = Math.Min(count, existingEntiesInLocalStorage.Count);
 
-						for (var i = 0; i < count; i++)
-						{
-							int randomIndex;
-							do
-							{
-								randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
-							} while (excludeIndices.Contains(randomIndex));
+                        for (var i = 0; i < count; i++)
+                        {
+                            int randomIndex;
+                            do
+                            {
+                                randomIndex = indexGenerator.Next(0, existingEntiesInLocalStorage.Count - 1);
+                            } while (excludeIndices.Contains(randomIndex));
 
-							excludeIndices.Add(randomIndex);
+                            excludeIndices.Add(randomIndex);
 
-							var randomEntry = existingEntiesInLocalStorage[randomIndex];
+                            var randomEntry = existingEntiesInLocalStorage[randomIndex];
 
-							randomEntries.Add(randomEntry);
-						}
+                            randomEntries.Add(randomEntry);
+                        }
 
-						result = randomEntries;
-					}
-				}
+                        result = randomEntries;
+                    }
+                }
 
-				return result ?? Enumerable.Empty<ClientEntry>();
-			});
-		}
+                return result ?? Enumerable.Empty<ClientEntry>();
+            });
+        }
 
-		public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
-		{
-			return await Retry(async () =>
-			{
-				ClientEntry resultEntry = null;
+        public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
+        {
+            return await Retry(async () =>
+            {
+                ClientEntry resultEntry = null;
 
-				var existingEntries = await EntrySyncTable.Where(x => x.Text == newEntry.Text).ToListAsync();
+                var existingEntries = await EntrySyncTable.Where(x => x.Text == newEntry.Text).ToListAsync();
 
-				if (existingEntries.Count > 0)
-				{
-					resultEntry = existingEntries[0];
-					resultEntry.IsLearnt = false;
+                if (existingEntries.Count > 0)
+                {
+                    resultEntry = existingEntries[0];
+                    resultEntry.IsLearnt = false;
 
-					await EntrySyncTable.UpdateAsync(resultEntry);
-				}
-				else
-				{
-					resultEntry = newEntry;
+                    await EntrySyncTable.UpdateAsync(resultEntry);
+                }
+                else
+                {
+                    resultEntry = newEntry;
 
-					await EntrySyncTable.InsertAsync(newEntry);
-				}
+                    await EntrySyncTable.InsertAsync(newEntry);
+                }
 
-				OfflineHelper.EnqueueSync();
+                OfflineHelper.EnqueueSync();
 
-				return resultEntry;
-			});
-		}
+                return resultEntry;
+            });
+        }
 
-		public async Task DeleteEntry(ClientEntry entry)
-		{
-			await Retry(async () =>
-			{
-				await EntrySyncTable.DeleteAsync(entry);
-			});
+        public async Task DeleteEntry(ClientEntry entry)
+        {
+            await Retry(async () => { await EntrySyncTable.DeleteAsync(entry); });
 
-			OfflineHelper.EnqueueSync();
-		}
+            OfflineHelper.EnqueueSync();
+        }
 
-		public async Task UpdateEntry(ClientEntry entry)
-		{
-			await Retry(async () =>
-			{
-				await EntrySyncTable.UpdateAsync(entry);
-			});
+        public async Task UpdateEntry(ClientEntry entry)
+        {
+            await Retry(async () => { await EntrySyncTable.UpdateAsync(entry); });
 
-			OfflineHelper.EnqueueSync();
-		}
+            OfflineHelper.EnqueueSync();
+        }
 
-		public async Task InitializeAsync(bool doInitialPoolIfNeeded)
-		{
-		    using (await initializationLock.LockAsync())
-		    {
-		        if (initialized)
-		        {
-		            return;
-		        }
+        public async Task InitializeAsync(bool doInitialPoolIfNeeded)
+        {
+            using (await initializationLock.LockAsync())
+            {
+                if (initialized)
+                {
+                    return;
+                }
 
-			    await Retry(async () =>
-			    {
-				    await OfflineHelper.InitializeAsync(syncHandler);
-			    });
+                await Retry(async () => { await OfflineHelper.InitializeAsync(syncHandler); });
 
-				if (doInitialPoolIfNeeded)
-				{
-					await Retry(async () =>
-					{
-						await OfflineHelper.DoInitialPullIfNeededAsync();
-					});
-				}
+                if (doInitialPoolIfNeeded)
+                {
+                    await Retry(async () => { await OfflineHelper.DoInitialPullIfNeededAsync(); });
+                }
 
-		        initialized = true;
+                initialized = true;
 
-		        eventAggregator.Publish(new StorageInitializedEvent());
-		    }
-		}
+                eventAggregator.Publish(new StorageInitializedEvent());
+            }
+        }
 
-	    public Task<bool> TrySyncAsync(OfflineSyncArguments args = null)
-	    {
-	        return OfflineHelper.TrySyncAsync(args);
-	    }
+        public Task<bool> TrySyncAsync(OfflineSyncArguments args = null)
+        {
+            return OfflineHelper.TrySyncAsync(args);
+        }
 
-		public async Task<LogUploadInfo> GetLogUploadInfoAsync()
-		{
-			if (ConnectionHelper.IsConnectedToInternet)
-			{
-				return await Retry(async () =>
-				{
-				    var parameters = new Dictionary<string, string>
-				    {
-				        {"deviceId", DeviceInfo.DeviceId}
-				    };
+        public async Task<LogUploadInfo> GetLogUploadInfoAsync()
+        {
+            if (ConnectionHelper.IsConnectedToInternet)
+            {
+                return await Retry(async () =>
+                {
+                    var parameters = new Dictionary<string, string>
+                    {
+                        {"deviceId", DeviceInfo.DeviceId}
+                    };
 
-					var serviceResult = await MobileService.Client.InvokeApiAsync<LogUploadInfo>("LogUploadInfo", HttpMethod.Get, parameters);
+                    var serviceResult = await MobileService.Client.InvokeApiAsync<LogUploadInfo>("LogUploadInfo", HttpMethod.Get, parameters);
 
-					return serviceResult;
-				});
-			}
+                    return serviceResult;
+                });
+            }
 
-			throw new NoInternetConnectionException();
-		}
+            throw new NoInternetConnectionException();
+        }
 
-		private static async Task Retry(Func<Task> action, [CallerMemberName] string callingMemberName = null)
-		{
-			// ReSharper disable ExplicitCallerInfoArgument
-			await Retry(async () =>
-			{
-				await action();
-				return true;
-			}, callingMemberName);
-			// ReSharper restore ExplicitCallerInfoArgument
-		}
+        private static async Task Retry(Func<Task> action, [CallerMemberName] string callingMemberName = null)
+        {
+            // ReSharper disable ExplicitCallerInfoArgument
+            await Retry(async () =>
+            {
+                await action();
+                return true;
+            }, callingMemberName);
+            // ReSharper restore ExplicitCallerInfoArgument
+        }
 
         private static async Task<T> Retry<T>(Func<Task<T>> action, [CallerMemberName] string callingMemberName = null)
-		{
-			return await Framework.Retry.DoAsync(action, TimeSpan.FromSeconds(3), retryCount: 4, onExceptionAction: ex =>
-			{
-				Log.Warn($"Exception when executing \"{callingMemberName}\": {ex.Message}. Will retry.");
-			});
-		}
+        {
+            return await Framework.Retry.DoAsync(action, TimeSpan.FromSeconds(3), retryCount: 4, onExceptionAction: ex => { Log.Warn($"Exception when executing \"{callingMemberName}\": {ex.Message}. Will retry."); });
+        }
     }
 }

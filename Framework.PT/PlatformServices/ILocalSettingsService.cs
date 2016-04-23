@@ -2,7 +2,7 @@
 
 namespace Framework.PlatformServices
 {
-	public interface ILocalSettingsService : ISettingsService
-	{
-	}
+    public interface ILocalSettingsService : ISettingsService
+    {
+    }
 }

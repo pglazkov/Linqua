@@ -11,136 +11,135 @@ using Linqua.Service.Models;
 
 namespace Linqua.UI
 {
-	public class EntryViewModel : ViewModelBase
-	{
-		private readonly IEventAggregator eventAggregator;
-		private bool isTranslating;
-		private ClientEntry entry;
-	    private bool isDeletingSelf;
-		private string detectedLanguage;
+    public class EntryViewModel : ViewModelBase
+    {
+        private readonly IEventAggregator eventAggregator;
+        private bool isTranslating;
+        private ClientEntry entry;
+        private bool isDeletingSelf;
+        private string detectedLanguage;
 
-		protected EntryViewModel([NotNull] IEventAggregator eventAggregator)
-		{
-			Guard.NotNull(eventAggregator, nameof(eventAggregator));
+        protected EntryViewModel([NotNull] IEventAggregator eventAggregator)
+        {
+            Guard.NotNull(eventAggregator, nameof(eventAggregator));
 
-			this.eventAggregator = eventAggregator;
+            this.eventAggregator = eventAggregator;
 
-			eventAggregator.GetEvent<EntryUpdatedEvent>()
-			               .Where(x => x.Entry.Id == Entry.Id)
-						   .ObserveOnDispatcher()
-			               .SubscribeWeakly(this, (this_, e) => this_.OnEntryUpdated(e));
+            eventAggregator.GetEvent<EntryUpdatedEvent>()
+                           .Where(x => x.Entry.Id == Entry.Id)
+                           .ObserveOnDispatcher()
+                           .SubscribeWeakly(this, (this_, e) => this_.OnEntryUpdated(e));
 
-			DeleteCommand = new DelegateCommand(() => DeleteSelfAsync().FireAndForget(), CanDeleteSelf);
-			QuickEditCommand = new DelegateCommand(() => QuickEditSelfAsync().FireAndForget(), CanQuickEditSelf);
-			EditCommand = new DelegateCommand(() => EditSelfAsync().FireAndForget(), CanEditSelf);
-		}
+            DeleteCommand = new DelegateCommand(() => DeleteSelfAsync().FireAndForget(), CanDeleteSelf);
+            QuickEditCommand = new DelegateCommand(() => QuickEditSelfAsync().FireAndForget(), CanQuickEditSelf);
+            EditCommand = new DelegateCommand(() => EditSelfAsync().FireAndForget(), CanEditSelf);
+        }
 
-		public EntryViewModel(ClientEntry entry, [NotNull] IEventAggregator eventAggregator)
-			: this(eventAggregator)
-		{
-			Guard.NotNull(entry, nameof(entry));
+        public EntryViewModel(ClientEntry entry, [NotNull] IEventAggregator eventAggregator)
+            : this(eventAggregator)
+        {
+            Guard.NotNull(entry, nameof(entry));
 
-			Entry = entry;
-		}
+            Entry = entry;
+        }
 
+        public DelegateCommand DeleteCommand { get; }
+        public DelegateCommand QuickEditCommand { get; }
+        public DelegateCommand EditCommand { get; }
 
-		public DelegateCommand DeleteCommand { get; }
-		public DelegateCommand QuickEditCommand { get; }
-		public DelegateCommand EditCommand { get; }
+        private IEntryOperations EntryOperations => CompositionFactory.Create<IEntryOperations>();
 
-		private IEntryOperations EntryOperations => CompositionFactory.Create<IEntryOperations>();
-
-	    public ClientEntry Entry
-		{
-			get { return entry; }
-			protected set
-			{
-				if (Equals(value, entry)) return;
-				entry = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(nameof(Text));
-				OnTextChangedOverride();
-				RaisePropertyChanged(nameof(DateAdded));
-				RaisePropertyChanged(nameof(IsLearnt));
-				RaisePropertyChanged(nameof(IsLearnStatusText));
+        public ClientEntry Entry
+        {
+            get { return entry; }
+            protected set
+            {
+                if (Equals(value, entry)) return;
+                entry = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(Text));
+                OnTextChangedOverride();
+                RaisePropertyChanged(nameof(DateAdded));
+                RaisePropertyChanged(nameof(IsLearnt));
+                RaisePropertyChanged(nameof(IsLearnStatusText));
                 RaisePropertyChanged(nameof(ToggleLearnedButtonHint));
-				RaisePropertyChanged(nameof(Definition));
-				RaisePropertyChanged(nameof(IsDefinitionVisible));
+                RaisePropertyChanged(nameof(Definition));
+                RaisePropertyChanged(nameof(IsDefinitionVisible));
 
-				DeleteCommand.RaiseCanExecuteChanged();
-				QuickEditCommand.RaiseCanExecuteChanged();
-				EditCommand.RaiseCanExecuteChanged();
+                DeleteCommand.RaiseCanExecuteChanged();
+                QuickEditCommand.RaiseCanExecuteChanged();
+                EditCommand.RaiseCanExecuteChanged();
 
-				OnIsTranslatingChangedOverride();
-				OnEntryChangedOverride();
+                OnIsTranslatingChangedOverride();
+                OnEntryChangedOverride();
 
-				UpdateDetectedLanguageInfoAsync().FireAndForget();
-			}
-		}
+                UpdateDetectedLanguageInfoAsync().FireAndForget();
+            }
+        }
 
-		public string Text
-		{
-			get { return Entry?.Text; }
-			set
-			{
-				if (Equals(value, Text))
-				{
-					return;
-				}
+        public string Text
+        {
+            get { return Entry?.Text; }
+            set
+            {
+                if (Equals(value, Text))
+                {
+                    return;
+                }
 
-				Guard.Assert(Entry != null, "Entry != null");
+                Guard.Assert(Entry != null, "Entry != null");
 
-				Entry.Text = value;
-				DetectedLanguage = "-";
+                Entry.Text = value;
+                DetectedLanguage = "-";
 
-				RaisePropertyChanged();
-				OnTextChangedOverride();
-			}
-		}
+                RaisePropertyChanged();
+                OnTextChangedOverride();
+            }
+        }
 
-	    public string LanguageCode => Entry?.TextLanguageCode;
+        public string LanguageCode => Entry?.TextLanguageCode;
 
-		public string DetectedLanguage
-		{
-			get { return detectedLanguage; }
-			set
-			{
-				if (value == detectedLanguage) return;
-				detectedLanguage = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(nameof(HasDetectedLanguage));
-			}
-		}
+        public string DetectedLanguage
+        {
+            get { return detectedLanguage; }
+            set
+            {
+                if (value == detectedLanguage) return;
+                detectedLanguage = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(HasDetectedLanguage));
+            }
+        }
 
-		public bool HasDetectedLanguage => !string.IsNullOrEmpty(DetectedLanguage);
+        public bool HasDetectedLanguage => !string.IsNullOrEmpty(DetectedLanguage);
 
-		public DateTime DateAdded => Entry?.ClientCreatedAt.LocalDateTime ?? DateTime.MinValue;
+        public DateTime DateAdded => Entry?.ClientCreatedAt.LocalDateTime ?? DateTime.MinValue;
 
-	    public bool IsLearnt
-		{
-			get { return Entry != null && Entry.IsLearnt; }
-			set
-			{
-				if (Equals(IsLearnt, value))
-				{
-					return;
-				}
+        public bool IsLearnt
+        {
+            get { return Entry != null && Entry.IsLearnt; }
+            set
+            {
+                if (Equals(IsLearnt, value))
+                {
+                    return;
+                }
 
-				Guard.Assert(Entry != null, "Entry != null");
+                Guard.Assert(Entry != null, "Entry != null");
 
-				SetIsLearnt(value);
-			}
-		}
+                SetIsLearnt(value);
+            }
+        }
 
-		public string IsLearnStatusText
-		{
-			get
-			{
-				var result = IsLearnt ? Resources.GetString("EntryViewModel_LearntStatus") : Resources.GetString("EntryViewModel_NotLearntStatus");
+        public string IsLearnStatusText
+        {
+            get
+            {
+                var result = IsLearnt ? Resources.GetString("EntryViewModel_LearntStatus") : Resources.GetString("EntryViewModel_NotLearntStatus");
 
-				return result;
-			}
-		}
+                return result;
+            }
+        }
 
         public string ToggleLearnedButtonHint
         {
@@ -153,216 +152,213 @@ namespace Linqua.UI
         }
 
         public bool IsTranslating
-		{
-			get { return isTranslating; }
-			set
-			{
-				if (value.Equals(isTranslating)) return;
-				isTranslating = value;
-				RaisePropertyChanged();
-				RaisePropertyChanged(nameof(IsDefinitionVisible));
+        {
+            get { return isTranslating; }
+            set
+            {
+                if (value.Equals(isTranslating)) return;
+                isTranslating = value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsDefinitionVisible));
                 RaisePropertyChanged(nameof(LanguageCode));
                 RaisePropertyChanged(nameof(Definition));
-				RaisePropertyChanged(nameof(DetectedLanguage));
+                RaisePropertyChanged(nameof(DetectedLanguage));
 
-				if (!IsTranslating)
-				{
-					UpdateDetectedLanguageInfoAsync().FireAndForget();
-				}
+                if (!IsTranslating)
+                {
+                    UpdateDetectedLanguageInfoAsync().FireAndForget();
+                }
 
-				OnIsTranslatingChangedOverride();
-			}
-		}
+                OnIsTranslatingChangedOverride();
+            }
+        }
 
-		public string Definition
-		{
-			get { return Entry?.Definition; }
-			set
-			{
-				if (Equals(Definition, value))
-				{
-					return;
-				}
+        public string Definition
+        {
+            get { return Entry?.Definition; }
+            set
+            {
+                if (Equals(Definition, value))
+                {
+                    return;
+                }
 
-				Guard.Assert(Entry != null, "Entry != null");
+                Guard.Assert(Entry != null, "Entry != null");
 
-				Entry.Definition = value;
+                Entry.Definition = value;
                 Entry.TranslationState = TranslationState.Manual;
-				RaisePropertyChanged();
-				RaisePropertyChanged(nameof(IsDefinitionVisible));
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsDefinitionVisible));
                 RaisePropertyChanged(nameof(LanguageCode));
-			}
-		}
+            }
+        }
 
-		public bool IsDefinitionVisible => !string.IsNullOrEmpty(Definition) || IsTranslating;
+        public bool IsDefinitionVisible => !string.IsNullOrEmpty(Definition) || IsTranslating;
 
-	    public string NoDefinitionText => Resources.GetString("NoTraslationText");
+        public string NoDefinitionText => Resources.GetString("NoTraslationText");
 
-	    protected bool IsDeletingSelf
-	    {
-	        get { return isDeletingSelf; }
-	        set
-	        {
-	            isDeletingSelf = value;
+        protected bool IsDeletingSelf
+        {
+            get { return isDeletingSelf; }
+            set
+            {
+                isDeletingSelf = value;
 
                 Dispatcher.InvokeAsync(() =>
                 {
                     DeleteCommand.RaiseCanExecuteChanged();
                     EditCommand.RaiseCanExecuteChanged();
 
-	                OnIsDeletingSelfChanged();
-
+                    OnIsDeletingSelfChanged();
                 }).FireAndForget();
-	        }
-	    }
+            }
+        }
 
-		protected virtual void OnIsDeletingSelfChanged()
-		{
-			
-		}
+        protected virtual void OnIsDeletingSelfChanged()
+        {
+        }
 
-		private bool CanDeleteSelf()
-		{
-			return Entry != null && !IsDeletingSelf;
-		}
+        private bool CanDeleteSelf()
+        {
+            return Entry != null && !IsDeletingSelf;
+        }
 
-		private async Task DeleteSelfAsync()
-		{
-			Telemetry.Client.TrackUserAction("DeleteWord");
+        private async Task DeleteSelfAsync()
+        {
+            Telemetry.Client.TrackUserAction("DeleteWord");
 
-			Guard.Assert(Entry != null, "Entry != null");
+            Guard.Assert(Entry != null, "Entry != null");
 
-			var confirmed = await DialogService.ShowConfirmation(
-				Resources.GetString("EntryViewModel_DeleteConfirmationTitle"),
-				string.Format(Resources.GetString("EntryViewModel_DeleteConfirmationTextTemplate"), Text),
-				okCommandText: Resources.GetString("EntryViewModel_DeleteConfirmationOkButtonText"));
+            var confirmed = await DialogService.ShowConfirmation(
+                Resources.GetString("EntryViewModel_DeleteConfirmationTitle"),
+                string.Format(Resources.GetString("EntryViewModel_DeleteConfirmationTextTemplate"), Text),
+                okCommandText: Resources.GetString("EntryViewModel_DeleteConfirmationOkButtonText"));
 
-			if (confirmed)
-			{
-			    IsDeletingSelf = true;
+            if (confirmed)
+            {
+                IsDeletingSelf = true;
 
-			    try
-			    {
-			        await EntryOperations.DeleteEntryAsync(this);
+                try
+                {
+                    await EntryOperations.DeleteEntryAsync(this);
 
-			        OnDeleted();
-			    }
-			    finally
-			    {
-			        IsDeletingSelf = false;
-			    }
-			}
-		}
+                    OnDeleted();
+                }
+                finally
+                {
+                    IsDeletingSelf = false;
+                }
+            }
+        }
 
-		public async Task UnlearnAsync()
-		{
-			await UpdateIsLearntAsync(false, showConfirmation: false);
-		}
+        public async Task UnlearnAsync()
+        {
+            await UpdateIsLearntAsync(false, showConfirmation: false);
+        }
 
-		protected virtual void SetIsLearnt(bool value)
-		{
-			UpdateIsLearntAsync(value).FireAndForget();
-		}
+        protected virtual void SetIsLearnt(bool value)
+        {
+            UpdateIsLearntAsync(value).FireAndForget();
+        }
 
-		private async Task UpdateIsLearntAsync(bool value, bool showConfirmation = true)
-		{
-		    if (IsDeletingSelf)
-		    {
-		        return;
-		    }
+        private async Task UpdateIsLearntAsync(bool value, bool showConfirmation = true)
+        {
+            if (IsDeletingSelf)
+            {
+                return;
+            }
 
-			bool confirmed = !showConfirmation;
+            bool confirmed = !showConfirmation;
 
-			if (showConfirmation)
-			{
-				if (value)
-				{
-					confirmed = await DialogService.ShowConfirmation(
-						Resources.GetString("EntryViewModel_MarkLearnedConfirmationTitle"),
-						Resources.GetString("EntryViewModel_MarkLearnedConfirmationText"),
-						okCommandText: Resources.GetString("EntryViewModel_MarkLearnedConfirmationOk"));
-				}
-				else
-				{
-					confirmed = await DialogService.ShowConfirmation(
-						Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationTitle"),
-						Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationText"),
-						okCommandText: Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationOk"));
-				}
-			}
+            if (showConfirmation)
+            {
+                if (value)
+                {
+                    confirmed = await DialogService.ShowConfirmation(
+                        Resources.GetString("EntryViewModel_MarkLearnedConfirmationTitle"),
+                        Resources.GetString("EntryViewModel_MarkLearnedConfirmationText"),
+                        okCommandText: Resources.GetString("EntryViewModel_MarkLearnedConfirmationOk"));
+                }
+                else
+                {
+                    confirmed = await DialogService.ShowConfirmation(
+                        Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationTitle"),
+                        Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationText"),
+                        okCommandText: Resources.GetString("EntryViewModel_UnMarkLearnedConfirmationOk"));
+                }
+            }
 
-			if (confirmed)
-			{
-				Entry.IsLearnt = value;
+            if (confirmed)
+            {
+                Entry.IsLearnt = value;
 
-				await EntryOperations.UpdateEntryIsLearnedAsync(this);
-			}
+                await EntryOperations.UpdateEntryIsLearnedAsync(this);
+            }
 
-			RaisePropertyChanged(nameof(IsLearnt));
-			RaisePropertyChanged(nameof(IsLearnStatusText));
+            RaisePropertyChanged(nameof(IsLearnt));
+            RaisePropertyChanged(nameof(IsLearnStatusText));
             RaisePropertyChanged(nameof(ToggleLearnedButtonHint));
         }
 
-		protected virtual void OnDeleted()
-		{
-		}
+        protected virtual void OnDeleted()
+        {
+        }
 
-		protected virtual void OnEntryChangedOverride()
-		{
+        protected virtual void OnEntryChangedOverride()
+        {
+        }
 
-		}
+        private void OnEntryUpdated(EntryUpdatedEvent e)
+        {
+            Entry = e.Entry;
 
-		private void OnEntryUpdated(EntryUpdatedEvent e)
-		{
-			Entry = e.Entry;
+            RaisePropertyChanged("");
+        }
 
-			RaisePropertyChanged("");
-		}
+        private bool CanQuickEditSelf()
+        {
+            return Entry != null;
+        }
 
-		private bool CanQuickEditSelf()
-		{
-			return Entry != null;
-		}
+        private Task QuickEditSelfAsync()
+        {
+            Guard.Assert(Entry != null, "Entry != null");
 
-		private Task QuickEditSelfAsync()
-		{
-			Guard.Assert(Entry != null, "Entry != null");
+            EventAggregator.Publish(new EntryQuickEditRequestedEvent(this));
 
-			EventAggregator.Publish(new EntryQuickEditRequestedEvent(this));
+            return Task.FromResult(true);
+        }
 
-			return Task.FromResult(true);
-		}
+        private bool CanEditSelf()
+        {
+            return Entry != null && !IsDeletingSelf;
+        }
 
-		private bool CanEditSelf()
-		{
-			return Entry != null && !IsDeletingSelf;
-		}
+        private Task EditSelfAsync()
+        {
+            Guard.Assert(Entry != null, "Entry != null");
 
-		private Task EditSelfAsync()
-		{
-			Guard.Assert(Entry != null, "Entry != null");
+            Telemetry.Client.TrackUserAction("EditWord");
 
-			Telemetry.Client.TrackUserAction("EditWord");
+            EventAggregator.Publish(new EntryEditRequestedEvent(Entry.Id));
 
-			EventAggregator.Publish(new EntryEditRequestedEvent(Entry.Id));
+            return Task.FromResult(true);
+        }
 
-			return Task.FromResult(true);
-		}
+        protected virtual void OnIsTranslatingChangedOverride()
+        {
+        }
 
-		protected virtual void OnIsTranslatingChangedOverride()
-		{
-		}
+        protected virtual void OnTextChangedOverride()
+        {
+        }
 
-		protected virtual void OnTextChangedOverride()
-		{
-		}
-
-		private async Task UpdateDetectedLanguageInfoAsync()
-		{
-			if (!string.IsNullOrEmpty(Entry.TextLanguageCode))
-			{
-				DetectedLanguage = await EntryOperations.GetEntryLanguageNameAsync(Entry.TextLanguageCode, Entry.DefinitionLanguageCode ?? CultureInfo.CurrentUICulture.Name);
-			}
-		}
-	}
+        private async Task UpdateDetectedLanguageInfoAsync()
+        {
+            if (!string.IsNullOrEmpty(Entry.TextLanguageCode))
+            {
+                DetectedLanguage = await EntryOperations.GetEntryLanguageNameAsync(Entry.TextLanguageCode, Entry.DefinitionLanguageCode ?? CultureInfo.CurrentUICulture.Name);
+            }
+        }
+    }
 }

@@ -2,8 +2,8 @@
 
 namespace Linqua.Translation.Microsoft
 {
-	public interface IMicrosoftAccessTokenProvider
-	{
-		Task<string> GetAccessTokenAsync();
-	}
+    public interface IMicrosoftAccessTokenProvider
+    {
+        Task<string> GetAccessTokenAsync();
+    }
 }

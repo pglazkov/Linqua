@@ -3,60 +3,57 @@ using Windows.Networking.Connectivity;
 
 namespace Linqua
 {
-	public static class ConnectionHelper
-	{
-		#region InternetConnectionChanged Event
+    public static class ConnectionHelper
+    {
+        #region InternetConnectionChanged Event
 
-		public static event EventHandler<InternetConnectionChangedEventArgs> InternetConnectionChanged;
+        public static event EventHandler<InternetConnectionChangedEventArgs> InternetConnectionChanged;
 
-		private static void OnInternetConnectionChanged(InternetConnectionChangedEventArgs e)
-		{
-			var handler = InternetConnectionChanged;
-			if (handler != null) handler(null, e);
-		}
-
-		#endregion
-
-		static ConnectionHelper()
-		{
-			NetworkInformation.NetworkStatusChanged += s =>
-			{
-				OnInternetConnectionChanged(new InternetConnectionChangedEventArgs(IsConnectedToInternet));
-			};
+        private static void OnInternetConnectionChanged(InternetConnectionChangedEventArgs e)
+        {
+            var handler = InternetConnectionChanged;
+            if (handler != null) handler(null, e);
         }
 
-		public static bool IsConnectedToInternet
-		{
-			get
-			{
-				try
-				{
-					var profile = NetworkInformation.GetInternetConnectionProfile();
-					var isConnected = (profile != null
-					                   && profile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
-					return isConnected;
-				}
-				catch (Exception e)
-				{
-					ExceptionHandlingHelper.HandleNonFatalError(e);
-					return false;
-				}
-			}
-		}
-	}
+        #endregion
 
-	public class InternetConnectionChangedEventArgs : EventArgs
-	{
-		private bool isConnected;
+        static ConnectionHelper()
+        {
+            NetworkInformation.NetworkStatusChanged += s => { OnInternetConnectionChanged(new InternetConnectionChangedEventArgs(IsConnectedToInternet)); };
+        }
 
-		public InternetConnectionChangedEventArgs(bool isConnected)
-		{
-			this.isConnected = isConnected;
-		}
+        public static bool IsConnectedToInternet
+        {
+            get
+            {
+                try
+                {
+                    var profile = NetworkInformation.GetInternetConnectionProfile();
+                    var isConnected = (profile != null
+                                       && profile.GetNetworkConnectivityLevel() == NetworkConnectivityLevel.InternetAccess);
+                    return isConnected;
+                }
+                catch (Exception e)
+                {
+                    ExceptionHandlingHelper.HandleNonFatalError(e);
+                    return false;
+                }
+            }
+        }
+    }
 
-		public bool IsConnected
-		{
-			get { return isConnected; }
-		}
-	}
+    public class InternetConnectionChangedEventArgs : EventArgs
+    {
+        private bool isConnected;
+
+        public InternetConnectionChangedEventArgs(bool isConnected)
+        {
+            this.isConnected = isConnected;
+        }
+
+        public bool IsConnected
+        {
+            get { return isConnected; }
+        }
+    }
 }

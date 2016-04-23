@@ -27,7 +27,7 @@ namespace Framework
         /// <param name="propertyName">The property that has a new value.</param>
         [SuppressMessage("Microsoft.Design", "CA1030:UseEventsWhereAppropriate",
             Justification = "Method used to raise an event")]
-		[NotifyPropertyChangedInvocator]
+        [NotifyPropertyChangedInvocator]
         protected virtual void RaisePropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

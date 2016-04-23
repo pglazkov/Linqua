@@ -11,46 +11,46 @@ namespace Linqua
     // Otherwise an exception will be thrown when registering the task ("Class not registered").
     public sealed class SynchronizationTask : IBackgroundTask
     {
-		private static readonly ILoggerAsync Log;
+        private static readonly ILoggerAsync Log;
 
-		static SynchronizationTask()
-		{
-			Bootstrapper.Run(typeof(SynchronizationTask));
+        static SynchronizationTask()
+        {
+            Bootstrapper.Run(typeof(SynchronizationTask));
 
-			Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<SynchronizationTask>();
-		}
+            Log = (ILoggerAsync)LogManagerFactory.DefaultLogManager.GetLogger<SynchronizationTask>();
+        }
 
-		public async void Run(IBackgroundTaskInstance taskInstance)
-		{
-			var deferral = taskInstance.GetDeferral();
+        public async void Run(IBackgroundTaskInstance taskInstance)
+        {
+            var deferral = taskInstance.GetDeferral();
 
-			try
-			{
-				await Log.InfoAsync("Synchronization background task started");
+            try
+            {
+                await Log.InfoAsync("Synchronization background task started");
 
-				var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
-				
-				if (authenticatedSilently)
-				{
-					IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
-					await storage.InitializeAsync();
-					await storage.TrySyncAsync();
-				}
-				else
-				{
-					await Log.WarnAsync("Authentication failed.");
-				}
+                var authenticatedSilently = await SecurityManager.TryAuthenticateSilently();
 
-				await Log.InfoAsync("Synchronization background task completed");
-			}
-			catch (Exception ex)
-			{
-				await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "Synchronization background task failed.", sendTelemetry: false);
-			}
-			finally
-			{
-				deferral.Complete();
-			}
-		}
+                if (authenticatedSilently)
+                {
+                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
+                    await storage.InitializeAsync();
+                    await storage.TrySyncAsync();
+                }
+                else
+                {
+                    await Log.WarnAsync("Authentication failed.");
+                }
+
+                await Log.InfoAsync("Synchronization background task completed");
+            }
+            catch (Exception ex)
+            {
+                await ExceptionHandlingHelper.HandleNonFatalErrorAsync(ex, "Synchronization background task failed.", sendTelemetry: false);
+            }
+            finally
+            {
+                deferral.Complete();
+            }
+        }
     }
 }

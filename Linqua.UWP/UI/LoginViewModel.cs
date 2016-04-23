@@ -2,8 +2,7 @@
 
 namespace Linqua.UI
 {
-	public class LoginViewModel : ViewModelBase
-	{
-		 
-	}
+    public class LoginViewModel : ViewModelBase
+    {
+    }
 }

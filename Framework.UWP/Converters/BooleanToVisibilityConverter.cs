@@ -5,34 +5,34 @@ using Windows.UI.Xaml.Data;
 
 namespace Framework.Converters
 {
-	public sealed class BooleanToVisibilityConverter : IValueConverter
-	{
-		public bool IsReversed { get; set; }
+    public sealed class BooleanToVisibilityConverter : IValueConverter
+    {
+        public bool IsReversed { get; set; }
 
-		public object Convert(object value, Type targetType, object parameter, string language)
-		{
-			var val = System.Convert.ToBoolean(value, CultureInfo.InvariantCulture);
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            var val = System.Convert.ToBoolean(value, CultureInfo.InvariantCulture);
 
-			if (IsReversed)
-			{
-				val = !val;
-			}
+            if (IsReversed)
+            {
+                val = !val;
+            }
 
-			if (val)
-			{
-				return Visibility.Visible;
-			}
+            if (val)
+            {
+                return Visibility.Visible;
+            }
 
-			return Visibility.Collapsed;
-		}
+            return Visibility.Collapsed;
+        }
 
-		public object ConvertBack(object value, Type targetType, object parameter, string language)
-		{
-			var visibility = (Visibility)value;
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            var visibility = (Visibility)value;
 
-			var val = visibility == Visibility.Visible;
+            var val = visibility == Visibility.Visible;
 
-			return IsReversed ? !val : val;
-		}
-	}
+            return IsReversed ? !val : val;
+        }
+    }
 }

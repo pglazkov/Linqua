@@ -4,16 +4,16 @@ using Linqua.DataObjects;
 
 namespace Linqua.Events
 {
-	public class EntryEditingFinishedEvent : EventBase
-	{
-		public EntryEditingFinishedEvent([NotNull] ClientEntry data)
-		{
-			Guard.NotNull(data, nameof(data));
+    public class EntryEditingFinishedEvent : EventBase
+    {
+        public EntryEditingFinishedEvent([NotNull] ClientEntry data)
+        {
+            Guard.NotNull(data, nameof(data));
 
-			Data = data;
-		}
+            Data = data;
+        }
 
-		[NotNull]
-		public ClientEntry Data { get; private set; }
-	}
+        [NotNull]
+        public ClientEntry Data { get; private set; }
+    }
 }

@@ -9,10 +9,10 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        
+
         <TextBlock x:Uid="NoEntriesTextBlock_MainMessage"
                    Text="RES_MISSING NoEntriesTextBlock_MainMessage"
                    TextWrapping="Wrap"
@@ -20,7 +20,7 @@
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center" />
 
-        <TextBlock Grid.Row="1" 
+        <TextBlock Grid.Row="1"
                    x:Uid="NoEntriesTextBlock_Instructions"
                    Text="RES_MISSING NoEntriesTextBlock_Instructions"
                    LineHeight="20"
@@ -29,7 +29,7 @@
                    TextAlignment="Center"
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
-                   Margin="0,5,0,0"/>
+                   Margin="0,5,0,0" />
     </Grid>
-    
+
 </UserControl>

@@ -1,7 +1,7 @@
 ﻿namespace Framework
 {
-	public static class DesignTimeHelper
-	{
-		 public static readonly IEventAggregator EventAggregator = new EventManager();
-	}
+    public static class DesignTimeHelper
+    {
+        public static readonly IEventAggregator EventAggregator = new EventManager();
+    }
 }

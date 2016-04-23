@@ -15,322 +15,321 @@ namespace Linqua.UI
 {
     public class FullEntryListViewModel : ViewModelBase
     {
-	    private const int EntriesToDisplayCount = 1;
+        private const int EntriesToDisplayCount = 1;
 
-		private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<FullEntryListViewModel>();
+        private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<FullEntryListViewModel>();
 
-	    private bool thereAreNoEntries;
-	    private IEnumerable<ClientEntry> entries;
-	    private bool isInitializationComplete;
-		private readonly IStringResourceManager resourceManager;
-	    private readonly IEntryOperations entryOperations;
-	    private readonly IDictionary<string, EntryListItemTimeGroupViewModel> groupsDictionary = new Dictionary<string, EntryListItemTimeGroupViewModel>();
-		private readonly IDictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel> itemGroupDictionary = new Dictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel>();
+        private bool thereAreNoEntries;
+        private IEnumerable<ClientEntry> entries;
+        private bool isInitializationComplete;
+        private readonly IStringResourceManager resourceManager;
+        private readonly IEntryOperations entryOperations;
+        private readonly IDictionary<string, EntryListItemTimeGroupViewModel> groupsDictionary = new Dictionary<string, EntryListItemTimeGroupViewModel>();
+        private readonly IDictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel> itemGroupDictionary = new Dictionary<EntryListItemViewModel, EntryListItemTimeGroupViewModel>();
 
-	    [ImportingConstructor]
-	    public FullEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IEntryOperations entryOperations)
-	    {
-			Guard.NotNull(resourceManager, nameof(resourceManager));
-		    Guard.NotNull(entryOperations, nameof(entryOperations));
+        [ImportingConstructor]
+        public FullEntryListViewModel([NotNull] IStringResourceManager resourceManager, [NotNull] IEntryOperations entryOperations)
+        {
+            Guard.NotNull(resourceManager, nameof(resourceManager));
+            Guard.NotNull(entryOperations, nameof(entryOperations));
 
-		    this.resourceManager = resourceManager;
-		    this.entryOperations = entryOperations;
-		    EntryViewModels = new ObservableCollection<EntryListItemViewModel>();
-			EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
-			TimeGroupViewModels = new ObservableCollection<EntryListItemTimeGroupViewModel>();
-			TimeGroupViewModels.CollectionChanged += OnTimeGroupsCollectionChanged;
+            this.resourceManager = resourceManager;
+            this.entryOperations = entryOperations;
+            EntryViewModels = new ObservableCollection<EntryListItemViewModel>();
+            EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
+            TimeGroupViewModels = new ObservableCollection<EntryListItemTimeGroupViewModel>();
+            TimeGroupViewModels.CollectionChanged += OnTimeGroupsCollectionChanged;
 
-			if (DesignTimeDetection.IsInDesignTool)
-			{
-				EventAggregator = DesignTimeHelper.EventAggregator;
-				EntryViewModels.AddRange(FakeData.FakeWords.Select(w => CreateListItemViewModel(w)));
-			}
+            if (DesignTimeDetection.IsInDesignTool)
+            {
+                EventAggregator = DesignTimeHelper.EventAggregator;
+                EntryViewModels.AddRange(FakeData.FakeWords.Select(w => CreateListItemViewModel(w)));
+            }
 
-			EventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
-	    }
+            EventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
+        }
 
-	    public FullEntryListViewModel(IEnumerable<ClientEntry> entries)
-			: this(new StringResourceManager(), new DesignTimeApplicationContoller())
-	    {
-			Guard.NotNull(entries, nameof(entries));
+        public FullEntryListViewModel(IEnumerable<ClientEntry> entries)
+            : this(new StringResourceManager(), new DesignTimeApplicationContoller())
+        {
+            Guard.NotNull(entries, nameof(entries));
 
-		    Entries = entries;
-	    }
-		
-		public IEnumerable<ClientEntry> Entries
-	    {
-		    get { return entries; }
-		    set
-		    {
-			    if (value.ItemsEqual(entries)) return;
-			    entries = value;
+            Entries = entries;
+        }
 
-				if (Log.IsDebugEnabled)
-					Log.Debug("Updateting entries on UI. Entries count: {0}", entries.Count());
+        public IEnumerable<ClientEntry> Entries
+        {
+            get { return entries; }
+            set
+            {
+                if (value.ItemsEqual(entries)) return;
+                entries = value;
 
-				EntryViewModels.CollectionChanged -= OnEntriesCollectionChanged;
+                if (Log.IsDebugEnabled)
+                    Log.Debug("Updateting entries on UI. Entries count: {0}", entries.Count());
 
-				EntryViewModels.Clear();
-				EntryViewModels.AddRange(entries.Select(w => CreateListItemViewModel(w)));
+                EntryViewModels.CollectionChanged -= OnEntriesCollectionChanged;
 
-			    UpdateTimeGroups();
+                EntryViewModels.Clear();
+                EntryViewModels.AddRange(entries.Select(w => CreateListItemViewModel(w)));
 
-				OnEntriesCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
+                UpdateTimeGroups();
 
-				EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
+                OnEntriesCollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
 
-				UpdateThereAreNoEntries();
+                EntryViewModels.CollectionChanged += OnEntriesCollectionChanged;
 
-			    RaisePropertyChanged();
-		    }
-	    }
+                UpdateThereAreNoEntries();
 
-	    public ObservableCollection<EntryListItemViewModel> EntryViewModels { get; }
+                RaisePropertyChanged();
+            }
+        }
 
-		public ObservableCollection<EntryListItemTimeGroupViewModel> TimeGroupViewModels { get; }
+        public ObservableCollection<EntryListItemViewModel> EntryViewModels { get; }
 
-	    public bool ThereAreNoEntries
-	    {
-		    get { return thereAreNoEntries; }
-		    private set
-		    {
-			    if (value.Equals(thereAreNoEntries)) return;
-			    thereAreNoEntries = value;
-			    RaisePropertyChanged();
-		    }
-	    }
+        public ObservableCollection<EntryListItemTimeGroupViewModel> TimeGroupViewModels { get; }
 
-	    public bool IsInitializationComplete
-	    {
-		    get { return isInitializationComplete; }
-		    set
-		    {
-			    if (value.Equals(isInitializationComplete)) return;
-			    isInitializationComplete = value;
-			    RaisePropertyChanged();
-				UpdateThereAreNoEntries();
-		    }
-	    }
+        public bool ThereAreNoEntries
+        {
+            get { return thereAreNoEntries; }
+            private set
+            {
+                if (value.Equals(thereAreNoEntries)) return;
+                thereAreNoEntries = value;
+                RaisePropertyChanged();
+            }
+        }
 
-	    public string TotalCountText => string.Format(resourceManager.GetString("EntryListView_TotalCountTemplate"), EntryViewModels.Count);
+        public bool IsInitializationComplete
+        {
+            get { return isInitializationComplete; }
+            set
+            {
+                if (value.Equals(isInitializationComplete)) return;
+                isInitializationComplete = value;
+                RaisePropertyChanged();
+                UpdateThereAreNoEntries();
+            }
+        }
+
+        public string TotalCountText => string.Format(resourceManager.GetString("EntryListView_TotalCountTemplate"), EntryViewModels.Count);
 
         public string Header
-	    {
-		    get
-		    {
-			    if (EntryViewModels.All(x => !x.IsLearnt))
-			    {
-				    return string.Format(resourceManager.GetString("EntryListView_Header_OneNumber"), EntryViewModels.Count);
-			    }
-			    else
-			    {
-					return string.Format(resourceManager.GetString("EntryListView_Header_TwoNumbers"), EntryViewModels.Count(x => !x.IsLearnt), EntryViewModels.Count);
-			    }
-		    }
-	    }
+        {
+            get
+            {
+                if (EntryViewModels.All(x => !x.IsLearnt))
+                {
+                    return string.Format(resourceManager.GetString("EntryListView_Header_OneNumber"), EntryViewModels.Count);
+                }
+                else
+                {
+                    return string.Format(resourceManager.GetString("EntryListView_Header_TwoNumbers"), EntryViewModels.Count(x => !x.IsLearnt), EntryViewModels.Count);
+                }
+            }
+        }
 
-		public EntryListItemViewModel AddEntry(ClientEntry newEntry)
-	    {
-		    var viewModel = CreateListItemViewModel(newEntry, justAdded: true);
+        public EntryListItemViewModel AddEntry(ClientEntry newEntry)
+        {
+            var viewModel = CreateListItemViewModel(newEntry, justAdded: true);
 
-		    AddEntry(viewModel);
+            AddEntry(viewModel);
 
-			return viewModel;
-	    }
+            return viewModel;
+        }
 
-	    private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
-	    {
-		    var result = new EntryListItemViewModel(newEntry, EventAggregator, justAdded: justAdded);
+        private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
+        {
+            var result = new EntryListItemViewModel(newEntry, EventAggregator, justAdded: justAdded);
 
-		    return result;
-	    }
+            return result;
+        }
 
-	    public void AddEntry(EntryListItemViewModel viewModel)
-	    {
-		    EntryViewModels.Insert(0, viewModel);
+        public void AddEntry(EntryListItemViewModel viewModel)
+        {
+            EntryViewModels.Insert(0, viewModel);
 
-		    AddEntryToGroup(viewModel);
-	    }
+            AddEntryToGroup(viewModel);
+        }
 
-	    private void AddEntryToGroup(EntryListItemViewModel viewModel)
-	    {
-		    var group = GetTimeGroupForItem(viewModel);
+        private void AddEntryToGroup(EntryListItemViewModel viewModel)
+        {
+            var group = GetTimeGroupForItem(viewModel);
 
-		    EntryListItemTimeGroupViewModel groupViewModel;
+            EntryListItemTimeGroupViewModel groupViewModel;
 
-		    if (!groupsDictionary.TryGetValue(group.GroupName, out groupViewModel))
-		    {
-			    groupViewModel = new EntryListItemTimeGroupViewModel(group.GroupName);
+            if (!groupsDictionary.TryGetValue(group.GroupName, out groupViewModel))
+            {
+                groupViewModel = new EntryListItemTimeGroupViewModel(group.GroupName);
 
-				groupViewModel.Items = new ObservableCollection<EntryListItemViewModel>();
+                groupViewModel.Items = new ObservableCollection<EntryListItemViewModel>();
 
-				TimeGroupViewModels.Insert(0, groupViewModel);
+                TimeGroupViewModels.Insert(0, groupViewModel);
 
-				groupsDictionary.Add(group.GroupName, groupViewModel);
-		    }
-			
-			groupViewModel.Items.Insert(0, viewModel);
+                groupsDictionary.Add(group.GroupName, groupViewModel);
+            }
 
-		    if (!itemGroupDictionary.ContainsKey(viewModel))
-		    {
-			    itemGroupDictionary.Add(viewModel, groupViewModel);
-		    }
-	    }
+            groupViewModel.Items.Insert(0, viewModel);
 
-	    public void DeleteEntryFromUI(ClientEntry entryToDelete)
-	    {
-		    var entryVm = EntryViewModels.SingleOrDefault(w => w.Entry.Id == entryToDelete.Id);
+            if (!itemGroupDictionary.ContainsKey(viewModel))
+            {
+                itemGroupDictionary.Add(viewModel, groupViewModel);
+            }
+        }
 
-		    if (entryVm == null)
-		    {
-			    return;
-		    }
+        public void DeleteEntryFromUI(ClientEntry entryToDelete)
+        {
+            var entryVm = EntryViewModels.SingleOrDefault(w => w.Entry.Id == entryToDelete.Id);
 
-		    var entryIndex = EntryViewModels.IndexOf(entryVm);
+            if (entryVm == null)
+            {
+                return;
+            }
 
-		    var previousOrNextEntryIndex = entryIndex > 0
-			                                   ? entryIndex - 1
-			                                   : (entryIndex < EntryViewModels.Count - 1
-				                                      ? entryIndex + 1
-				                                      : -1);
+            var entryIndex = EntryViewModels.IndexOf(entryVm);
 
-		    EntryListItemViewModel previousOrNextEntry = null;
+            var previousOrNextEntryIndex = entryIndex > 0
+                                               ? entryIndex - 1
+                                               : (entryIndex < EntryViewModels.Count - 1
+                                                      ? entryIndex + 1
+                                                      : -1);
 
-		    if (previousOrNextEntryIndex >= 0)
-		    {
-			    previousOrNextEntry = EntryViewModels[previousOrNextEntryIndex];
-		    }
+            EntryListItemViewModel previousOrNextEntry = null;
 
-		    EntryViewModels.RemoveAt(entryIndex);
+            if (previousOrNextEntryIndex >= 0)
+            {
+                previousOrNextEntry = EntryViewModels[previousOrNextEntryIndex];
+            }
 
-			DeleteEntryFromTimeGroup(entryVm);
+            EntryViewModels.RemoveAt(entryIndex);
 
-			// Move focus to previous or next entry
-			Dispatcher.InvokeAsync(new Action(() =>
-			{
-			    if (previousOrNextEntry != null)
-			    {
-			        previousOrNextEntry.Focus();
-			    }
-			})).FireAndForget();
-	    }
+            DeleteEntryFromTimeGroup(entryVm);
 
-	    private void DeleteEntryFromTimeGroup(EntryListItemViewModel entryVm)
-	    {
-		    EntryListItemTimeGroupViewModel groupViewModel;
+            // Move focus to previous or next entry
+            Dispatcher.InvokeAsync(new Action(() =>
+            {
+                if (previousOrNextEntry != null)
+                {
+                    previousOrNextEntry.Focus();
+                }
+            })).FireAndForget();
+        }
 
-		    if (itemGroupDictionary.TryGetValue(entryVm, out groupViewModel))
-		    {
-			    groupViewModel.Items.Remove(entryVm);
+        private void DeleteEntryFromTimeGroup(EntryListItemViewModel entryVm)
+        {
+            EntryListItemTimeGroupViewModel groupViewModel;
 
-			    if (groupViewModel.Items.Count == 0)
-			    {
-				    groupsDictionary.Remove(groupViewModel.GroupName);
+            if (itemGroupDictionary.TryGetValue(entryVm, out groupViewModel))
+            {
+                groupViewModel.Items.Remove(entryVm);
 
-				    TimeGroupViewModels.Remove(groupViewModel);
-			    }
-		    }
-	    }
+                if (groupViewModel.Items.Count == 0)
+                {
+                    groupsDictionary.Remove(groupViewModel.GroupName);
 
-	    private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
-			UpdateThereAreNoEntries();
+                    TimeGroupViewModels.Remove(groupViewModel);
+                }
+            }
+        }
 
-			RaisePropertyChanged(nameof(TotalCountText));
-			RaisePropertyChanged(nameof(Header));
-		}
+        private void OnEntriesCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            UpdateThereAreNoEntries();
 
-	    private void UpdateThereAreNoEntries()
-		{
-			if (!IsInitializationComplete)
-			{
-				return;
-			}
+            RaisePropertyChanged(nameof(TotalCountText));
+            RaisePropertyChanged(nameof(Header));
+        }
 
-			ThereAreNoEntries = EntryViewModels.Count == 0;
-		}
+        private void UpdateThereAreNoEntries()
+        {
+            if (!IsInitializationComplete)
+            {
+                return;
+            }
 
-	    public EntryListItemViewModel MoveToTopIfExists(string entryText)
-	    {
-		    var existingEntry = EntryViewModels.FirstOrDefault(x => string.Equals(x.Text, entryText, StringComparison.CurrentCultureIgnoreCase));
+            ThereAreNoEntries = EntryViewModels.Count == 0;
+        }
 
-		    if (existingEntry != null)
-		    {
-				DeleteEntryFromUI(existingEntry.Entry);
-				
-				existingEntry.JustAdded = true;
+        public EntryListItemViewModel MoveToTopIfExists(string entryText)
+        {
+            var existingEntry = EntryViewModels.FirstOrDefault(x => string.Equals(x.Text, entryText, StringComparison.CurrentCultureIgnoreCase));
 
-			    AddEntry(existingEntry);
+            if (existingEntry != null)
+            {
+                DeleteEntryFromUI(existingEntry.Entry);
 
-			    return existingEntry;
-		    }
+                existingEntry.JustAdded = true;
 
-		    return null;
-	    }
+                AddEntry(existingEntry);
 
-		private void UpdateTimeGroups()
-		{
-			TimeGroupViewModels.CollectionChanged -= OnTimeGroupsCollectionChanged;
+                return existingEntry;
+            }
 
-			TimeGroupViewModels.Clear();
-			groupsDictionary.Clear();
-			itemGroupDictionary.Clear();
+            return null;
+        }
 
-			var entriesWithGroups = EntryViewModels.Select(x => new
-			{
-				TimeGroup = GetTimeGroupForItem(x),
-				EntryVm = x
-			}).ToList();
+        private void UpdateTimeGroups()
+        {
+            TimeGroupViewModels.CollectionChanged -= OnTimeGroupsCollectionChanged;
 
-			var groupedItems = entriesWithGroups.GroupBy(i => i.TimeGroup).OrderByDescending(g => g.Key.OrderIndex).ToList();
+            TimeGroupViewModels.Clear();
+            groupsDictionary.Clear();
+            itemGroupDictionary.Clear();
 
-			foreach (var group in groupedItems)
-			{
-				var groupName = @group.Key.GroupName;
+            var entriesWithGroups = EntryViewModels.Select(x => new
+            {
+                TimeGroup = GetTimeGroupForItem(x),
+                EntryVm = x
+            }).ToList();
 
-				var groupVm = new EntryListItemTimeGroupViewModel(groupName);
+            var groupedItems = entriesWithGroups.GroupBy(i => i.TimeGroup).OrderByDescending(g => g.Key.OrderIndex).ToList();
 
-				var sortedItems = @group.OrderByDescending(i => i.EntryVm.DateAdded).Select(x => x.EntryVm);
+            foreach (var group in groupedItems)
+            {
+                var groupName = @group.Key.GroupName;
 
-				groupVm.Items = new ObservableCollection<EntryListItemViewModel>(sortedItems);
+                var groupVm = new EntryListItemTimeGroupViewModel(groupName);
 
-				TimeGroupViewModels.Add(groupVm);
+                var sortedItems = @group.OrderByDescending(i => i.EntryVm.DateAdded).Select(x => x.EntryVm);
 
-				foreach (var entry in groupVm.Items)
-				{
-					itemGroupDictionary.Add(entry, groupVm);
-				}
+                groupVm.Items = new ObservableCollection<EntryListItemViewModel>(sortedItems);
 
-				groupsDictionary.Add(groupName, groupVm);
-			}
+                TimeGroupViewModels.Add(groupVm);
 
-			TimeGroupViewModels.CollectionChanged += OnTimeGroupsCollectionChanged;
-		}
+                foreach (var entry in groupVm.Items)
+                {
+                    itemGroupDictionary.Add(entry, groupVm);
+                }
 
-		private static DateTimeGroupInfo GetTimeGroupForItem(EntryListItemViewModel x)
-	    {
-		    return DateTimeGrouping.GetGroup(x.DateAdded, DateTime.Now);
-	    }
+                groupsDictionary.Add(groupName, groupVm);
+            }
 
-		private void OnTimeGroupsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-		{
+            TimeGroupViewModels.CollectionChanged += OnTimeGroupsCollectionChanged;
+        }
 
-		}
+        private static DateTimeGroupInfo GetTimeGroupForItem(EntryListItemViewModel x)
+        {
+            return DateTimeGrouping.GetGroup(x.DateAdded, DateTime.Now);
+        }
 
-	    private void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
-	    {
-			RaisePropertyChanged(nameof(TotalCountText));
-			RaisePropertyChanged(nameof(Header));
-	    }
+        private void OnTimeGroupsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+        }
 
-	    [CanBeNull]
-	    public EntryListItemViewModel Find([NotNull] ClientEntry entry)
-	    {
-		    Guard.NotNull(entry, nameof(entry));
+        private void OnEntryIsLearntChanged(EntryIsLearntChangedEvent e)
+        {
+            RaisePropertyChanged(nameof(TotalCountText));
+            RaisePropertyChanged(nameof(Header));
+        }
 
-		    var result = EntryViewModels.FirstOrDefault(x => x.Entry.Id == entry.Id);
+        [CanBeNull]
+        public EntryListItemViewModel Find([NotNull] ClientEntry entry)
+        {
+            Guard.NotNull(entry, nameof(entry));
 
-		    return result;
-	    }
+            var result = EntryViewModels.FirstOrDefault(x => x.Entry.Id == entry.Id);
+
+            return result;
+        }
     }
 }

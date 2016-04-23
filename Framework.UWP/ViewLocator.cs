@@ -34,7 +34,7 @@ namespace Framework
         [SuppressMessage("Microsoft.Usage", "CA2211:NonConstantFieldsShouldNotBeVisible",
             Justification = "Intended to be overriden.")]
         public static FrameworkElement LocateForModelType(Type modelType, DependencyObject displayLocation,
-                                                          object context)
+            object context)
         {
             int nameEndIndex = modelType.FullName.IndexOf("`", StringComparison.Ordinal) < 0
                                    ? modelType.FullName.Length
@@ -51,9 +51,9 @@ namespace Framework
             var view = CompositionManager.GetInstance<FrameworkElement>(viewExportName);
 
             return view ?? new TextBlock
-                {
-                    Text = string.Format(LocalizedStrings.CannotFindViewPlaceholderTemplate, modelType)
-                };
+            {
+                Text = string.Format(LocalizedStrings.CannotFindViewPlaceholderTemplate, modelType)
+            };
         }
 
         /// <summary>
@@ -89,8 +89,8 @@ namespace Framework
 
         public static readonly DependencyProperty ModelProperty =
             DependencyProperty.RegisterAttached("Model",
-                                                typeof (object),
-                                                typeof (ViewLocator),
+                                                typeof(object),
+                                                typeof(ViewLocator),
                                                 new PropertyMetadata(null, OnModelChanged));
 
         private static ICompositionManager compositionManager;
@@ -149,7 +149,7 @@ namespace Framework
         private static void SetContentPropertyCore(object targetLocation, object view)
         {
             Type type = targetLocation.GetType();
-			
+
             ContentPropertyAttribute contentProperty =
                 type.GetTypeInfo().GetCustomAttribute<ContentPropertyAttribute>(true);
 

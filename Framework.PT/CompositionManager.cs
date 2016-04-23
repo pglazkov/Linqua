@@ -28,7 +28,7 @@ namespace Framework
                 if (instance == null)
                 {
                     throw new InvalidOperationException(
-						"Please call the Initialize method before accessing the CompositionManager.Current property.");
+                        "Please call the Initialize method before accessing the CompositionManager.Current property.");
                 }
 
                 return instance;
@@ -80,7 +80,7 @@ namespace Framework
         {
             Guard.NotNull(container, nameof(container));
 
-	        instance = new CompositionManager(container);
+            instance = new CompositionManager(container);
 
             return instance;
         }
