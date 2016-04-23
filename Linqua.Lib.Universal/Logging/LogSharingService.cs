@@ -9,7 +9,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Linqua.Logging
 {
-	internal sealed class LogSharingService : ILogSharingService
+	public sealed class LogSharingService : ILogSharingService
 	{
 		private readonly IBackendServiceClient serviceClient;
 

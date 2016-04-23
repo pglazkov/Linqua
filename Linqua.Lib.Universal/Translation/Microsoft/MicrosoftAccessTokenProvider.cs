@@ -31,14 +31,9 @@ namespace Linqua.Translation.Microsoft
 
 		public async Task<string> GetAccessTokenAsync()
 		{
-			var tokenExpirationTimeValue = localSettingsService.GetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey) as string;
-
-            DateTime tokenExpirationTime;
-            if (!DateTime.TryParse(tokenExpirationTimeValue, out tokenExpirationTime)) {
-                tokenExpirationTime = DateTime.UtcNow.AddMinutes(-1);
-            }
-
             string token;
+
+            var tokenExpirationTime = GetCurrentTokenExpirationTime();
 
 			if (tokenExpirationTime < DateTime.UtcNow.AddMinutes(1))
 			{
@@ -54,7 +49,24 @@ namespace Linqua.Translation.Microsoft
 			return token;
 		}
 
-		private async Task<string> RenewAccessTokenAsync()
+	    private DateTime GetCurrentTokenExpirationTime()
+	    {
+	        var tokenExpirationTimeValue = localSettingsService.GetValue(LocalSettingsKeys.AccessTokenExpirationTimeKey) as string;
+
+	        DateTime tokenExpirationTime;
+	        if (!DateTime.TryParse(tokenExpirationTimeValue, CultureInfo.CurrentCulture, DateTimeStyles.AssumeUniversal, out tokenExpirationTime))
+	        {
+	            tokenExpirationTime = DateTime.UtcNow.AddMinutes(-1);
+	        }
+	        else
+	        {
+	            tokenExpirationTime = tokenExpirationTime.ToUniversalTime();
+	        }
+
+	        return tokenExpirationTime;
+	    }
+
+	    private async Task<string> RenewAccessTokenAsync()
 		{
 			AdmAccessToken newAccessToken = await GetTokenAsync();
 

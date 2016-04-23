@@ -1,6 +1,6 @@
 ﻿namespace Linqua
 {
-    public partial class AppPortable
+    public partial class LinquaLib
     {
          
     }

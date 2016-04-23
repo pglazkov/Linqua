@@ -305,18 +305,17 @@
       <Project>{175a1b89-42aa-495c-bfb6-657f54792fb4}</Project>
       <Name>Framework.PT</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Framework.WinRT\Framework.WinRT.csproj">
-      <Project>{a32c1cb5-905d-43fb-a1c2-a98a0147f837}</Project>
-      <Name>Framework.WinRT</Name>
+    <ProjectReference Include="..\Framework.UWP\Framework.UWP.csproj">
+      <Project>{934c975e-961b-4d56-b500-82df42ce5e60}</Project>
+      <Name>Framework.UWP</Name>
     </ProjectReference>
     <ProjectReference Include="..\Linqua.BackgroundTasks.Universal\Linqua.BackgroundTasks.Universal.csproj">
       <Project>{5bc9b592-ceb4-4ace-9bf9-c9af7e85ea7c}</Project>
       <Name>Linqua.BackgroundTasks.Universal</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Linqua.PT\Linqua.PT.csproj">
-      <Project>{55abb5ac-f778-455d-ba56-c5ee5089198c}</Project>
-      <Name>Linqua.PT</Name>
-      <AdditionalProperties>SkipValidatePackageReferences=true</AdditionalProperties>
+    <ProjectReference Include="..\Linqua.Lib.Universal\Linqua.Lib.Universal.csproj">
+      <Project>{678a8cf8-7c35-4cd1-9abc-d520bcaabf39}</Project>
+      <Name>Linqua.Lib.Universal</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -401,7 +400,6 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
-  <Import Project="..\Linqua.Shared\Linqua.Shared.projitems" Label="Shared" />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

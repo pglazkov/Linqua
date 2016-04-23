@@ -2,6 +2,7 @@
 using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
+using Windows.Data.Xml.Dom;
 using Windows.UI.Notifications;
 using Framework;
 using JetBrains.Annotations;
@@ -62,8 +63,8 @@ namespace Linqua.Notifications
 			{
 				var tileHeading = randomEntry.Text;
 				var tileText = randomEntry.Definition;
-
-				var wideTile = TileContentFactory.CreateTileWide310x150Text01();
+                
+                var wideTile = TileContentFactory.CreateTileWide310x150Text01();
 				wideTile.TextHeading.Text = tileHeading;
 				wideTile.TextBody1.Text = tileText;
 
@@ -73,7 +74,10 @@ namespace Linqua.Notifications
 
 				wideTile.Square150x150Content = squareTile;
 
-				var notification = wideTile.CreateNotification();
+                XmlDocument xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(wideTile.ToString());
+
+                var notification = new TileNotification(xmlDocument);
 
 				result.Add(notification);
 			}

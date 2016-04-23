@@ -20,17 +20,22 @@ namespace Linqua
 
 	    private static string GetDeviceId()
         {
+	        if (!Windows.Foundation.Metadata.ApiInformation.IsTypePresent("Windows.System.Profile.HardwareIdentification"))
+	        {
+                throw new NotSupportedException("Gettting Device ID is not supported on this platform (Windows.System.Profile.HardwareIdentification type is not present).");
+	        }
+
             // See: http://stackoverflow.com/questions/23321484/device-unique-id-in-windows-phone-8-1
 
             var token = HardwareIdentification.GetPackageSpecificToken(null);
-            var hardwareId = token.Id;
+	        var hardwareId = token.Id;
 
-            var hasher = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
-            var hashed = hasher.HashData(hardwareId);
+	        var hasher = HashAlgorithmProvider.OpenAlgorithm(HashAlgorithmNames.Md5);
+	        var hashed = hasher.HashData(hardwareId);
 
-            var hashedString = CryptographicBuffer.EncodeToHexString(hashed);
+	        var hashedString = CryptographicBuffer.EncodeToHexString(hashed);
 
-            return hashedString;
+	        return hashedString;
         }
     }
 }

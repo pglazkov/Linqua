@@ -50,9 +50,9 @@ namespace Linqua
 
 		    var configuration = new ContainerConfiguration()
 			    .WithAssembly(typeof(App).GetTypeInfo().Assembly, conventions)
-			    .WithAssembly(typeof(AppPortable).GetTypeInfo().Assembly, conventions)
+			    .WithAssembly(typeof(LinquaLib).GetTypeInfo().Assembly, conventions)
 			    .WithAssembly(typeof(FrameworkPortable).GetTypeInfo().Assembly)
-			    .WithAssembly(typeof(FrameworkPhone).GetTypeInfo().Assembly)
+			    .WithAssembly(typeof(FrameworkUwp).GetTypeInfo().Assembly)
 			    .WithProvider(new DefaultExportDescriptorProvider());
 
 		    var container = configuration.CreateContainer();
