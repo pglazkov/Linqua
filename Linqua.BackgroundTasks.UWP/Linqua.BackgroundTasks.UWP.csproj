@@ -119,9 +119,9 @@
       <Project>{175a1b89-42aa-495c-bfb6-657f54792fb4}</Project>
       <Name>Framework.PT</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Linqua.Lib.Universal\Linqua.Lib.Universal.csproj">
+    <ProjectReference Include="..\Linqua.Lib.UWP\Linqua.Lib.UWP.csproj">
       <Project>{678a8cf8-7c35-4cd1-9abc-d520bcaabf39}</Project>
-      <Name>Linqua.Lib.Universal</Name>
+      <Name>Linqua.Lib.UWP</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

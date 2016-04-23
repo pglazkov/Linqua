@@ -16,15 +16,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Test Accounts.txt = Test Accounts.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.Universal", "Linqua.Universal\Linqua.Universal.csproj", "{99A85AA6-53E7-4486-8BB6-0A7E9C4B1389}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.UWP", "Linqua.UWP\Linqua.UWP.csproj", "{99A85AA6-53E7-4486-8BB6-0A7E9C4B1389}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{BA352A7A-9663-4DA7-BDAC-538CE63E699D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{6097D808-A9F5-45B7-8BC4-5A9102B5EA02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.BackgroundTasks.Universal", "Linqua.BackgroundTasks.Universal\Linqua.BackgroundTasks.Universal.csproj", "{5BC9B592-CEB4-4ACE-9BF9-C9AF7E85EA7C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.BackgroundTasks.UWP", "Linqua.BackgroundTasks.UWP\Linqua.BackgroundTasks.UWP.csproj", "{5BC9B592-CEB4-4ACE-9BF9-C9AF7E85EA7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.Lib.Universal", "Linqua.Lib.Universal\Linqua.Lib.Universal.csproj", "{678A8CF8-7C35-4CD1-9ABC-D520BCAABF39}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Linqua.Lib.UWP", "Linqua.Lib.UWP\Linqua.Lib.UWP.csproj", "{678A8CF8-7C35-4CD1-9ABC-D520BCAABF39}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework.UWP", "Framework.UWP\Framework.UWP.csproj", "{934C975E-961B-4D56-B500-82DF42CE5E60}"
 EndProject

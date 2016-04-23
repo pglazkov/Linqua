@@ -210,8 +210,7 @@ pip-log.txt
 .mr.developer.cfg
 /Temp
 /.vs/config/applicationhost.config
-/Linqua.WindowsPhone/BundleArtifacts/arm.txt
 project.lock.json
-/Linqua.Universal/BundleArtifacts
-/Linqua.Universal/*.appx
-/Linqua.Universal/_pkginfo.txt
+/BundleArtifacts
+_pkginfo.txt
+*.appx

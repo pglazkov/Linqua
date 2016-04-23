@@ -309,13 +309,13 @@
       <Project>{934c975e-961b-4d56-b500-82df42ce5e60}</Project>
       <Name>Framework.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Linqua.BackgroundTasks.Universal\Linqua.BackgroundTasks.Universal.csproj">
+    <ProjectReference Include="..\Linqua.BackgroundTasks.UWP\Linqua.BackgroundTasks.UWP.csproj">
       <Project>{5bc9b592-ceb4-4ace-9bf9-c9af7e85ea7c}</Project>
-      <Name>Linqua.BackgroundTasks.Universal</Name>
+      <Name>Linqua.BackgroundTasks.UWP</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Linqua.Lib.Universal\Linqua.Lib.Universal.csproj">
+    <ProjectReference Include="..\Linqua.Lib.UWP\Linqua.Lib.UWP.csproj">
       <Project>{678a8cf8-7c35-4cd1-9abc-d520bcaabf39}</Project>
-      <Name>Linqua.Lib.Universal</Name>
+      <Name>Linqua.Lib.UWP</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
