@@ -1,6 +1,9 @@
 ﻿{
   "dependencies": {
-    "WindowsAzure.MobileServices.Backend.Entity": "1.0.478",
+    "Microsoft.Azure.Mobile.Server.Quickstart": "1.1.157.1",
+    "Microsoft.Owin": "3.0.1",
+    "Microsoft.Owin.Host.SystemWeb": "3.0.1",
+    "Owin": "1.0.0",
     "WindowsAzure.Storage": "4.3.0"
   },
   "frameworks": {

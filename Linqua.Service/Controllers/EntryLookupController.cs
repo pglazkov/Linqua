@@ -5,16 +5,14 @@ using System.Web.Http;
 using AutoMapper;
 using Linqua.Service.DataObjects;
 using Linqua.Service.Models;
-using Microsoft.WindowsAzure.Mobile.Service;
-using Microsoft.WindowsAzure.Mobile.Service.Security;
+using Microsoft.Azure.Mobile.Server.Config;
 
 namespace Linqua.Service.Controllers
 {
-    [AuthorizeLevel(AuthorizationLevel.User)]
+    [MobileAppController]
+    [Authorize]
     public class EntryLookupController : ApiController
     {
-        public ApiServices Services { get; set; }
-
         // POST api/EntryLookup
         public async Task<ClientEntry> Post(string entryText, string excludeId)
         {

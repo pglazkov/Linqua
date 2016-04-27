@@ -1,9 +1,7 @@
 ﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
-using Linqua.Service.DataObjects;
-using Microsoft.WindowsAzure.Mobile.Service;
-using Microsoft.WindowsAzure.Mobile.Service.Tables;
+using Microsoft.Azure.Mobile.Server.Tables;
 
 namespace Linqua.Service.Models
 {
@@ -29,7 +27,8 @@ namespace Linqua.Service.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            string schema = ServiceSettingsDictionary.GetSchemaName();
+            string schema = System.Configuration.ConfigurationManager.AppSettings.Get("MS_MobileServiceName");
+
             if (!string.IsNullOrEmpty(schema))
             {
                 modelBuilder.HasDefaultSchema(schema);
