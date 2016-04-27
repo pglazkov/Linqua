@@ -3,13 +3,14 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Linqua.Service.DataObjects;
-using Microsoft.WindowsAzure.Mobile.Service.Security;
+using Microsoft.Azure.Mobile.Server.Config;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Linqua.Service.Controllers
 {
-    [AuthorizeLevel(AuthorizationLevel.User)]
+    [MobileAppController]
+    [Authorize]
     public class LogUploadInfoController : ApiController
     {
         // GET api/RandomEntry
@@ -24,7 +25,7 @@ namespace Linqua.Service.Controllers
                 throw new InvalidOperationException("Could not retrieve storage account settings.");
             }
 
-            var currentUser = (ServiceUser)User;
+            var currentUserId = await this.GetLegacyUserIdAsync();
 
             var result = new LogUploadInfo();
 
@@ -72,7 +73,7 @@ namespace Linqua.Service.Controllers
                 deviceIdNamePart = "_" + deviceId;
             }
 
-            result.ResourceName = currentUser.Id + deviceIdNamePart + ".zip";
+            result.ResourceName = currentUserId + deviceIdNamePart + ".zip";
             result.UploadUri = $"{blobEndpoint}{ContainerName}/{result.ResourceName}";
 
             return result;

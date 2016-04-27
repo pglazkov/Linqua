@@ -6,17 +6,17 @@ using System.Web.Http;
 using System.Web.Http.OData;
 using Linqua.Service.DataObjects;
 using Linqua.Service.Models;
-using Microsoft.WindowsAzure.Mobile.Service;
+using Microsoft.Azure.Mobile.Server;
 
 namespace Linqua.Service.Controllers
 {
     public class EntryDomainManager : MappedEntityDomainManager<ClientEntry, Entry>
     {
-        public EntryDomainManager(DbContext context, HttpRequestMessage request, ApiServices services) : base(context, request, services)
+        public EntryDomainManager(DbContext context, HttpRequestMessage request) : base(context, request)
         {
         }
 
-        public EntryDomainManager(DbContext context, HttpRequestMessage request, ApiServices services, bool enableSoftDelete) : base(context, request, services, enableSoftDelete)
+        public EntryDomainManager(DbContext context, HttpRequestMessage request, bool enableSoftDelete) : base(context, request, enableSoftDelete)
         {
         }
 

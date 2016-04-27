@@ -1,7 +1,6 @@
 ﻿using System;
 using Linqua.Service.Models;
-using Microsoft.WindowsAzure.Mobile.Service;
-using Microsoft.WindowsAzure.Mobile.Service.Tables;
+using Microsoft.Azure.Mobile.Server;
 
 namespace Linqua.Service.DataObjects
 {

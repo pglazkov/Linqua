@@ -7,24 +7,25 @@ using System.Web.Http;
 using AutoMapper;
 using Linqua.Service.DataObjects;
 using Linqua.Service.Models;
-using Microsoft.WindowsAzure.Mobile.Service.Security;
+using Microsoft.Azure.Mobile.Server.Config;
 
 namespace Linqua.Service.Controllers
 {
-    [AuthorizeLevel(AuthorizationLevel.User)]
+    [MobileAppController]
+    [Authorize]
     public class RandomEntryController : ApiController
     {
         // GET api/RandomEntry
         public async Task<IEnumerable<ClientEntry>> Get(int number)
         {
-            var currentUser = (ServiceUser)User;
+            var currentUserId = await this.GetLegacyUserIdAsync();
 
             var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
 
             using (var ctx = new LinquaContext())
             {
                 var foundEntries = await ctx.Entries
-                                            .Where(x => x.UserId == currentUser.Id && !x.Deleted && !x.IsLearnt)
+                                            .Where(x => x.UserId == currentUserId && !x.Deleted && !x.IsLearnt)
                                             .ToListAsync();
 
                 if (foundEntries != null && foundEntries.Count > 0)
