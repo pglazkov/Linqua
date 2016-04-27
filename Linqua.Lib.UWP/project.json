@@ -1,13 +1,13 @@
 ﻿{
   "dependencies": {
     "MetroLog": "1.0.1",
+    "Microsoft.Azure.Mobile.Client": "2.0.1",
+    "Microsoft.Azure.Mobile.Client.SQLiteStore": "2.0.1",
     "Microsoft.Composition": "1.0.30",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
     "Nito.AsyncEx": "3.0.1",
     "NotificationsExtensions.Portable": "1.0.7",
     "Rx-Main": "2.2.5",
-    "WindowsAzure.MobileServices": "1.3.2",
-    "WindowsAzure.MobileServices.SQLiteStore": "1.0.4",
     "WindowsAzure.Storage": "5.0.2"
   },
   "frameworks": {
