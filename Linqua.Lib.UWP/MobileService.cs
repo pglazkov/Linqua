@@ -12,7 +12,7 @@ namespace Linqua
         //public const string ApplicationKey = "";
 
         // PRODUCTION
-        public const string MobileServiceUrl = "http://linqua-v2.azurewebsites.net";
+        public const string MobileServiceUrl = "https://linqua-v2.azurewebsites.net";
 
         //public const string MobileServiceUrl = "https://linqua-v2.azure-mobile.net/";
         //public const string ApplicationKey = "XLqilnKcdfbcakoxdembcrBZYAsHGK19";
