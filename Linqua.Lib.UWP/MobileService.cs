@@ -12,13 +12,12 @@ namespace Linqua
         //public const string ApplicationKey = "";
 
         // PRODUCTION
-        public const string MobileServiceUrl = "https://linqua.azure-mobile.net/";
-        public const string ApplicationKey = "veBcEvMWjGNePbAKosRSIQzJGiTrfc50";
+        public const string MobileServiceUrl = "http://linqua-v2.azurewebsites.net";
 
         //public const string MobileServiceUrl = "https://linqua-v2.azure-mobile.net/";
         //public const string ApplicationKey = "XLqilnKcdfbcakoxdembcrBZYAsHGK19";
 
         // Use this constructor instead after publishing to the cloud
-        public static readonly MobileServiceClient Client = new MobileServiceClient(MobileServiceUrl, ApplicationKey, new AuthFailureHandler());
+        public static readonly MobileServiceClient Client = new MobileServiceClient(MobileServiceUrl, new AuthFailureHandler());
     }
 }

@@ -22,7 +22,7 @@ namespace Linqua.Persistence
     {
         private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(OfflineHelper).Name);
 
-        private const string SqLiteDatabaseFileName = "localstore.db";
+        private const string SqLiteDatabaseFileName = "localstore-v2.db";
 
         private const int MaxSyncRetryCount = 3;
 

@@ -1,8 +1,9 @@
 ﻿{
   "dependencies": {
     "MetroLog": "1.0.1",
+    "Microsoft.Azure.Mobile.Client": "2.0.1",
+    "Microsoft.Azure.Mobile.Client.SQLiteStore": "2.0.1",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
-    "WindowsAzure.MobileServices": "1.3.2",
     "WindowsAzure.Storage": "5.0.2"
   },
   "frameworks": {

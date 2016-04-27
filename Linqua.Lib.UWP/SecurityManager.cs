@@ -16,7 +16,7 @@ namespace Linqua
 
         public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
         {
-            if (MobileService.Client.ApplicationUri.Host == "localhost")
+            if (MobileService.Client.MobileAppUri.Host == "localhost")
             {
                 return true;
             }
@@ -71,7 +71,7 @@ namespace Linqua
 
         public static async Task<bool> Authenticate(bool useCachedCredentials = true)
         {
-            if (MobileService.Client.ApplicationUri.Host == "localhost")
+            if (MobileService.Client.MobileAppUri.Host == "localhost")
             {
                 return true;
             }
