@@ -15,7 +15,7 @@ namespace Linqua.Service.Controllers
         public static async Task<string> GetLegacyUserIdAsync(this ApiController controller)
         {
             MicrosoftAccountCredentials creds = await controller.User.GetAppServiceIdentityAsync<MicrosoftAccountCredentials>(controller.Request);
-            string mobileServicesUserId = creds.Provider + ":" + creds.UserClaims.Single(x => x.Type == ClaimTypes.NameIdentifier);
+            string mobileServicesUserId = creds.Provider + ":" + creds.UserClaims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
             return mobileServicesUserId;
         }
