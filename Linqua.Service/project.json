@@ -1,0 +1,13 @@
+﻿{
+  "dependencies": {
+    "WindowsAzure.MobileServices.Backend.Entity": "1.0.478",
+    "WindowsAzure.Storage": "4.3.0"
+  },
+  "frameworks": {
+    "net45": {}
+  },
+  "runtimes": {
+    "win-anycpu": {},
+    "win": {}
+  }
+}
