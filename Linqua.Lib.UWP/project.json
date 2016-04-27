@@ -5,6 +5,7 @@
     "Microsoft.Azure.Mobile.Client.SQLiteStore": "2.0.1",
     "Microsoft.Composition": "1.0.30",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
+    "Microsoft.OneDriveSDK": "1.1.29",
     "Nito.AsyncEx": "3.0.1",
     "NotificationsExtensions.Portable": "1.0.7",
     "Rx-Main": "2.2.5",
