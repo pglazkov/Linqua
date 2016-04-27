@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Security.Authentication.OnlineId;
 using Windows.Security.Credentials;
-using Microsoft.OneDrive.Sdk;
 using Microsoft.WindowsAzure.MobileServices;
 using Newtonsoft.Json.Linq;
 
@@ -119,11 +118,24 @@ namespace Linqua
         private static async Task<MobileServiceUser> DoLoginAsync(CredentialPromptType promptType)
         {
             MobileServiceUser user = null;
-            IOneDriveClient oneDriveClient = OneDriveClientExtensions.GetUniversalClient(new string[] { "wl.signin" });
-            AccountSession session = await oneDriveClient.AuthenticateAsync();
-            JObject payload = new JObject();
-            payload["access_token"] = session.AccessToken;
-            user = await MobileService.Client.LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount, payload);
+            var authenticator = new OnlineIdAuthenticator();
+            var mobileServicesTicket = new OnlineIdServiceTicketRequest("wl.signin", "DELEGATION");
+
+            var ticketRequests = new List<OnlineIdServiceTicketRequest> {mobileServicesTicket};
+
+            var authResult = await authenticator.AuthenticateUserAsync(ticketRequests, promptType);
+
+            if ((authResult.Tickets.Count == 1) && (authResult.Tickets[0].ErrorCode == 0))
+            {
+                var accessToken = authResult.Tickets[0];
+
+                var payload = new JObject
+                {
+                    ["access_token"] = accessToken.Value
+                };
+
+                user = await MobileService.Client.LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount, payload);
+            }
 
             return user;
         }
