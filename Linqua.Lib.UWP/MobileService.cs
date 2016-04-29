@@ -1,23 +1,21 @@
-﻿using Microsoft.WindowsAzure.MobileServices;
+﻿using System;
+using Microsoft.WindowsAzure.MobileServices;
 
 namespace Linqua
 {
     public static class MobileService
     {
-        //public static readonly MobileServiceClient Client = new MobileServiceClient("http://localhost:59988");
-        //public static readonly MobileServiceClient Client = new MobileServiceClient("https://localhost:44300");
-
-        // STAGING
-        //public const string MobileServiceUrl = "https://linqua-test.azure-mobile.net/";
-        //public const string ApplicationKey = "";
-
-        // PRODUCTION
         public const string MobileServiceUrl = "https://linqua-v2.azurewebsites.net";
+        public static readonly MobileServiceClient Client;
 
-        //public const string MobileServiceUrl = "https://linqua-v2.azure-mobile.net/";
-        //public const string ApplicationKey = "XLqilnKcdfbcakoxdembcrBZYAsHGK19";
-
-        // Use this constructor instead after publishing to the cloud
-        public static readonly MobileServiceClient Client = new MobileServiceClient(MobileServiceUrl, new AuthFailureHandler());
+        static MobileService()
+        {
+#if DEBUG
+            Client = new MobileServiceClient("http://localhost:59988/", new AuthFailureHandler());
+            Client.AlternateLoginHost = new Uri(MobileServiceUrl);
+#else
+            Client = new MobileServiceClient(MobileServiceUrl, new AuthFailureHandler());
+#endif
+        }
     }
 }
