@@ -35,23 +35,7 @@ namespace Framework.PlatformServices.DefaultImpl
         {
         }
 
-        public void TrackDependency(string dependencyName, string commandName, DateTimeOffset startTime, TimeSpan duration, bool success)
-        {
-        }
-
         public void TrackPageView(string name)
-        {
-        }
-
-        public void TrackRequest(string name, DateTimeOffset startTime, TimeSpan duration, string responseCode, bool success)
-        {
-        }
-
-        public void TrackCrash(Exception exception)
-        {
-        }
-
-        public void Flush()
         {
         }
     }

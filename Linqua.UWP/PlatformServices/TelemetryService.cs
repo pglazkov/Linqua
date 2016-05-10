@@ -2,74 +2,89 @@
 using System.Collections.Generic;
 using System.Threading;
 using Framework.PlatformServices;
-using Microsoft.ApplicationInsights;
-using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.HockeyApp;
+using Newtonsoft.Json;
 
 namespace Linqua.PlatformServices
 {
     internal class TelemetryService : ITelemetryService
     {
-        private static readonly ThreadLocal<TelemetryClient> Client = new ThreadLocal<TelemetryClient>(() => new TelemetryClient());
+        private static readonly ThreadLocal<HockeyClient> Client = new ThreadLocal<HockeyClient>(() => HockeyClient.Current);
 
         public void TrackEvent(string eventName, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
         {
-            Client.Value.TrackEvent(eventName, properties, metrics);
+            var payload = new
+            {
+                Properties = properties,
+                Metrics = metrics
+            };
+
+            Client.Value.TrackEvent(FormatEvent(TelemetryEventType.Event, TelemetrySeverityLevel.Information, eventName, payload));
         }
 
         public void TrackTrace(string message)
         {
-            Client.Value.TrackTrace(message);
+            Client.Value.TrackEvent(FormatEvent(TelemetryEventType.Trace, TelemetrySeverityLevel.Information, message, null));
         }
 
         public void TrackTrace(string message, TelemetrySeverityLevel severityLevel)
         {
-            Client.Value.TrackTrace(message, (SeverityLevel)severityLevel);
+            Client.Value.TrackEvent(FormatEvent(TelemetryEventType.Trace, severityLevel, message, null));
         }
 
         public void TrackTrace(string message, IDictionary<string, string> properties)
         {
-            Client.Value.TrackTrace(message, properties);
+            Client.Value.TrackEvent(FormatEvent(TelemetryEventType.Trace, TelemetrySeverityLevel.Information, message, properties));
         }
 
         public void TrackTrace(string message, TelemetrySeverityLevel severityLevel, IDictionary<string, string> properties)
         {
-            Client.Value.TrackTrace(message, (SeverityLevel)severityLevel, properties);
+            Client.Value.TrackEvent(FormatEvent(TelemetryEventType.Trace, severityLevel, message, properties));
         }
 
         public void TrackMetric(string name, double value, IDictionary<string, string> properties = null)
         {
-            Client.Value.TrackMetric(name, value, properties);
+            Client.Value.TrackEvent(FormatEvent(TelemetryEventType.Metric, TelemetrySeverityLevel.Information, $"{name} = {value}", properties));
         }
 
         public void TrackException(Exception exception, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
         {
-            Client.Value.TrackException(exception, properties, metrics);
-        }
+            var payload = new
+            {
+                Exception = exception.ToString(),
+                Properties = properties,
+                Metrics = metrics
+            };
 
-        public void TrackDependency(string dependencyName, string commandName, DateTimeOffset startTime, TimeSpan duration, bool success)
-        {
-            Client.Value.TrackDependency(dependencyName, commandName, startTime, duration, success);
+            Client.Value.TrackEvent(FormatEvent(TelemetryEventType.Exception, TelemetrySeverityLevel.Error, exception.Message, payload));
         }
 
         public void TrackPageView(string name)
         {
-            Client.Value.TrackPageView(name);
+            Client.Value.TrackEvent(FormatEvent(TelemetryEventType.PageView, TelemetrySeverityLevel.Information, name, null));
         }
 
-        public void TrackRequest(string name, DateTimeOffset startTime, TimeSpan duration, string responseCode, bool success)
+        private string FormatEvent(TelemetryEventType eventType, TelemetrySeverityLevel severityLevel, string eventText, object payload)
         {
-            Client.Value.TrackRequest(name, startTime, duration, responseCode, success);
+            var result = $"[{eventType.ToString().ToUpper()}] {severityLevel.ToString().ToUpper()} - {eventText}";
+
+            if (payload != null)
+            {
+                var payloadJson = JsonConvert.SerializeObject(payload);
+
+                result += Environment.NewLine + Environment.NewLine + payloadJson;
+            }
+
+            return result;
         }
 
-        public void TrackCrash(Exception exception)
+        private enum TelemetryEventType
         {
-            Client.Value.TrackException(new ExceptionTelemetry(exception) {HandledAt = ExceptionHandledAt.Unhandled});
-            Client.Value.Flush();
-        }
-
-        public void Flush()
-        {
-            Client.Value.Flush();
+            Event,
+            Trace,
+            Metric,
+            PageView,
+            Exception
         }
     }
 }

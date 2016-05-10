@@ -49,33 +49,10 @@ namespace Framework.PlatformServices
         void TrackException(Exception exception, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null);
 
         /// <summary>
-        /// Send information about external dependency call in the application.
-        /// </summary>
-        /// <param name="dependencyName">External dependency name.</param><param name="commandName">Dependency call command name.</param><param name="startTime">The time when the dependency was called.</param><param name="duration">The time taken by the external dependency to handle the call.</param><param name="success">True if the dependency call was handled successfully.</param>
-        void TrackDependency(string dependencyName, string commandName, DateTimeOffset startTime, TimeSpan duration, bool success);
-
-        /// <summary>
         /// Send information about the page viewed in the application.
         /// </summary>
         /// <param name="name">Name of the page.</param>
         void TrackPageView(string name);
-
-        /// <summary>
-        /// Send information about a request handled by the application.
-        /// </summary>
-        /// <param name="name">The request name.</param><param name="startTime">The time when the page was requested.</param><param name="duration">The time taken by the application to handle the request.</param><param name="responseCode">The response status code.</param><param name="success">True if the request was handled successfully by the application.</param>
-        void TrackRequest(string name, DateTimeOffset startTime, TimeSpan duration, string responseCode, bool success);
-
-        /// <summary>
-        /// Send infromation about a crash in the app.
-        /// </summary>
-        /// <param name="exception">The exception that caused the crash.</param>
-        void TrackCrash(Exception exception);
-
-        /// <summary>
-        /// Flushes the in-memory buffer.
-        /// </summary>
-        void Flush();
     }
 
     public enum TelemetrySeverityLevel

@@ -13,7 +13,7 @@ using Framework.PlatformServices;
 using Linqua.Framework;
 using Linqua.Persistence;
 using MetroLog;
-using Microsoft.ApplicationInsights;
+using Microsoft.HockeyApp;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
@@ -38,9 +38,12 @@ namespace Linqua
         /// </summary>
         public App()
         {
-#if !DEBUG
-			WindowsAppInitializer.InitializeAsync(WindowsCollectors.Metadata | WindowsCollectors.Session | WindowsCollectors.PageView);
-#endif
+            HockeyClient.Current.Configure("4ea0ac614ad44a96836de382a453a140",
+                                           new TelemetryConfiguration
+                                           {
+                                               Collectors = WindowsCollectors.Metadata | WindowsCollectors.Session | WindowsCollectors.PageView | WindowsCollectors.UnhandledException | WindowsCollectors.WatsonData,
+                                               DescriptionLoader = ex => ExceptionUtils.UnwrapException(ex).ToString()
+                                           });
 
             InitializeComponent();
             Suspending += OnSuspending;
@@ -214,8 +217,6 @@ namespace Linqua
             e.Handled = true;
 
             var ex = ExceptionUtils.UnwrapException(e.Exception);
-
-            Telemetry.Client.TrackCrash(ex);
 
             await ((ILoggerAsync)log).FatalAsync("CRASH!", ex);
 
