@@ -1,7 +1,0 @@
-MainPackage=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\bin\ARM\Release\Linqua.Universal_1.2.0.0_ARM.appx
-SymbolPackage=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\AppPackages\Linqua.Universal_1.2.0.0_Test\Linqua.Universal_1.2.0.0_ARM.appxsym
-ResourcePack=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\bin\ARM\Release\Linqua.Universal_1.2.0.0_language-ru.appx
-ResourcePack=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\bin\ARM\Release\Linqua.Universal_1.2.0.0_scale-100.appx
-ResourcePack=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\bin\ARM\Release\Linqua.Universal_1.2.0.0_scale-125.appx
-ResourcePack=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\bin\ARM\Release\Linqua.Universal_1.2.0.0_scale-150.appx
-ResourcePack=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\bin\ARM\Release\Linqua.Universal_1.2.0.0_scale-400.appx

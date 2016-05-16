@@ -1,2 +1,0 @@
-MainPackage=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\bin\x86\Release\Linqua.Universal_1.2.0.0_x86.appx
-SymbolPackage=E:\Pasha\Dev\MyProjects\Linqua\Linqua.Universal\AppPackages\Linqua.Universal_1.2.0.0_Test\Linqua.Universal_1.2.0.0_x86.appxsym
