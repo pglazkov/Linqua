@@ -130,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
-    <Content Include="Migrations\How to add migration.txt" />
+    <None Include="Migrations\How to add migration.txt" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
