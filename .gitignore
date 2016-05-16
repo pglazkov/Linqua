@@ -211,6 +211,6 @@ pip-log.txt
 /Temp
 /.vs/config/applicationhost.config
 project.lock.json
-/BundleArtifacts
+BundleArtifacts
 _pkginfo.txt
 *.appx
