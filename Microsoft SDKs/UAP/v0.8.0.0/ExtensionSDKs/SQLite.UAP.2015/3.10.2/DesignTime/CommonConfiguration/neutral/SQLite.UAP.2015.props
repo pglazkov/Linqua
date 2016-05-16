@@ -6,9 +6,9 @@
     <PackageConfiguration Condition="'$(Configuration)' == 'Release'">Retail</PackageConfiguration>
   </PropertyGroup>
   <PropertyGroup>
-    <IncludePath>$(FrameworkSDKRoot)\..\..\UAP\v0.8.0.0\ExtensionSDKs\SQLite.UAP.2015\3.9.2\DesignTime\CommonConfiguration\Neutral;$(IncludePath)</IncludePath>
-    <LibraryPath>$(FrameworkSDKRoot)\..\..\UAP\v0.8.0.0\ExtensionSDKs\SQLite.UAP.2015\3.9.2\DesignTime\$(PackageConfiguration)\$(PlatformTarget);$(LibraryPath)</LibraryPath>
-    <PropertySheetDisplayName>SQLite.UAP.2015, 3.9.2</PropertySheetDisplayName>
+    <IncludePath>$(FrameworkSDKRoot)\..\..\UAP\v0.8.0.0\ExtensionSDKs\SQLite.UAP.2015\3.10.2\DesignTime\CommonConfiguration\Neutral;$(IncludePath)</IncludePath>
+    <LibraryPath>$(FrameworkSDKRoot)\..\..\UAP\v0.8.0.0\ExtensionSDKs\SQLite.UAP.2015\3.10.2\DesignTime\$(PackageConfiguration)\$(PlatformTarget);$(LibraryPath)</LibraryPath>
+    <PropertySheetDisplayName>SQLite.UAP.2015, 3.10.2</PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
