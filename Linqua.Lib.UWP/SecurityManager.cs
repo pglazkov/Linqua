@@ -125,6 +125,8 @@ namespace Linqua
                 };
 
                 user = await MobileService.Client.LoginAsync(MobileServiceAuthenticationProvider.MicrosoftAccount, payload);
+
+                LegacyUserId.Value = authResult.SafeCustomerId;
             }
 
             return user;

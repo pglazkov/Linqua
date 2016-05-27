@@ -25,7 +25,7 @@ namespace Linqua.Service.Controllers
                 throw new InvalidOperationException("Could not retrieve storage account settings.");
             }
 
-            var currentUserId = await this.GetLegacyUserIdAsync();
+            var currentUserId = await this.GetUserIdAsync();
 
             var result = new LogUploadInfo();
 

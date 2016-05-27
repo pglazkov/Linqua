@@ -95,7 +95,6 @@
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
     <None Include="app.config" />
-    <None Include="ApplicationInsights.config" />
     <None Include="Linqua.Universal_StoreKey.pfx" />
     <None Include="project.json" />
     <PRIResource Include="Strings\ru\Resources.resw" />

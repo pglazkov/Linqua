@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Linqua
+{
+    public class LegacyUserIdHandler : DelegatingHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            if (LegacyUserId.Value != null)
+            {
+                request.Headers.Add(LegacyUserId.HeaderKey, LegacyUserId.Value);
+            }
+
+            // Do the request
+            return base.SendAsync(request, cancellationToken);
+        }
+    }
+}

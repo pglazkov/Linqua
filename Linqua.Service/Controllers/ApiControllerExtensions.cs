@@ -12,12 +12,42 @@ namespace Linqua.Service.Controllers
 {
     public static class ApiControllerExtensions
     {
-        public static async Task<string> GetLegacyUserIdAsync(this ApiController controller)
+        public static async Task<LinquaUserInfo> GetUserIdAsync(this ApiController controller)
         {
-            MicrosoftAccountCredentials creds = await controller.User.GetAppServiceIdentityAsync<MicrosoftAccountCredentials>(controller.Request);
-            string mobileServicesUserId = creds.Provider + ":" + creds.UserClaims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            string legacyUserId = null;
 
-            return mobileServicesUserId;
+            MicrosoftAccountCredentials creds = await controller.User.GetAppServiceIdentityAsync<MicrosoftAccountCredentials>(controller.Request);
+            var userId = creds.UserClaims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var provider = creds.Provider;
+
+            var primaryUserId = FormatUserId(provider, userId);
+
+            IEnumerable<string> legacyUserIdHeaderValues;
+            if (controller.Request.Headers.TryGetValues(LegacyUserId.HeaderKey, out legacyUserIdHeaderValues))
+            {
+                var legacyUserIdHeaderValue = legacyUserIdHeaderValues.SingleOrDefault();
+
+                legacyUserId = FormatUserId(provider, legacyUserIdHeaderValue);
+            }
+
+            return new LinquaUserInfo(primaryUserId, legacyUserId);
         }
+
+        private static string FormatUserId(string provider, string userId)
+        {
+            return provider + ":" + userId;
+        }
+    }
+
+    public class LinquaUserInfo
+    {
+        public LinquaUserInfo(string primaryUserId, string legacyUserId)
+        {
+            PrimaryUserId = primaryUserId;
+            LegacyUserId = legacyUserId;
+        }
+
+        public string PrimaryUserId { get; private set; }
+        public string LegacyUserId { get; private set; }
     }
 }

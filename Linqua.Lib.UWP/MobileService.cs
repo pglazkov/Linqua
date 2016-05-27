@@ -10,8 +10,8 @@ namespace Linqua
 
         static MobileService()
         {
-#if DEBUG
-            Client = new MobileServiceClient("http://localhost:59988/", new AuthFailureHandler());
+#if LOCAL_SERVICE
+            Client = new MobileServiceClient("http://localhost:59988/", new LegacyUserIdHandler(), new AuthFailureHandler());
             Client.AlternateLoginHost = new Uri(MobileServiceUrl);
 #else
             Client = new MobileServiceClient(MobileServiceUrl, new AuthFailureHandler());

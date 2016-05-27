@@ -84,6 +84,9 @@
     <Folder Include="ScheduledJobs\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Linqua.Lib.UWP\LegacyUserID.cs">
+      <Link>Controllers\LegacyUserID.cs</Link>
+    </Compile>
     <Compile Include="Controllers\ApiControllerExtensions.cs" />
     <Compile Include="Controllers\ClientEntryController.cs" />
     <Compile Include="Controllers\EntryDomainManager.cs" />
@@ -133,7 +136,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Global.asax" />
     <None Include="Migrations\How to add migration.txt" />
     <Content Include="Migrations\How to add migration.txt" />
     <Content Include="Web.config">
