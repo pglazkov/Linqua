@@ -4,6 +4,8 @@
     "MetroLog": "1.0.1",
     "Microsoft.Azure.Mobile.Client": "2.0.1",
     "Microsoft.Azure.Mobile.Client.SQLiteStore": "2.0.1",
+    "Microsoft.Azure.Mobile.Client": "2.0.1",
+    "Microsoft.Azure.Mobile.Client.SQLiteStore": "2.0.1",
     "Microsoft.Composition": "1.0.30",
     "Microsoft.Net.Http": "2.2.29",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.1.0",
