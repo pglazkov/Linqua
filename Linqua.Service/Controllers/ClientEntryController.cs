@@ -25,9 +25,9 @@ namespace Linqua.Service.Controllers
         public async Task<IQueryable<ClientEntry>> GetAllEntries()
         {
             // Get the logged-in user.
-            var currentUser = await this.GetUserIdAsync();
+            var currentUser = await this.GetUserInfoAsync();
 
-            return Query().Where(e => e.UserId == currentUser.PrimaryUserId || e.UserId == currentUser.LegacyUserId);
+            return Query().Where(e => e.UserId == currentUser.ProviderUserInfo.ProviderPrefixedUserId || e.UserId == currentUser.AppSpecificMicrosoftUserId);
         }
 
         // GET tables/ClientEntry/48D68C86-6EA6-4C25-AA33-223FC9A27959
@@ -46,10 +46,10 @@ namespace Linqua.Service.Controllers
         public async Task<IHttpActionResult> PostEntry(ClientEntry item)
         {
             // Get the logged-in user.
-            var currentUser = await this.GetUserIdAsync();
+            var currentUser = await this.GetUserInfoAsync();
 
             // Set the user ID on the item.
-            item.UserId = currentUser.PrimaryUserId;
+            item.UserId = currentUser.ProviderUserInfo.ProviderPrefixedUserId;
 
             ClientEntry current = await InsertAsync(item);
             return CreatedAtRoute("Tables", new {id = current.Id}, current);

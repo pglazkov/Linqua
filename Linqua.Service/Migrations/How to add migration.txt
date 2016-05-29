@@ -6,3 +6,10 @@
 4. In the Package Manager, run the following command:
 
    PM> Add-Migration <MigrationName>
+
+
+How update database to specific migration:
+
+  PM> Update-Database –TargetMigration: <MigrationName>
+
+For more info see: https://msdn.microsoft.com/en-us/library/jj591621.aspx#specific

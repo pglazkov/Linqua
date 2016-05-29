@@ -14,7 +14,7 @@ namespace Linqua
             Client = new MobileServiceClient("http://localhost:59988/", new LegacyUserIdHandler(), new AuthFailureHandler());
             Client.AlternateLoginHost = new Uri(MobileServiceUrl);
 #else
-            Client = new MobileServiceClient(MobileServiceUrl, new AuthFailureHandler());
+            Client = new MobileServiceClient(MobileServiceUrl, new LegacyUserIdHandler(), new AuthFailureHandler());
 #endif
         }
     }

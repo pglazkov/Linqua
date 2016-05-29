@@ -18,14 +18,14 @@ namespace Linqua.Service.Controllers
         // GET api/RandomEntry
         public async Task<IEnumerable<ClientEntry>> Get(int number)
         {
-            var currentUser = await this.GetUserIdAsync();
+            var currentUser = await this.GetUserInfoAsync();
 
             var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
 
             using (var ctx = new LinquaContext())
             {
                 var foundEntries = await ctx.Entries
-                                            .Where(x => (x.UserId == currentUser.PrimaryUserId || x.UserId == currentUser.LegacyUserId) && !x.Deleted && !x.IsLearnt)
+                                            .Where(x => (x.UserId == currentUser.ProviderUserInfo.ProviderPrefixedUserId || x.UserId == currentUser.AppSpecificMicrosoftUserId) && !x.Deleted && !x.IsLearnt)
                                             .ToListAsync();
 
                 if (foundEntries != null && foundEntries.Count > 0)

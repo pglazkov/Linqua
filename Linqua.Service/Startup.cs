@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -30,8 +31,9 @@ namespace Linqua.Service
 
             //Database.SetInitializer(new LinquaInitializer());
 
-            var migrator = new DbMigrator(new Configuration());
-            migrator.Update();
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<LinquaContext, Configuration>());
+            //var migrator = new DbMigrator(new Configuration());
+            //migrator.Update("AddIndexOnTextColumn");
 
             Mapper.Initialize(cfg =>
             {

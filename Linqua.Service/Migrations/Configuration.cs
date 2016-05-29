@@ -10,6 +10,7 @@ namespace Linqua.Service.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            AutomaticMigrationDataLossAllowed = false;
             ContextKey = "Linqua.Service.Models.LinquaContext";
         }
 
