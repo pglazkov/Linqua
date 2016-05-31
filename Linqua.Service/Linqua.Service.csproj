@@ -118,6 +118,10 @@
     <Compile Include="Migrations\201509170643097_AddIndexOnTextColumn.Designer.cs">
       <DependentUpon>201509170643097_AddIndexOnTextColumn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201605310611278_AddIndexOnUserId.cs" />
+    <Compile Include="Migrations\201605310611278_AddIndexOnUserId.Designer.cs">
+      <DependentUpon>201605310611278_AddIndexOnUserId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Entry.cs" />
     <Compile Include="Models\LinquaContext.cs" />
@@ -165,8 +169,12 @@
     <EmbeddedResource Include="Migrations\201509170643097_AddIndexOnTextColumn.resx">
       <DependentUpon>201509170643097_AddIndexOnTextColumn.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201605310611278_AddIndexOnUserId.resx">
+      <DependentUpon>201605310611278_AddIndexOnUserId.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\linqua - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\linqua - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\linqua - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\linqua - Web Deploy.pubxml" />

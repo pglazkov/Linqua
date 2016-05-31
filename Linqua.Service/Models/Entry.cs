@@ -19,6 +19,8 @@ namespace Linqua.Service.Models
 
         public TranslationState TranslationState { get; set; }
 
+        [Index]
+        [MaxLength(256)]
         public string UserId { get; set; }
 
         public bool IsLearnt { get; set; }
