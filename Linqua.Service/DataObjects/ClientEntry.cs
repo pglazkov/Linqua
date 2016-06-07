@@ -18,6 +18,8 @@ namespace Linqua.Service.DataObjects
 
         public string UserId { get; set; }
 
+        public string UserEmail { get; set; }
+
         public bool IsLearnt { get; set; }
 
         public DateTimeOffset ClientCreatedAt { get; set; }

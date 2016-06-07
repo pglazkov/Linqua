@@ -23,6 +23,9 @@ namespace Linqua.Service.Models
         [MaxLength(256)]
         public string UserId { get; set; }
 
+        [MaxLength(256)]
+        public string UserEmail { get; set; }
+
         public bool IsLearnt { get; set; }
 
         public DateTimeOffset ClientCreatedAt { get; set; }
