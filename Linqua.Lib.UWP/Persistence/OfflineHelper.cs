@@ -55,7 +55,7 @@ namespace Linqua.Persistence
                 if (!MobileService.Client.SyncContext.IsInitialized)
                 {
                     var store = new MobileServiceSQLiteStore(SqLiteDatabaseFileName);
-                    store.DefineTable<ClientEntry>();
+                    store.DefineTable<Entry>();
                     await MobileService.Client.SyncContext.InitializeAsync(store, syncHandler);
                 }
 
@@ -89,7 +89,7 @@ namespace Linqua.Persistence
         {
             CheckInitialized();
 
-            var firstEntry = (await MobileService.Client.GetSyncTable<ClientEntry>().Take(1).ToListAsync()).SingleOrDefault();
+            var firstEntry = (await MobileService.Client.GetSyncTable<Entry>().Take(1).ToListAsync()).SingleOrDefault();
 
             if (firstEntry == null)
             {
@@ -233,7 +233,7 @@ namespace Linqua.Persistence
 
                     await MobileService.Client.SyncContext.PushAsync();
 
-                    var entryTable = MobileService.Client.GetSyncTable<ClientEntry>();
+                    var entryTable = MobileService.Client.GetSyncTable<Entry>();
 
                     var mobileServiceTableQuery = entryTable.CreateQuery();
 

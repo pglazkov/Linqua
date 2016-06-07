@@ -6,7 +6,7 @@ namespace Linqua.Events
 {
     public class EntryEditingFinishedEvent : EventBase
     {
-        public EntryEditingFinishedEvent([NotNull] ClientEntry data)
+        public EntryEditingFinishedEvent([NotNull] Entry data)
         {
             Guard.NotNull(data, nameof(data));
 
@@ -14,6 +14,6 @@ namespace Linqua.Events
         }
 
         [NotNull]
-        public ClientEntry Data { get; private set; }
+        public Entry Data { get; private set; }
     }
 }

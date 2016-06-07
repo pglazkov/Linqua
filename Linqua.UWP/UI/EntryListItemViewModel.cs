@@ -18,11 +18,11 @@ namespace Linqua.UI
         {
             if (DesignTimeDetection.IsInDesignTool)
             {
-                Entry = ClientEntry.CreateNew("Aankomst");
+                Entry = Entry.CreateNew("Aankomst");
             }
         }
 
-        public EntryListItemViewModel(ClientEntry entry, IEventAggregator eventAggregator, bool justAdded = false) : base(entry, eventAggregator)
+        public EntryListItemViewModel(Entry entry, IEventAggregator eventAggregator, bool justAdded = false) : base(entry, eventAggregator)
         {
             JustAdded = justAdded;
         }

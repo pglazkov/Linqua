@@ -2,8 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using AutoMapper;
-using Linqua.Service.DataObjects;
 using Linqua.Service.Models;
 using Microsoft.Azure.Mobile.Server.Config;
 
@@ -14,7 +12,7 @@ namespace Linqua.Service.Controllers
     public class EntryLookupController : ApiController
     {
         // POST api/EntryLookup
-        public async Task<ClientEntry> Post(string entryText, string excludeId)
+        public async Task<Entry> Post(string entryText, string excludeId)
         {
             //Services.Log.Info("Hello from custom controller!");
 
@@ -26,7 +24,7 @@ namespace Linqua.Service.Controllers
 
                 if (foundEntries != null && foundEntries.Count > 0)
                 {
-                    return Mapper.Map<ClientEntry>(foundEntries[0]);
+                    return foundEntries[0];
                 }
             }
 

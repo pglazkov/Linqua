@@ -15,7 +15,7 @@ namespace Linqua
             return Task.FromResult(true);
         }
 
-        public Task UpdateEntryAsync(ClientEntry entry)
+        public Task UpdateEntryAsync(Entry entry)
         {
             return Task.FromResult(true);
         }
@@ -25,7 +25,7 @@ namespace Linqua
             return Task.FromResult(true);
         }
 
-        public Task<string> TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
+        public Task<string> TranslateEntryItemAsync(Entry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
         {
             return Task.FromResult(string.Empty);
         }

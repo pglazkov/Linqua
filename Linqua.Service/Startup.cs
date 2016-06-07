@@ -1,11 +1,6 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 using System.Data.Entity;
-using System.Data.Entity.Migrations;
-using System.Threading.Tasks;
 using System.Web.Http;
-using AutoMapper;
-using Linqua.Service.DataObjects;
 using Linqua.Service.Models;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Authentication;
@@ -34,12 +29,6 @@ namespace Linqua.Service
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<LinquaContext, Configuration>());
             //var migrator = new DbMigrator(new Configuration());
             //migrator.Update("AddIndexOnTextColumn");
-
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Entry, ClientEntry>();
-                cfg.CreateMap<ClientEntry, Entry>();
-            });
 
             MobileAppSettingsDictionary settings = config.GetMobileAppSettingsProvider().GetMobileAppSettings();
 

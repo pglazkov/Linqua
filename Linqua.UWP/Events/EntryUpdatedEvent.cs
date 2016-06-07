@@ -6,13 +6,13 @@ namespace Linqua.Events
 {
     public class EntryUpdatedEvent : EventBase
     {
-        public EntryUpdatedEvent([NotNull] ClientEntry entry)
+        public EntryUpdatedEvent([NotNull] Entry entry)
         {
             Guard.NotNull(entry, nameof(entry));
 
             Entry = entry;
         }
 
-        public ClientEntry Entry { get; private set; }
+        public Entry Entry { get; private set; }
     }
 }

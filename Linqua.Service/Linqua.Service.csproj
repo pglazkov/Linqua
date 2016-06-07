@@ -88,12 +88,10 @@
       <Link>Controllers\LegacyUserID.cs</Link>
     </Compile>
     <Compile Include="Controllers\ApiControllerExtensions.cs" />
-    <Compile Include="Controllers\ClientEntryController.cs" />
-    <Compile Include="Controllers\EntryDomainManager.cs" />
+    <Compile Include="Controllers\EntryController.cs" />
     <Compile Include="Controllers\EntryLookupController.cs" />
     <Compile Include="Controllers\LogUploadInfoController.cs" />
     <Compile Include="Controllers\RandomEntryController.cs" />
-    <Compile Include="DataObjects\ClientEntry.cs" />
     <Compile Include="DataObjects\LogUploadInfo.cs" />
     <Compile Include="LinquaDbConfiguration.cs" />
     <Compile Include="Migrations\201501251238040_InitialCreate.cs" />

@@ -119,7 +119,7 @@
     <Compile Include="LinquaLib.cs" />
     <Compile Include="AuthFailureHandler.cs" />
     <Compile Include="ConnectionHelper.cs" />
-    <Compile Include="DataObjects\ClientEntry.cs" />
+    <Compile Include="DataObjects\Entry.cs" />
     <Compile Include="DeviceInfo.cs" />
     <Compile Include="ExceptionHandlingHelper.cs" />
     <Compile Include="FakeData.cs" />

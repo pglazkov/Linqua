@@ -21,8 +21,8 @@ namespace Linqua.UI
         private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<RandomEntryListViewModel>();
 
         private bool thereAreNoEntries;
-        private IList<ClientEntry> entries;
-        private IDictionary<string, ClientEntry> entriesIdDict;
+        private IList<Entry> entries;
+        private IDictionary<string, Entry> entriesIdDict;
         private bool isInitializationComplete;
         private readonly List<int> displayedIndexes = new List<int>();
         private readonly Random displayEntriesIndexGenerator = new Random((int)DateTime.UtcNow.Ticks);
@@ -60,7 +60,7 @@ namespace Linqua.UI
         public DelegateCommand ShowNextEntriesCommand { get; }
         public DelegateCommand ShowPreviousEntriesCommand { get; }
 
-        public IEnumerable<ClientEntry> Entries
+        public IEnumerable<Entry> Entries
         {
             get { return entries; }
             set
@@ -136,7 +136,7 @@ namespace Linqua.UI
             CanShowNextEntries = entries.Count > RandomEntryViewModels.Count;
         }
 
-        private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
+        private EntryListItemViewModel CreateListItemViewModel(Entry newEntry, bool justAdded = false)
         {
             var result = new EntryListItemViewModel(newEntry, EventAggregator, justAdded: justAdded);
 
@@ -261,7 +261,7 @@ namespace Linqua.UI
             return result;
         }
 
-        public EntryListItemViewModel AddEntry(ClientEntry newEntry)
+        public EntryListItemViewModel AddEntry(Entry newEntry)
         {
             entries.Add(newEntry);
             entriesIdDict.Add(newEntry.Id, newEntry);
@@ -307,9 +307,9 @@ namespace Linqua.UI
             return null;
         }
 
-        public void DeleteEntryFromUI(ClientEntry entryToDelete)
+        public void DeleteEntryFromUI(Entry entryToDelete)
         {
-            ClientEntry entry;
+            Entry entry;
 
             if (!entriesIdDict.TryGetValue(entryToDelete.Id, out entry))
             {
@@ -389,7 +389,7 @@ namespace Linqua.UI
         }
 
         [CanBeNull]
-        public EntryListItemViewModel Find([NotNull] ClientEntry entry)
+        public EntryListItemViewModel Find([NotNull] Entry entry)
         {
             Guard.NotNull(entry, nameof(entry));
 

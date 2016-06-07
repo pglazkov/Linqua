@@ -27,8 +27,8 @@ namespace Linqua.Persistence
     {
         private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MobileServiceBackendServiceClient).Name);
 
-        //private readonly IMobileServiceTable<ClientEntry> entryTable;
-        private readonly Lazy<IMobileServiceSyncTable<ClientEntry>> entrySyncTable;
+        //private readonly IMobileServiceTable<Entry> entryTable;
+        private readonly Lazy<IMobileServiceSyncTable<Entry>> entrySyncTable;
         private readonly IMobileServiceSyncHandler syncHandler;
         private readonly IEventAggregator eventAggregator;
         private bool initialized;
@@ -43,22 +43,22 @@ namespace Linqua.Persistence
             this.syncHandler = syncHandler;
             this.eventAggregator = eventAggregator;
 
-            //entryTable = MobileService.Client.GetTable<ClientEntry>();
-            entrySyncTable = new Lazy<IMobileServiceSyncTable<ClientEntry>>(CreateSyncTable);
+            //entryTable = MobileService.Client.GetTable<Entry>();
+            entrySyncTable = new Lazy<IMobileServiceSyncTable<Entry>>(CreateSyncTable);
         }
 
-        private IMobileServiceSyncTable<ClientEntry> CreateSyncTable()
+        private IMobileServiceSyncTable<Entry> CreateSyncTable()
         {
-            return Framework.Retry.Do(() => MobileService.Client.GetSyncTable<ClientEntry>(), TimeSpan.FromSeconds(1), 2);
+            return Framework.Retry.Do(() => MobileService.Client.GetSyncTable<Entry>(), TimeSpan.FromSeconds(1), 2);
         }
 
-        private IMobileServiceSyncTable<ClientEntry> EntrySyncTable => entrySyncTable.Value;
+        private IMobileServiceSyncTable<Entry> EntrySyncTable => entrySyncTable.Value;
 
-        public async Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
+        public async Task<IEnumerable<Entry>> LoadEntries(Expression<Func<Entry, bool>> filter)
         {
             return await Retry(async () =>
             {
-                IMobileServiceTableQuery<ClientEntry> query = EntrySyncTable.CreateQuery();
+                IMobileServiceTableQuery<Entry> query = EntrySyncTable.CreateQuery();
 
                 if (filter != null)
                 {
@@ -71,11 +71,11 @@ namespace Linqua.Persistence
             });
         }
 
-        public async Task<long> GetCount(Expression<Func<ClientEntry, bool>> filter)
+        public async Task<long> GetCount(Expression<Func<Entry, bool>> filter)
         {
             return await Retry(async () =>
             {
-                IMobileServiceTableQuery<ClientEntry> query = EntrySyncTable.CreateQuery();
+                IMobileServiceTableQuery<Entry> query = EntrySyncTable.CreateQuery();
 
                 if (filter != null)
                 {
@@ -88,7 +88,7 @@ namespace Linqua.Persistence
             });
         }
 
-        public async Task<ClientEntry> LookupById(string entryId, CancellationToken? cancellationToken)
+        public async Task<Entry> LookupById(string entryId, CancellationToken? cancellationToken)
         {
             Guard.NotNull(entryId, nameof(entryId));
 
@@ -100,7 +100,7 @@ namespace Linqua.Persistence
             });
         }
 
-        public async Task<ClientEntry> LookupByExample(ClientEntry example)
+        public async Task<Entry> LookupByExample(Entry example)
         {
             Guard.Assert(!string.IsNullOrEmpty(example.Text), "!string.IsNullOrEmpty(example.Text)");
 
@@ -113,7 +113,7 @@ namespace Linqua.Persistence
                     parameters.Add("entryText", example.Text);
                     parameters.Add("excludeId", example.Id);
 
-                    var serviceResult = await MobileService.Client.InvokeApiAsync<ClientEntry>("EntryLookup", HttpMethod.Post, parameters);
+                    var serviceResult = await MobileService.Client.InvokeApiAsync<Entry>("EntryLookup", HttpMethod.Post, parameters);
 
                     return serviceResult;
                 }
@@ -129,11 +129,11 @@ namespace Linqua.Persistence
             });
         }
 
-        public async Task<IEnumerable<ClientEntry>> GetRandomEntries(int count)
+        public async Task<IEnumerable<Entry>> GetRandomEntries(int count)
         {
             return await Retry(async () =>
             {
-                IEnumerable<ClientEntry> result = null;
+                IEnumerable<Entry> result = null;
 
                 if (ConnectionHelper.IsConnectedToInternet)
                 {
@@ -142,7 +142,7 @@ namespace Linqua.Persistence
                         {"number", count.ToString()}
                     };
 
-                    result = await MobileService.Client.InvokeApiAsync<IEnumerable<ClientEntry>>("RandomEntry", HttpMethod.Get, parameters);
+                    result = await MobileService.Client.InvokeApiAsync<IEnumerable<Entry>>("RandomEntry", HttpMethod.Get, parameters);
                 }
                 else
                 {
@@ -151,7 +151,7 @@ namespace Linqua.Persistence
                     if (existingEntiesInLocalStorage.Count > 0)
                     {
                         var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
-                        var randomEntries = new List<ClientEntry>();
+                        var randomEntries = new List<Entry>();
                         var excludeIndices = new HashSet<int>();
 
                         count = Math.Min(count, existingEntiesInLocalStorage.Count);
@@ -175,15 +175,15 @@ namespace Linqua.Persistence
                     }
                 }
 
-                return result ?? Enumerable.Empty<ClientEntry>();
+                return result ?? Enumerable.Empty<Entry>();
             });
         }
 
-        public async Task<ClientEntry> AddEntry(ClientEntry newEntry)
+        public async Task<Entry> AddEntry(Entry newEntry)
         {
             return await Retry(async () =>
             {
-                ClientEntry resultEntry = null;
+                Entry resultEntry = null;
 
                 var existingEntries = await EntrySyncTable.Where(x => x.Text == newEntry.Text).ToListAsync();
 
@@ -207,14 +207,14 @@ namespace Linqua.Persistence
             });
         }
 
-        public async Task DeleteEntry(ClientEntry entry)
+        public async Task DeleteEntry(Entry entry)
         {
             await Retry(async () => { await EntrySyncTable.DeleteAsync(entry); });
 
             OfflineHelper.EnqueueSync();
         }
 
-        public async Task UpdateEntry(ClientEntry entry)
+        public async Task UpdateEntry(Entry entry)
         {
             await Retry(async () => { await EntrySyncTable.UpdateAsync(entry); });
 

@@ -12,17 +12,17 @@ namespace Linqua.Service.Controllers
 {
     [MobileAppController]
     [Authorize]
-    public class ClientEntryController : TableController<ClientEntry>
+    public class EntryController : TableController<Entry>
     {
         protected override void Initialize(HttpControllerContext controllerContext)
         {
             base.Initialize(controllerContext);
             LinquaContext context = new LinquaContext();
-            DomainManager = new EntryDomainManager(context, Request, true);
+            DomainManager = new EntityDomainManager<Entry>(context, Request, true);
         }
 
-        // GET tables/ClientEntry
-        public async Task<IQueryable<ClientEntry>> GetAllEntries()
+        // GET tables/Entry
+        public async Task<IQueryable<Entry>> GetAllEntries()
         {
             // Get the logged-in user.
             var currentUser = await this.GetUserInfoAsync();
@@ -30,32 +30,33 @@ namespace Linqua.Service.Controllers
             return Query().Where(e => e.UserId == currentUser.ProviderUserInfo.ProviderPrefixedUserId || e.UserId == currentUser.AppSpecificMicrosoftUserId);
         }
 
-        // GET tables/ClientEntry/48D68C86-6EA6-4C25-AA33-223FC9A27959
-        public SingleResult<ClientEntry> GetEntry(string id)
+        // GET tables/Entry/48D68C86-6EA6-4C25-AA33-223FC9A27959
+        public SingleResult<Entry> GetEntry(string id)
         {
             return Lookup(id);
         }
 
-        // PATCH tables/ClientEntry/48D68C86-6EA6-4C25-AA33-223FC9A27959
-        public Task<ClientEntry> PatchEntry(string id, Delta<ClientEntry> patch)
+        // PATCH tables/Entry/48D68C86-6EA6-4C25-AA33-223FC9A27959
+        public Task<Entry> PatchEntry(string id, Delta<Entry> patch)
         {
             return UpdateAsync(id, patch);
         }
 
-        // POST tables/ClientEntry
-        public async Task<IHttpActionResult> PostEntry(ClientEntry item)
+        // POST tables/Entry
+        public async Task<IHttpActionResult> PostEntry(Entry item)
         {
             // Get the logged-in user.
             var currentUser = await this.GetUserInfoAsync();
 
             // Set the user ID on the item.
             item.UserId = currentUser.ProviderUserInfo.ProviderPrefixedUserId;
+            item.UserEmail = currentUser.ProviderUserInfo.EmailAddress;
 
-            ClientEntry current = await InsertAsync(item);
+            Entry current = await InsertAsync(item);
             return CreatedAtRoute("Tables", new {id = current.Id}, current);
         }
 
-        // DELETE tables/ClientEntry/48D68C86-6EA6-4C25-AA33-223FC9A27959
+        // DELETE tables/Entry/48D68C86-6EA6-4C25-AA33-223FC9A27959
         public Task DeleteEntry(string id)
         {
             return DeleteAsync(id);

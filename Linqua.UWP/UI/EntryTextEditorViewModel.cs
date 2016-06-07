@@ -12,7 +12,7 @@ namespace Linqua.UI
         private readonly IEventAggregator eventAggregator;
         private string entryText;
         private bool isBusy;
-        private ClientEntry data;
+        private Entry data;
 
         public EntryTextEditorViewModel()
             : this(DesignTimeDetection.IsInDesignTool ? DesignTimeHelper.EventAggregator : null)
@@ -31,7 +31,7 @@ namespace Linqua.UI
         public DelegateCommand FinishCommand { get; }
         public DelegateCommand CancelCommand { get; }
 
-        public ClientEntry Data
+        public Entry Data
         {
             get { return data; }
             set
@@ -96,7 +96,7 @@ namespace Linqua.UI
 
             if (data == null)
             {
-                data = ClientEntry.CreateNew(EntryText);
+                data = Entry.CreateNew(EntryText);
             }
             else
             {

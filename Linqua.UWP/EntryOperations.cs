@@ -75,7 +75,7 @@ namespace Linqua
             eventAggregator.Publish(new EntryIsLearntChangedEvent(entry));
         }
 
-        public async Task UpdateEntryAsync(ClientEntry entry)
+        public async Task UpdateEntryAsync(Entry entry)
         {
             Guard.Assert(entry != null, "entry != null");
 
@@ -84,7 +84,7 @@ namespace Linqua
             eventAggregator.Publish(new EntryUpdatedEvent(entry));
         }
 
-        public async Task<string> TranslateEntryItemAsync(ClientEntry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
+        public async Task<string> TranslateEntryItemAsync(Entry entry, IEnumerable<EntryViewModel> viewModelsToUpdate)
         {
             string translation = null;
             string entryLanguage = null;

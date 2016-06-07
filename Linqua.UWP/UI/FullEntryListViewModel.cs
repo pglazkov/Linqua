@@ -20,7 +20,7 @@ namespace Linqua.UI
         private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger<FullEntryListViewModel>();
 
         private bool thereAreNoEntries;
-        private IEnumerable<ClientEntry> entries;
+        private IEnumerable<Entry> entries;
         private bool isInitializationComplete;
         private readonly IStringResourceManager resourceManager;
         private readonly IEntryOperations entryOperations;
@@ -49,7 +49,7 @@ namespace Linqua.UI
             EventAggregator.GetEvent<EntryIsLearntChangedEvent>().Subscribe(OnEntryIsLearntChanged);
         }
 
-        public FullEntryListViewModel(IEnumerable<ClientEntry> entries)
+        public FullEntryListViewModel(IEnumerable<Entry> entries)
             : this(new StringResourceManager(), new DesignTimeApplicationContoller())
         {
             Guard.NotNull(entries, nameof(entries));
@@ -57,7 +57,7 @@ namespace Linqua.UI
             Entries = entries;
         }
 
-        public IEnumerable<ClientEntry> Entries
+        public IEnumerable<Entry> Entries
         {
             get { return entries; }
             set
@@ -129,7 +129,7 @@ namespace Linqua.UI
             }
         }
 
-        public EntryListItemViewModel AddEntry(ClientEntry newEntry)
+        public EntryListItemViewModel AddEntry(Entry newEntry)
         {
             var viewModel = CreateListItemViewModel(newEntry, justAdded: true);
 
@@ -138,7 +138,7 @@ namespace Linqua.UI
             return viewModel;
         }
 
-        private EntryListItemViewModel CreateListItemViewModel(ClientEntry newEntry, bool justAdded = false)
+        private EntryListItemViewModel CreateListItemViewModel(Entry newEntry, bool justAdded = false)
         {
             var result = new EntryListItemViewModel(newEntry, EventAggregator, justAdded: justAdded);
 
@@ -177,7 +177,7 @@ namespace Linqua.UI
             }
         }
 
-        public void DeleteEntryFromUI(ClientEntry entryToDelete)
+        public void DeleteEntryFromUI(Entry entryToDelete)
         {
             var entryVm = EntryViewModels.SingleOrDefault(w => w.Entry.Id == entryToDelete.Id);
 
@@ -323,7 +323,7 @@ namespace Linqua.UI
         }
 
         [CanBeNull]
-        public EntryListItemViewModel Find([NotNull] ClientEntry entry)
+        public EntryListItemViewModel Find([NotNull] Entry entry)
         {
             Guard.NotNull(entry, nameof(entry));
 

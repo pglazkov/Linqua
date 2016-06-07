@@ -15,7 +15,7 @@ namespace Linqua.UI
     {
         private readonly IEventAggregator eventAggregator;
         private bool isTranslating;
-        private ClientEntry entry;
+        private Entry entry;
         private bool isDeletingSelf;
         private string detectedLanguage;
 
@@ -35,7 +35,7 @@ namespace Linqua.UI
             EditCommand = new DelegateCommand(() => EditSelfAsync().FireAndForget(), CanEditSelf);
         }
 
-        public EntryViewModel(ClientEntry entry, [NotNull] IEventAggregator eventAggregator)
+        public EntryViewModel(Entry entry, [NotNull] IEventAggregator eventAggregator)
             : this(eventAggregator)
         {
             Guard.NotNull(entry, nameof(entry));
@@ -49,7 +49,7 @@ namespace Linqua.UI
 
         private IEntryOperations EntryOperations => CompositionFactory.Create<IEntryOperations>();
 
-        public ClientEntry Entry
+        public Entry Entry
         {
             get { return entry; }
             protected set

@@ -5,11 +5,11 @@ using Microsoft.WindowsAzure.MobileServices;
 
 namespace Linqua.DataObjects
 {
-    public class ClientEntry
+    public class Entry
     {
-        public static ClientEntry CreateNew(string text = null)
+        public static Entry CreateNew(string text = null)
         {
-            var result = new ClientEntry
+            var result = new Entry
             {
                 ClientCreatedAt = DateTimeOffset.Now,
                 Text = text,
@@ -19,7 +19,7 @@ namespace Linqua.DataObjects
             return result;
         }
 
-        public ClientEntry()
+        public Entry()
         {
         }
 
@@ -43,7 +43,7 @@ namespace Linqua.DataObjects
 
         #region Equality Members
 
-        protected bool Equals(ClientEntry other)
+        protected bool Equals(Entry other)
         {
             return string.Equals(Id, other.Id) && string.Equals(Text, other.Text) && string.Equals(Definition, other.Definition) && Equals(TranslationState, other.TranslationState) && IsLearnt.Equals(other.IsLearnt) && ClientCreatedAt.Equals(other.ClientCreatedAt);
         }
@@ -53,7 +53,7 @@ namespace Linqua.DataObjects
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((ClientEntry)obj);
+            return Equals((Entry)obj);
         }
 
         public override int GetHashCode()

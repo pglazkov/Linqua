@@ -8,7 +8,7 @@ namespace Linqua.Persistence
 {
     public class EntryQuery
     {
-        public EntryQuery([NotNull] string id, [NotNull] Expression<Func<ClientEntry, bool>> expression)
+        public EntryQuery([NotNull] string id, [NotNull] Expression<Func<Entry, bool>> expression)
         {
             Guard.NotNullOrEmpty(id, nameof(id));
             Guard.NotNull(expression, nameof(expression));
@@ -21,7 +21,7 @@ namespace Linqua.Persistence
         public string Id { get; private set; }
 
         [NotNull]
-        public Expression<Func<ClientEntry, bool>> Expression { get; private set; }
+        public Expression<Func<Entry, bool>> Expression { get; private set; }
 
         #region Equality Members
 

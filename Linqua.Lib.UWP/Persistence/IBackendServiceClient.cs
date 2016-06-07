@@ -12,28 +12,28 @@ namespace Linqua.Persistence
     public interface IBackendServiceClient
     {
         [NotNull]
-        Task<IEnumerable<ClientEntry>> LoadEntries([CanBeNull] Expression<Func<ClientEntry, bool>> filter = null);
+        Task<IEnumerable<Entry>> LoadEntries([CanBeNull] Expression<Func<Entry, bool>> filter = null);
 
         [NotNull]
-        Task<long> GetCount([CanBeNull] Expression<Func<ClientEntry, bool>> filter = null);
+        Task<long> GetCount([CanBeNull] Expression<Func<Entry, bool>> filter = null);
 
         [NotNull]
-        Task<ClientEntry> LookupById([NotNull] string entryId, CancellationToken? cancellationToken = null);
+        Task<Entry> LookupById([NotNull] string entryId, CancellationToken? cancellationToken = null);
 
         [NotNull]
-        Task<ClientEntry> LookupByExample([NotNull] ClientEntry example);
+        Task<Entry> LookupByExample([NotNull] Entry example);
 
         [NotNull]
-        Task<IEnumerable<ClientEntry>> GetRandomEntries(int count);
+        Task<IEnumerable<Entry>> GetRandomEntries(int count);
 
         [NotNull]
-        Task<ClientEntry> AddEntry([NotNull] ClientEntry newEntry);
+        Task<Entry> AddEntry([NotNull] Entry newEntry);
 
         [NotNull]
-        Task DeleteEntry([NotNull] ClientEntry entry);
+        Task DeleteEntry([NotNull] Entry entry);
 
         [NotNull]
-        Task UpdateEntry([NotNull] ClientEntry entry);
+        Task UpdateEntry([NotNull] Entry entry);
 
         [NotNull]
         Task InitializeAsync(bool doInitialPoolIfNeeded = true);

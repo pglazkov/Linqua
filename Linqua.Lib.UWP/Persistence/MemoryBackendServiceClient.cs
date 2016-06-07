@@ -13,7 +13,7 @@ namespace Linqua.Persistence
     //[Export(typeof(IBackendServiceClient))]
     public class MemoryBackendServiceClient : IBackendServiceClient
     {
-        public Task<IEnumerable<ClientEntry>> LoadEntries(Expression<Func<ClientEntry, bool>> filter)
+        public Task<IEnumerable<Entry>> LoadEntries(Expression<Func<Entry, bool>> filter)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -23,7 +23,7 @@ namespace Linqua.Persistence
             });
         }
 
-        public Task<long> GetCount(Expression<Func<ClientEntry, bool>> filter = null)
+        public Task<long> GetCount(Expression<Func<Entry, bool>> filter = null)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -33,17 +33,17 @@ namespace Linqua.Persistence
             });
         }
 
-        public Task<ClientEntry> LookupById(string entryId, CancellationToken? cancellationToken)
+        public Task<Entry> LookupById(string entryId, CancellationToken? cancellationToken)
         {
             return Task.Factory.StartNew(() => { return FakeData.FakeWords.SingleOrDefault(x => x.Id == entryId); });
         }
 
-        public Task<ClientEntry> LookupByExample(ClientEntry example)
+        public Task<Entry> LookupByExample(Entry example)
         {
             return Task.Factory.StartNew(() => { return example; });
         }
 
-        public Task<IEnumerable<ClientEntry>> GetRandomEntries(int count)
+        public Task<IEnumerable<Entry>> GetRandomEntries(int count)
         {
             var indexGenerator = new Random((int)DateTime.UtcNow.Ticks);
 
@@ -51,24 +51,24 @@ namespace Linqua.Persistence
 
             var randomEntry = FakeData.FakeWords[randomIndex];
 
-            return Task.FromResult<IEnumerable<ClientEntry>>(new[] {randomEntry});
+            return Task.FromResult<IEnumerable<Entry>>(new[] {randomEntry});
         }
 
-        public Task<ClientEntry> AddEntry(ClientEntry newEntry)
+        public Task<Entry> AddEntry(Entry newEntry)
         {
             FakeData.FakeWords.Add(newEntry);
 
             return Task.FromResult(newEntry);
         }
 
-        public Task DeleteEntry(ClientEntry entry)
+        public Task DeleteEntry(Entry entry)
         {
             FakeData.FakeWords.Remove(entry);
 
             return Task.FromResult(true);
         }
 
-        public Task UpdateEntry(ClientEntry entry)
+        public Task UpdateEntry(Entry entry)
         {
             FakeData.FakeWords.Remove(entry);
             FakeData.FakeWords.Add(entry);

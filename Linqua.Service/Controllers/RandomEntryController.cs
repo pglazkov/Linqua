@@ -4,8 +4,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
-using AutoMapper;
-using Linqua.Service.DataObjects;
 using Linqua.Service.Models;
 using Microsoft.Azure.Mobile.Server.Config;
 
@@ -16,7 +14,7 @@ namespace Linqua.Service.Controllers
     public class RandomEntryController : ApiController
     {
         // GET api/RandomEntry
-        public async Task<IEnumerable<ClientEntry>> Get(int number)
+        public async Task<IEnumerable<Entry>> Get(int number)
         {
             var currentUser = await this.GetUserInfoAsync();
 
@@ -50,7 +48,7 @@ namespace Linqua.Service.Controllers
                         randomEntries.Add(randomEntry);
                     }
 
-                    var result = randomEntries.Select(Mapper.Map<ClientEntry>).ToArray();
+                    var result = randomEntries.ToArray();
 
                     return result;
                 }

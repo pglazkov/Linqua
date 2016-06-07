@@ -282,7 +282,7 @@ namespace Linqua.UI
 
             sw.Start();
 
-            IEnumerable<ClientEntry> words = null;
+            IEnumerable<Entry> words = null;
 
             IsLoadingEntries = true;
 
@@ -324,7 +324,7 @@ namespace Linqua.UI
             }
         }
 
-        private async Task TranslatePendingEntriesAsync(IEnumerable<ClientEntry> entries)
+        private async Task TranslatePendingEntriesAsync(IEnumerable<Entry> entries)
         {
             var pedingTranlsationEntries = entries.Where(x => x.TranslationState == TranslationState.Pending).ToList();
 
@@ -341,7 +341,7 @@ namespace Linqua.UI
             }
         }
 
-        private void UpdateUIWithData(IEnumerable<ClientEntry> words)
+        private void UpdateUIWithData(IEnumerable<Entry> words)
         {
             var allEntries = words.ToList();
 
@@ -349,7 +349,7 @@ namespace Linqua.UI
             RandomEntryListViewModel.Entries = allEntries.Where(x => !x.IsLearnt).ToList();
         }
 
-        private Task<IEnumerable<ClientEntry>> LoadEntries(IBackendServiceClient storage)
+        private Task<IEnumerable<Entry>> LoadEntries(IBackendServiceClient storage)
         {
             if (ShowLearnedEntries)
             {
@@ -361,7 +361,7 @@ namespace Linqua.UI
             }
         }
 
-        public async Task<IEnumerable<ClientEntry>> SyncAsync(bool force = false)
+        public async Task<IEnumerable<Entry>> SyncAsync(bool force = false)
         {
 #if DEBUG
             using (statusBusyService.Busy(CommonBusyType.Syncing))
@@ -440,7 +440,7 @@ namespace Linqua.UI
             }
         }
 
-        private async Task UpdateEntryAsync(ClientEntry entry)
+        private async Task UpdateEntryAsync(Entry entry)
         {
             eventAggregator.Publish(new EntryUpdatedEvent(entry));
 
@@ -461,7 +461,7 @@ namespace Linqua.UI
             }
         }
 
-        private IEnumerable<EntryViewModel> FindEntryViewModels(ClientEntry entry)
+        private IEnumerable<EntryViewModel> FindEntryViewModels(Entry entry)
         {
             var vm1 = FullEntryListViewModel.Find(entry);
             var vm2 = RandomEntryListViewModel.Find(entry);
@@ -481,7 +481,7 @@ namespace Linqua.UI
             return vms;
         }
 
-        private async Task AddNewEntryAsync(ClientEntry entry)
+        private async Task AddNewEntryAsync(Entry entry)
         {
             var randomEntryItem = RandomEntryListViewModel.MoveToTopIfExists(entry.Text);
             var fullListItem = FullEntryListViewModel.MoveToTopIfExists(entry.Text);
@@ -511,7 +511,7 @@ namespace Linqua.UI
             {
                 var entryToAdd = entry;
 
-                ClientEntry addedEntry = null;
+                Entry addedEntry = null;
 
                 EntryListItemViewModel randomListItem;
 
@@ -541,7 +541,7 @@ namespace Linqua.UI
             }
         }
 
-        private void OnEntryAdded(ClientEntry addedEntry)
+        private void OnEntryAdded(Entry addedEntry)
         {
             EntryTextEditorViewModel.Clear();
             IsEntryEditorVisible = false;
@@ -563,9 +563,9 @@ namespace Linqua.UI
             }
         }
 
-        public async Task<IEnumerable<ClientEntry>> RefreshAsync()
+        public async Task<IEnumerable<Entry>> RefreshAsync()
         {
-            IEnumerable<ClientEntry> entries = null;
+            IEnumerable<Entry> entries = null;
 
             using (await RefreshLock.LockAsync())
             {
@@ -580,7 +580,7 @@ namespace Linqua.UI
             return entries;
         }
 
-        private async Task<IEnumerable<ClientEntry>> RefreshInternalAsync()
+        private async Task<IEnumerable<Entry>> RefreshInternalAsync()
         {
             if (Log.IsDebugEnabled)
             {

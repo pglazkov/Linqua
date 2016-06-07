@@ -12,13 +12,13 @@ namespace Linqua
         Task DeleteEntryAsync([NotNull] EntryViewModel entry);
 
         [NotNull]
-        Task UpdateEntryAsync([NotNull] ClientEntry entry);
+        Task UpdateEntryAsync([NotNull] Entry entry);
 
         [NotNull]
         Task UpdateEntryIsLearnedAsync([NotNull] EntryViewModel entry);
 
         [NotNull]
-        Task<string> TranslateEntryItemAsync([NotNull] ClientEntry entry, [NotNull] IEnumerable<EntryViewModel> viewModelsToUpdate);
+        Task<string> TranslateEntryItemAsync([NotNull] Entry entry, [NotNull] IEnumerable<EntryViewModel> viewModelsToUpdate);
 
         [NotNull]
         Task<string> GetEntryLanguageNameAsync([NotNull] string languageCode, [NotNull] string locale);

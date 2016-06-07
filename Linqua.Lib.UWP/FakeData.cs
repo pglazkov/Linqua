@@ -6,33 +6,33 @@ namespace Linqua
 {
     public static class FakeData
     {
-        private static List<ClientEntry> fakeWords = new List<ClientEntry>
+        private static List<Entry> fakeWords = new List<Entry>
         {
-            ClientEntry.CreateNew("Aankomst"),
-            ClientEntry.CreateNew("Voordelig"),
-            ClientEntry.CreateNew("Zender"),
-            ClientEntry.CreateNew("toiletborstel"),
-            ClientEntry.CreateNew("beide"),
-            ClientEntry.CreateNew("Toch"),
-            ClientEntry.CreateNew("verantwoord"),
-            ClientEntry.CreateNew("Zou"),
-            ClientEntry.CreateNew("eigen"),
-            ClientEntry.CreateNew("Betaalwijze"),
-            ClientEntry.CreateNew("terug"),
-            ClientEntry.CreateNew("Krijgt"),
-            ClientEntry.CreateNew("Gewoon"),
-            ClientEntry.CreateNew("Steeds"),
-            ClientEntry.CreateNew("Bewaar"),
-            ClientEntry.CreateNew("Klaar"),
-            ClientEntry.CreateNew("Alles"),
-            ClientEntry.CreateNew("Eigen"),
-            ClientEntry.CreateNew("Belangrijk"),
-            ClientEntry.CreateNew("Vervalen"),
-            ClientEntry.CreateNew("Het ongemak"),
-            ClientEntry.CreateNew("echter")
+            Entry.CreateNew("Aankomst"),
+            Entry.CreateNew("Voordelig"),
+            Entry.CreateNew("Zender"),
+            Entry.CreateNew("toiletborstel"),
+            Entry.CreateNew("beide"),
+            Entry.CreateNew("Toch"),
+            Entry.CreateNew("verantwoord"),
+            Entry.CreateNew("Zou"),
+            Entry.CreateNew("eigen"),
+            Entry.CreateNew("Betaalwijze"),
+            Entry.CreateNew("terug"),
+            Entry.CreateNew("Krijgt"),
+            Entry.CreateNew("Gewoon"),
+            Entry.CreateNew("Steeds"),
+            Entry.CreateNew("Bewaar"),
+            Entry.CreateNew("Klaar"),
+            Entry.CreateNew("Alles"),
+            Entry.CreateNew("Eigen"),
+            Entry.CreateNew("Belangrijk"),
+            Entry.CreateNew("Vervalen"),
+            Entry.CreateNew("Het ongemak"),
+            Entry.CreateNew("echter")
         };
 
-        public static List<ClientEntry> FakeWords
+        public static List<Entry> FakeWords
         {
             get { return fakeWords; }
         }
