@@ -122,11 +122,6 @@ namespace Linqua.UI
             {
                 {"IsAvailable", e.IsConnected.ToString()}
             });
-
-            if (e.IsConnected)
-            {
-                Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { ViewModel.RefreshAsync().FireAndForget(); }).FireAndForget();
-            }
         }
 
         private async Task SetUpBackgroundTasksAsync()
@@ -143,7 +138,7 @@ namespace Linqua.UI
                 Log.Trace("Synchronization background task completed.");
             }
 
-            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { ViewModel.RefreshAsync().FireAndForget(); }).FireAndForget();
+            Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { ViewModel.LoadDataAsync().FireAndForget(); }).FireAndForget();
         }
 
         public void Navigate(Type destination)

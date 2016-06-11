@@ -89,6 +89,7 @@
     </Compile>
     <Compile Include="Controllers\ApiControllerExtensions.cs" />
     <Compile Include="Controllers\EntryController.cs" />
+    <Compile Include="Controllers\EntryCountController.cs" />
     <Compile Include="Controllers\EntryLookupController.cs" />
     <Compile Include="Controllers\LogUploadInfoController.cs" />
     <Compile Include="Controllers\RandomEntryController.cs" />

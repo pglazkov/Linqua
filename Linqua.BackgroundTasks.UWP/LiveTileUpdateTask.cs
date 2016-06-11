@@ -1,6 +1,7 @@
 ﻿using System;
 using Windows.ApplicationModel.Background;
 using Framework;
+using Framework.PlatformServices;
 using Linqua.Notifications;
 using Linqua.Persistence;
 using MetroLog;
@@ -32,7 +33,7 @@ namespace Linqua
 
                 if (authenticatedSilently)
                 {
-                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
+                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager(), new LocalSettingsService());
                     await storage.InitializeAsync(doInitialPoolIfNeeded: false);
 
                     var liveTileManager = new LiveTileManager(storage);

@@ -9,6 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Framework;
+using Framework.PlatformServices;
 using JetBrains.Annotations;
 using Linqua.DataObjects;
 using Linqua.Persistence.Events;
@@ -25,23 +26,28 @@ namespace Linqua.Persistence
     [Shared]
     public class MobileServiceBackendServiceClient : IBackendServiceClient
     {
+        private const string InitialPullCompleteKey = "INITIAL_PULL_COMPLETE";
+
         private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MobileServiceBackendServiceClient).Name);
 
         //private readonly IMobileServiceTable<Entry> entryTable;
         private readonly Lazy<IMobileServiceSyncTable<Entry>> entrySyncTable;
         private readonly IMobileServiceSyncHandler syncHandler;
         private readonly IEventAggregator eventAggregator;
+        private readonly ILocalSettingsService localSettingsService;
         private bool initialized;
         private readonly AsyncLock initializationLock = new AsyncLock();
 
         [ImportingConstructor]
-        public MobileServiceBackendServiceClient([NotNull] IMobileServiceSyncHandler syncHandler, [NotNull] IEventAggregator eventAggregator)
+        public MobileServiceBackendServiceClient([NotNull] IMobileServiceSyncHandler syncHandler, [NotNull] IEventAggregator eventAggregator, [NotNull] ILocalSettingsService localSettingsService)
         {
             Guard.NotNull(syncHandler, nameof(syncHandler));
             Guard.NotNull(eventAggregator, nameof(eventAggregator));
+            Guard.NotNull(localSettingsService, nameof(localSettingsService));
 
             this.syncHandler = syncHandler;
             this.eventAggregator = eventAggregator;
+            this.localSettingsService = localSettingsService;
 
             //entryTable = MobileService.Client.GetTable<Entry>();
             entrySyncTable = new Lazy<IMobileServiceSyncTable<Entry>>(CreateSyncTable);
@@ -221,25 +227,33 @@ namespace Linqua.Persistence
             OfflineHelper.EnqueueSync();
         }
 
-        public async Task InitializeAsync(bool doInitialPoolIfNeeded)
+        public async Task<LocalDbState> InitializeAsync(bool doInitialPoolIfNeeded)
         {
             using (await initializationLock.LockAsync())
             {
                 if (initialized)
                 {
-                    return;
+                    return LocalDbState.Unknown;
                 }
+
+                var result = LocalDbState.Unknown;
 
                 await Retry(async () => { await OfflineHelper.InitializeAsync(syncHandler); });
 
-                if (doInitialPoolIfNeeded)
+                var initialPullWasDoneAlready = localSettingsService.GetValue(InitialPullCompleteKey, false);
+
+                if (doInitialPoolIfNeeded && !initialPullWasDoneAlready)
                 {
-                    await Retry(async () => { await OfflineHelper.DoInitialPullIfNeededAsync(); });
+                    result = await Retry(async () => await OfflineHelper.DoInitialPullIfNeededAsync());
+
+                    localSettingsService.SetValue(InitialPullCompleteKey, true);
                 }
 
                 initialized = true;
 
                 eventAggregator.Publish(new StorageInitializedEvent());
+
+                return result;
             }
         }
 

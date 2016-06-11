@@ -76,9 +76,9 @@ namespace Linqua.Persistence
             return Task.FromResult(true);
         }
 
-        public Task InitializeAsync(bool doInitialPoolIfNeeded)
+        public Task<LocalDbState> InitializeAsync(bool doInitialPoolIfNeeded)
         {
-            return Task.FromResult(true);
+            return Task.FromResult(LocalDbState.Unknown);
         }
 
         public Task<bool> TrySyncAsync(OfflineSyncArguments args = null)

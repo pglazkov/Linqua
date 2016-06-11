@@ -97,6 +97,7 @@
     <Compile Include="PropertySupport.cs" />
     <Compile Include="AwaitableExtensions.cs" />
     <Compile Include="ReactiveExtensions.cs" />
+    <Compile Include="TaskExtensions.cs" />
     <Compile Include="ViewLocatorPortable.cs" />
     <Compile Include="ViewModelBahviorBase.cs" />
     <Compile Include="ViewModelBase.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Http;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
@@ -85,16 +86,38 @@ namespace Linqua.Persistence
             return SyncLock.LockAsync(cancellationToken ?? CancellationToken.None);
         }
 
-        public static async Task DoInitialPullIfNeededAsync(OfflineSyncArguments args = null)
+        public static async Task<LocalDbState> DoInitialPullIfNeededAsync(OfflineSyncArguments args = null)
         {
             CheckInitialized();
 
-            var firstEntry = (await MobileService.Client.GetSyncTable<Entry>().Take(1).ToListAsync()).SingleOrDefault();
+            var syncTable = MobileService.Client.GetSyncTable<Entry>();
+
+            var firstEntry = (await syncTable.Take(1).ToListAsync()).SingleOrDefault();
 
             if (firstEntry == null)
             {
-                await TrySyncAsync(args);
+                int? serverEntryCount = null;
+
+                if (ConnectionHelper.IsConnectedToInternet)
+                {
+                    try
+                    {
+                        serverEntryCount = await MobileService.Client.InvokeApiAsync<int>("EntryCount", HttpMethod.Get, new Dictionary<string, string>());
+                    }
+                    catch (Exception e)
+                    {
+                        ExceptionHandlingHelper.HandleNonFatalError(e);
+                    }
+                }
+
+                if (serverEntryCount == null || serverEntryCount.Value > 0)
+                {
+                    var success = await TrySyncAsync(args);
+                    return success ? LocalDbState.UpToDate : LocalDbState.NeedsSync;
+                }
             }
+
+            return LocalDbState.NeedsSync;
         }
 
         public static ISyncHandle EnqueueSync(OfflineSyncArguments args = null)

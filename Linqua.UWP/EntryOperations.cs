@@ -104,7 +104,16 @@ namespace Linqua
                     if (Log.IsDebugEnabled)
                         Log.Debug("Trying to find an existing entry with Text=\"{0}\".", entry.Text);
 
-                    var existingEntry = await storage.LookupByExample(entry);
+                    Entry existingEntry = null;
+
+                    try
+                    {
+                        existingEntry = await storage.LookupByExample(entry).TimeoutAfter(2000);
+                    }
+                    catch (TimeoutException)
+                    {
+                        // Ignore the existing entries if we couldn't get one in a reasonable time.
+                    }
 
                     if (existingEntry != null && existingEntry.Id != entry.Id && !string.IsNullOrWhiteSpace(existingEntry.Definition) && Equals(existingEntry.DefinitionLanguageCode, translateToLanguage))
                     {

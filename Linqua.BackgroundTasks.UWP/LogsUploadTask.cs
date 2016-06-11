@@ -2,6 +2,7 @@
 using Windows.ApplicationModel.Background;
 using Windows.Storage;
 using Framework;
+using Framework.PlatformServices;
 using Linqua.Logging;
 using Linqua.Persistence;
 using Linqua.Persistence.Exceptions;
@@ -42,7 +43,7 @@ namespace Linqua
 
                 if (authenticatedSilently)
                 {
-                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
+                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager(), new LocalSettingsService());
                     await storage.InitializeAsync(doInitialPoolIfNeeded: false);
 
                     var logsUploadService = new LogSharingService(storage);

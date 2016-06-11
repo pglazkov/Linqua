@@ -1,6 +1,8 @@
 ﻿using System;
 using Windows.ApplicationModel.Background;
 using Framework;
+using Framework.PlatformServices;
+using Framework.PlatformServices.DefaultImpl;
 using Linqua.Logging;
 using Linqua.Persistence;
 using MetroLog;
@@ -32,7 +34,7 @@ namespace Linqua
 
                 if (authenticatedSilently)
                 {
-                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager());
+                    IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager(), new LocalSettingsService());
                     await storage.InitializeAsync();
                     await storage.TrySyncAsync();
                 }

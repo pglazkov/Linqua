@@ -138,6 +138,7 @@
     <Compile Include="Persistence\IBackendServiceClient.cs" />
     <Compile Include="Persistence\ISyncFailedHandler.cs" />
     <Compile Include="Persistence\ISyncHandle.cs" />
+    <Compile Include="Persistence\LocalDbState.cs" />
     <Compile Include="Persistence\MemoryBackendServiceClient.cs" />
     <Compile Include="Persistence\MobileServiceBackendServiceClient.cs" />
     <Compile Include="Persistence\NullSyncHandle.cs" />

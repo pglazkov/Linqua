@@ -120,6 +120,10 @@
       <Project>{175a1b89-42aa-495c-bfb6-657f54792fb4}</Project>
       <Name>Framework.PT</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Framework.UWP\Framework.UWP.csproj">
+      <Project>{934C975E-961B-4D56-B500-82DF42CE5E60}</Project>
+      <Name>Framework.UWP</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Linqua.Lib.UWP\Linqua.Lib.UWP.csproj">
       <Project>{678a8cf8-7c35-4cd1-9abc-d520bcaabf39}</Project>
       <Name>Linqua.Lib.UWP</Name>
