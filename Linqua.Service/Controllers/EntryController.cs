@@ -10,7 +10,6 @@ using Microsoft.Azure.Mobile.Server.Config;
 
 namespace Linqua.Service.Controllers
 {
-    [MobileAppController]
     [Authorize]
     public class EntryController : TableController<Entry>
     {
