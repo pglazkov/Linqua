@@ -44,7 +44,7 @@ namespace Linqua
                 if (authenticatedSilently)
                 {
                     IBackendServiceClient storage = new MobileServiceBackendServiceClient(new SyncHandler(), new EventManager(), new LocalSettingsService());
-                    await storage.InitializeAsync(doInitialPoolIfNeeded: false);
+                    await storage.InitializeAsync();
 
                     var logsUploadService = new LogSharingService(storage);
 

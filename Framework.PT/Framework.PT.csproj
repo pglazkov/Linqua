@@ -39,6 +39,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Annotations.cs" />
+    <Compile Include="Optional.cs" />
+    <Compile Include="RetryHelper.cs" />
     <Compile Include="CompositionFactory.cs" />
     <Compile Include="CompositionManager.cs" />
     <Compile Include="DateTimeGroupInfo.cs" />

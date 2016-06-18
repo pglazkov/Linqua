@@ -94,6 +94,7 @@ namespace Linqua.UI
                     var ct = loadDataCts.Token;
 
                     await storage.InitializeAsync();
+                    await storage.DoInitialPullIfNeededAsync();
 
                     Entry = await storage.LookupById(entryId, ct);
                 }

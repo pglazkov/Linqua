@@ -67,7 +67,7 @@
 
             <Grid VerticalAlignment="Center"
                   Grid.Row="0"
-                  Visibility="{Binding IsLoadingEntries, Converter={StaticResource BooleanToVisibilityConverter}}"
+                  Visibility="{Binding IsInitialLoadInProgress, Converter={StaticResource BooleanToVisibilityConverter}}"
                   Margin="24,0,24,74">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -75,7 +75,7 @@
                 </Grid.RowDefinitions>
 
                 <ProgressRing Grid.Row="0"
-                              IsActive="{Binding IsLoadingEntries}"
+                              IsActive="{Binding IsInitialLoadInProgress}"
                               VerticalAlignment="Center"
                               HorizontalAlignment="Center"
                               Foreground="{StaticResource ProgressRingBrush}"
@@ -152,7 +152,7 @@
                     Visibility="{Binding ElementName=ThisPage, Path=DataContext.IsEntryEditorVisible, Converter={StaticResource BooleanToVisibilityConverter}}">
                 <loc:EntryTextEditorView x:Name="EntryEditorView"
                                          DataContext="{Binding EntryTextEditorViewModel}"
-                                         IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsLoadingEntries, Converter={StaticResource InvertedBooleanConverter}}"
+                                         IsEnabled="{Binding ElementName=ThisPage, Path=DataContext.IsInitialLoadInProgress, Converter={StaticResource InvertedBooleanConverter}}"
                                          InputTargetLostFocus="EntryEditorView_OnInputTargetLostFocus" />
             </Border>
 

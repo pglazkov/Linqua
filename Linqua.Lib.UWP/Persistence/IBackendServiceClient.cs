@@ -36,12 +36,20 @@ namespace Linqua.Persistence
         Task UpdateEntry([NotNull] Entry entry);
 
         [NotNull]
-        Task<LocalDbState> InitializeAsync(bool doInitialPoolIfNeeded = true);
+        Task<bool> GetIsInitialPullRequiredAsync();
+
+        [NotNull]
+        Task InitializeAsync();
+
+        [NotNull]
+        Task<LocalDbState> DoInitialPullIfNeededAsync(OfflineSyncArguments args = null);
 
         [NotNull]
         Task<bool> TrySyncAsync(OfflineSyncArguments args = null);
 
         [NotNull]
         Task<LogUploadInfo> GetLogUploadInfoAsync();
+
+        
     }
 }

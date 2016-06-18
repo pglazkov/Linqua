@@ -135,6 +135,7 @@
     <Compile Include="Persistence\EntryQuery.cs" />
     <Compile Include="Persistence\Events\StorageInitializedEvent.cs" />
     <Compile Include="Persistence\Exceptions\NoInternetConnectionException.cs" />
+    <Compile Include="Persistence\Exceptions\UserIsNotLoggedInException.cs" />
     <Compile Include="Persistence\IBackendServiceClient.cs" />
     <Compile Include="Persistence\ISyncFailedHandler.cs" />
     <Compile Include="Persistence\ISyncHandle.cs" />
@@ -142,7 +143,6 @@
     <Compile Include="Persistence\MemoryBackendServiceClient.cs" />
     <Compile Include="Persistence\MobileServiceBackendServiceClient.cs" />
     <Compile Include="Persistence\NullSyncHandle.cs" />
-    <Compile Include="Persistence\OfflineHelper.cs" />
     <Compile Include="Persistence\OfflineSyncArguments.cs" />
     <Compile Include="Persistence\SyncAction.cs" />
     <Compile Include="Persistence\SyncHandler.cs" />

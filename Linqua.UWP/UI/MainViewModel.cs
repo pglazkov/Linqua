@@ -30,7 +30,7 @@ namespace Linqua.UI
         private readonly IStringResourceManager stringResourceManager;
         private readonly ILogSharingService logSharingService;
         private FullEntryListViewModel fullEntryListViewModel;
-        private bool isLoadingEntries;
+        private bool isInitialLoadInProgress;
         private bool isEntryEditorVisible;
         private static readonly AsyncLock RefreshLock = new AsyncLock();
         private bool initialized;
@@ -159,13 +159,13 @@ namespace Linqua.UI
             }
         }
 
-        public bool IsLoadingEntries
+        public bool IsInitialLoadInProgress
         {
-            get { return isLoadingEntries; }
+            get { return isInitialLoadInProgress; }
             private set
             {
-                if (value.Equals(isLoadingEntries)) return;
-                isLoadingEntries = value;
+                if (value.Equals(isInitialLoadInProgress)) return;
+                isInitialLoadInProgress = value;
                 RaisePropertyChanged();
 
                 AddWordCommand.RaiseCanExecuteChanged();
@@ -282,22 +282,36 @@ namespace Linqua.UI
 
             sw.Start();
 
-            IsLoadingEntries = true;
+            
 
-            LocalDbState localDbState;
+            LocalDbState localDbState = LocalDbState.Unknown;
 
             using (await RefreshLock.LockAsync())
             {
                 try
                 {
-                    localDbState = await storage.InitializeAsync();
+                    await storage.InitializeAsync();
+
+                    var initialPullRequired = await storage.GetIsInitialPullRequiredAsync();
+
+                    if (initialPullRequired)
+                    {
+                        IsInitialLoadInProgress = true;
+
+                        try
+                        {
+                            localDbState = await storage.DoInitialPullIfNeededAsync();
+                        }
+                        finally
+                        {
+                            IsInitialLoadInProgress = false;
+                        }
+                    }
 
                     await LoadDataInternalAsync();
                 }
                 finally
                 {
-                    IsLoadingEntries = false;
-
                     FullEntryListViewModel.IsInitializationComplete = true;
                     RandomEntryListViewModel.IsInitializationComplete = true;
                 }
@@ -393,7 +407,7 @@ namespace Linqua.UI
 
         private bool CanAddWord()
         {
-            return !IsEntryEditorVisible && !IsAddingWord && !IsLoadingEntries;
+            return !IsEntryEditorVisible && !IsAddingWord && !IsInitialLoadInProgress;
         }
 
         private void AddWord()

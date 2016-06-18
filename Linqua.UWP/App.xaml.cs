@@ -205,7 +205,7 @@ namespace Linqua
                 await ((ILoggerAsync)log).DebugAsync("Application is suspending.");
 
             await SuspensionManager.SaveAsync();
-            await OfflineHelper.AwaitPendingSync();
+            await MobileServiceBackendServiceClient.AwaitPendingSync();
             await LazyFlushManager.FlushAllAsync(new LogWriteContext());
 
             deferral.Complete();
