@@ -12,8 +12,7 @@ namespace Linqua
 {
     public static class SecurityManager
     {
-        private const string ProviderId = "MicrosoftLive";
-        private const string AuthenticationRedirectUrl = MobileService.MobileServiceUrl;
+        private const string ProviderId = "MicrosoftAccount";
 
         public static async Task<bool> TryAuthenticateSilently(bool useCachedCredentials = true)
         {
@@ -27,7 +26,7 @@ namespace Linqua
             {
                 try
                 {
-                    //savedCredentials = vault.FindAllByResource(ProviderId).FirstOrDefault();
+                    savedCredentials = vault.FindAllByResource(ProviderId).FirstOrDefault();
                 }
                 catch (Exception)
                 {

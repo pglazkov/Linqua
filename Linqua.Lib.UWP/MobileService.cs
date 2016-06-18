@@ -6,7 +6,7 @@ namespace Linqua
     public static class MobileService
     {
         public const string MobileServiceUrl = "https://linqua-v2.azurewebsites.net";
-        public static readonly MobileServiceClient Client;
+        public static readonly IMobileServiceClient Client;
 
         static MobileService()
         {
