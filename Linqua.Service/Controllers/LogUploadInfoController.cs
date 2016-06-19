@@ -25,7 +25,7 @@ namespace Linqua.Service.Controllers
                 throw new InvalidOperationException("Could not retrieve storage account settings.");
             }
 
-            var currentUserId = await this.GetUserInfoAsync();
+            var currentUserInfo = await this.GetUserInfoAsync();
 
             var result = new LogUploadInfo();
 
@@ -73,7 +73,7 @@ namespace Linqua.Service.Controllers
                 deviceIdNamePart = "_" + deviceId;
             }
 
-            result.ResourceName = currentUserId + deviceIdNamePart + ".zip";
+            result.ResourceName = currentUserInfo.ProviderUserInfo.UserId + deviceIdNamePart + ".zip";
             result.UploadUri = $"{blobEndpoint}{ContainerName}/{result.ResourceName}";
 
             return result;

@@ -4,6 +4,14 @@
     {
         public const string HeaderKey = "LINQUA-LEGACY-USER-ID";
 
-        public static string Value { get; set; }
+#if WINDOWS_UWP
+        private const string LocalSettingsKey = "LegacyUserID";
+
+        public static string Value
+        {
+            get { return (string)Windows.Storage.ApplicationData.Current.LocalSettings.Values[LocalSettingsKey]; }
+            set { Windows.Storage.ApplicationData.Current.LocalSettings.Values[LocalSettingsKey] = value; }
+        }
+#endif
     }
 }
