@@ -22,7 +22,7 @@ namespace Linqua
 
             PasswordCredential savedCredentials = null;
 
-            if (useCachedCredentials)
+            if (useCachedCredentials && LegacyUserId.Value != null)
             {
                 try
                 {

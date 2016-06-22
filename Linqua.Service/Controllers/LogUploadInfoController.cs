@@ -73,7 +73,7 @@ namespace Linqua.Service.Controllers
                 deviceIdNamePart = "_" + deviceId;
             }
 
-            result.ResourceName = currentUserInfo.ProviderUserInfo.UserId + deviceIdNamePart + ".zip";
+            result.ResourceName = currentUserInfo.UserEntity.MicrosoftAccountId + deviceIdNamePart + ".zip";
             result.UploadUri = $"{blobEndpoint}{ContainerName}/{result.ResourceName}";
 
             return result;
