@@ -135,21 +135,9 @@
     <Compile Include="Migrations\201606070506098_AddUserEmail.Designer.cs">
       <DependentUpon>201606070506098_AddUserEmail.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201606201843235_RenameUserIdToClientAppSpecificUserId.cs" />
-    <Compile Include="Migrations\201606201843235_RenameUserIdToClientAppSpecificUserId.Designer.cs">
-      <DependentUpon>201606201843235_RenameUserIdToClientAppSpecificUserId.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606201847296_AddUserTable.cs" />
-    <Compile Include="Migrations\201606201847296_AddUserTable.Designer.cs">
-      <DependentUpon>201606201847296_AddUserTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606201850216_RemoveUserEmail.cs" />
-    <Compile Include="Migrations\201606201850216_RemoveUserEmail.Designer.cs">
-      <DependentUpon>201606201850216_RemoveUserEmail.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201606201940294_AddUserMicrosoftAccountIdUniqueIndex.cs" />
-    <Compile Include="Migrations\201606201940294_AddUserMicrosoftAccountIdUniqueIndex.Designer.cs">
-      <DependentUpon>201606201940294_AddUserMicrosoftAccountIdUniqueIndex.cs</DependentUpon>
+    <Compile Include="Migrations\201606250554463_AddUsersTableAndRelatedChanges.cs" />
+    <Compile Include="Migrations\201606250554463_AddUsersTableAndRelatedChanges.Designer.cs">
+      <DependentUpon>201606250554463_AddUsersTableAndRelatedChanges.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Entry.cs" />
@@ -204,17 +192,8 @@
     <EmbeddedResource Include="Migrations\201606070506098_AddUserEmail.resx">
       <DependentUpon>201606070506098_AddUserEmail.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606201843235_RenameUserIdToClientAppSpecificUserId.resx">
-      <DependentUpon>201606201843235_RenameUserIdToClientAppSpecificUserId.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606201847296_AddUserTable.resx">
-      <DependentUpon>201606201847296_AddUserTable.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606201850216_RemoveUserEmail.resx">
-      <DependentUpon>201606201850216_RemoveUserEmail.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201606201940294_AddUserMicrosoftAccountIdUniqueIndex.resx">
-      <DependentUpon>201606201940294_AddUserMicrosoftAccountIdUniqueIndex.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201606250554463_AddUsersTableAndRelatedChanges.resx">
+      <DependentUpon>201606250554463_AddUsersTableAndRelatedChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -7,13 +7,13 @@ namespace Linqua.Service.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AddUserMicrosoftAccountIdUniqueIndex : IMigrationMetadata
+    public sealed partial class AddUsersTableAndRelatedChanges : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddUserMicrosoftAccountIdUniqueIndex));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddUsersTableAndRelatedChanges));
         
         string IMigrationMetadata.Id
         {
-            get { return "201606201940294_AddUserMicrosoftAccountIdUniqueIndex"; }
+            get { return "201606250554463_AddUsersTableAndRelatedChanges"; }
         }
         
         string IMigrationMetadata.Source
