@@ -13,6 +13,8 @@ namespace Linqua.Service.Controllers
 {
     public static class ApiControllerExtensions
     {
+        private static readonly object UserLoadLock = new object();
+
         public static async Task<LinquaUserInfo> GetUserInfoAsync(this ApiController controller)
         {
             var providerUser = await GetUserEntityAsync(controller);
@@ -63,40 +65,48 @@ namespace Linqua.Service.Controllers
                 throw new NotImplementedException();
             }
 
+            return GetUserEntity(creds);
+        }
+
+        private static User GetUserEntity(ProviderCredentials creds)
+        {
             var userId = creds.UserClaims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value;
-            
+
             User user;
 
-            using (var dbContext = new LinquaContext())
+            lock (UserLoadLock)
             {
-                user = dbContext.Users.SingleOrDefault(x => x.MicrosoftAccountId == userId);
-
-                const int AttemptsCount = 3;
-                int attempt = 1;
-
-                while (user == null)
+                using (var dbContext = new LinquaContext())
                 {
-                    user = new User(Guid.NewGuid().ToString(), userId, creds.UserClaims.SingleOrDefault(x => x.Type == ClaimTypes.Email)?.Value);
+                    user = dbContext.Users.SingleOrDefault(x => x.MicrosoftAccountId == userId);
 
-                    dbContext.Users.Add(user);
+                    const int AttemptsCount = 3;
+                    int attempt = 1;
 
-                    try
+                    while (user == null)
                     {
-                        await dbContext.SaveChangesAsync();
-                    }
-                    catch (Exception)
-                    {
-                        if (attempt > AttemptsCount)
+                        user = new User(Guid.NewGuid(), userId, creds.UserClaims.SingleOrDefault(x => x.Type == ClaimTypes.Email)?.Value);
+
+                        dbContext.Users.Add(user);
+
+                        try
                         {
-                            throw;
+                            dbContext.SaveChanges();
+                        }
+                        catch (Exception)
+                        {
+                            if (attempt > AttemptsCount)
+                            {
+                                throw;
+                            }
+
+                            dbContext.Users.Remove(user);
+
+                            attempt++;
                         }
 
-                        dbContext.Users.Remove(user);
-
-                        attempt++;
+                        user = dbContext.Users.SingleOrDefault(x => x.MicrosoftAccountId == userId);
                     }
-
-                    user = dbContext.Users.SingleOrDefault(x => x.MicrosoftAccountId == userId);
                 }
             }
 

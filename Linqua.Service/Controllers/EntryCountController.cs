@@ -17,7 +17,7 @@ namespace Linqua.Service.Controllers
 
             using (var ctx = new LinquaContext())
             {
-                var result = await ctx.Entries.CountAsync(x => (x.User.Id == currentUser.UserEntity.MicrosoftAccountId || x.ClientAppSpecificUserId == currentUser.AppSpecificMicrosoftUserId) && !x.Deleted);
+                var result = await ctx.Entries.CountAsync(x => (x.UserId == currentUser.UserEntity.Id || x.ClientAppSpecificUserId == currentUser.AppSpecificMicrosoftUserId) && !x.Deleted);
 
                 return result;
             }

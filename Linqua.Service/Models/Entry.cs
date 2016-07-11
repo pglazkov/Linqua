@@ -24,6 +24,9 @@ namespace Linqua.Service.Models
         [MaxLength(256)]
         public string ClientAppSpecificUserId { get; set; }
 
+        [ForeignKey("User")]
+        public Guid? UserId { get; set; }
+
         [JsonIgnore]
         public User User { get; set; }
 

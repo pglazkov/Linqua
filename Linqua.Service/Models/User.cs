@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Linqua.Service.Models
@@ -9,7 +10,7 @@ namespace Linqua.Service.Models
         {
         }
 
-        public User(string id, string microsoftAccountId, string email)
+        public User(Guid id, string microsoftAccountId, string email)
         {
             Id = id;
             MicrosoftAccountId = microsoftAccountId;
@@ -17,7 +18,7 @@ namespace Linqua.Service.Models
         }
 
         [Key]
-        public string Id { get; set; }
+        public Guid Id { get; set; }
 
         [MaxLength(256)]
         [Index(IsUnique = true)]

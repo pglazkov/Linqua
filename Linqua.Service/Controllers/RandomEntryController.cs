@@ -23,7 +23,7 @@ namespace Linqua.Service.Controllers
             using (var ctx = new LinquaContext())
             {
                 var foundEntries = await ctx.Entries
-                                            .Where(x => (x.User.Id == currentUser.UserEntity.MicrosoftAccountId || x.ClientAppSpecificUserId == currentUser.AppSpecificMicrosoftUserId) && !x.Deleted && !x.IsLearnt)
+                                            .Where(x => (x.UserId == currentUser.UserEntity.Id || x.ClientAppSpecificUserId == currentUser.AppSpecificMicrosoftUserId) && !x.Deleted && !x.IsLearnt)
                                             .ToListAsync();
 
                 if (foundEntries != null && foundEntries.Count > 0)

@@ -27,7 +27,7 @@ namespace Linqua.Service.Controllers
             // Get the logged-in user.
             var currentUser = await this.GetUserInfoAsync();
 
-            return Query().Where(e => e.User.Id == currentUser.UserEntity.MicrosoftAccountId || e.ClientAppSpecificUserId == currentUser.AppSpecificMicrosoftUserId);
+            return Query().Where(e => e.UserId == currentUser.UserEntity.Id || e.ClientAppSpecificUserId == currentUser.AppSpecificMicrosoftUserId);
         }
 
         // GET tables/Entry/48D68C86-6EA6-4C25-AA33-223FC9A27959

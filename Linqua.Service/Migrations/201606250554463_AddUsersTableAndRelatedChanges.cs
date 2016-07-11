@@ -8,12 +8,13 @@ namespace Linqua.Service.Migrations
         public override void Up()
         {
             RenameColumn("linqua.Entries", "UserId", "ClientAppSpecificUserId");
+            RenameIndex("linqua.Entries", "IX_UserId", "IX_ClientAppSpecificUserId");
 
             CreateTable(
                 "linqua.Users",
                 c => new
                     {
-                        Id = c.String(nullable: false, maxLength: 128),
+                        Id = c.Guid(nullable: false),
                         MicrosoftAccountId = c.String(maxLength: 256),
                         Email = c.String(maxLength: 512),
                     })
@@ -21,9 +22,8 @@ namespace Linqua.Service.Migrations
                 .Index(t => t.MicrosoftAccountId, unique: true);
             
             
-            AddColumn("linqua.Entries", "User_Id", c => c.String(maxLength: 128));
-            CreateIndex("linqua.Entries", "User_Id");
-            AddForeignKey("linqua.Entries", "User_Id", "linqua.Users", "Id");
+            AddColumn("linqua.Entries", "UserId", c => c.Guid(nullable: true));
+            AddForeignKey("linqua.Entries", "UserId", "linqua.Users", "Id");
 
             DropColumn("linqua.Entries", "UserEmail");
         }
@@ -32,12 +32,14 @@ namespace Linqua.Service.Migrations
         {
             AddColumn("linqua.Entries", "UserEmail", c => c.String(maxLength: 256));
 
-            RenameColumn("linqua.Entries", "ClientAppSpecificUserId", "UserId");
+            DropForeignKey("linqua.Entries", "UserId", "linqua.Users");
+            DropColumn("linqua.Entries", "UserId");
 
-            DropForeignKey("linqua.Entries", "User_Id", "linqua.Users");
+            RenameColumn("linqua.Entries", "ClientAppSpecificUserId", "UserId");
+            RenameIndex("linqua.Entries", "IX_ClientAppSpecificUserId", "IX_UserId");
+            
             DropIndex("linqua.Users", new[] { "MicrosoftAccountId" });
-            DropIndex("linqua.Entries", new[] { "User_Id" });
-            DropColumn("linqua.Entries", "User_Id");
+            
             DropTable("linqua.Users");
         }
     }
