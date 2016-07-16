@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Runtime.Caching;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -13,6 +13,10 @@ namespace Linqua.Service.Controllers
 {
     public static class ApiControllerExtensions
     {
+        private const string UserCacheKeyPrefix = "User_";
+
+        private static readonly MemoryCache Cache = MemoryCache.Default;
+
         private static readonly object UserLoadLock = new object();
 
         public static async Task<LinquaUserInfo> GetUserInfoAsync(this ApiController controller)
@@ -64,15 +68,21 @@ namespace Linqua.Service.Controllers
             {
                 throw new NotImplementedException();
             }
-
+            
             return GetUserEntity(creds);
         }
 
         private static User GetUserEntity(ProviderCredentials creds)
         {
             var userId = creds.UserClaims.Single(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var cacheKey = UserCacheKeyPrefix + userId;
 
-            User user;
+            User user = (User)Cache.Get(cacheKey);
+
+            if (user != null)
+            {
+                return user;
+            }
 
             lock (UserLoadLock)
             {
@@ -109,6 +119,8 @@ namespace Linqua.Service.Controllers
                     }
                 }
             }
+
+            Cache.Set(cacheKey, user, DateTimeOffset.Now.AddHours(12));
 
             return user;
         }
