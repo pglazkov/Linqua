@@ -126,6 +126,10 @@
     <Compile Include="Migrations\201606070506098_AddUserEmail.Designer.cs">
       <DependentUpon>201606070506098_AddUserEmail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201606250554463_AddUsersTableAndRelatedChanges.cs" />
+    <Compile Include="Migrations\201606250554463_AddUsersTableAndRelatedChanges.Designer.cs">
+      <DependentUpon>201606250554463_AddUsersTableAndRelatedChanges.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Entry.cs" />
     <Compile Include="Models\LinquaContext.cs" />
@@ -133,6 +137,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\TranslationState.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -178,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606070506098_AddUserEmail.resx">
       <DependentUpon>201606070506098_AddUserEmail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606250554463_AddUsersTableAndRelatedChanges.resx">
+      <DependentUpon>201606250554463_AddUsersTableAndRelatedChanges.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

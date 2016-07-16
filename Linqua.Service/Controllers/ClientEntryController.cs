@@ -26,7 +26,7 @@ namespace Linqua.Service.Controllers
             // Get the logged-in user.
             var currentUser = (ServiceUser)User;
 
-            return Query().Where(e => e.UserId == currentUser.Id);
+            return Query().Where(e => e.ClientAppSpecificUserId == currentUser.Id);
         }
 
         // GET tables/ClientEntry/48D68C86-6EA6-4C25-AA33-223FC9A27959
@@ -48,7 +48,7 @@ namespace Linqua.Service.Controllers
             var currentUser = (ServiceUser)User;
 
             // Set the user ID on the item.
-            item.UserId = currentUser.Id;
+            item.ClientAppSpecificUserId = currentUser.Id;
 
             ClientEntry current = await InsertAsync(item);
             return CreatedAtRoute("Tables", new {id = current.Id}, current);

@@ -27,6 +27,8 @@ namespace Linqua.Service.Models
 
         public DbSet<Entry> Entries { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             string schema = ServiceSettingsDictionary.GetSchemaName();

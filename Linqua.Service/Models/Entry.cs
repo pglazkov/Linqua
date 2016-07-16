@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.WindowsAzure.Mobile.Service;
+using Newtonsoft.Json;
 
 namespace Linqua.Service.Models
 {
@@ -21,10 +22,13 @@ namespace Linqua.Service.Models
 
         [Index]
         [MaxLength(256)]
-        public string UserId { get; set; }
+        public string ClientAppSpecificUserId { get; set; }
 
-        [MaxLength(256)]
-        public string UserEmail { get; set; }
+        [ForeignKey("User")]
+        public Guid? UserId { get; set; }
+
+        [JsonIgnore]
+        public User User { get; set; }
 
         public bool IsLearnt { get; set; }
 

@@ -17,9 +17,7 @@ namespace Linqua.Service.DataObjects
 
         public TranslationState TranslationState { get; set; }
 
-        public string UserId { get; set; }
-
-        public string UserEmail { get; set; }
+        public string ClientAppSpecificUserId { get; set; }
 
         public bool IsLearnt { get; set; }
 
