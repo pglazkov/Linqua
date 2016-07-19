@@ -31,4 +31,10 @@
         <!-- add directives for your library here -->
 
     </Library>
+    
+    <Library Name="Newtonsoft.Json">
+        <!-- Workaround for the compiler bug: https://github.com/Azure/azure-mobile-apps-net-client/issues/185#issuecomment-233467111 -->
+        
+        <Assembly Name="Newtonsoft.Json" DoNotOptimize="true" />
+    </Library>​
 </Directives>
