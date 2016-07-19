@@ -44,7 +44,7 @@ namespace Framework.Logging
 
         protected abstract Task EnsureInitialized();
         protected abstract Task DoCleanup(Regex pattern, DateTime threshold);
-        public abstract Task<IStorageFile> GetCompressedLogFile();
+        public abstract Task<StorageFile> GetCompressedLogFile();
 
         internal async Task ForceCleanupAsync()
         {

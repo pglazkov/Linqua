@@ -5,7 +5,7 @@
     "Microsoft.Owin": "3.0.1",
     "Microsoft.Owin.Host.SystemWeb": "3.0.1",
     "Owin": "1.0.0",
-    "WindowsAzure.Storage": "4.3.0"
+    "WindowsAzure.Storage": "7.1.2"
   },
   "frameworks": {
     "net461": {}

@@ -8,7 +8,7 @@
     "Nito.AsyncEx": "3.0.1",
     "NotificationsExtensions.Portable": "1.0.7",
     "System.Reactive": "3.0.0",
-    "WindowsAzure.Storage": "5.0.2"
+    "WindowsAzure.Storage": "7.1.2"
   },
   "frameworks": {
     "uap10.0": {}

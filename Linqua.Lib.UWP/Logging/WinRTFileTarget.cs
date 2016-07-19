@@ -44,7 +44,7 @@ namespace Linqua.Logging
             return ms;
         }
 
-        public override async Task<IStorageFile> GetCompressedLogFile()
+        public override async Task<StorageFile> GetCompressedLogFile()
         {
             await EnsureInitialized();
 

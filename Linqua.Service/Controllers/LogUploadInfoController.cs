@@ -35,7 +35,7 @@ namespace Linqua.Service.Controllers
             // Create the BLOB service client.
             CloudBlobClient blobClient = new CloudBlobClient(blobEndpoint, new StorageCredentials(storageAccountName, storageAccountKey));
 
-            const string ContainerName = "logfiles";
+            const string ContainerName = "logfiles-v2";
 
             result.ContainerName = ContainerName;
 

@@ -12,7 +12,7 @@
     "SQLitePCL": "3.8.7.2",
     "System.Reactive": "3.0.0",
     "System.Reactive.WindowsRuntime": "3.0.0",
-    "WindowsAzure.Storage": "5.0.2"
+    "WindowsAzure.Storage": "7.1.2"
   },
   "frameworks": {
     "uap10.0": {}

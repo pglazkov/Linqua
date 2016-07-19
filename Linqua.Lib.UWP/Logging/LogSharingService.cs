@@ -40,11 +40,9 @@ namespace Linqua.Logging
             var file = await FileStreamingTarget.Instance.GetCompressedLogFile();
 
             // Upload the ZIP to the blob storage
-            using (var inputStream = await file.OpenReadAsync())
-            {
-                CloudBlockBlob blobFromSasCredential = container.GetBlockBlobReference(uploadInfo.ResourceName);
-                await blobFromSasCredential.UploadFromStreamAsync(inputStream);
-            }
+
+            CloudBlockBlob blobFromSasCredential = container.GetBlockBlobReference(uploadInfo.ResourceName);
+            await blobFromSasCredential.UploadFromFileAsync(file);
 
             return uploadUri;
         }
