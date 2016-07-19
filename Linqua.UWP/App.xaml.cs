@@ -41,8 +41,7 @@ namespace Linqua
             HockeyClient.Current.Configure("4ea0ac614ad44a96836de382a453a140",
                                            new TelemetryConfiguration
                                            {
-                                               Collectors = WindowsCollectors.Metadata | WindowsCollectors.Session | WindowsCollectors.PageView | WindowsCollectors.UnhandledException | WindowsCollectors.WatsonData,
-                                               DescriptionLoader = ex => ExceptionUtils.UnwrapException(ex).ToString()
+                                               Collectors = WindowsCollectors.Metadata | WindowsCollectors.Session | WindowsCollectors.UnhandledException
                                            });
 
             InitializeComponent();

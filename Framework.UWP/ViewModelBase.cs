@@ -2,7 +2,6 @@
 using System.Composition;
 using System.Windows.Input;
 using Framework.PlatformServices;
-using Framework.PlatformServices.DefaultImpl;
 using JetBrains.Annotations;
 
 namespace Framework
@@ -38,19 +37,19 @@ namespace Framework
         [Import]
         public IDispatcherService Dispatcher
         {
-            get { return dispatcher ?? (dispatcher = DesignTimeDetection.IsInDesignTool ? new DefaultDispatcherService() : CompositionManager.Current.GetInstance<IDispatcherService>()); }
+            get { return dispatcher ?? (dispatcher = CompositionManager.Current.GetInstance<IDispatcherService>()); }
             set { dispatcher = value; }
         }
 
         public IDialogService DialogService
         {
-            get { return dialogService ?? (dialogService = DesignTimeDetection.IsInDesignTool ? new DefaultDialogService() : CompositionManager.Current.GetInstance<IDialogService>()); }
+            get { return dialogService ?? (dialogService = CompositionManager.Current.GetInstance<IDialogService>()); }
             set { dialogService = value; }
         }
 
         public IStringResourceManager Resources
         {
-            get { return resources ?? (resources = DesignTimeDetection.IsInDesignTool ? new DefaultStringResourceManager() : CompositionManager.Current.GetInstance<IStringResourceManager>()); }
+            get { return resources ?? (resources = CompositionManager.Current.GetInstance<IStringResourceManager>()); }
             set { resources = value; }
         }
 

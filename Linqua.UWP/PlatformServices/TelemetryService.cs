@@ -9,7 +9,7 @@ namespace Linqua.PlatformServices
 {
     internal class TelemetryService : ITelemetryService
     {
-        private static readonly ThreadLocal<HockeyClient> Client = new ThreadLocal<HockeyClient>(() => HockeyClient.Current);
+        private static readonly ThreadLocal<IHockeyClient> Client = new ThreadLocal<IHockeyClient>(() => HockeyClient.Current);
 
         public void TrackEvent(string eventName, IDictionary<string, string> properties = null, IDictionary<string, double> metrics = null)
         {

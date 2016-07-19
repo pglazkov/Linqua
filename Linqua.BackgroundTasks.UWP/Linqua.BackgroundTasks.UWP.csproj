@@ -116,10 +116,6 @@
     <Compile Include="SynchronizationTask.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Framework.PT\Framework.PT.csproj">
-      <Project>{175a1b89-42aa-495c-bfb6-657f54792fb4}</Project>
-      <Name>Framework.PT</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Framework.UWP\Framework.UWP.csproj">
       <Project>{934C975E-961B-4D56-B500-82DF42CE5E60}</Project>
       <Name>Framework.UWP</Name>
