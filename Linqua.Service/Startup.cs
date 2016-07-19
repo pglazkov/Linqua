@@ -5,6 +5,7 @@ using Linqua.Service.Models;
 using Microsoft.Azure.Mobile.Server;
 using Microsoft.Azure.Mobile.Server.Authentication;
 using Microsoft.Azure.Mobile.Server.Config;
+using Microsoft.Azure.Mobile.Server.Tables.Config;
 using Microsoft.Owin;
 using Owin;
 using Configuration = Linqua.Service.Migrations.Configuration;
@@ -18,7 +19,13 @@ namespace Linqua.Service
         public void Configuration(IAppBuilder app)
         {
             HttpConfiguration config = new HttpConfiguration();
-            new MobileAppConfiguration().UseDefaultConfiguration().ApplyTo(config);
+            new MobileAppConfiguration()
+                .AddTables(
+                    new MobileAppTableConfiguration()
+                        .MapTableControllers()
+                        .AddEntityFramework())
+                .MapApiControllers()
+                .ApplyTo(config);
 
             // To display errors in the browser during development, uncomment the following
             // line. Comment it out again when you deploy your service for production use.
