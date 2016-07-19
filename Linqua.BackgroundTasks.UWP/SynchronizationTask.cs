@@ -2,8 +2,6 @@
 using Windows.ApplicationModel.Background;
 using Framework;
 using Framework.PlatformServices;
-using Framework.PlatformServices.DefaultImpl;
-using Linqua.Logging;
 using Linqua.Persistence;
 using MetroLog;
 

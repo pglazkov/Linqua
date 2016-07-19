@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Composition;
+﻿using System.Composition;
 
 namespace Framework.PlatformServices
 {

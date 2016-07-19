@@ -1,5 +1,4 @@
-﻿using System;
-using System.Composition;
+﻿using System.Composition;
 using System.Net;
 using System.Threading.Tasks;
 using MetroLog;

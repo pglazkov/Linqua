@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Reactive.Linq;
 using Framework;
-using Framework.PlatformServices;
 using Linqua.DataObjects;
 using Linqua.Events;
 

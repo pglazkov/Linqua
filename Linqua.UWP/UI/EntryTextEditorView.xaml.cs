@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reactive.Linq;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

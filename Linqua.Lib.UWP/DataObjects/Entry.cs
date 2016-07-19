@@ -1,7 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Linqua.Service.Models;
-using Microsoft.WindowsAzure.MobileServices;
 
 namespace Linqua.DataObjects
 {

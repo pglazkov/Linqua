@@ -1,11 +1,8 @@
 using System;
 using System.Composition;
 using System.Threading.Tasks;
-using Windows.ApplicationModel;
 using Windows.ApplicationModel.Core;
-using Windows.Foundation;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
 
 namespace Framework.PlatformServices
 {

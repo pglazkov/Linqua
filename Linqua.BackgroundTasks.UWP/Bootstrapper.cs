@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Windows.ApplicationModel;
 using Linqua.Logging;
 using MetroLog;

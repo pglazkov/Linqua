@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Windows.UI.Popups;
 using Windows.UI.Xaml.Controls;
 using Framework;
 using Framework.PlatformServices;
 using JetBrains.Annotations;
-using Linqua.Offline;
 using Linqua.UI;
 
 namespace Linqua

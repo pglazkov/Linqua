@@ -4,10 +4,8 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.OData;
-using Linqua.Service.DataObjects;
 using Linqua.Service.Models;
 using Microsoft.Azure.Mobile.Server;
-using Microsoft.Azure.Mobile.Server.Config;
 
 namespace Linqua.Service.Controllers
 {

@@ -136,7 +136,6 @@
     <Compile Include="Framework\SuspensionManager.cs" />
     <Compile Include="Framework\SwipeDetectionBehavior.cs" />
     <Compile Include="IEntryOperations.cs" />
-    <Compile Include="NavigationConstants.cs" />
     <Compile Include="Offline\IOfflineSyncController.cs" />
     <Compile Include="Offline\OfflineSyncController.cs" />
     <Compile Include="Persistence\SyncFailedHandler.cs" />

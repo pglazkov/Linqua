@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.DataTransfer;
 using Framework;
 using Framework.PlatformServices;
 using Framework.PlatformServices.DefaultImpl;

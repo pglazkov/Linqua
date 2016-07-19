@@ -1,6 +1,5 @@
 ﻿using Framework;
 using JetBrains.Annotations;
-using Linqua.DataObjects;
 using Linqua.UI;
 
 namespace Linqua.Events

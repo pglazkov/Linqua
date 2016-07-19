@@ -1,5 +1,4 @@
-﻿using System;
-using Framework;
+﻿using Framework;
 using JetBrains.Annotations;
 
 namespace Linqua.Events

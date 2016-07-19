@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Animation;
 using Framework;
 using JetBrains.Annotations;
 

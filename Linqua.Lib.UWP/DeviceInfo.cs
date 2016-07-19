@@ -2,7 +2,6 @@
 using Windows.Security.Cryptography;
 using Windows.Security.Cryptography.Core;
 using Windows.Security.ExchangeActiveSyncProvisioning;
-using Windows.Storage.Streams;
 using Windows.System.Profile;
 
 namespace Linqua

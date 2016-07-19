@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Composition;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using Framework;

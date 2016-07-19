@@ -2,7 +2,6 @@
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Framework;
 using Microsoft.Xaml.Interactivity;
 
 namespace Linqua.Framework
