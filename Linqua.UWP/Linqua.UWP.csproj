@@ -20,7 +20,7 @@
     <PackageCertificateThumbprint>42DDCDF1C59F9F81DD9BBB20183774D6E33A8E49</PackageCertificateThumbprint>
     <AppxAutoIncrementPackageRevision>False</AppxAutoIncrementPackageRevision>
     <AppxBundle>Always</AppxBundle>
-    <AppxBundlePlatforms>x86|arm</AppxBundlePlatforms>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
     <HockeyAppResourceId>4ea0ac614ad44a96836de382a453a140</HockeyAppResourceId>
     <SkipValidatePackageReferences>true</SkipValidatePackageReferences>
   </PropertyGroup>
