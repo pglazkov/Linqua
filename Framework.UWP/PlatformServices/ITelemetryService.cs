@@ -61,6 +61,6 @@ namespace Framework.PlatformServices
         Information,
         Warning,
         Error,
-        Critical,
+        Critical
     }
 }
