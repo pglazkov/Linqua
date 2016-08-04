@@ -214,3 +214,4 @@ project.lock.json
 BundleArtifacts
 _pkginfo.txt
 *.appx
+/packages/
