@@ -120,10 +120,13 @@
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Controllers\OAuthCallbackController.cs" />
+    <Compile Include="FacebookHelpers.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SimpleFacebookAuthDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
