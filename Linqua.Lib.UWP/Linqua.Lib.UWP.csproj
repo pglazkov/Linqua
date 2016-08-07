@@ -164,6 +164,10 @@
     <EmbeddedResource Include="Properties\Linqua.Lib.Universal.rd.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Framework.Portable\Framework.Portable.csproj">
+      <Project>{e05022b8-7ecc-4497-8a58-5f73804bb779}</Project>
+      <Name>Framework.Portable</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Framework.UWP\Framework.UWP.csproj">
       <Project>{934c975e-961b-4d56-b500-82df42ce5e60}</Project>
       <Name>Framework.UWP</Name>

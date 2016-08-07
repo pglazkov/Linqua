@@ -117,6 +117,10 @@
     <Compile Include="SynchronizationTask.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Framework.Portable\Framework.Portable.csproj">
+      <Project>{e05022b8-7ecc-4497-8a58-5f73804bb779}</Project>
+      <Name>Framework.Portable</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Framework.UWP\Framework.UWP.csproj">
       <Project>{934C975E-961B-4D56-B500-82DF42CE5E60}</Project>
       <Name>Framework.UWP</Name>

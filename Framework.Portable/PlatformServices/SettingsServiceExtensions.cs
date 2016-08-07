@@ -6,14 +6,14 @@ namespace Framework.PlatformServices
     {
         public static void SetValue(this ISettingsService service, string key, object value)
         {
-            service.Values[key] = value;
+            service.SetValue(key, value);
         }
 
         public static object GetValue(this ISettingsService service, string key)
         {
             object result;
 
-            service.Values.TryGetValue(key, out result);
+            service.TryGetValue(key, out result);
 
             return result;
         }
@@ -22,7 +22,7 @@ namespace Framework.PlatformServices
         {
             object rawValue;
 
-            service.Values.TryGetValue(key, out rawValue);
+            service.TryGetValue(key, out rawValue);
 
             if (ReferenceEquals(rawValue, null))
                 return defaultValue;

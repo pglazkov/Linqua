@@ -24,7 +24,8 @@ namespace Linqua.Bot.Controllers
                 switch (activity.GetActivityType())
                 {
                     case ActivityTypes.Message:
-                        await Conversation.SendAsync(activity, () => SimpleFacebookAuthDialog.dialog);
+                        
+                        await Conversation.SendAsync(activity, () => new TranslationDialog());
                         break;
 
                     case ActivityTypes.ConversationUpdate:

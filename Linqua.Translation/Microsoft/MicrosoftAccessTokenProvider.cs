@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Framework;
 using Framework.PlatformServices;
 using JetBrains.Annotations;
-using MetroLog;
 using Newtonsoft.Json;
 
 namespace Linqua.Translation.Microsoft
@@ -16,11 +14,9 @@ namespace Linqua.Translation.Microsoft
     {
         private const string AccessTokenKey = "MicrosoftAccessToken";
 
-        private static readonly ILogger Log = LogManagerFactory.DefaultLogManager.GetLogger(typeof(MicrosoftAccessTokenProvider).Name);
+        private readonly ISettingsService localSettingsService;
 
-        private readonly ILocalSettingsService localSettingsService;
-
-        public MicrosoftAccessTokenProvider([NotNull] ILocalSettingsService localSettingsService)
+        public MicrosoftAccessTokenProvider([NotNull] ISettingsService localSettingsService)
         {
             Guard.NotNull(localSettingsService, nameof(localSettingsService));
 

@@ -108,7 +108,6 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Annotations.cs" />
     <Compile Include="AwaitableExtensions.cs" />
     <Compile Include="CompositionFactory.cs" />
     <Compile Include="CompositionManager.cs" />
@@ -130,7 +129,6 @@
     <Compile Include="ExceptionUtils.cs" />
     <Compile Include="FrameworkPortable.cs" />
     <Compile Include="FrameworkUwp.cs" />
-    <Compile Include="Guard.cs" />
     <Compile Include="GuardReSharperTemplates.cs" />
     <Compile Include="HttpUtils.cs" />
     <Compile Include="ICompositionFactory.cs" />
@@ -170,14 +168,12 @@
     <Compile Include="PlatformServices\IDispatcherService.cs" />
     <Compile Include="PlatformServices\ILocalSettingsService.cs" />
     <Compile Include="PlatformServices\IRoamingSettingsService.cs" />
-    <Compile Include="PlatformServices\ISettingsService.cs" />
     <Compile Include="PlatformServices\IStatusBusyService.cs" />
     <Compile Include="PlatformServices\IStringResourceManager.cs" />
     <Compile Include="PlatformServices\ITelemetryService.cs" />
     <Compile Include="PlatformServices\IViewLocationService.cs" />
     <Compile Include="PlatformServices\LocalSettingsService.cs" />
     <Compile Include="PlatformServices\RoamingSettingsService.cs" />
-    <Compile Include="PlatformServices\SettingsServiceExtensions.cs" />
     <Compile Include="PlatformServices\StringResourceManager.cs" />
     <Compile Include="PlatformServices\ViewLocationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -202,6 +198,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LocalizedStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Framework.Portable\Framework.Portable.csproj">
+      <Project>{e05022b8-7ecc-4497-8a58-5f73804bb779}</Project>
+      <Name>Framework.Portable</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

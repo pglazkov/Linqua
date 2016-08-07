@@ -181,13 +181,13 @@ namespace Linqua
                 {
                     string cacheKey = string.Format(LocalSettingsKeys.SourceLanguageName, languageCode, locale);
 
-                    var result = (string)settingsService.Values[cacheKey];
+                    var result = (string)settingsService.GetValue(cacheKey);
 
                     if (string.IsNullOrEmpty(result))
                     {
                         result = (await translator.Value.GetLanguageNamesAsync(new[] {languageCode}, locale))[languageCode];
 
-                        settingsService.Values[cacheKey] = result;
+                        settingsService.SetValue(cacheKey, result);
                     }
 
                     return result;
