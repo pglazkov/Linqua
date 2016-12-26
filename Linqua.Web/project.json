@@ -28,7 +28,7 @@
     //"Microsoft.AspNetCore.Routing": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
-    "Microsoft.AspNetCore.StaticFiles": "1.1.0",
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0"
     //"Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
     //"Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
     //"Microsoft.Extensions.Configuration.Json": "1.1.0",
@@ -39,34 +39,34 @@
     //"Microsoft.VisualStudio.Web.BrowserLink.Loader": "14.1.0"
   },
 
-  //"tools": {
-  //  "Microsoft.AspNetCore.Razor.Tools": {
-  //    "version": "1.0.0-preview2-final",
-  //    "imports": "portable-net45+win8+dnxcore50"
-  //  },
-  //  "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
-  //    "version": "1.0.0-preview2-final",
-  //    "imports": "portable-net45+win8+dnxcore50"
-  //  },
-  //  "Microsoft.EntityFrameworkCore.Tools": {
-  //    "version": "1.0.0-preview2-final",
-  //    "imports": [
-  //      "portable-net45+win8+dnxcore50",
-  //      "portable-net45+win8"
-  //    ]
-  //  },
-  //  "Microsoft.Extensions.SecretManager.Tools": {
-  //    "version": "1.0.0-preview2-final",
-  //    "imports": "portable-net45+win8+dnxcore50"
-  //  },
-  //  "Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
-  //    "version": "1.0.0-preview2-final",
-  //    "imports": [
-  //      "portable-net45+win8+dnxcore50",
-  //      "portable-net45+win8"
-  //    ]
-  //  }
-  //},
+  "tools": {
+    //"Microsoft.AspNetCore.Razor.Tools": {
+    //  "version": "1.0.0-preview2-final",
+    //  "imports": "portable-net45+win8+dnxcore50"
+    //},
+    "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
+      "version": "1.0.0-preview2-final",
+      "imports": "portable-net45+win8+dnxcore50"
+    }
+    //"Microsoft.EntityFrameworkCore.Tools": {
+    //  "version": "1.0.0-preview2-final",
+    //  "imports": [
+    //    "portable-net45+win8+dnxcore50",
+    //    "portable-net45+win8"
+    //  ]
+    //},
+    //"Microsoft.Extensions.SecretManager.Tools": {
+    //  "version": "1.0.0-preview2-final",
+    //  "imports": "portable-net45+win8+dnxcore50"
+    //},
+    //"Microsoft.VisualStudio.Web.CodeGeneration.Tools": {
+    //  "version": "1.0.0-preview2-final",
+    //  "imports": [
+    //    "portable-net45+win8+dnxcore50",
+    //    "portable-net45+win8"
+    //  ]
+    //}
+  },
 
   "frameworks": {
     "netcoreapp1.1": {
@@ -81,7 +81,10 @@
   "buildOptions": {
     "debugType": "portable",
     "emitEntryPoint": true,
-    "preserveCompilationContext": true
+    "preserveCompilationContext": true,
+    "compile": {
+      "exclude": [ "node_modules", "src" ]
+    }
   },
 
   //"runtimeOptions": {
@@ -98,7 +101,7 @@
   },
 
   "scripts": {
-    "prepublish": [ "npm install" ],
+    "prepublish": [ "npm install", "ng build" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   },
 
