@@ -215,3 +215,4 @@ BundleArtifacts
 _pkginfo.txt
 *.appx
 /packages/
+/.vs/restore.dg
