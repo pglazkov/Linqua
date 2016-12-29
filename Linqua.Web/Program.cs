@@ -13,7 +13,7 @@ namespace Linqua.Web
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
-
+            
             host.Run();
         }
     }
