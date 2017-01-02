@@ -28,7 +28,8 @@
     //"Microsoft.AspNetCore.Routing": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
     "Microsoft.AspNetCore.Server.Kestrel": "1.1.0",
-    "Microsoft.AspNetCore.StaticFiles": "1.1.0"
+    "Microsoft.AspNetCore.StaticFiles": "1.1.0",
+    "Microsoft.AspNetCore.AngularServices": "1.1.0-beta-000002"
     //"Microsoft.EntityFrameworkCore.Sqlite": "1.1.0",
     //"Microsoft.Extensions.Configuration.EnvironmentVariables": "1.1.0",
     //"Microsoft.Extensions.Configuration.Json": "1.1.0",
@@ -100,8 +101,8 @@
     ]
   },
 
-  "scripts": {
-    "prepublish": [ "npm install", "ng build" ],
+  "scripts": {    
+    "prepublish": [ "npm install", "npm run build:prod" ],
     "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
   },
 

@@ -17,7 +17,7 @@ import { AppComponent } from './app.component';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    AlertModule.forRoot()
+    AlertModule
   ],
   providers: [
     AUTH_PROVIDERS
