@@ -15,7 +15,7 @@ export class Auth {
 
   constructor() {
     // Add callback for lock `authenticated` event
-    this.lock.on('authenticated', (authResult) => {
+    this.lock.on('authenticated', (authResult:any) => {
       localStorage.setItem('id_token', authResult.idToken);
 
       // this.lock.getProfile(authResult.idToken, function (err, profile) {
@@ -23,9 +23,9 @@ export class Auth {
       // });
       let client = new WindowsAzure.MobileServiceClient('https://linqua-v2.azurewebsites.net');
 
-      client.login('facebook').then((data) => {
+      client.login('facebook').then((data:any) => {
         console.log(data);
-      }, (error) => {
+      }, (error:any) => {
         console.log(error);
       }); 
 

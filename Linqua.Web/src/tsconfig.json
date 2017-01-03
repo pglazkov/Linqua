@@ -1,16 +1,12 @@
 {
+  "extends": "../tsconfig.base",
   "compilerOptions": {
-    "baseUrl": "",
-    "declaration": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "lib": ["es6", "dom"],
+    "baseUrl": "",    
     "mapRoot": "./",
     "module": "es6",
-    "moduleResolution": "node",
-    "outDir": "../dist/out-tsc",
-    "sourceMap": true,
-    "target": "es5",
+    "strictNullChecks": true,
+    "noImplicitAny": true,
+    "forceConsistentCasingInFileNames": true,    
     "typeRoots": [
       "../node_modules/@types"
     ]

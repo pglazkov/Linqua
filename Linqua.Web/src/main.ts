@@ -6,9 +6,10 @@ import { AppModule } from './app/';
 
 // Enable either Hot Module Reloading or production mode
 /* tslint:disable */
-if (module['hot']) {
-    module['hot'].accept();
-    module['hot'].dispose(() => { });
+let hotModule = (<any>module)['hot'];
+if (hotModule) {
+    hotModule.accept();
+    hotModule.dispose(() => { });
 } else {
     enableProdMode();
 }
